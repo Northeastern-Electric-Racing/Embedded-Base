@@ -7,12 +7,12 @@ To use this repository in any project, it should be set up as a submodule.
 
 ## Getting Started
 
-1. Clone Embbeded-Base:
+#### 1. Clone Embbeded-Base:
    ~~~
    git clone https://github.com/Northeastern-Electric-Racing/Embedded-Base.git
    ~~~
 
-3. Initialize submodule
+#### 2. Initialize submodule
    Within the application directory, run the following command to initialize the submodule:
    ~~~
    git submodule update --init
