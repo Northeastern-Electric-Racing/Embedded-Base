@@ -26,7 +26,7 @@ git submodule update --remote
 ~~~
 
 
-When making changes to a driver located within Embedded-Base, always make those changes directly within the Embedded-Base repository. Avoid making changes to a submodule from the parent directory. Although it's technically possible, doing so can lead to disorganization, which we want to avoid.
+**When making changes to a driver located within Embedded-Base, always make those changes directly within the Embedded-Base repository. Avoid making changes to a submodule from the parent directory.** Although it's technically possible, doing so can lead to disorganization, which we want to avoid.
 
 This approach ensures that changes to Embedded-Base are tracked properly and can be easily integrated into your projects using it as a submodule.
 
