@@ -7,10 +7,16 @@
 */
 #include "pi4ioe.h"
 
+	uint8_t outputReg1;
+	uint8_t outputReg2;
+
 HAL_StatusTypeDef pi4ioe_init(pi4ioe_t *gpio, I2C_HandleTypeDef *i2c_handle)
 {
 	gpio->i2c_handle = i2c_handle;
 	gpio->port_config = IO_CONFIG_BUF;
+
+	outputReg1 = 0x00;
+	outputReg2 = 0x00;
 
 	uint8_t buf[2] = {IO_CONFIG_REG, IO_CONFIG_BUF};
 
@@ -20,12 +26,11 @@ HAL_StatusTypeDef pi4ioe_init(pi4ioe_t *gpio, I2C_HandleTypeDef *i2c_handle)
 
  HAL_StatusTypeDef pi4ioe_write(uint8_t device, uint8_t val, I2C_HandleTypeDef *i2c_handle)
  {
-	uint8_t reg;
 
-	if (device > 7) reg = OUTPUT1_REG;
-	else reg = OUTPUT0_REG;
+	if (device > 7) outputReg1 = OUTPUT1_REG;
+	else outputReg1 = OUTPUT0_REG;
 
-	uint8_t buf[2] = {reg, val << device};
+	uint8_t buf[2] = {outputReg1, (outputReg2 | val << device)};
 	return HAL_I2C_Master_Transmit(i2c_handle, PI4IOE_I2C_ADDR, buf, 2, HAL_MAX_DELAY);
 
  }
