@@ -1,0 +1,21 @@
+name: Build
+on: [push]
+jobs:
+  run-build:
+    runs-on: ubuntu-latest
+    container:
+        image: nwdepatie/ner-gcc-arm:latest
+    timeout-minutes: 10
+    steps:
+      - name: Clone Cerberus
+      uses: actions/checkout@v2
+      with:
+        repository: Cerberus
+        submodules: recursive
+
+      - name: Execute Make
+        run: |
+            if ! make; then
+            echo "The application has failed to build."
+            exit 1  # This will cause the workflow to fail
+            fi
