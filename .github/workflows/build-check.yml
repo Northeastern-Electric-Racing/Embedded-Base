@@ -10,7 +10,7 @@ jobs:
       - name: Clone Cerberus
         uses: actions/checkout@v2
         with:
-          repository: Cerberus
+          repository: Northeastern-Electric-Racing/Cerberus
           submodules: recursive
 
       - name: Execute Make
