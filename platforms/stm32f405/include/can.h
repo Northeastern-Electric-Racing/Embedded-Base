@@ -35,9 +35,9 @@ typedef struct
 } can_msg_t;
 
 /* These are the queues for each CAN line */
-struct msg_queue* can1_incoming;
-struct msg_queue* can2_incoming;
-// msg_queue* can3_incoming;
+extern struct msg_queue* can1_incoming;
+extern struct msg_queue* can2_incoming;
+// extern msg_queue* can3_incoming;
 
 
 /* Use this when referencing CAN lines when sending a message */
