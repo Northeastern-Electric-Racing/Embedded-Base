@@ -1,4 +1,4 @@
-name: Build
+name: Build Cerberus
 on: [push]
 jobs:
   run-build:
@@ -19,7 +19,3 @@ jobs:
             echo "The application has failed to build."
             exit 1  # This will cause the workflow to fail
             fi
-
-      - name: List Files
-        run: |
-            ls -a
