@@ -18,6 +18,11 @@ CAN_HandleTypeDef* can1;
 CAN_HandleTypeDef* can2;
 // CAN_HandleTypeDef* can3;
 
+/* These are the queues for each CAN line */
+struct msg_queue* can1_incoming;
+struct msg_queue* can2_incoming;
+// msg_queue* can3_incoming;
+
 /* Used in the Queue implementation - you probably dont need to worry about it */
 struct node
 {
