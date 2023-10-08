@@ -30,17 +30,20 @@ HAL_StatusTypeDef pi4ioe_init(pi4ioe_t *gpio, I2C_HandleTypeDef *i2c_handle)
 	uint8_t reg;
 	uint8_t* oreg_data;
 
-	if (device > 7) {
+	if (device > 7) 
+	{
 			reg = OUTPUT1_REG;
 			oreg_data = &oreg_1_data;
-	} else {
+	} 
+	else 
+	{
 			reg = OUTPUT0_REG;
 			oreg_data = &oreg_2_data;
 	}
 
 	*oreg_data |= val << device;
 
-	uint8_t buf[2] = {reg, oreg_data};
+	uint8_t buf[2] = {reg, *oreg_data};
 
 	return HAL_I2C_Master_Transmit(i2c_handle, PI4IOE_I2C_ADDR, buf, 2, HAL_MAX_DELAY);
 
