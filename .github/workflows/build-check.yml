@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: Northeastern-Electric-Racing/Cerberus
+          submodules: 'true'
 
       - name: Execute Make
         run: |
