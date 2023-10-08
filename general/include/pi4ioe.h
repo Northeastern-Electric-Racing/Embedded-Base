@@ -25,13 +25,6 @@
 #define OUTPUT0_REG 		0x02
 #define OUTPUT1_REG 		0x03
 
-#define PUMP_CTRL 			0x00
-#define RADFAN_CTRL 		0x01
-#define BRKLIGHT_CTRL 		0x02
-#define BATBOXFAN_CTRL 		0x03
-#define TSMS_CTRL 			0x04
-#define SMBALERT	 		0x05
-
 
 typedef struct
 {
