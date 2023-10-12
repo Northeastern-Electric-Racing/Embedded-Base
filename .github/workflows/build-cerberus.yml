@@ -18,7 +18,7 @@ jobs:
           path: "./Drivers/"
 
       - name: "List files"
-        run: "tree"
+        run: "ls ./Drivers"
 
       - name: Execute Make
         run: |
