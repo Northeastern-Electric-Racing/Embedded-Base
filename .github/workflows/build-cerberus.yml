@@ -15,7 +15,7 @@ jobs:
       - name: Clone Embedded-base
         uses: actions/checkout@v3
         with:
-          path: "./Drivers/"
+          path: "./Drivers/Embedded-Base"
 
       - name: "List files"
         run: "ls ./Drivers"
