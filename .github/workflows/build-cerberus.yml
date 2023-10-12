@@ -8,10 +8,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Clone Cerberus
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: Northeastern-Electric-Racing/Cerberus
-          submodules: 'true'
+
+      - name: Clone Embedded-base
+        uses: actions/checkout@v3
+        with:
+          path: "./Drivers"
 
       - name: Execute Make
         run: |
