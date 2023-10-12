@@ -15,6 +15,7 @@ jobs:
       - name: Clone Embedded-base
         uses: actions/checkout@v3
         with:
+          repository: Northeastern-Electric-Racing/Embedded-Base
           path: "./Drivers"
 
       - name: Execute Make
