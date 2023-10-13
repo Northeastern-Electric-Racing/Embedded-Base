@@ -1,0 +1,25 @@
+name: Build Cerberus
+on: [push]
+jobs:
+  run-build:
+    runs-on: ubuntu-latest
+    container:
+        image: nwdepatie/ner-gcc-arm:latest
+    timeout-minutes: 10
+    steps:
+      - name: Clone Cerberus
+        uses: actions/checkout@v3
+        with:
+          repository: Northeastern-Electric-Racing/Cerberus
+
+      - name: Clone Embedded-base
+        uses: actions/checkout@v3
+        with:
+          path: "./Drivers/Embedded-Base"
+
+      - name: Execute Make
+        run: |
+            if ! make; then
+            echo "The application has failed to build."
+            exit 1  # This will cause the workflow to fail
+            fi
