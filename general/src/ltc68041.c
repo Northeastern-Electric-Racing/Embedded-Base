@@ -70,7 +70,9 @@ Copyright 2013 Linear Technology Corp. (LTC)
 #include "LTC68041.h"
 
 ltc_config *ltcconfig;
-const SPISettings ltcSPISettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
+
+//TODO ensure shepherd app configures SPI with these settings:
+//const SPISettings ltcSPISettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
 
 /*!
   6804 conversion command variables.
@@ -92,7 +94,7 @@ void LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs
   ltcconfig->spi = hspi;
   ltcconfig->gpio = hgpio;
   ltcconfig->cs_pin = cs_pin;
-  // NERduino.enableSPI1();
+  // TODO make sure shepherd app configures ADC with these settings:
   // set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
 }
 
