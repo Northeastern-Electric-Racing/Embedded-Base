@@ -68,9 +68,8 @@ Copyright 2013 Linear Technology Corp. (LTC)
 
 #include <stdint.h>
 #include "LTC68041.h"
-#include <SPI.h>
-#include <nerduino.h>
 
+ltc_config *ltcconfig;
 const SPISettings ltcSPISettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
 
 /*!
@@ -88,10 +87,13 @@ uint8_t ADAX[2]; //!< GPIO conversion command.
   the Normal ADC mode.
 */
 
-void LTC6804_initialize()
+void LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin)
 {
-  NERduino.enableSPI1();
-  set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
+  ltcconfig->spi = hspi;
+  ltcconfig->gpio = hgpio;
+  ltcconfig->cs_pin = cs_pin;
+  // NERduino.enableSPI1();
+  // set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
 }
 
 /*!*******************************************************************************************************************
@@ -168,9 +170,9 @@ void LTC6804_adcv()
   wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writeSPI1(cmd, 4, ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 
 }
 /*
@@ -213,9 +215,9 @@ void LTC6804_adax()
   cmd[3] = (uint8_t)(cmd_pec);
 
   wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writeSPI1(cmd, 4, ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 
 }
 /*
@@ -445,10 +447,10 @@ void LTC6804_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
   wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writereadSPI1(cmd,4,data,(REG_LEN*total_ic), ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
-
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receive(ltcconfig->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_rdcv_reg Function Process:
@@ -685,9 +687,10 @@ void LTC6804_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is 
 	//3
 	wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake, this command can be removed.
 	//4
-	digitalWrite(SPI1_CS, LOW);
-	NERduino.writereadSPI1(cmd,4,data,(REG_LEN*total_ic), ltcSPISettings);
-	digitalWrite(SPI1_CS, HIGH);
+	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receive(ltcconfig->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_rdaux_reg Function Process:
@@ -730,10 +733,13 @@ void LTC6804_clrcell()
   wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writereadSPI1(cmd,4,0,0, ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
+
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  //NOTE: prev iteration had write + read, but didnt read anything? unless im missing something no point in reading
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
+
 /*
   LTC6804_clrcell Function sequence:
 
@@ -776,9 +782,10 @@ void LTC6804_clraux()
   //3
   wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
   //4
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writereadSPI1(cmd,4,0,0, ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  //NOTE: prev iteration had write + read, but didnt read anything? unless im missing something no point in reading
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_clraux Function sequence:
@@ -860,9 +867,10 @@ void LTC6804_wrcfg(uint8_t total_ic, //The number of ICs being written to
   //4
   wakeup_idle ();                                 //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
   //5
-  digitalWrite(SPI1_CS, LOW);
-  NERduino.writeSPI1(cmd, CMD_LEN, ltcSPISettings);
-  digitalWrite(SPI1_CS, HIGH);
+
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
   free(cmd);
 }
 /*
@@ -930,9 +938,12 @@ int8_t LTC6804_rdcfg(uint8_t total_ic, //Number of ICs in the system
 		//2
 		wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 		//3
-		digitalWrite(SPI1_CS, LOW);
-		NERduino.writereadSPI1(cmd, 4, rx_data, (BYTES_IN_REG*total_ic), ltcSPISettings);         //Read the configuration data of all ICs on the daisy chain into
-		digitalWrite(SPI1_CS, HIGH);                         //rx_data[] array
+    HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+    HAL_SPI_Receive(ltcconfig->spi, rx_data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+            //Read the configuration data of all ICs on the daisy chain into
+	                            //rx_data[] array
 		for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++)       //executes for each LTC6804 in the daisy chain and packs the data
 		{
 			//into the r_config array as well as check the received Config data
@@ -978,9 +989,9 @@ int8_t LTC6804_rdcfg(uint8_t total_ic, //Number of ICs in the system
  *****************************************************/
 void wakeup_idle()
 {
-  digitalWrite(SPI1_CS, LOW);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
   delayMicroseconds(2); //Guarantees the isoSPI will be in ready mode
-  digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 
 /*!****************************************************
@@ -990,9 +1001,9 @@ void wakeup_idle()
  *****************************************************/
 void wakeup_sleep()
 {
-  digitalWrite(SPI1_CS, LOW);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
   delay(1); // Guarantees the LTC6804 will be in standby
-  digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 /*!**********************************************************
  \brief calaculates  and returns the CRC15
@@ -1055,9 +1066,10 @@ void write_68(uint8_t total_ic, //Number of ICs to be written to
 	}
 	
   wakeup_idle();
-	digitalWrite(SPI1_CS, LOW);
-	NERduino.writeSPI1(cmd, CMD_LEN, ltcSPISettings);
-	digitalWrite(SPI1_CS, HIGH); //this was originally low
+
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 	
 	free(cmd);
 }
@@ -1128,9 +1140,10 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 	cmd[2] = (uint8_t)(cmd_pec >> 8);
 	cmd[3] = (uint8_t)(cmd_pec);
 	
-	digitalWrite(SPI1_CS, LOW);
-	NERduino.writereadSPI1(cmd, 4, data, (BYTES_IN_REG*total_ic), ltcSPISettings);         //Transmits the command and reads the configuration data of all ICs on the daisy chain into rx_data[] array
-	digitalWrite(SPI1_CS, HIGH);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receieve(ltcconfig->spi, data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 
 	for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++) //Executes for each LTC681x in the daisy chain and packs the data
 	{																//into the rx_data array as well as check the received data for any bit errors
@@ -1165,19 +1178,12 @@ void LTC6804_stcomm(uint8_t len) //Length of data to be transmitted
 	cmd[3] = (uint8_t)(cmd_pec);
 
   wakeup_idle();
-	digitalWrite(SPI1_CS, LOW);
+	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
 	NERduino.writeSPI1(cmd, 4, ltcSPISettings);
 	for (int i = 0; i<len*3; i++)
 	{
-	  spi_read_byte(0xFF);
+    HAL_SPI_Transmit(ltcconfig->spi, 0xFF 1, HAL_MAX_DELAY);
 	}
-	digitalWrite(SPI1_CS, HIGH);
-}
-
-uint8_t spi_read_byte(uint8_t tx_dat)
-{
-  uint8_t data;
-  data = (uint8_t)SPI.transfer(0xFF);
-  return(data);
+	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
 

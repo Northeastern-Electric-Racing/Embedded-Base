@@ -50,10 +50,19 @@ Copyright 2013 Linear Technology Corp. (LTC)
 #ifndef LTC68041_H
 #define LTC68041_H
 
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_spi.h"
+
 #define LTC_MAX_RETRIES 10
 #define LTC_BAD_READ 0xFEEEEEEE
 
-#include <nerduino.h>
+typedef struct
+{
+  SPI_HandleTypeDef *spi;
+  GPIO_TypeDef *gpio;
+  uint8_t cs_pin;
+
+} ltc_config;
 
 /*
   Pre computed crc15 table used for the LTC6804 PEC calculation
@@ -181,9 +190,6 @@ static const unsigned int crc15Table[256] = {0x0,0xc599, 0xceab, 0xb32, 0xd8cf, 
 ********************************************************/
 #define DCP_DISABLED 0
 #define DCP_ENABLED 1
-
-#define CS_PIN 10
-
 
 void LTC6804_initialize();
 
