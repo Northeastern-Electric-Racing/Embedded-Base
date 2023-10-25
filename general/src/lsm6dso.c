@@ -106,7 +106,7 @@ HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle)
 	if (status != HAL_OK)
 		return status;
 
-	status = lsm6dso_gyro_cfg(imu, 0x08, 0x02, 0x00);
+	status = lsm6dso_set_gyro_cfg(imu, 0x08, 0x02, 0x00);
 	if (status != HAL_OK)
 		return status;
 
