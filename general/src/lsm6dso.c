@@ -71,7 +71,7 @@ HAL_StatusTypeDef lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t f
 	return lsm6dso_write_reg(imu, LSM6DSO_REG_ACCEL_CTRL, &imu->accel_config);
 }
 
-HAL_StatusTypeDef lsm6dso_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t fs_125)
+HAL_StatusTypeDef lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t fs_125)
 {
 	uint8_t config = (((odr_sel << 4) | (fs_sel << 2) | (fs_125 << 1)) << 1);
 	imu->gyro_config = config;
