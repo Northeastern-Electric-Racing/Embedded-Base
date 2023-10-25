@@ -87,7 +87,7 @@ HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle);
  * @param lp_f2_enable
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef lsm6dso_accelerometer_config(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t lp_f2_enable);
+HAL_StatusTypeDef lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t lp_f2_enable);
 
 /**
  * @brief Configures the accelerometer of the LSM6DSO IMU
@@ -98,7 +98,7 @@ HAL_StatusTypeDef lsm6dso_accelerometer_config(lsm6dso_t *imu, int8_t odr_sel, i
  * @param fs_125
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef lsm6dso_gyroscope_config(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t fs_125);
+HAL_StatusTypeDef lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel, int8_t fs_125);
 
 /* Data Aquisition */
 /**
