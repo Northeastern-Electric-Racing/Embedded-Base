@@ -1181,10 +1181,10 @@ void LTC6804_stcomm(uint8_t len) //Length of data to be transmitted
 
   wakeup_idle();
 	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-	NERduino.writeSPI1(cmd, 4, ltcSPISettings);
+  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
 	for (int i = 0; i<len*3; i++)
 	{
-    HAL_SPI_Transmit(ltcconfig->spi, 0xFF 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(ltcconfig->spi, 0xFF, 1, HAL_MAX_DELAY);
 	}
 	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 }
