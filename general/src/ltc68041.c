@@ -89,11 +89,16 @@ uint8_t ADAX[2]; //!< GPIO conversion command.
   the Normal ADC mode.
 */
 
-void LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin)
+ltc_config* LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin)
 {
   ltcconfig->spi = hspi;
   ltcconfig->gpio = hgpio;
   ltcconfig->cs_pin = cs_pin;
+
+  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+
+  return ltcconfig;
+  
   // TODO make sure shepherd app configures ADC with these settings:
   // set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
 }
@@ -153,7 +158,7 @@ Command Code:
 |-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |ADCV:      |   0   |   0   |   0   |   0   |   0   |   0   |   1   | MD[1] | MD[2] |   1   |   1   |  DCP  |   0   | CH[2] | CH[1] | CH[0] |
 ***********************************************************************************************/
-void LTC6804_adcv()
+void LTC6804_adcv(ltc_config *config)
 {
 
   uint8_t cmd[4];
@@ -169,12 +174,12 @@ void LTC6804_adcv()
   cmd[3] = (uint8_t)(cmd_pec);
 
   //3
-  wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
+  wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 
 }
 /*
@@ -205,7 +210,7 @@ Command Code:
 |-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |ADAX:      |   0   |   0   |   0   |   0   |   0   |   1   |   0   | MD[1] | MD[2] |   1   |   1   |  DCP  |   0   | CHG[2]| CHG[1]| CHG[0]|
 *********************************************************************************************************/
-void LTC6804_adax()
+void LTC6804_adax(ltc_config *config)
 {
   uint8_t cmd[4];
   uint16_t cmd_pec;
@@ -216,10 +221,10 @@ void LTC6804_adax()
   cmd[2] = (uint8_t)(cmd_pec >> 8);
   cmd[3] = (uint8_t)(cmd_pec);
 
-  wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  wakeup_idle(config); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 
 }
 /*
@@ -267,7 +272,8 @@ void LTC6804_adax()
 
 
  *************************************************/
-uint8_t LTC6804_rdcv(uint8_t reg, // Controls which cell voltage register is read back.
+uint8_t LTC6804_rdcv(ltc_config *config,
+                      uint8_t reg, // Controls which cell voltage register is read back.
                      uint8_t total_ic, // the number of ICs in the system
                      uint16_t cell_codes[][12] // Array of the parsed cell codes
                     )
@@ -291,7 +297,7 @@ uint8_t LTC6804_rdcv(uint8_t reg, // Controls which cell voltage register is rea
     for (uint8_t cell_reg = 1; cell_reg<5; cell_reg++)                    //executes once for each of the LTC6804 cell voltage registers
     {
       data_counter = 0;
-      LTC6804_rdcv_reg(cell_reg, total_ic,cell_data );                //Reads a single Cell voltage register
+      LTC6804_rdcv_reg(config, cell_reg, total_ic,cell_data);                //Reads a single Cell voltage register
 
       for (uint8_t current_ic = 0 ; current_ic < total_ic; current_ic++)      // executes for every LTC6804 in the daisy chain
       {
@@ -327,7 +333,7 @@ uint8_t LTC6804_rdcv(uint8_t reg, // Controls which cell voltage register is rea
   else
   {
     //b.i
-    LTC6804_rdcv_reg(reg, total_ic,cell_data);
+    LTC6804_rdcv_reg(config, reg, total_ic,cell_data);
     for (uint8_t current_ic = 0 ; current_ic < total_ic; current_ic++)        // executes for every LTC6804 in the daisy chain
     {
       // current_ic is used as the IC counter
@@ -409,7 +415,8 @@ Command Code:
 |RDCVD:     |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   1   |   0   |   1   |   0   |
 
  *************************************************/
-void LTC6804_rdcv_reg(uint8_t reg, //Determines which cell voltage register is read back
+void LTC6804_rdcv_reg(ltc_config *config,
+                      uint8_t reg, //Determines which cell voltage register is read back
                       uint8_t total_ic, //the number of ICs in the
                       uint8_t *data //An array of the unparsed cell codes
                      )
@@ -446,13 +453,13 @@ void LTC6804_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
   cmd[3] = (uint8_t)(cmd_pec);
 
   //3
-  wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
+  wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_SPI_Receive(ltcconfig->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receive(config->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_rdcv_reg Function Process:
@@ -494,7 +501,8 @@ void LTC6804_rdcv_reg(uint8_t reg, //Determines which cell voltage register is r
 
  -1: PEC error detected, retry read
  *************************************************/
-int8_t LTC6804_rdaux(uint8_t reg, //Determines which GPIO voltage register is read back.
+int8_t LTC6804_rdaux(ltc_config *config,
+                    uint8_t reg, //Determines which GPIO voltage register is read back.
                      uint8_t total_ic,//the number of ICs in the system
                      uint16_t aux_codes[][6]//A two dimensional array of the gpio voltage codes.
                     )
@@ -523,7 +531,7 @@ int8_t LTC6804_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
 			while(retries < LTC_MAX_RETRIES && (pec_error == -1 || pec_error == 1))
 			{
 				data_counter = 0;
-				LTC6804_rdaux_reg(gpio_reg, total_ic,data);                 //Reads the raw auxiliary register data into the data[] array
+				LTC6804_rdaux_reg(config, gpio_reg, total_ic,data);                 //Reads the raw auxiliary register data into the data[] array
 
 				for (uint8_t current_ic = 0 ; current_ic < total_ic; current_ic++)      // executes for every LTC6804 in the daisy chain
 				{
@@ -573,7 +581,7 @@ int8_t LTC6804_rdaux(uint8_t reg, //Determines which GPIO voltage register is re
     while(retries < LTC_MAX_RETRIES && pec_error == -1)
     {
       //b.i
-      LTC6804_rdaux_reg(reg, total_ic, data);
+      LTC6804_rdaux_reg(config, reg, total_ic, data);
       for (int current_ic = 0 ; current_ic < total_ic; current_ic++)            // executes for every LTC6804 in the daisy chain
       {
         // current_ic is used as an IC counter
@@ -656,7 +664,8 @@ Command Code:
 |RDAUXB:      |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   1   |   1   |   1   |   0   |
 
  *************************************************/
-void LTC6804_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is read back
+void LTC6804_rdaux_reg(ltc_config *config,
+                      uint8_t reg, //Determines which GPIO voltage register is read back
                        uint8_t total_ic, //The number of ICs in the system
                        uint8_t *data //Array of the unparsed auxiliary codes
                       )
@@ -687,12 +696,12 @@ void LTC6804_rdaux_reg(uint8_t reg, //Determines which GPIO voltage register is 
 	cmd[3] = (uint8_t)(cmd_pec);
 
 	//3
-	wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake, this command can be removed.
+	wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake, this command can be removed.
 	//4
-	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_SPI_Receive(ltcconfig->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receive(config->spi, data, (REG_LEN*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_rdaux_reg Function Process:
@@ -717,7 +726,7 @@ Command Code:
 |---------------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |CLRCELL:     |   0   |   0   |   0   |   0   |   0   |   1   |   1   |   1   |   0   |   0   |   0   |   1   |   0   |   0   |   0   |   1   |
 ************************************************************/
-void LTC6804_clrcell()
+void LTC6804_clrcell(ltc_config *config)
 {
   uint8_t cmd[4];
   uint16_t cmd_pec;
@@ -732,14 +741,14 @@ void LTC6804_clrcell()
   cmd[3] = (uint8_t)(cmd_pec );
 
   //3
-  wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
+  wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 
   //4
 
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
   //NOTE: prev iteration had write + read, but didnt read anything? unless im missing something no point in reading
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 
 /*
@@ -767,7 +776,7 @@ Command Code:
 |---------------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |CLRAUX:      |   0   |   0   |   0   |   0   |   0   |   1   |   1   |   1   |   0   |   0   |   0   |   1   |   0   |   0   |   2   |   0   |
 ***************************************************************/
-void LTC6804_clraux()
+void LTC6804_clraux(ltc_config *config)
 {
   uint8_t cmd[4];
   uint16_t cmd_pec;
@@ -782,12 +791,12 @@ void LTC6804_clraux()
   cmd[3] = (uint8_t)(cmd_pec);
 
   //3
-  wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
+  wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
   //4
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
   //NOTE: prev iteration had write + read, but didnt read anything? unless im missing something no point in reading
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*
   LTC6804_clraux Function sequence:
@@ -827,8 +836,9 @@ Command Code:
 |---------------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |WRCFG:         |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   1   |
 ********************************************************/
-void LTC6804_wrcfg(uint8_t total_ic, //The number of ICs being written to
-                   uint8_t config[][6] //A two dimensional array of the configuration data that will be written
+void LTC6804_wrcfg(ltc_config *config,
+                   uint8_t total_ic, //The number of ICs being written to
+                   uint8_t data_config[][6] //A two dimensional array of the configuration data that will be written
                   )
 {
   const uint8_t BYTES_IN_REG = 6;
@@ -856,7 +866,7 @@ void LTC6804_wrcfg(uint8_t total_ic, //The number of ICs being written to
     {
       // current_byte is the byte counter
 
-      cmd[cmd_index] = config[current_ic-1][current_byte];            //adding the config data to the array to be sent
+      cmd[cmd_index] = data_config[current_ic-1][current_byte];            //adding the config data to the array to be sent
       cmd_index = cmd_index + 1;
     }
     //3
@@ -867,12 +877,12 @@ void LTC6804_wrcfg(uint8_t total_ic, //The number of ICs being written to
   }
 
   //4
-  wakeup_idle ();                                 //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
+  wakeup_idle (config);                                 //This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
   //5
 
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
   free(cmd);
 }
 /*
@@ -914,7 +924,8 @@ Command Code:
 |---------------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |RDCFG:         |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   1   |   0   |   0   |   1   |   0   |
 ********************************************************/
-int8_t LTC6804_rdcfg(uint8_t total_ic, //Number of ICs in the system
+int8_t LTC6804_rdcfg(ltc_config *config,
+                    uint8_t total_ic, //Number of ICs in the system
                      uint8_t r_config[][8] //A two dimensional array that the function stores the read configuration data.
                     )
 {
@@ -938,12 +949,12 @@ int8_t LTC6804_rdcfg(uint8_t total_ic, //Number of ICs in the system
 	while(retries < LTC_MAX_RETRIES && pec_error == -1)
 	{
 		//2
-		wakeup_idle (); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
+		wakeup_idle (config); //This will guarantee that the LTC6804 isoSPI port is awake. This command can be removed.
 		//3
-    HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-    HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-    HAL_SPI_Receive(ltcconfig->spi, rx_data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
-    HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+    HAL_SPI_Receive(config->spi, rx_data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
             //Read the configuration data of all ICs on the daisy chain into
 	                            //rx_data[] array
 		for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++)       //executes for each LTC6804 in the daisy chain and packs the data
@@ -989,11 +1000,11 @@ int8_t LTC6804_rdcfg(uint8_t total_ic, //Number of ICs in the system
   \brief Wake isoSPI up from idle state
  Generic wakeup commannd to wake isoSPI up out of idle
  *****************************************************/
-void wakeup_idle()
+void wakeup_idle(ltc_config *config)
 {
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
   delayMicroseconds(2); //Guarantees the isoSPI will be in ready mode
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 
 /*!****************************************************
@@ -1001,11 +1012,11 @@ void wakeup_idle()
 
  Generic wakeup commannd to wake the LTC6804 from sleep
  *****************************************************/
-void wakeup_sleep()
+void wakeup_sleep(ltc_config *config)
 {
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
   delay(1); // Guarantees the LTC6804 will be in standby
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*!**********************************************************
  \brief calaculates  and returns the CRC15
@@ -1033,7 +1044,8 @@ uint16_t pec15_calc(uint8_t len, //Number of bytes that will be used to calculat
 }
 
 
-void write_68(uint8_t total_ic, //Number of ICs to be written to 
+void write_68(ltc_config *config,
+        uint8_t total_ic, //Number of ICs to be written to 
 			  uint8_t tx_cmd[2], //The command to be transmitted 
 			  uint8_t data[] // Payload Data
 			  )
@@ -1067,16 +1079,16 @@ void write_68(uint8_t total_ic, //Number of ICs to be written to
 		cmd_index = cmd_index + 2;
 	}
 	
-  wakeup_idle();
+  wakeup_idle(config);
 
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, CMD_LEN, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 	
 	free(cmd);
 }
 
-void LTC6804_wrcomm(uint8_t total_ic, uint8_t writeData[][6])
+void LTC6804_wrcomm(ltc_config *config, uint8_t total_ic, uint8_t writeData[][6])
 {
 	uint8_t cmd[2]= {0x07 , 0x21};
 	uint8_t write_buffer[256];
@@ -1089,10 +1101,11 @@ void LTC6804_wrcomm(uint8_t total_ic, uint8_t writeData[][6])
 			write_count++;
 		}
 	}
-	write_68(total_ic, cmd, write_buffer);
+	write_68(config, total_ic, cmd, write_buffer);
 }
 
-int8_t LTC6804_rdcomm(uint8_t total_ic, //Number of ICs in the system
+int8_t LTC6804_rdcomm(ltc_config *config,
+                      uint8_t total_ic, //Number of ICs in the system
                       uint8_t readData[][6] //A two dimensional array that stores the read data
                      )
 {
@@ -1107,7 +1120,7 @@ int8_t LTC6804_rdcomm(uint8_t total_ic, //Number of ICs in the system
 	while(retries < LTC_MAX_RETRIES && pec_error == -1)
 	{
 		Serial.println("RETRYING...\n");
-		pec_error = read_68(total_ic, cmd, read_buffer);
+		pec_error = read_68(config, total_ic, cmd, read_buffer);
 		retries++;
 	}
 	
@@ -1123,7 +1136,8 @@ int8_t LTC6804_rdcomm(uint8_t total_ic, //Number of ICs in the system
 }
 
 /* Generic function to write 68xx commands and read data. Function calculated PEC for tx_cmd data */
-int8_t read_68( uint8_t total_ic, // Number of ICs in the system 
+int8_t read_68(ltc_config *config,
+        uint8_t total_ic, // Number of ICs in the system 
 				uint8_t tx_cmd[2], // The command to be transmitted 
 				uint8_t *rx_data // Data to be read
 				)
@@ -1142,10 +1156,10 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 	cmd[2] = (uint8_t)(cmd_pec >> 8);
 	cmd[3] = (uint8_t)(cmd_pec);
 	
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_SPI_Receieve(ltcconfig->spi, data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_SPI_Receieve(config->spi, data, (BYTES_IN_REG*total_ic), HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 
 	for (uint8_t current_ic = 0; current_ic < total_ic; current_ic++) //Executes for each LTC681x in the daisy chain and packs the data
 	{																//into the rx_data array as well as check the received data for any bit errors
@@ -1168,7 +1182,7 @@ int8_t read_68( uint8_t total_ic, // Number of ICs in the system
 }
 
 
-void LTC6804_stcomm(uint8_t len) //Length of data to be transmitted 
+void LTC6804_stcomm(ltc_config *config, uint8_t len) //Length of data to be transmitted 
 {
 	uint8_t cmd[4];
 	uint16_t cmd_pec;
@@ -1179,13 +1193,13 @@ void LTC6804_stcomm(uint8_t len) //Length of data to be transmitted
 	cmd[2] = (uint8_t)(cmd_pec >> 8);
 	cmd[3] = (uint8_t)(cmd_pec);
 
-  wakeup_idle();
-	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit(ltcconfig->spi, cmd, 4, HAL_MAX_DELAY);
+  wakeup_idle(config);
+	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
 	for (int i = 0; i<len*3; i++)
 	{
-    HAL_SPI_Transmit(ltcconfig->spi, 0xFF, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(config->spi, 0xFF, 1, HAL_MAX_DELAY);
 	}
-	HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 
