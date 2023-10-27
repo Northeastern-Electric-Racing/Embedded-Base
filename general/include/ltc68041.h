@@ -201,45 +201,10 @@ void LTC6804_adax(ltc_config *config);
 
 uint8_t LTC6804_rdcv(ltc_config *config, uint8_t reg, uint8_t total_ic, uint16_t cell_codes[][12]);
 
-void LTC6804_rdcv_reg(ltc_config *config, uint8_t reg, uint8_t nIC, uint8_t *data);
-
 int8_t LTC6804_rdaux(ltc_config *config, uint8_t reg, uint8_t nIC, uint16_t aux_codes[][6]);
-
-void LTC6804_rdaux_reg(ltc_config *config, uint8_t reg, uint8_t nIC,uint8_t *data);
-
-void LTC6804_clrcell(ltc_config *config);
-
-void LTC6804_clraux(ltc_config *config);
 
 void LTC6804_wrcfg(ltc_config *config, uint8_t nIC,uint8_t data_config[][6]);
 
 int8_t LTC6804_rdcfg(ltc_config *config, uint8_t nIC, uint8_t r_config[][8]);
 
-void wakeup_idle(ltc_config *config);
-
-void wakeup_sleep(ltc_config *config);
-
-uint16_t pec15_calc(uint8_t len, uint8_t *data);
-
-void spi_write_array(uint8_t length, uint8_t *data);
-
-void spi_write_read(uint8_t *TxData, uint8_t TXlen, uint8_t *rx_data, uint8_t RXlen);
-
-void write_68(ltc_config *config, uint8_t total_ic, uint8_t tx_cmd[2],  uint8_t data[]);
-
-void LTC6804_wrcomm(ltc_config *config, uint8_t total_ic, uint8_t writeData[][6]);
-
-uint8_t spi_read_byte(ltc_config *config, uint8_t tx_dat);
-
-void LTC6804_stcomm(ltc_config *config, uint8_t len);
-
-int8_t LTC6804_rdcomm(ltc_config *config, uint8_t total_ic, //Number of ICs in the system
-                      uint8_t readData[][6] //A two dimensional array that stores the read data
-                     );
-
-int8_t read_68( ltc_config *config, 
-        uint8_t total_ic, // Number of ICs in the system 
-				uint8_t tx_cmd[2], // The command to be transmitted 
-				uint8_t *rx_data // Data to be read
-				);
 #endif
