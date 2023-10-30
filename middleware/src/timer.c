@@ -1,10 +1,10 @@
 #include "timer.h"
 
-void start_timer(timer_t *timer)
+void start_timer(timer_t *timer, uint32_t duration)
 {
     /* this function assumes tick set to default 1 ms. Update or use HAL_GetTickFreq() if not the case */
     timer->start_time = HAL_GetTick();
-    timer->end_time = timer->start_time + timer->duration;
+    timer->end_time = timer->start_time + duration;
     timer->active = true;
 }
 

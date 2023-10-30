@@ -4,7 +4,6 @@
 #include "stm32f4xx_hal.h"
 
 typdef struct {
-  uint32_t duration;
   uint32_t start_time;
   uint32_t end_time;
   bool active;
@@ -15,7 +14,7 @@ typdef struct {
  *
  * @param timer The timer to act on
  */
-void start_timer(timer_t *timer);
+void start_timer(timer_t *timer, uint32_t duration);
 
 /**
  * @brief cancels an active timer
