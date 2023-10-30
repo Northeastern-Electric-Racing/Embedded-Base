@@ -7,6 +7,7 @@ typdef struct {
   uint32_t start_time;
   uint32_t end_time;
   bool active;
+  bool completed;
 } timer_t;
 
 /**
