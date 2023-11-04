@@ -1,28 +1,19 @@
+/*
+	LTC4015EUHF#PBF Load Switch Expander Source File
+	Link to part Datasheet for reference:
+	https://www.diodes.com/assets/Datasheets/PI4IOE5V9535.pdf
+
+	Author: David Noble
+*/
+
 #include "LTC4015.h"
-
-
 
 HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle)
 {
-  dev -> i2cHandle = i2cHandle;
+  dev->i2cHandle = i2cHandle;
   
   //Gets the value from the Charging state register 
-  LtC4015_read(LTC4015_T *dev, LTC4015_CHGSTATE, dev -> CHGdata) // not sure if this is wanted in the init function
-  uint8_t data[10];
-  
-  //Storing charging fault data seperatly, mostly to just show what each bit actually represents
-  Data[0] = (dev -> CHGdata)&1;		  // Battery short
-  Data[1] = (dev -> CHGdata)&2;	  	// Battery missing
-  Data[2] = (dev -> CHGdata)&4;     // Max Charge Time (Don't need?)
-  Data[3] = (dev -> CHGdata)&8;		  // C/x termination
-  Data[4] = (dev -> CHGdata)&16;	  // Timer termination (Dont need?)
-  Data[5] = (dev -> CHGdata)&32;	  // Thermistor pause state (Dont need?)
-  Data[6] = (dev -> CHGdata)&64;	  // CC/CV
-  Data[7] = (dev -> CHGdata)&128;   // pre-charge
-  Data[8] = (dev -> CHGdata)&256;   // charger suspended
-  Data[9] = (dev -> CHGdata)&512;	  // absorb
-  Data[10] = (dev -> CHGdata)&1024; // Lead-acid equalization charge state (Don't need?)
-
+  LtC4015_read(dev, LTC4015_CHGSTATE, dev->CHGdata) 
   
 
 }
@@ -39,4 +30,36 @@ HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data)
   return HAL_I2C_Mem_Write(dev->i2c_handle, LTC4015_ADDR_68, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 }
 
-//add alerts from the board, also make customisable alarts. get columb counter information, tempurater infomration
+HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t highAlert, uint16_t lowAlert)
+{
+  //Increases integration time, at which QCOUNT is updated
+  LTC4015_write(dev, QCOUNT_PRESCALE_FACTOR, prescaler);
+
+  //Sets the High amount for the QCOUNT before error is flagged 
+  LTC4015_write(dev, QCOUNT_HI_ALERT_LIMIT, highAlert);
+  LTC4015_write(dev, EN_LIMIT_ALERTS, 0x1000) //Enable bit is in 12th bit postion 
+  
+  //Sets the low amount for the QCOUNT before error is flagged 
+  LTC4015_write(dev, QCOUNT_LO_ALERT_LIMIT, lowAlert);
+  LTC4015_write(dev, EN_LIMIT_ALERTS, 0x2000); //Enable bit is in 13th bit postion 
+
+
+  LTC4015_write(dev, CONFIG_BITS, 0x0008) //enable QCOUNT, in bit postion 2
+  LTC4015_read(dev, LIMIT_ALERTS, dev->limitAlerts);
+  LTC4015_read(dev, QCOUNT, dev->qcount);
+
+  //This all could be put into a while loop if it you want to continually check for errors 
+  LTC4015_write(dev, CONFIG_BITS, CONFIG_BITS ^ 0x1000) //should re-enable charging if was disabled
+  //Sees if the alerts are being flagged, and then will return the QCOUNT
+  if(LIMIT_ALERTS | 0x1000 == 0x1000){
+    LTC4015_write(dev, EN_LIMIT_ALERTS, EN_LIMIT_ALERTS^0x1000); //Should just reset the enable but touch nothing else
+    LTC4015_write(dev, CONFIG_BITS, 0x1000) //suspends charger
+    return(QCOUNT, highAlert); //Need away to tell its being flagged, but not really sure what to return 
+  }else if (LIMIT_ALERTS | 0x2000 == 0x2000)
+  {
+    LTC4015_write(dev, EN_LIMIT_ALERTS, EN_LIMIT_ALERTS^0x2000); 
+    LTC4015_write(dev, CONFIG_BITS, 0x1000) //suspends charger
+    return(QCOUNT, lowAlert); //sames issue as above
+  }
+  
+}
