@@ -3,7 +3,7 @@
 
 #include "stm32f4xx_hal.h"
 
-typdef struct {
+typedef struct {
   uint32_t start_time;
   uint32_t end_time;
   bool active;
