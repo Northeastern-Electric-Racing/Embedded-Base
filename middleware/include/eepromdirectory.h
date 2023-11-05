@@ -41,7 +41,7 @@ char *eeprom_get_key(int index);
  * @param key
  * @param data
  */
-void eeeprom_read_data_key(char *key, void *data);
+void eeprom_read_data_key(char *key, void *data);
 
 void eeprom_read_data_index(uint8_t index, void *data);
 

@@ -49,7 +49,7 @@ char* eeprom_get_key(int index)
     return NULL;
 }
 
-bool eeeprom_read_data_key(char *key, void *data, uint16_t size)
+bool eeprom_read_data_key(char *key, void *data, uint16_t size)
 {
     if(!data) {
         return false;
