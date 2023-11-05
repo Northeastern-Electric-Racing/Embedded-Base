@@ -17,7 +17,7 @@ uint16_t eepromGetAddress(char *key)
     return -1;
 }
 
-uint16_t eepromGetIndex(char *key)
+uint16_t eeprom_get_index(char *key)
 {
     /* find the index of the key in the eeprom_data array */
     int i = 0;
@@ -33,7 +33,7 @@ uint16_t eepromGetIndex(char *key)
     return -1;
 }
 
-char* eepromGetKey(int index)
+char* eeprom_get_key(int index)
 {
     /* find the key at the index in the eeprom_data array */
     int i = 0;
@@ -49,7 +49,7 @@ char* eepromGetKey(int index)
     return NULL;
 }
 
-bool eepromReadData(char *key, void *data, uint16_t size)
+bool eeeprom_read_data_key(char *key, void *data, uint16_t size)
 {
     if(!data) {
         return false;
@@ -60,7 +60,7 @@ bool eepromReadData(char *key, void *data, uint16_t size)
 
 }
 
-bool eepromReadData(uint16_t address, void *data, uint16_t size)
+bool eeprom_read_data_index(uint16_t address, void *data, uint16_t size)
 {
     if(!data) {
         return false;
@@ -70,7 +70,7 @@ bool eepromReadData(uint16_t address, void *data, uint16_t size)
     //EEPROM.get(index, data); // TODO will need update with new eeprom driver
 }
 
-bool eepromWriteData(char *key, void *data, uint16_t size)
+bool eeprom_write_data_key(char *key, void *data, uint16_t size)
 {
     if(!data) {
         return false;
@@ -80,7 +80,7 @@ bool eepromWriteData(char *key, void *data, uint16_t size)
     eeprom_write(address, data, size);
 }
 
-bool eepromWriteData(uint16_t address, void *data, uint16_t size)
+bool eeprom_write_data_index(uint16_t address, void *data, uint16_t size)
 {
     if(!data) {
         return false;
