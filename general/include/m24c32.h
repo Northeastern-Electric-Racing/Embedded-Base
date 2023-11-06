@@ -10,12 +10,10 @@
 
 I2C_HandleTypeDef *i2c_handle;
 
-HAL_StatusTypeDef eeprom_write(uint8_t page, uint16_t offset, uint8_t *data, uint16_t size);
+HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data, uint16_t size);
 
-HAL_StatusTypeDef eeprom_read(uint8_t page, uint16_t offset, uint8_t *data, uint16_t size);
+HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data, uint16_t size);
 
-HAL_StatusTypeDef eeprom_delete(uint8_t page, uint16_t offset, uint16_t size);
-
-HAL_StatusTypeDef eeprom_page_erase(uint8_t page);
+HAL_StatusTypeDef eeprom_delete(uint16_t mem_address, uint16_t size);
 
 #endif // M24C32_H
