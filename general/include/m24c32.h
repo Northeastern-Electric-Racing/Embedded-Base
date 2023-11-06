@@ -2,6 +2,7 @@
 #define M24C32_H
 
 #include <stdint.h>
+#include <string.h>
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
 
