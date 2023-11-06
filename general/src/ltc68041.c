@@ -66,7 +66,7 @@ Copyright 2013 Linear Technology Corp. (LTC)
     Library for LTC6804-1 Multicell Battery Monitor
 */
 
-#include "LTC68041.h"
+#include "ltc68041.h"
 #include <stdint.h>
 
 ltc_config *ltcconfig;
