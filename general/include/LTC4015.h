@@ -14,8 +14,7 @@
 #include "stm32f4xx_hal_i2c.h"
 
 //Device address 
-#define LTC4015_ADDR_68 (0x68 << 1) //I2C uses 7 bit address, making room for r/w bit
-
+#define LTC4015_ADDR_68 (0x68) 
 
 //Enable Register for Specified alert register, page 49-50
 #define EN_LIMIT_ALERTS 0x0D //LIMIT_ALERTS

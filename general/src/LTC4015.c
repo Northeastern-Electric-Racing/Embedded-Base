@@ -48,11 +48,11 @@ HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t h
   LTC4015_read(dev, LIMIT_ALERTS, dev->limitAlerts);
   LTC4015_read(dev, QCOUNT, dev->qcount);
 
-  //This all could be put into a while loop if it you want to continually check for errors 
-  LTC4015_write(dev, CONFIG_BITS, CONFIG_BITS ^ 0x1000) //should re-enable charging if was disabled
+  //This all could be put into a while loop if you want to continually check for errors 
+  LTC4015_write(dev, CONFIG_BITS, (CONFIG_BITS ^ 0x1000)) //should re-enable charging if was disabled
   //Sees if the alerts are being flagged, and then will return the QCOUNT
   if(LIMIT_ALERTS | 0x1000 == 0x1000){
-    LTC4015_write(dev, EN_LIMIT_ALERTS, EN_LIMIT_ALERTS^0x1000); //Should just reset the enable but touch nothing else
+    LTC4015_write(dev, EN_LIMIT_ALERTS, (EN_LIMIT_ALERTS^0x1000)); //Should just reset the enable but touch nothing else
     LTC4015_write(dev, CONFIG_BITS, 0x1000) //suspends charger
     return(QCOUNT, highAlert); //Need away to tell its being flagged, but not really sure what to return 
   }else if (LIMIT_ALERTS | 0x2000 == 0x2000)
