@@ -44,13 +44,13 @@
 
 typedef struct 
 {
-    I2C_HandleTypeDef *i2cHandle
-    uint16_t chargeFaults //Stores error faults from CHGSTATE register 
-    uint16_t qcount
-    uint16_t limitAlerts
+    I2C_HandleTypeDef *i2cHandle;
+    uint16_t chargeFaults; //Stores error faults from CHGSTATE register 
+    uint16_t qcount;
+    uint16_t limitAlerts;
 
 
-}LTC4015_T
+}LTC4015_T;
 
 
 /**
@@ -60,7 +60,7 @@ typedef struct
  * @param hi2c
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle)
+HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle);
 
 
 /**
@@ -70,7 +70,7 @@ HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle)
  * @param dev
  * @param i2c_handle
  */
-HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data)
+HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data);
 
 
 /**
@@ -81,7 +81,7 @@ HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data)
  * @param i2c_handle
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data)
+HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
 
 
 /**
@@ -94,7 +94,7 @@ HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data)
  * @param lowAlert
  * @return HAL_StatusTypeDef, QCOUNT, Faulted 
  */
-HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t highAlert, uint16_t lowAlert)
+HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t highAlert, uint16_t lowAlert);
 
 
 #ifndef MAX_NUM_LTC4015_INSTANCES
