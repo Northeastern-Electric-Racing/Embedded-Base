@@ -44,7 +44,7 @@ HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t h
   LTC4015_write(dev, EN_LIMIT_ALERTS, 0x2000); //Enable bit is in 13th bit postion 
 
 
-  LTC4015_write(dev, CONFIG_BITS, 0x0008) //enable QCOUNT, in bit postion 2
+  LTC4015_write(dev, CONFIG_BITS, 0x0008); //enable QCOUNT, in bit postion 2
   LTC4015_read(dev, LIMIT_ALERTS, dev->limitAlerts);
   LTC4015_read(dev, QCOUNT, dev->qcount);
 
