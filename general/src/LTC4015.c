@@ -21,13 +21,13 @@ HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle)
 
 HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data)
 {
-  return HAL_I2C_Mem_Read(dev->i2c_handle, LTC4015_ADDR_68, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+  return HAL_I2C_Mem_Read(dev->i2c_handle, LTC4015_ADDR_68, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY)
   
 }
 
 HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data)
 {
-  return HAL_I2C_Mem_Write(dev->i2c_handle, LTC4015_ADDR_68, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+  return HAL_I2C_Mem_Write(dev->i2c_handle, LTC4015_ADDR_68, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY)
 }
 
 HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t highAlert, uint16_t lowAlert)
@@ -49,7 +49,7 @@ HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev,uint16_t prescaler, uint16_t h
   LTC4015_read(dev, QCOUNT, dev->qcount);
 
   //This all could be put into a while loop if you want to continually check for errors 
-  LTC4015_write(dev, CONFIG_BITS, (CONFIG_BITS ^ 0x1000)) //should re-enable charging if was disabled
+  LTC4015_write(dev, CONFIG_BITS, (CONFIG_BITS ^ 0x1000)); //should re-enable charging if was disabled
   //Sees if the alerts are being flagged, and then will return the QCOUNT
   if(LIMIT_ALERTS | 0x1000 == 0x1000){
     LTC4015_write(dev, EN_LIMIT_ALERTS, (EN_LIMIT_ALERTS^0x1000)); //Should just reset the enable but touch nothing else
