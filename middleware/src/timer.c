@@ -28,7 +28,7 @@ bool is_timer_expired(timer_t *timer)
     return timer->completed;
 }
 
-bool is_timer_active(timer_t *timer);
+bool is_timer_active(timer_t *timer)
 {
     return timer->active;
 }
