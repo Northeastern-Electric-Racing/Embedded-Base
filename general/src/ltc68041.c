@@ -66,8 +66,10 @@ Copyright 2013 Linear Technology Corp. (LTC)
     Library for LTC6804-1 Multicell Battery Monitor
 */
 
-#include "ltc68041.h"
+#include "LTC68041.h"
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 ltc_config *ltcconfig;
 
@@ -79,6 +81,16 @@ ltc_config *ltcconfig;
 */
 uint8_t ADCV[2]; //!< Cell Voltage conversion command.
 uint8_t ADAX[2]; //!< GPIO conversion command.
+
+
+/* private function prototypes */
+void LTC6804_rdcv_reg(ltc_config *config,uint8_t reg, uint8_t total_ic, uint8_t *data);
+void wakeup_idle(ltc_config *config);
+void wakeup_sleep(ltc_config *config);
+uint16_t pec15_calc(uint8_t len, uint8_t *data);
+void write_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t data[]);
+void LTC6804_rdaux_reg(ltc_config *config, uint8_t reg, uint8_t total_ic, uint8_t *data);
+int8_t read_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t *rx_data);
 
 /*!
   \brief This function will initialize all 6804 variables and the SPI port.
@@ -94,7 +106,7 @@ ltc_config *LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
   ltcconfig->gpio = hgpio;
   ltcconfig->cs_pin = cs_pin;
 
-  HAL_GPIO_WritePin(ltcfonig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(ltcconfig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
 
   return ltcconfig;
 
@@ -963,7 +975,7 @@ void LTC6804_wrcfg(
     // 3
     cfg_pec = (uint16_t)pec15_calc(
         BYTES_IN_REG,
-        &config[current_ic - 1][0]); // calculating the PEC for each ICs
+        &data_config[current_ic - 1][0]); // calculating the PEC for each ICs
                                      // configuration register data
     cmd[cmd_index] = (uint8_t)(cfg_pec >> 8);
     cmd[cmd_index + 1] = (uint8_t)cfg_pec;
@@ -1109,7 +1121,7 @@ LTC6804_rdcfg(ltc_config *config,
  *****************************************************/
 void wakeup_idle(ltc_config *config) {
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
-  delayMicroseconds(2); // Guarantees the isoSPI will be in ready mode
+  //delayMicroseconds(2); // Guarantees the isoSPI will be in ready mode - ADD BACK IF NEEDED
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 
@@ -1120,7 +1132,7 @@ void wakeup_idle(ltc_config *config) {
  *****************************************************/
 void wakeup_sleep(ltc_config *config) {
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
-  delay(1); // Guarantees the LTC6804 will be in standby
+  //delay(1); // Guarantees the LTC6804 will be in standby - ADD BACK IF NEEDED
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*!**********************************************************
@@ -1228,7 +1240,7 @@ int8_t LTC6804_rdcomm(
   uint8_t retries = 0;
 
   while (retries < LTC_MAX_RETRIES && pec_error == -1) {
-    Serial.println("RETRYING...\n");
+    printf("RETRYING...\n");
     pec_error = read_68(config, total_ic, cmd, read_buffer);
     retries++;
   }
@@ -1265,7 +1277,7 @@ int8_t read_68(ltc_config *config,
 
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
   HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
-  HAL_SPI_Receieve(config->spi, data, (BYTES_IN_REG * total_ic), HAL_MAX_DELAY);
+  HAL_SPI_Receive(config->spi, data, (BYTES_IN_REG * total_ic), HAL_MAX_DELAY);
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 
   for (uint8_t current_ic = 0; current_ic < total_ic;
@@ -1284,7 +1296,7 @@ int8_t read_68(ltc_config *config,
     data_pec = pec15_calc(6, &rx_data[current_ic * 8]);
 
     if (received_pec != data_pec) {
-      Serial.println("PEC FAULT");
+      printf("PEC FAULT");
       pec_error = -1;
     }
   }
@@ -1307,8 +1319,9 @@ void LTC6804_stcomm(ltc_config *config,
   wakeup_idle(config);
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
   HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  int16_t def_cmd = 0xff;
   for (int i = 0; i < len * 3; i++) {
-    HAL_SPI_Transmit(config->spi, 0xFF, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(config->spi, &def_cmd, 1, HAL_MAX_DELAY);
   }
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
