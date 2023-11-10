@@ -1,6 +1,6 @@
 #include "timer.h"
 
-void start_timer(timer_t *timer, uint32_t duration)
+void start_timer(nertimer_t *timer, uint32_t duration)
 {
     /* this function assumes tick set to default 1 ms. Update or use HAL_GetTickFreq() if not the case */
     timer->start_time = HAL_GetTick();
@@ -9,13 +9,13 @@ void start_timer(timer_t *timer, uint32_t duration)
     timer->completed = false;
 }
 
-void cancel_timer(timer_t *timer)
+void cancel_timer(nertimer_t *timer)
 {
     timer->active = false;
     timer->completed = false;
 }
 
-bool is_timer_expired(timer_t *timer)
+bool is_timer_expired(nertimer_t *timer)
 {
     if (timer->active)
     {
@@ -28,7 +28,7 @@ bool is_timer_expired(timer_t *timer)
     return timer->completed;
 }
 
-bool is_timer_active(timer_t *timer)
+bool is_timer_active(nertimer_t *timer)
 {
     return timer->active;
 }

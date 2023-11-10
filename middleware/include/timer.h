@@ -9,21 +9,21 @@ typedef struct {
   uint32_t end_time;
   bool active;
   bool completed;
-} timer_t;
+} nertimer_t;
 
 /**
  * @brief Starts a timer of the given lenth
  *
  * @param timer The timer to act on
  */
-void start_timer(timer_t *timer, uint32_t duration);
+void start_timer(nertimer_t *timer, uint32_t duration);
 
 /**
  * @brief cancels an active timer
  * 
  * @param timer The timer to act on
 */
-void cancel_timer(timer_t *timer);
+void cancel_timer(nertimer_t *timer);
 
 /**
  * @brief Checks if the timer has expired
@@ -31,7 +31,7 @@ void cancel_timer(timer_t *timer);
  * @param timer The timer to act on
  * @return true if the timer has expired, false otherwise
 */
-bool is_timer_expired(timer_t *timer);
+bool is_timer_expired(nertimer_t *timer);
 
 /**
  * @brief Checks if the timer is active
@@ -39,7 +39,7 @@ bool is_timer_expired(timer_t *timer);
  * @param timer The timer to act on
  * @return true if the timer is active, false otherwise
 */
-bool is_timer_active(timer_t *timer);
+bool is_timer_active(nertimer_t *timer);
 
 
 #endif // TIMER_H
