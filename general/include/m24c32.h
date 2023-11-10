@@ -9,7 +9,7 @@
 #define M24C32_I2C_ADDR     0x50
 #define M24C32_PAGE_SIZE    32
 
-I2C_HandleTypeDef *i2c_handle;
+extern I2C_HandleTypeDef *i2c_handle;
 
 HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data, uint16_t size);
 
