@@ -37,7 +37,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 
     uint8_t err = 0;
     err = HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK);
-    if (err != HAL_OK) {return err;}
+    if (err != HAL_OK) return err;
 
     /* set up interrupt & activate CAN */
     err = HAL_CAN_Start(can->hcan);
