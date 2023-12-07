@@ -1,6 +1,6 @@
 #include "can.h"
 
-void can_init(can_t *can)
+HAL_StatusTypeDef can_init(can_t *can)
 {
     /* set up filter */
     uint16_t high_id = can->id_list[0];
@@ -37,8 +37,7 @@ void can_init(can_t *can)
 
     if (HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK)
     {
-        // Filter Configuration Error
-        Error_Handler();
+        return HAL_ERROR;
     }
 
     /* set up interrupt & activate CAN */
@@ -47,9 +46,11 @@ void can_init(can_t *can)
     // Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING
     HAL_CAN_RegisterCallback(can->hcan, HAL_CAN_RX_FIFO0_MSG_PENDING_CB_ID, can->can_callback);
     HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+
+    return HAL_OK;
 }
 
-void can_send_msg(can_t *can, can_msg_t *msg)
+HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
     CAN_TxHeaderTypeDef tx_header;
     tx_header.StdId = msg->id;
@@ -61,4 +62,11 @@ void can_send_msg(can_t *can, can_msg_t *msg)
 
     uint32_t tx_mailbox;
     HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox);
+
+    if (HAL_CAN_GetTxMailboxesFreeLevel(can->hcan) == 0)
+    {
+        return HAL_ERROR;
+    }
+
+    return HAL_OK;
 }
