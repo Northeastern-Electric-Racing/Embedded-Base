@@ -35,19 +35,17 @@ HAL_StatusTypeDef can_init(can_t *can)
     sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  // FIFO to assign the filter to
     sFilterConfig.FilterActivation = ENABLE;            // Enable the filter
 
-    if (HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK)
-    {
-        return HAL_ERROR;
-    }
+    uint8_t err;
+    err = HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK)
 
     /* set up interrupt & activate CAN */
-    HAL_CAN_Start(can->hcan);
+    err |= HAL_CAN_Start(can->hcan);
     
     // Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING
-    HAL_CAN_RegisterCallback(can->hcan, HAL_CAN_RX_FIFO0_MSG_PENDING_CB_ID, can->can_callback);
-    HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+    err |= HAL_CAN_RegisterCallback(can->hcan, HAL_CAN_RX_FIFO0_MSG_PENDING_CB_ID, can->can_callback);
+    err |= HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 
-    return HAL_OK;
+    return err;
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
