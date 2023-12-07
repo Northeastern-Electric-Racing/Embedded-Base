@@ -16,8 +16,14 @@ typedef struct{
     void (*can_callback)(CAN_HandleTypeDef *hcan);
 } can_t;
 
+typedef struct{
+    uint16_t id;
+    uint8_t data[8];
+    uint8_t size;
+} can_msg_t;
+
 void can_init(can_t *can);
-void can_send_msg(can_t *can, uint16_t id, uint8_t *data, uint8_t size);
+void can_send_msg(can_t *can, can_msg_t *msg);
 
 
 

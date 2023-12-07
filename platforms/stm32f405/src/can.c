@@ -49,17 +49,16 @@ void can_init(can_t *can)
     HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
-void can_send_msg(can_t *can, uint16_t id, uint8_t *data, uint8_t size)
+void can_send_msg(can_t *can, can_msg_t *msg)
 {
     CAN_TxHeaderTypeDef tx_header;
-    tx_header.StdId = id;
+    tx_header.StdId = msg->id;
     tx_header.ExtId = 0;
     tx_header.IDE = CAN_ID_STD;
     tx_header.RTR = CAN_RTR_DATA;
-    tx_header.DLC = size;
+    tx_header.DLC = msg->size;
     tx_header.TransmitGlobalTime = DISABLE;
 
     uint32_t tx_mailbox;
-    HAL_CAN_AddTxMessage(can->hcan, &tx_header, data, &tx_mailbox);
+    HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox);
 }
-```
