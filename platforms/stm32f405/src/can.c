@@ -51,7 +51,7 @@ HAL_StatusTypeDef can_init(can_t *can, can_callback callback)
 	uint16_t high_id = can->id_list[0];
 	uint16_t low_id = can->id_list[0];
 
-	for (uint8_t i = 0; i < can->size; i++) {
+	for (uint8_t i = 0; i < can->id_list_len; i++) {
 		if (can->id_list[i] > high_id)
 			high_id = can->id_list[i];
 		if (can->id_list[i] < low_id)
