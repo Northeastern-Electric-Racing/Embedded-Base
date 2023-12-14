@@ -1,5 +1,6 @@
 #include "can.h"
 #include <string.h>
+#include <stdint.h>
 
 /* NOTE: STM32F405 will have MAX of 3 CAN buses */
 #define MAX_CAN_BUS	3
@@ -45,7 +46,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 }
 
-HAL_StatusTypeDef can_init(can_t *can, can_callback callback)
+HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
 {
 	/* set up filter */
 	uint16_t high_id = can->id_list[0];
@@ -99,7 +100,7 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	tx_header.ExtId = 0;
 	tx_header.IDE = CAN_ID_STD;
 	tx_header.RTR = CAN_RTR_DATA;
-	tx_header.DLC = msg->size;
+	tx_header.DLC = msg->len;
 	tx_header.TransmitGlobalTime = DISABLE;
 
 	uint32_t tx_mailbox;
