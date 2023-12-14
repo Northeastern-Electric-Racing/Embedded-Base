@@ -1,5 +1,17 @@
 #include "can.h"
 
+// function pointer type for the callback
+typedef void (*CAN_Callback)(CAN_HandleTypeDef *hcan);
+CAN_Callback myCANCallback;
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+  // Handle CAN reception event
+  if (myCANCallback != NULL)
+  {
+    myCANCallback(hcan);
+  }
+}
 HAL_StatusTypeDef can_init(can_t *can)
 {
     /* set up filter */
@@ -36,7 +48,7 @@ HAL_StatusTypeDef can_init(can_t *can)
     sFilterConfig.FilterActivation = ENABLE;            // Enable the filter
 
     uint8_t err = 0;
-    err = HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK);
+    err = HAL_CAN_ConfigFilter(&can->hcan, &sFilterConfig);
     if (err != HAL_OK) return err;
 
     /* set up interrupt & activate CAN */
@@ -44,9 +56,7 @@ HAL_StatusTypeDef can_init(can_t *can)
     if (err != HAL_OK) return err;
 
     // Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING
-    err = HAL_CAN_RegisterCallback(can->hcan, HAL_CAN_RX_FIFO0_MSG_PENDING_CB_ID, can->can_callback);
-    if (err != HAL_OK) return err;
-
+    myCANCallback = can->can_callback;
     err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 
     return err;
