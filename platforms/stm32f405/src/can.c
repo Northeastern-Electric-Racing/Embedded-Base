@@ -46,7 +46,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 }
 
-HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
+HAL_StatusTypeDef can_init(can_t *can)
 {
 	/* set up filter */
 	uint16_t high_id = can->id_list[0];

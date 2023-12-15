@@ -26,7 +26,7 @@ typedef struct{
 	uint8_t len;
 } can_msg_t;
 
-HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback);
+HAL_StatusTypeDef can_init(can_t *can);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 
 #endif // CAN_H
