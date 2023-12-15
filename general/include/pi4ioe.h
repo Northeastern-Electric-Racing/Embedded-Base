@@ -13,19 +13,6 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
 
-// all of these addresses are complete bullshit and wrong plz fix when know :) and remove this comment
-// the values should be correct though, just the order is wrong
-
-#define PI4IOE_I2C_ADDR 	0x20 //? @hamza does HAL driver handle shifting for read/write bit automatically? if not should be added here
-
-#define IO_CONFIG_REG 		0x06
-#define IO_CONFIG_BUF 		0x10 /* = 0001 0000, bit 4 = TSMS = input */
-#define INPUT0_REG 			0x00
-#define INPUT1_REG 			0x01
-#define OUTPUT0_REG 		0x02
-#define OUTPUT1_REG 		0x03
-
-
 typedef struct
 {
 	I2C_HandleTypeDef *i2c_handle;
