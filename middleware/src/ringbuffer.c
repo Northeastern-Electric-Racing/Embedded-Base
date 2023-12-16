@@ -1,48 +1,86 @@
 #include "ringbuffer.h"
 
-void initialize_ring_buffer(ring_buffer_t* rb)
+ringbuffer_t* ringbuffer_create(size_t capacity, size_t element_size)
 {
-    rb->front = 0;
-    rb->rear = 0;
-    rb->count = 0;
+    ringbuffer_t* rb = (ringbuffer_t*)calloc(sizeof(rb));
+    if (rb == NULL) {
+
+        // Handle memory allocation failure
+        return NULL;
+    }
+
+    rb->buffer = (void**)malloc(capacity * sizeof(void*));
+    if (rb->buffer == NULL) {
+        // Handle memory allocation failure
+        free(rb);
+        return NULL;
+    }
+    rb->capacity = capacity;
+    rb->element_size = element_size;
+
+    return rb;
 }
 
-int is_buffer_empty(ring_buffer_t* rb) 
+void destroy_ringbuffer(ringbuffer_t* rb) 
+{
+    // Free each dynamically allocated element
+    for (size_t i = 0; i < rb->count; ++i) {
+        free(rb->buffer[(rb->front + i) % rb->capacity]);
+    }
+
+    // Free the buffer of pointers
+    free(rb->buffer);
+
+    // Free the ringbuffer_t structure
+    free(rb);
+}
+
+int ringbuffer_is_empty(ringbuffer_t* rb) 
 {
     return rb->count == 0;
 }
 
-int is_buffer_full(ring_buffer_t* rb) 
+int ringbuffer_is_full(ringbuffer_t* rb) 
 {
-    return rb->count == BUFFER_SIZE;
+    return rb->count == rb->capacity;
 }
 
-int enqueue(ring_buffer_t* rb, void* data) 
+int ringbuffer_enqueue(ringbuffer_t* rb, void* data) 
 {
-    if (is_buffer_full(rb)) {
-
-        /* Buffer is full, cannot enqueue */
+    if (ringbuffer_is_full(rb)) {
+        // Buffer is full, cannot enqueue
         return -1;
     }
 
-    rb->buffer[rb->rear] = data;
-    rb->rear = (rb->rear + 1) % BUFFER_SIZE;
+    // Allocate memory for the new element
+    rb->buffer[rb->rear] = malloc(rb->element_size);
+    if (rb->buffer[rb->rear] == NULL) {
+        // Handle memory allocation failure
+        return -1;
+    }
+
+    // Copy the data to the newly allocated memory
+    memcpy(rb->buffer[rb->rear], data, rb->element_size);
+
+    rb->rear = (rb->rear + 1) % rb->capacity;
     rb->count++;
 
     return 0; // Successful enqueue
 }
 
-void* dequeue(ring_buffer_t* rb) 
+void* ringbuffer_dequeue(ringbuffer_t* rb, void* data) 
 {
-    if (is_buffer_empty(rb)) {
-
-        /* Buffer is empty, cannot dequeue */
-        return NULL;
+    if (ringbuffer_is_empty(rb)) {
+        // Buffer is empty, cannot dequeue
+        return;
     }
 
-    uint8_t* data = rb->buffer[rb->front];
-    rb->front = (rb->front + 1) % BUFFER_SIZE;
-    rb->count--;
+    // Copy the data from the buffer
+    memcpy(data, rb->buffer[rb->front], rb->element_size);
 
-    return data;
+    // Free the memory of the dequeued element
+    free(rb->buffer[rb->front]);
+
+    rb->front = (rb->front + 1) % rb->capacity;
+    rb->count--;
 }
