@@ -1,4 +1,5 @@
 #include "ringbuffer.h"
+#include <string.h>
 
 ringbuffer_t* ringbuffer_create(size_t capacity, size_t element_size)
 {
@@ -9,23 +10,18 @@ ringbuffer_t* ringbuffer_create(size_t capacity, size_t element_size)
         return NULL;
     }
 
-    rb->buffer = (void**)malloc(capacity * sizeof(void*));
-    if (rb->buffer == NULL) {
-        // Handle memory allocation failure
-        free(rb);
-        return NULL;
-    }
     rb->capacity = capacity;
     rb->element_size = element_size;
 
     return rb;
 }
 
-void destroy_ringbuffer(ringbuffer_t* rb) 
+void ringbuffer_destroy(ringbuffer_t* rb) 
 {
     // Free each dynamically allocated element
-    for (size_t i = 0; i < rb->count; ++i) {
-        free(rb->buffer[(rb->front + i) % rb->capacity]);
+    for (size_t i = 0; i < rb->count; i++) {
+        if (rb->buffer[(rb->front + i) % rb->capacity] != NULL)
+            free(rb->buffer[(rb->front + i) % rb->capacity]);
     }
 
     // Free the buffer of pointers
