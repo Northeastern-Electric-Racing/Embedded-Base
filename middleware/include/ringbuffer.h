@@ -21,6 +21,6 @@ int is_buffer_empty(ring_buffer_t* rb);
 
 int is_buffer_full(ring_buffer_t* rb);
 
-int enqueue(ring_buffer_t* rb, uint8_t* data);
+int enqueue(ring_buffer_t* rb, void* data);
 
 uint8_t* dequeue(ring_buffer_t* rb);

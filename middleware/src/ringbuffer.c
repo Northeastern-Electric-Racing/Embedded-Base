@@ -17,7 +17,7 @@ int is_buffer_full(ring_buffer_t* rb)
     return rb->count == BUFFER_SIZE;
 }
 
-int enqueue(ring_buffer_t* rb, uint8_t* data) 
+int enqueue(ring_buffer_t* rb, void* data) 
 {
     if (is_buffer_full(rb)) {
 
