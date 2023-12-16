@@ -32,7 +32,7 @@ int enqueue(ring_buffer_t* rb, void* data)
     return 0; // Successful enqueue
 }
 
-uint8_t* dequeue(ring_buffer_t* rb) 
+void* dequeue(ring_buffer_t* rb) 
 {
     if (is_buffer_empty(rb)) {
 
