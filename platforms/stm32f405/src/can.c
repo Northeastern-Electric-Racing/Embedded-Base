@@ -104,9 +104,10 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	tx_header.TransmitGlobalTime = DISABLE;
 
 	uint32_t tx_mailbox;
-	HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox);
-
 	if (HAL_CAN_GetTxMailboxesFreeLevel(can->hcan) == 0)
+		return HAL_BUSY;
+
+	if (HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox))
 		return HAL_ERROR;
 
 	return HAL_OK;
