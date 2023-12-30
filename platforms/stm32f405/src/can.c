@@ -77,7 +77,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 	sFilterConfig.FilterActivation = ENABLE;            /* Enable the filter */
 
 	uint8_t err = 0;
-	err = HAL_CAN_ConfigFilter(&can->hcan, &sFilterConfig);
+	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
 	if (err != HAL_OK)
 		return err;
 
