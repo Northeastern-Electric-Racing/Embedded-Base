@@ -1,12 +1,18 @@
 #include "ringbuffer.h"
 #include <string.h>
+#include <stdlib.h>
 
 ringbuffer_t* ringbuffer_create(size_t capacity, size_t element_size)
 {
-    ringbuffer_t* rb = (ringbuffer_t*)calloc(sizeof(rb));
-    if (rb == NULL) {
-
+    ringbuffer_t* rb = (ringbuffer_t*)malloc(sizeof(ringbuffer_t));
+    if (!rb) {
         // Handle memory allocation failure
+        return NULL;
+    }
+
+    rb->buffer = calloc(capacity, element_size);
+    if (!rb->buffer) {
+        free(rb);
         return NULL;
     }
 
@@ -64,10 +70,11 @@ int ringbuffer_enqueue(ringbuffer_t* rb, void* data)
     return 0; // Successful enqueue
 }
 
-void* ringbuffer_dequeue(ringbuffer_t* rb, void* data) 
+void ringbuffer_dequeue(ringbuffer_t* rb, void* data) 
 {
     if (ringbuffer_is_empty(rb)) {
         // Buffer is empty, cannot dequeue
+        data = NULL;
         return;
     }
 
