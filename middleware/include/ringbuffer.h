@@ -19,6 +19,6 @@ void ringbuffer_destroy(ringbuffer_t* rb);
 int ringbuffer_is_empty(ringbuffer_t* rb);
 int ringbuffer_is_full(ringbuffer_t* rb);
 int ringbuffer_enqueue(ringbuffer_t* rb, void* data);
-void *ringbuffer_dequeue(ringbuffer_t* rb);
+void ringbuffer_dequeue(ringbuffer_t* rb, void* data);
 
 #endif // RINGBUFFER_H

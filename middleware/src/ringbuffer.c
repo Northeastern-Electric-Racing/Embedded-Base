@@ -70,13 +70,12 @@ int ringbuffer_enqueue(ringbuffer_t* rb, void* data)
     return 0; // Successful enqueue
 }
 
-void *ringbuffer_dequeue(ringbuffer_t* rb) 
+void ringbuffer_dequeue(ringbuffer_t* rb, void* data) 
 {
-    void* data;
-
     if (ringbuffer_is_empty(rb)) {
         // Buffer is empty, cannot dequeue
-        return NULL;
+        data = NULL;
+        return;
     }
 
     // Copy the data from the buffer
@@ -87,5 +86,4 @@ void *ringbuffer_dequeue(ringbuffer_t* rb)
 
     rb->front = (rb->front + 1) % rb->capacity;
     rb->count--;
-    return data;
 }
