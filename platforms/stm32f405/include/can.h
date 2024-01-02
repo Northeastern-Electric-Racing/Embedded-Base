@@ -13,7 +13,7 @@ typedef void (*can_callback_t)(CAN_HandleTypeDef *hcan);
 
 typedef struct{
 	CAN_HandleTypeDef *hcan;
-	uint16_t *id_list;
+	const uint16_t *id_list;
 	uint8_t id_list_len;
 
 	/* desired behavior varies by app - so implement this at app level */
