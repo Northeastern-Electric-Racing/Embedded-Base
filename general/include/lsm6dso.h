@@ -12,7 +12,7 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
 
-#define LSM6DSO_I2C_ADDRESS                 0x35 << 1   /* Shifted because datasheet said to */
+#define LSM6DSO_I2C_ADDRESS                 0x6A << 1   /* Shifted because datasheet said to */
 // Not sure if these are all needed, also not sure if more need to be added
 /* For register descriptions reference datasheet pages 47 - 98 */
 #define LSM6DSO_REG_FUNC_CFG_ACCESS         0x01    /* Enable embedded functions register */
