@@ -35,12 +35,11 @@ static uint8_t add_interface(can_t *interface)
 	return -2;
 }
 
-// This is not implemented in the G4 library.
-// Come back to this
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+/* Run callback function when there a new message is received */
+void HAL_FDCAN_RxFifo0Callback(CAN_HandleTypeDef *hcan, FDCAN_FLAG_RX_FIFO0_NEW_MESSAGE)
 {
 	/* Handle CAN reception event */
-	can_callback_t callback= find_callback(hcan);
+	can_callback_t callback = find_callback(hcan);
 
 	if (callback != NULL)
 	{
