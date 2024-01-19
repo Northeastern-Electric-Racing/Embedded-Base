@@ -46,7 +46,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		HAL_Delay(1000);
 		HAL_GPIO_WritePin(GPIOC, LED_2_PIN, GPIO_PIN_RESET);
 		HAL_Delay(1000);
-		callback(hcan);
+		//callback(hcan);
 	}
 }
 
