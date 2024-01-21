@@ -71,8 +71,6 @@ Copyright 2013 Linear Technology Corp. (LTC)
 #include <stdlib.h>
 #include <stdio.h>
 
-ltc_config *ltcconfig;
-
 // TODO ensure shepherd app configures SPI with these settings:
 // const SPISettings ltcSPISettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
 
@@ -100,15 +98,15 @@ int8_t read_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t
   to convert all cell and GPIO voltages in the Normal ADC mode.
 */
 
-ltc_config *LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
+void LTC6804_initialize(ltc_config* conf, *hspi, GPIO_TypeDef *hgpio,
                                uint8_t cs_pin) {
-  ltcconfig->spi = hspi;
-  ltcconfig->gpio = hgpio;
-  ltcconfig->cs_pin = cs_pin;
+  conf->spi = hspi;
+  conf->gpio = hgpio;
+  conf->cs_pin = cs_pin;
 
-  HAL_GPIO_WritePin(ltcconfig->gpio, ltcconfig->cs_pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(conf->gpio, conf->cs_pin, GPIO_PIN_SET);
 
-  return ltcconfig;
+  return conf;
 
   // TODO make sure shepherd app configures ADC with these settings:
   // set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
