@@ -194,7 +194,7 @@ static const unsigned int crc15Table[256] = {
 #define DCP_DISABLED 0
 #define DCP_ENABLED 1
 
-ltc_config *LTC6804_initialize(SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin);
+void LTC6804_initialize(ltc_config* conf, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin);
 
 void set_adc(uint8_t MD, uint8_t DCP, uint8_t CH, uint8_t CHG);
 
