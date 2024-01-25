@@ -59,22 +59,33 @@ HAL_StatusTypeDef can_init(can_t *can)
 			low_id = can->id_list[i];
 	}
 
-	uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
+	// uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
 
 	CAN_FilterTypeDef sFilterConfig;
 
-	sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier list */
+	sFilterConfig.FilterBank = 0;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	sFilterConfig.FilterIdHigh = 0x0000;
+	sFilterConfig.FilterIdLow = 0x0000;
+	sFilterConfig.FilterMaskIdHigh = 0x0000;
+	sFilterConfig.FilterMaskIdLow = 0x0000;
+	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+	sFilterConfig.FilterActivation = ENABLE;   
+	sFilterConfig.SlaveStartFilterBank = 14;
 
-	sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
-	sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
+	// sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
+	// sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
+	// sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier list */
 
-	sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for ID range */
-	sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to all ones for ID range */
+	// sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
+	// sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
 
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the filter to */
-	sFilterConfig.FilterActivation = ENABLE;            /* Enable the filter */
+	// sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for ID range */
+	// sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to all ones for ID range */
+
+	// sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the filter to */
+	// sFilterConfig.FilterActivation = ENABLE;            /* Enable the filter */
 
 	uint8_t err = 0;
 	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
