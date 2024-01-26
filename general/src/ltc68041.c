@@ -98,7 +98,7 @@ int8_t read_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t
   to convert all cell and GPIO voltages in the Normal ADC mode.
 */
 
-void LTC6804_initialize(ltc_config* conf, *hspi, GPIO_TypeDef *hgpio,
+void LTC6804_initialize(ltc_config* conf, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
                                uint8_t cs_pin) {
   conf->spi = hspi;
   conf->gpio = hgpio;
