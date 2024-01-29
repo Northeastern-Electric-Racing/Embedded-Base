@@ -7,7 +7,9 @@
 
 can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
+
 static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
+
 {
 	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
 		if (hcan == can_struct_list[i]->hcan)
