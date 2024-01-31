@@ -7,7 +7,7 @@
 
 can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
-static can_callback_t find_callback(CAN_HandleTypeDef *hcan)
+static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
 {
 	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
 		if (hcan == can_struct_list[i]->hcan)
@@ -36,7 +36,7 @@ static uint8_t add_interface(can_t *interface)
 }
 
 /* Run callback function when there a new message is received */
-void HAL_FDCAN_RxFifo0Callback(CAN_HandleTypeDef *hcan, FDCAN_FLAG_RX_FIFO0_NEW_MESSAGE)
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 {
 	/* Handle CAN reception event */
 	can_callback_t callback = find_callback(hcan);
@@ -83,7 +83,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 		return err;
 
 	/* Override the default callback for FDCAN_IT_LIST_RX_FIFO0 */
-	err = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_LIST_RX_FIFO0);
+	//err = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_LIST_RX_FIFO0);
 	err = add_interface(can);
 
 	return err;
