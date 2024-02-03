@@ -5,6 +5,10 @@
 /* NOTE: STM32G431 will have MAX of 3 CAN buses */
 #define MAX_CAN_BUS	3
 
+//Arbitrary CAN ID's
+#define VOLTAGE_CAN_ID 10
+#define CURRENT_CAN_ID 20
+
 can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
 static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
@@ -46,7 +50,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 		callback(hcan);
 	}
 }
-
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
@@ -111,4 +114,21 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 		return HAL_ERROR;
 
 	return HAL_OK;
+}
+
+void receive_msg(can_t *can) 
+{
+
+    FDCAN_RxHeaderTypeDef rx_header;
+    uint8_t rx_data[8];
+
+    if (HAL_FDCAN_GETRXFifoFillLevel(can->hcan, FD_CAN_RX_FIFO0) > 0) { //Check if messages are available
+        if (HAL_FDCAN_GETRxMessage(can->hcan,FD_CAN_RX_FIFO0,&rx_header,rx_data) == HAL_OK) {
+            uint32_t messge_id = rx_header.Identifier
+            if (message_id == VOLTAGE_CAN_ID) 
+				//process voltage ID
+			if (message_id == CURRENT_CAN_ID)
+				//process current ID
+        }
+    } 
 }
