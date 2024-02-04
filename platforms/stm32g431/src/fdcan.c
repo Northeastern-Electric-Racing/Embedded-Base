@@ -131,10 +131,10 @@ HAL_StatusTypeDef receive_msg(can_t *can)
 			if (message_id == CURRENT_CAN_ID) {
 				//process current ID
 			}
-			return HAL_OK;
+			return HAL_OK; //message was received
         }
-		return HAL_ERROR;
+		return HAL_ERROR; //Message was not received
     } 
-	return HAL_BUSY;
+	return HAL_BUSY; //Rx FIFO did not contain messages
 }
 
