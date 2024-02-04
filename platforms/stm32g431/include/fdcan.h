@@ -28,6 +28,6 @@ typedef struct{
 
 HAL_StatusTypeDef can_init(can_t *can);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
-void receive_msg(can_t *can);
+HAL_StatusTypeDef receive_msg(can_t *can);
 
 #endif // CAN_H
