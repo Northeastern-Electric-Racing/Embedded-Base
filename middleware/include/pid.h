@@ -12,6 +12,8 @@ typedef struct
     float err;
     float prev_err;
     float prev_time; // in seconds
+    float min_out;
+    float max_out;
 
     float integral_sum;
 } pid_t;
@@ -23,9 +25,11 @@ typedef struct
  * @param kI Integral constant
  * @param kD Derivative constant
  * @param err_tol Error tolerance for checking if reached setpoint
+ * @param min_out Minimum output value
+ * @param max_out Maximum output value
  * @return pid_t
  */
-pid_t *pid_init(float kP, float kI, float kD, float err_tol);
+pid_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out, float max_out);
 
 /**
  * @brief Returns PID output given the setpoint and current state value
