@@ -115,26 +115,3 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 
 	return HAL_OK;
 }
-
-HAL_StatusTypeDef receive_msg(can_t *can) 
-{
-
-    FDCAN_RxHeaderTypeDef rx_header;
-    uint8_t rx_data[8]; //array of 8 bytes 
-
-    if (HAL_FDCAN_GetRxFifoFillLevel(can->hcan, FDCAN_RX_FIFO0) > 0) { //Check if messages are available
-        if (HAL_FDCAN_GetRxMessage(can->hcan,FDCAN_RX_FIFO0,&rx_header,rx_data) == HAL_OK) {
-            uint32_t message_id = rx_header.Identifier;
-            if (message_id == VOLTAGE_CAN_ID) {
-				//process voltage ID
-			}
-			if (message_id == CURRENT_CAN_ID) {
-				//process current ID
-			}
-			return HAL_OK; //message was received
-        }
-		return HAL_ERROR; //Message was not received
-    } 
-	return HAL_BUSY; //Rx FIFO did not contain messages
-}
-
