@@ -4,6 +4,7 @@
 
 /* NOTE: STM32F405 will have MAX of 3 CAN buses */
 #define MAX_CAN_BUS	3
+extern CAN_HandleTypeDef hcan1;
 
 can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
@@ -38,7 +39,7 @@ static uint8_t add_interface(can_t *interface)
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	/* Handle CAN reception event */
-	can_callback_t callback= find_callback(hcan);
+	can_callback_t callback = find_callback(hcan);
 
 	if (callback != NULL)
 	{
@@ -59,22 +60,33 @@ HAL_StatusTypeDef can_init(can_t *can)
 			low_id = can->id_list[i];
 	}
 
-	uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
+	// uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
 
 	CAN_FilterTypeDef sFilterConfig;
 
-	sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier list */
+	sFilterConfig.FilterBank = 0;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	sFilterConfig.FilterIdHigh = 0x0000;
+	sFilterConfig.FilterIdLow = 0x0000;
+	sFilterConfig.FilterMaskIdHigh = 0x0000;
+	sFilterConfig.FilterMaskIdLow = 0x0000;
+	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+	sFilterConfig.FilterActivation = ENABLE;   
+	sFilterConfig.SlaveStartFilterBank = 14;
 
-	sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
-	sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
+	// sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
+	// sFilterConfig.FilterMode = CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
+	// sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier list */
 
-	sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for ID range */
-	sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to all ones for ID range */
+	// sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
+	// sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
 
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the filter to */
-	sFilterConfig.FilterActivation = ENABLE;            /* Enable the filter */
+	// sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for ID range */
+	// sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to all ones for ID range */
+
+	// sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the filter to */
+	// sFilterConfig.FilterActivation = ENABLE;            /* Enable the filter */
 
 	uint8_t err = 0;
 	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
@@ -82,12 +94,16 @@ HAL_StatusTypeDef can_init(can_t *can)
 		return err;
 
 	/* set up interrupt & activate CAN */
+	HAL_CAN_IRQHandler(can->hcan);
+	
+	err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+	if (err != HAL_OK)
+		return err;
 	err = HAL_CAN_Start(can->hcan);
 	if (err != HAL_OK)
 		return err;
 
 	/* Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING */
-	err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 	err = add_interface(can);
 
 	return err;
@@ -111,4 +127,9 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 		return HAL_ERROR;
 
 	return HAL_OK;
+}
+
+void CAN1_RX0_IRQHandler(void)
+{
+	HAL_CAN_IRQHandler(&hcan1);
 }

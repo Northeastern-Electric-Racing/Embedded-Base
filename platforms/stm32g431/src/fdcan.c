@@ -5,6 +5,10 @@
 /* NOTE: STM32G431 will have MAX of 3 CAN buses */
 #define MAX_CAN_BUS	3
 
+//Arbitrary CAN ID's
+#define VOLTAGE_CAN_ID 10
+#define CURRENT_CAN_ID 20
+
 can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
 static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
@@ -111,5 +115,3 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 
 	return HAL_OK;
 }
-
-
