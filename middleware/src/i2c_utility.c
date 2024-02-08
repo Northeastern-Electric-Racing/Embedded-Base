@@ -1,7 +1,7 @@
 #include "i2c_utility.h"
 #define MAX_TRIALS 3    // Max tries to probe
 #define MAX_TIMEOUT 50  // units in ms
-
+#define HEX 16
 
 static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end) {
     // Initialize the buffer and local variables
@@ -9,7 +9,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
     uint8_t i;
     uint8_t row = 1;
     char status[sizeof(uint8_t) * 8 + 1];
-    char *labels[] = {"0x0\t\t", "0x1", "0x2", "0x3", "0x4", "0x5", "0x6", "0x7"};
+    char *labels[] = {"0x0      ", "0x1", "0x2", "0x3", "0x4", "0x5", "0x6", "0x7"};
 
     // Add to the appropriate buffer
     buffer[0] = HEX_LABELS_H; //add labels to the first row of the buffer
@@ -21,7 +21,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
     
     // Loop through each device address from the start to end
     for(i = start; i <= end; i++) {
-        row = ((row * 16) <= i) ? row+1 : row;
+        row = ((row * HEX)<= i) ? row + 1 : row;
         // Use HAL_I2C_IsDeviceReady
         ret = HAL_I2C_IsDeviceReady(hi2c, (i << 1), MAX_TRIALS, MAX_TIMEOUT); 
         
@@ -43,7 +43,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
         }
 
         // Add status to the buffer
-        strcat(buffer[row], TAB_SPACE); // spacing for string
+        strcat(buffer[row], SPACING); // spacing for string
         strcat(buffer[row], status); // actual status
     }
 

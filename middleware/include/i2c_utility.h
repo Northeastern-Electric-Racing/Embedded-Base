@@ -7,9 +7,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define HEX_LABELS_H "\t0\t1\t2\t3\t4\t5\t6\t7\t8\t9\ta\tb\tc\td\te\tf\n"
-#define TAB_SPACE "\t"
+#define HEX_LABELS_H "\t0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n"
+#define SPACING "  "
 
+/**
+ * @brief Probes all i2c addresses to check if devices are ready.
+ * 
+ * @param hi2c
+ * @param buffer
+ * @param mode
+ * @param start
+ * @param end
+ * 
+ * @return int
+ */
 static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end);
 
 #endif // I2C_UTILITY_H
