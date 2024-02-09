@@ -1,7 +1,7 @@
-#include "i2c_utility.h"
+#include "i2cdetect.h"
 #define MAX_TRIALS 3    // Max tries to probe
 #define MAX_TIMEOUT 50  // units in ms
-#define HEX 16
+#define HEX 16          
 
 static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end) {
     // Initialize the buffer and local variables
@@ -15,7 +15,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
     buffer[0] = HEX_LABELS_H; //add labels to the first row of the buffer
 
     // Add labels to buffer
-    for(int j = 1; j <=7; j++) {
+    for(int j = 1; j <= 7; j++) {
         strcat(buffer[j], labels[j-1]);
     }
     
@@ -50,3 +50,31 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
     // Return normal status
     return HAL_OK;
 }
+
+int main(int argc, char *argv[]) {
+    I2C_HandleTypeDef *hi2c;
+    int flags = 0;
+    int confirm = 0, version = 0, list = 0;
+    uint8_t first = 0x03U, last = 0x77U; 
+    // Handle any flags
+    while(argc > flags + 1 && argv[flags + 1][0] == "-") {
+        switch(argv[flags+1][1]) {
+            case "F": // display functionality
+                
+                break;
+            case "l": // list all i2c busses
+                
+                break;
+            case "y": // automatic run
+                confirm = 1;
+                break;
+            case "a":
+                first = 0x00U;
+                last = 0x7F;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
