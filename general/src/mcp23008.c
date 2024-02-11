@@ -14,7 +14,7 @@
 #define IO_CONFIG_INPUT 	0xFF /* = 1111 1111, all input */
 #define INPUT_REG 			0x09
 
-int mcp23008_init(mcp23008_t *obj, int (*write_func)(uint8_t, const uint8_t*, uint8_t), int (*read_func)(uint8_t, uint8_t*, uint8_t))
+int mcp23008_init(mcp23008_t *obj, write_ptr write_func, read_ptr read_func)
 {
     obj->write = write_func;
     obj->read = read_func;
