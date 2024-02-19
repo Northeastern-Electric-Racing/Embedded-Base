@@ -32,8 +32,8 @@ RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021
 
 ENV PATH $PATH:/home/dev/gcc-arm-none-eabi-10.3-2021.10/bin
 
-COPY ./alias.sh .
+COPY ./scripts .
 
-RUN cat ./alias.sh >> ~/.bashrc
+RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 
 WORKDIR /home/app
