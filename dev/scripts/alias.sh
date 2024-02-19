@@ -22,6 +22,16 @@ if [ $n -e /home/app/Proteus.ioc ]; then echo \
 |   |    |   |  | ||       |  |   |  |   |___ |       | _____| |
 |___|    |___|  |_||_______|  |___|  |_______||_______||_______|"; fi;
 
+if [ $n -e /home/app/Charger-FW.ioc ]; then echo \
+" /$$$$$$ /$$$$$$$   /$$$$$$  /$$   /$$
+|_  $$_/| $$__  $$ /$$__  $$| $$  | $$
+  | $$  | $$  \ $$| $$  \ $$| $$  | $$
+  | $$  | $$$$$$$/| $$  | $$| $$$$$$$$
+  | $$  | $$__  $$| $$  | $$| $$__  $$
+  | $$  | $$  \ $$| $$  | $$| $$  | $$
+ /$$$$$$| $$  | $$|  $$$$$$/| $$  | $$
+|______/|__/  |__/ \______/ |__/  |__/"; fi;
+
 alias serial='/home/dev/scripts/serial.sh'
 alias flash='/home/dev/scripts/flash.sh'
 alias emulate='/home/dev/scripts/emulate.sh'
