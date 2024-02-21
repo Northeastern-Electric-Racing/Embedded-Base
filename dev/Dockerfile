@@ -17,7 +17,8 @@ RUN apt-get install -y \
     vim \
     clang-format \
     tmux \
-    libncurses5
+    libncurses5 \
+    linux-tools-generic
 
 RUN wget https://builds.renode.io/renode-1.14.0+20231003gitf86ac3cf.linux-portable.tar.gz
 RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1
@@ -30,6 +31,10 @@ ADD . /home/dev
 COPY ./scripts .
 
 RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
+
+# for usb/ip
+EXPOSE 3240
+RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
 RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 | tar -xvj
