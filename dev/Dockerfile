@@ -17,7 +17,7 @@ RUN apt-get install -y \
     vim \
     clang-format \
     tmux \
-    libncurses5
+    libncurses5 \
     linux-tools-generic
 
 RUN wget https://builds.renode.io/renode-1.14.0+20231003gitf86ac3cf.linux-portable.tar.gz
