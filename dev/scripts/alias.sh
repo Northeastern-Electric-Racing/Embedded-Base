@@ -13,7 +13,7 @@ if [ $n -e /home/app/cerberus.ioc ]; then echo \
  \______  /\___  >__|  |___  /\___  >__|  |____//____  >
         \/     \/          \/     \/                 \/ "; fi;
 
-if [ $n -e /home/app/Proteus.ioc ]; then echo \
+if [ $n -e /home/app/proteus.ioc ]; then echo \
 " _______  ______    _______  _______  _______  __   __  _______
 |       ||    _ |  |       ||       ||       ||  | |  ||       |
 |    _  ||   | ||  |   _   ||_     _||    ___||  | |  ||  _____|
