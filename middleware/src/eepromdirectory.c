@@ -7,14 +7,11 @@
   2. size of the fault
  */
 
-/*  creating an array of struct(eeprom_input) for taking in input */
-int *eeprom_input = new eeprom_struct(size_of_array);
-
 
 /* function definition for entering parameters of the fault coniditon
 passing the array of struct to the function */
 
-void eepromInit(struct* eeprom_input, int array_size)
+void eepromInit(struct* eeprom_partition, int array_size)
 {
     for (int i = 0; i < array_size; i++)
     {
