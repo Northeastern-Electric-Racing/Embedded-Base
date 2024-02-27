@@ -10,21 +10,18 @@
 
 /* function definition for entering parameters of the fault coniditon
 passing the array of struct to the function */
-
-void eepromInit(struct* eeprom_partition, int array_size)
+void eeprom_init(struct eeprom_partition partition_list[], int array_size)
 {
-    for (int i = 0; i < array_size; i++)
-    {
-    eeprom_input[i]->id = <id>;
-    eeprom_input[i]->size = <size>;
+    eeprom_data[0].address = 0;
+    eeprom_data[0].size = partition_list[0].size;
+    eeprom_data[0].id = partition_list[0].id;
 
-    // calculating the address through the logic defined in shepherd
-    while (eeprom_data[i].id != NULL)
-    {
-        offset += eeprom_data[i-1].size;
-        eeprom_data[i].address = offset;
-        i++;
-    }
+    for (int i = 1; i < array_size; i++) {
+        eeprom_data[i].id = partition_list[i].id;
+        eeprom_data[i].size;
+
+        // calculating the address through the logic defined in shepherd
+        eeprom_data[i].address = eeprom_data[i-1].size - eeprom-data[i-1].address;
     }
 }
 
