@@ -1,10 +1,10 @@
 from ruamel.yaml import YAML, Any
-from structs.CANMsg import CANMsg
-from structs.CANField import CANField
-from structs.Format import Format
-from structs.Decoding import Decoding
-from structs.Messages import Messages
-from structs.NetworkEncoding import NetworkEncoding
+from cangen.CANMsg import CANMsg
+from cangen.CANField import CANField
+from cangen.Format import Format
+from cangen.Decoding import Decoding
+from cangen.Messages import Messages
+from cangen.NetworkEncoding import NetworkEncoding
 
 class YAMLParser:
     '''

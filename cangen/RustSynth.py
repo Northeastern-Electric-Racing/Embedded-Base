@@ -1,6 +1,6 @@
-from structs.CANField import CANField
-from structs.CANMsg import CANMsg
-from structs.Result import Result
+from cangen.CANField import CANField
+from cangen.CANMsg import CANMsg
+from cangen.Result import Result
 from typing import List
 
 
