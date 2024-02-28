@@ -10,6 +10,7 @@ struct eeprom_partition
     uint16_t address;     /* start address */
 };
 
+
 struct eeprom_partition eeprom_data[NUM_EEPROM_ITEMS]
 {
 /*  ____________KEY________________         _BYTES_   */
@@ -41,9 +42,11 @@ char *eeprom_get_key(int index);
  * @param key
  * @param data
  */
-void eeprom_read_data_key(char *key, void *data);
 
-void eeprom_read_data_index(uint8_t index, void *data);
+/* declaration of function taking in array of structures for filling in the parameters of the fault conditions*/
+void eeprom_init(struct eeprom_partition partition_list[], int array_size);
+void eeprom_read_data_key(char *key, void *data);
+void eeprom_read_data_index(uint8_t index, void *data); 
 
 /**
  * @brief loads eeprom with data from passed pointer
