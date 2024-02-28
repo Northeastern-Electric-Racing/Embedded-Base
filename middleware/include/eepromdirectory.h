@@ -44,9 +44,8 @@ char *eeprom_get_key(int index);
  */
 
 /* declaration of function taking in array of structures for filling in the parameters of the fault conditions*/
-void eepromInit(int* eeprom_input, int& array_size)
+void eeprom_init(struct eeprom_partition partition_list[], int array_size);
 void eeprom_read_data_key(char *key, void *data);
-
 void eeprom_read_data_index(uint8_t index, void *data); 
 
 /**

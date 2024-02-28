@@ -21,7 +21,7 @@ void eeprom_init(struct eeprom_partition partition_list[], int array_size)
         eeprom_data[i].size;
 
         // calculating the address through the logic defined in shepherd
-        eeprom_data[i].address = eeprom_data[i-1].size - eeprom-data[i-1].address;
+        eeprom_data[i].address = eeprom_data[i-1].size + eeprom-data[i-1].address;
     }
 }
 
