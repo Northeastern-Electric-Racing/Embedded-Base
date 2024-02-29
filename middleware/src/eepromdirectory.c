@@ -1,22 +1,31 @@
 #include "eepromdirectory.h"
 #include "general/include/m24c32.h"
 
-
 /*   user defined data type for taking in
   1. id of each fault
   2. size of the fault
  */
 
+void eeprom_init(eepromfs_t *eeprom, eeprom_read read_cb, eeprom_write write_cb, eeprom_delete delete_cb)
+{
+    eeprom->write_cb = write_cb;
+    eeprom->read_cb = read_cb;
+    eeprom->delete_cb = delete_cb;
+}
 
 /* function definition for entering parameters of the fault coniditon
 passing the array of struct to the function */
-void eeprom_init(struct eeprom_partition partition_list[], int array_size)
+void eeprom_partition(eepromfs_t eeprom, eeprom_partition_t partition_list[], int array_size)
 {
+    eeprom->write_cb = write_cb;
+    eeprom->read_cb = read_cb;
+    eeprom->delete_cb = delete_cb;
+
     eeprom_data[0].address = 0;
     eeprom_data[0].size = partition_list[0].size;
     eeprom_data[0].id = partition_list[0].id;
 
-    for (int i = 1; i < array_size; i++) {
+    for (uint8_t i = 1; i < array_size; i++) {
         eeprom_data[i].id = partition_list[i].id;
         eeprom_data[i].size;
 
