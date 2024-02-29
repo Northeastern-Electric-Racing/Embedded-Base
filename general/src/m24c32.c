@@ -1,19 +1,22 @@
 #include "m24c32.h"
 
-uint16_t check_size(uint16_t size)
+#define M24C32_I2C_ADDR     0x50
+#define M24C32_PAGE_SIZE    32
+
+uint16_t m24c32_check_size(uint16_t size)
 {
     if(size < M24C32_PAGE_SIZE) return size;
     else return M24C32_PAGE_SIZE;
 }
 
-HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data, uint16_t size)
+HAL_StatusTypeDef m24c32_write(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint8_t *data, uint16_t size)
 {
     HAL_StatusTypeDef status;
 
     for(int bytes_written = 0; bytes_written < size; bytes_written += 32)
     {
         uint16_t write_size = check_size(size - bytes_written);
-        
+
         status = HAL_I2C_Mem_Write(i2c_handle, M24C32_I2C_ADDR, mem_address + bytes_written, 2, &data[bytes_written], 
                                    write_size, 1000);
         if (status)
@@ -23,7 +26,7 @@ HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data, uint16_t siz
     return HAL_OK;
 }
 
-HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data, uint16_t size)
+HAL_StatusTypeDef m24c32_read(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint8_t *data, uint16_t size)
 {
     HAL_StatusTypeDef status;
 
@@ -40,7 +43,7 @@ HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data, uint16_t size
     return HAL_OK;
 }
 
-HAL_StatusTypeDef eeprom_delete(uint16_t mem_address, uint16_t size)
+HAL_StatusTypeDef m24c32_delete(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint16_t size)
 {
     HAL_StatusTypeDef status;
 
