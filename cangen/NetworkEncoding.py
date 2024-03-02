@@ -11,8 +11,6 @@ class NetworkEncoding:
     fields: list[CANField]
     topic: Optional[str] = None
     unit: Optional[str] = None
-    start: str = "Data::new(vec!["
-    closing: str = "]"
 
 @dataclass
 class CSV(NetworkEncoding):
