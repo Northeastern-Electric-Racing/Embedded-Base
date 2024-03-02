@@ -33,6 +33,9 @@ pub fn decode_mock(_data: &[u8]) -> Vec::<Data> {
 }
 """  # A mock decode function that is used for messages that don't have a decode function
 
+    network_encoding_start: str = "Data::new(vec!["
+    network_encoding_closing: str = "]"
+
     master_mapping_import: str = (
         "use super::decode_data::*; \nuse super::data::Data; \n"  # Importing all the functions in decode_data.rs file and the Data struct
     )
@@ -101,19 +104,19 @@ impl MessageInfo {
         result = []
         networkEncoding = msg.networkEncoding[0]
         if networkEncoding.id == "csv":
-            result.append(f"        {networkEncoding.start}")
+            result.append(f"        {self.network_encoding_start}")
             result.append(
                 f"            {','.join(self.decode_field_value(field) for field in networkEncoding.fields)}"
             )
-            result.append(f"        {networkEncoding.closing}")
+            result.append(f"        {self.network_encoding_closing}")
             result.append(
                 f'        , "{networkEncoding.topic}", "{networkEncoding.unit}")'
             )
         elif networkEncoding.id == "single_point":
             for field in networkEncoding.fields:
-                result.append(f"        {networkEncoding.start}")
+                result.append(f"        {self.network_encoding_start}")
                 result.append(f"             {self.decode_field_value(field)}")
-                result.append(f"        {networkEncoding.closing}")
+                result.append(f"        {self.network_encoding_closing}")
                 result.append(f'        , "{field.name}", "{field.unit}"), ')
         return result
 
