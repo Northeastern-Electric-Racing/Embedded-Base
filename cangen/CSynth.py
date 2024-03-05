@@ -41,7 +41,7 @@ class CSynth:
 
 	packed_struct_end: str = "    } msg_data;\n"
 
-	decode_close: str = ("    can_send_msg(&can, &mc_msg);\n}\n"  # Sending the CAN message
+	decode_close: str = ("    can_send_msg(can, &mc_msg);\n}\n"  # Sending the CAN message
 	)
 
 	master_mapping_import: str = (
