@@ -30,58 +30,20 @@ class CSynth:
 	A class to synthesize C from a given CANMsg spec.
 	"""
 
-	decode_data_import: str = (
-		'#include "can.h" \n#include <stdio.h>\n\n'  # Including the necessary headers
-	)
-
-	decode_return_type: str = "void"  # The return type of any decode function
-	packed_struct_value: str = (
-		f"    struct __attribute__((packed)) {{" # Initializing the packed strucct
-	)
-
-	packed_struct_end: str = "    } msg_data;\n"
-
-	decode_close: str = ("    can_send_msg(can, &mc_msg);\n}\n"  # Sending the CAN message
-	)
-
-	master_mapping_import: str = (
-		"use super::decode_data::*; \nuse super::data::Data; \n"  # Importing all the functions in decode_data.rs file and the Data struct
-	)
-
-	master_mapping_signature: str = (
-		"pub fn get_message_info(id: &u32) -> MessageInfo { \n   match id {"  # The signature of the master_mapping function
-	)
-
-	master_mapping_closing: str = (
-		"    _ => MessageInfo::new(decode_mock), \n    }\n}"  # The closing of the master_mapping function and the default case for the match statement that returns the mock decode function
-	)
-
 	# The main function of the CSynth class. Takes a list of CANMsgs and returns a Result object that contains the synthesized C code
 	def parse_messages(self, msgs: List[CANMsg]) -> Result:
 		result = Result("", "")
 
 		result.decode_data += self.decode_data_import
-		#result.decode_data += self.decode_mock
-
-		#result.master_mapping += self.master_mapping_import
-		#result.master_mapping += self.message_info
-		#result.master_mapping += self.master_mapping_signature
 
 		for msg in msgs:
 			result.decode_data += self.synthesize(msg) + "\n"
-			#result.master_mapping += self.map_msg_to_decoder(msg)
 
-		#result.master_mapping += self.master_mapping_closing
 		return result
-
-	# Helper function that maps a given CANMsg to its decode function
-	def map_msg_to_decoder(self, msg: CANMsg) -> str:
-		return f"    {msg.id} => MessageInfo::new({self.function_name(msg.desc)}),\n"
 
 	# Helper function that synthesizes the decode function for a given CANMsg
 	def synthesize(self, msg: CANMsg) -> str:
-		signature: str = self.signature(msg.desc)
-		length_check: str = self.add_length_check(msg.networkEncoding[0].fields)
+		signature: str = self.signature(msg.desc, msg.networkEncoding[0].fields)
 		generated_lines: list[str] = []
 
 		# Generate a line for each field in the message
@@ -115,10 +77,6 @@ class CSynth:
 				result.append(f"        {self.decode_field_value(field)} {field.name.replace('/', '_').lower()};\t/* {field.unit} */")
 		return result
 
-	def add_length_check(self, fields: List[CANField]) -> str:
-		fieldSize = sum(field.size for field in fields)
-		return f"if data.len() < {fieldSize} {{ return vec![]; }}"
-
 	def decode_field_value(self, field: CANField) -> str:
 		return f"{self.format_data(field, self.parse_decoders(field))}"
 
@@ -127,8 +85,14 @@ class CSynth:
 		return f"send_{desc.replace(' ', '_').lower()}"
 
 	# Helper function that generates the signature of a decode function for a given CANMsg based off the can message description
-	def signature(self, desc: str) -> str:
-		return f"{self.decode_return_type} {self.function_name(desc)}(can_t *can, uint8_t data[], uint8_t len)\n{{"
+	def signature(self, desc: str, fields: list[CANField]) -> str:
+		params : str = ""
+
+		for field in fields:
+			print(f'{self.format_data(field, self.parse_decoders(field))}, ')
+			params.concat(f'{self.format_data(field, self.parse_decoders(field))}, ')
+
+		return f"{self.decode_return_type} {self.function_name(desc)}(can_t *can, {params}uint8_t len)\n{{"
 
 	# Helper function that generates a line the data struct for a given CANField value
 	def finalize_line(self, topic: str, unit: str, val: str) -> str:
@@ -136,21 +100,38 @@ class CSynth:
 
 	# Helper function that parses the decoders for a given CANField by applying the decoders to the data and casting the result to the final type of the CANField.
 	def parse_decoders(self, field: CANField) -> str:
-		if isinstance(field.decodings, type(None)):
-			return f"data[{field.index}] as {field.final_type}"
+		if isinstance(field.encodings, type(None)):
+			return f"uint8_t "
 		else:
 			base: str
 			if field.size == 1:
 				base = f"data[{field.index}]"
 			else:
 				base = f"&data[{field.index}..{field.index + field.size}]"
-			for decoder in field.decodings:
+			for decoder in field.encodings:
 				base = f"{decoder.entry_type}"
 			return f"{base}"
 
 	# Helper function that formats the data for a given CANField based off the format of the CANField if it exists, returns the decoded data otherwise
 	def format_data(self, field: CANField, decoded_data: str) -> str:
 		cf = decoded_data
-		if field.format:
-			cf = f"fd::{field.format}({decoded_data})"
 		return cf
+
+class CSnippets:
+	"""
+	Container for the code needed for C compilation and running
+	"""
+
+	decode_data_import: str = (
+		'#include <stdio.h>\n#include <stdint.h>\n#include "can.h"\n\n'  # Including the necessary headers
+	)
+
+	decode_return_type: str = "void"  # The return type of any decode function
+	packed_struct_value: str = (
+		f"    struct __attribute__((packed)) {{" # Initializing the packed strucct
+	)
+
+	packed_struct_end: str = "    } msg_data;\n"
+
+	decode_close: str = ("    can_send_msg(can, &mc_msg);\n}\n"  # Sending the CAN message
+	)
