@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define HEX_LABELS_H "\t0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n"
+#define HEX_LABELS_H "\t 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n"
 #define SPACING "  "
 
 /**
@@ -33,7 +33,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
  * @param start
  * @param end
  */
-static int i2cdump(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t offset, uint8_t start, uint8_t end);
+static int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mode, uint8_t start, uint8_t end);
 
 
 #endif // I2C_UTILITY_H
