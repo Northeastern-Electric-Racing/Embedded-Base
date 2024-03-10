@@ -5,7 +5,7 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
 
-typedef HAL_StatusTypedef (*eeprom_write)(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint8_t *data, uint16_t size);
+typedef HAL_StatusTypedef (*eeprom_write)(I2C_HandleTypeDef*, uint16_t, uint8_t, uint16_t);
 typedef HAL_StatusTypedef (*eeprom_read)(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint8_t *data, uint16_t size);
 typedef HAL_StatusTypedef (*eeprom_delete)(I2C_HandleTypeDef *i2c_handle, uint16_t mem_address, uint16_t size);
 
@@ -28,7 +28,7 @@ typedef struct {
 void eeprom_init(eepromfs_t *eeprom, eeprom_write write_cb, eeprom_read read_cb, eeprom_delete delete_cb);
 
 /* declaration of function taking in array of structures for filling in the parameters of the fault conditions*/
-void eeprom_partition(eepromfs_t eeprom, struct eeprom_partition partition_list[], int array_size);
+void eeprom_partition(eepromfs_t *eeprom, eeprom_partition_t partition_list[], int array_size);
 
 /* Retrieve the index of a certain key */
 int eeprom_get_index(eepromfs_t eeprom, char *key);

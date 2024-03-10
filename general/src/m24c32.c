@@ -3,7 +3,7 @@
 #define M24C32_I2C_ADDR     0x50
 #define M24C32_PAGE_SIZE    32
 
-uint16_t m24c32_check_size(uint16_t size)
+static uint16_t check_size(uint16_t size)
 {
     if(size < M24C32_PAGE_SIZE) return size;
     else return M24C32_PAGE_SIZE;
