@@ -11,6 +11,23 @@ class CANMsg:
     id: str     # Hex value of CAN ID, i.e. `0x88`
     desc: str   # Brief name of CAN message, used for generating function names
     fields: list[CANField] # List of CAN fields in the message (Optional to allow for only networkEncoding)
+    msg_type: str = "*"*42
 
     def __setstate__(self, state):
         self.__init__(**state)
+
+@dataclass
+class BroadcastMsg(CANMsg):
+    """
+    Represents a CAN Msg that is _broadcast from_ the node
+    """
+
+    msg_type = "broadcast"
+
+@dataclass
+class CommandMsg(CANMsg):
+    """
+    Represents a CAN Msg that is _commanded to_ the node
+    """
+
+    msg_type = "broadcast"
