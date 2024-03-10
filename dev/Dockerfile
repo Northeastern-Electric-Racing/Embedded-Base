@@ -18,7 +18,22 @@ RUN apt-get update && apt-get install -y \
     clang-format \
     tmux \
     libncurses5 \
-    linux-tools-generic
+    linux-tools-generic \
+    gcc-arm-linux-gnueabihf \
+    g++-arm-linux-gnueabihf \
+    pkg-config \
+    cmake \
+    libssl-dev \
+    python3 \
+    python3-pip
+
+# Install and setup rust
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN rustup target add armv7-unknown-linux-gnueabihf
+
+# Install Python YAML Parser
+RUN pip install "ruamel.yaml<0.18.0"
 
 RUN wget https://builds.renode.io/renode-1.14.0+20231003gitf86ac3cf.linux-portable.tar.gz
 RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1
