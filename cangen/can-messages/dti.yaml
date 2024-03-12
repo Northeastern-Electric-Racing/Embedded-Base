@@ -1,0 +1,599 @@
+!Messages
+msgs: 
+#DTI BROADCAST
+- !CANMsg
+    id: "0x2008"
+    desc: "ERPM/Duty/Input_Voltage - Status"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "DTI/ERPM"
+            unit: "ERPM"
+            size: 4
+            decodings:
+                - !TwosComplement
+                    bits: 16
+            format: "Electrical Rpm"
+        - !CANField
+            name: "DTI/Duty"
+            unit: "%"
+            size: 2
+            decodings:
+                - !TwosComplement
+                    bits: 8
+            format: "Duty Cycle"
+        - !CANField
+            name: "DTI/Input_Voltage"
+            unit: "V"
+            size: 2
+            decodings:
+                - !TwosComplement
+                    bits: 8
+#DTI BROADCAST
+- !CANMsg
+    id: "0x2108"
+    desc: "MC_Currents - Status"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "AC_Current"
+            unit: "A"
+            size: 2
+            decodings:
+                - !TwosComplement
+                    bits: 8
+        - !CANField
+            name: "DC_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 8
+        - !CANField
+            name: "Reserved"
+            unit: ""
+            size: 4
+            decodings:
+            - !BigEndian
+                bits: 8
+#DTI_BROADCAST
+- !CANMsg
+    id: "0x2208"
+    desc: "MC_Temps/Fault_Code"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Controller Temperature"
+            size: 2
+            unit: "C"
+            decodings:
+            - !TwosComplement
+                bits: 8
+     - !SinglePoint
+        fields:
+        - !CANField
+            name: "Motor Temperature"
+            size: 2
+            unit: "C"
+            decodings:
+            - !TwosComplement
+                bits: 8
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Fault Code"
+            size: 1
+            unit: ""
+            # 0x00 - No Faults
+            # 0x01 - Overvoltage
+            # 0x02 - Undervoltage
+            # 0x03 - DRV
+            # 0x04 - ABS. Overcurrent
+            # 0x05 - CTLR Overtemp
+            # 0x06 - Motor Overtemp
+            # 0x07 - Sensor wire fault
+            # 0x08 - Sensor general fault
+            # 0x09 - CAN Command Error
+            # 0x0A - Analog Input Error
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Reserved"
+            size: 3
+            unit: ""
+            decodings:
+            - !BigEndian
+                bits: 24
+#DTI_BROADCAST
+- !CANMsg
+    id: "0x2308"
+    desc: "MC_FOC-Algorithm"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Component_Id"
+            size: 4
+            unit: "A"
+            decodings: 
+            - !TwosComplement
+                bits: 32
+            format: "FOC Component ID"
+        - !CANField
+            name: "Component_Iq"
+            size: 4
+            unit: "A"
+            decodings: 
+            - !TwosComplement
+                bits: 32
+# DTI_BROADCAST        
+- !CANMsg
+    id: "0x2408"
+    desc: "MC/General_Data"
+    networkEncoding: 
+    - !SinglePoint
+        fields: 
+        - !CANField
+            name: "Throttle_Signal-Status"
+            unit: "%"
+            size: 1
+            decodings:
+            - !TwosComplement
+                bits: 8
+        - !CANField
+            name: "Brake_Signal-Status"
+            unit: "%"
+            size: 1
+            decodings:
+            - !TwosComplement
+                bits: 8
+        - !CANField
+            name: "Digital_Inputs"
+            unit: ""
+            size: 1
+            index: 0
+            decodings:
+            - !BigEndian
+                bits: 4
+              # each bit corresponds to a digital input
+              # 1: Digital input active
+              # 0: Digital input inactive
+        - !CANField
+            name: "Digital_Outputs"
+            unit: ""
+            size: 1
+            index: 4
+            decodings: 
+            - !BigEndian
+                bits: 4
+              # each bit corresponds to a digital output
+              # 1: Digital output active
+              # 0: Digital output inactive
+        - !CANField
+            name: "Drive_Enable"
+            unit: ""
+            size: 1
+            decodings: 
+            - !BigEndian
+                bits: 8
+        - !CANField
+            name: "Cap_Temp_Limit"
+            unit: ""
+            size: 1
+            index: 0
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "DC_Current_Limit"
+            unit: ""
+            size: 1
+            index: 1
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Drive_Enable_Limit"
+            unit: ""
+            size: 1
+            index: 2
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "IGBT_Acc_Temp_Limit"
+            unit: ""
+            size: 1
+            index: 3
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "IGBT_Temp_Limit"
+            unit: ""
+            size: 4
+            index: 0
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Input_Voltage_Limit"
+            unit: ""
+            size: 1
+            index: 5
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Motor_Acc_Temp_Limit"
+            unit: ""
+            size: 1
+            index: 6
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Motor_Temp_Limit"
+            size: 1
+            index: 7
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "RPM_Min_Limit"
+            size: 1
+            index: 0
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "RPM_Max_Limit"
+            size: 1
+            index: 1
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Power_Limit"
+            size: 1
+            index: 2
+            decodings:
+            - !BigEndian
+                bits: 1
+        - !CANField
+            name: "Reserved"
+            size: 1
+            index: 3
+            decodings:
+            - !BigEndian
+                bits: 5
+        - !CANField
+            name: "Reserved"
+            size: 1
+            decodings:
+            - !BigEndian
+                bits: 8
+        - !CANField
+            name: "CAN_Map_Version"
+            size: 1
+            decodings:
+            - !BigEndian
+                bits: 8
+            
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0108"
+    desc: "AC_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "AC_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0208"
+    desc: "Brake_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Brake_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0308"
+    desc: "Target_ERPM_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Target_ERPM"
+            unit: "ERPM"
+            size: 3
+            decodings:
+            - !TwosComplement
+                bits: 24
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 5
+            decodings: 
+            - !TwosComplement
+                bits: 40
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0408"
+    desc: "Target_Position_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Target_Position"
+            unit: "Degrees"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0508"
+    desc: "Relative_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Relative_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0608"
+    desc: "Relative_Brake_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Relative_Brake_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+        
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0708"
+    desc: "Set_Digital_Output"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Digital_Output_1"
+            unit: ""
+            size: 1
+            index: 0
+            decodings:
+            - !TwosComplement
+                bits: 1
+        - !CANField
+        # Fill with FFs
+            name: "Digital_Output_2"
+            unit: ""
+            size: 1
+            index: 1
+            decodings: 
+            - !TwosComplement
+                bits: 1
+        - !CANField
+        # Fill with FFs
+            name: "Digital_Output_3"
+            unit: ""
+            size: 1
+            index: 2
+            decodings: 
+            - !TwosComplement
+                bits: 1
+        - !CANField
+        # Fill with FFs
+            name: "Digital_Output_4"
+            unit: ""
+            size: 1
+            index: 3
+            decodings: 
+            - !TwosComplement
+                bits: 1
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 1
+            index: 4
+            decodings: 
+            - !TwosComplement
+                bits: 4
+        - !CANField
+        # Fill with FFs
+            name: "Digital_Output_2"
+            unit: ""
+            size: 7
+            decodings: 
+            - !TwosComplement
+                bits: 56
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0808"
+    desc: "Set_Max_AC_Current"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Max_AC_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0908"
+    desc: "Max_Brake_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Max_AC_Brake_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0A08"
+    desc: "Max_DC_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Max_DC_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0B08"
+    desc: "Max_DC_Brake_Current_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "Max_DC_Brake_Current"
+            unit: "A"
+            size: 2
+            decodings:
+            - !TwosComplement
+                bits: 16
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 6
+            decodings: 
+            - !TwosComplement
+                bits: 48
+
+#DTI_COMMAND
+- !CANMsg
+    id: "0x0C08"
+    desc: "Drive_Enable_Command"
+    networkEncoding: 
+    - !SinglePoint
+        fields:
+        - !CANField
+        # 0 - Disable
+        # 1 - Enable
+            name: "Drive_Enable"
+            unit: ""
+            size: 1
+            decodings:
+            - !BigEndian
+                bits: 8
+        - !CANField
+        # Fill with FFs
+            name: "Unused"
+            unit: ""
+            size: 7
+            decodings: 
+            - !TwosComplement
+                bits: 56
