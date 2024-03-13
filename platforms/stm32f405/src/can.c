@@ -1,6 +1,7 @@
 #include "can.h"
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /* NOTE: STM32F405 will have MAX of 3 CAN buses */
 #define MAX_CAN_BUS	3
@@ -10,7 +11,8 @@ can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
 
 static can_callback_t find_callback(CAN_HandleTypeDef *hcan)
 {
-	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
+	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) 
+	{
 		if (hcan == can_struct_list[i]->hcan)
 			return can_struct_list[i]->callback;
 	}
@@ -26,7 +28,8 @@ static uint8_t add_interface(can_t *interface)
 			return -1;
 
 		/* If empty, add interface */
-		if (can_struct_list[i]->hcan == NULL) {
+		if (can_struct_list[i] == 0x0) 
+		{
 			can_struct_list[i] = interface;
 			return 0;
 		}
@@ -53,7 +56,8 @@ HAL_StatusTypeDef can_init(can_t *can)
 	uint16_t high_id = can->id_list[0];
 	uint16_t low_id = can->id_list[0];
 
-	for (uint8_t i = 0; i < can->id_list_len; i++) {
+	for (uint8_t i = 0; i < can->id_list_len; i++) 
+	{
 		if (can->id_list[i] > high_id)
 			high_id = can->id_list[i];
 		if (can->id_list[i] < low_id)
@@ -106,6 +110,8 @@ HAL_StatusTypeDef can_init(can_t *can)
 	/* Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING */
 	err = add_interface(can);
 
+
+
 	return err;
 }
 
@@ -125,7 +131,7 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 
 	if (HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox))
 		return HAL_ERROR;
-
+	
 	return HAL_OK;
 }
 
