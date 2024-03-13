@@ -6,12 +6,6 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
 
-#define MAX7314_INPUT_PORTS_0_TO_7  0x00
-#define MAX7314_INPUT_PORTS_8_TO_15 0x01
-#define MAX7314_PORT_CONFIG_0_TO_7  0x06
-#define MAX7314_PORT_CONFIG_8_TO_15 0x07
-#define MAX7314_CONFIG_REG          0x0F
-
 typedef enum {
     MAX7314_PINS_0_TO_7 = 0,
     MAX7314_PINS_8_TO_15 = 1,
@@ -38,6 +32,10 @@ typedef struct {
 } max7314_t;
 
 HAL_StatusTypeDef max7314_init(max7314_t *max, I2C_HandleTypeDef *i2c_handle);
+
+/** 
+ * @brief Write to the configuration register
+ */
 
 HAL_StatusTypeDef max7314_write_config(max7314_t *max, uint8_t *config);
 
