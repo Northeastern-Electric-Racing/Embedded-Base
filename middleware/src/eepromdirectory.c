@@ -1,6 +1,30 @@
 #include "eepromdirectory.h"
 #include "general/include/m24c32.h"
 
+
+/*   user defined data type for taking in
+  1. id of each fault
+  2. size of the fault
+ */
+
+
+/* function definition for entering parameters of the fault coniditon
+passing the array of struct to the function */
+void eeprom_init(struct eeprom_partition partition_list[], int array_size)
+{
+    eeprom_data[0].address = 0;
+    eeprom_data[0].size = partition_list[0].size;
+    eeprom_data[0].id = partition_list[0].id;
+
+    for (int i = 1; i < array_size; i++) {
+        eeprom_data[i].id = partition_list[i].id;
+        eeprom_data[i].size;
+
+        // calculating the address through the logic defined in shepherd
+        eeprom_data[i].address = eeprom_data[i-1].size + eeprom-data[i-1].address;
+    }
+}
+
 uint16_t eepromGetAddress(char *key)
 {
     /* find the index of the key in the eeprom_data array */
@@ -88,3 +112,4 @@ bool eeprom_write_data_index(uint16_t address, void *data, uint16_t size)
     /* write data to eeprom given page, offset, and size of data */
     eeprom_write(address, data, size);
 }
+

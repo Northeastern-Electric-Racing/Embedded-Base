@@ -1,0 +1,57 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x500"
+    desc: "MPU Acceleromter"
+    networkEncoding: 
+    - !CSV
+        topic: "MPU/Accel"
+        unit: "g"
+        fields: 
+        - !CANField
+            name: "MPU/Accel/X"
+            unit: "g"
+            size: 2
+            decodings: 
+            - !BigEndian
+                bits: 8
+            format: "acceleration"
+        - !CANField
+            name: "MPU/Accel/Y"
+            unit: "g"
+            size: 2
+            decodings: 
+            - !BigEndian
+                bits: 8
+            format: "acceleration"
+        - !CANField
+            name: "MPU/Accel/Z"
+            unit: "g"
+            size: 2
+            decodings: 
+            - !BigEndian
+                bits: 8
+            format: "acceleration"
+
+- !CANMsg
+    id: "0x501"
+    desc: "MPU Status"
+    networkEncoding:
+    - !SinglePoint
+        fields:
+        - !CANField
+            name: "MPU/State/Mode"
+            unit: ""
+            size: 1
+        - !CANField
+            name: "MPU/State/Torque_Limit_Percentage"
+            unit: ""
+            size: 1
+        - !CANField
+            name: "MPU/State/Regen_Strength"
+            unit: ""
+            size: 1
+        - !CANField
+            name: "MPU/State/Traction_Control"
+            unit: ""
+            size: 1

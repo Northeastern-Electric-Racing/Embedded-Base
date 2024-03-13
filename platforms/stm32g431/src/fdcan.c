@@ -47,7 +47,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 	}
 }
 
-
 HAL_StatusTypeDef can_init(can_t *can)
 {
 	/* set up filter */
@@ -99,9 +98,6 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	tx_header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
 	tx_header.BitRateSwitch = FDCAN_BRS_OFF;
 	tx_header.FDFormat = FDCAN_CLASSIC_CAN;
-	//Function of below attributes is currently unknown.
-	//tx_header.TxEventFifoControl = 
-	//tx_header.MessageMarker = 
 
 	uint32_t tx_mailbox;
 	if (HAL_FDCAN_GetTxFifoFreeLevel(can->hcan) == 0)
