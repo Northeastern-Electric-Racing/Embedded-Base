@@ -9,7 +9,7 @@
  * https://www.mouser.com/datasheet/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf  --Datasheet
  *
  */
-#define SHT30_I2C_ADDR             0x44     /* If ADDR (pin2) is connected to VDD, 0x45 */
+#define SHT30_I2C_ADDR             0x44 << 1u    /* If ADDR (pin2) is connected to VDD, 0x45 */
 #define SHT30_READSTATUS           0xF32D   /* Read Out of Status Register */
 #define SHT30_CLEARSTATUS          0x3041   /* Clear Status */
 #define SHT30_SOFTRESET            0x30A2   /* Soft Reset */
