@@ -46,39 +46,24 @@ typedef struct
 /**
  * @brief Initializes an SHT30 Driver
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef sht30_init(sht30_t *sht30);
 
 /**
- * @brief Resets the SHT30 chip
- *
- * @param sht30
- * @return HAL_StatusTypeDef
- */
-HAL_StatusTypeDef sht30_reset(sht30_t *sht30);
-
-/**
- * @brief Checks if the internal heater is enabled
- *
- * @param sht30
- * @return HAL_StatusTypeDef
- */
-HAL_StatusTypeDef sht30_is_heater_enabled(sht30_t *sht30);
-
-/**
  * @brief Toggles the status of the internal heater
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
+ * @param enable - true to enable, false to disable
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30);
+HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30, bool enable);
 
 /**
  * @brief Retrieves the temperature and humidity
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30);
