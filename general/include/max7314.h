@@ -13,11 +13,6 @@ typedef enum {
 } max7314_pin_regs_t;
 
 typedef enum {
-    MAX7314_PIN_OFF = 0,
-    MAX7314_PIN_ON = 1
-} max7314_pin_states_t;
-
-typedef enum {
     MAX7314_PIN_MODE_OUTPUT = 0,
     MAX7314_PIN_MODE_INPUT = 1
 } max7314_pin_modes_t;
@@ -56,11 +51,11 @@ HAL_StatusTypeDef max7314_read_pins(max7314_t *max, max7314_pin_regs_t reg, uint
 /**
  * @brief Turn an output pin on or off
  */
-HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t state);
+HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, bool state);
 
 /** 
  * @brief Read the state of an output pin
  */
-HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t *state);
+HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, bool* state);
 
 #endif // MAX7314_H
