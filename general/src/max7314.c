@@ -141,7 +141,7 @@ HAL_StatusTypeDef max7314_read_pins(max7314_t *max, max7314_pin_regs_t reg, uint
     return HAL_OK;
 }
 
-HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t state) 
+HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, bool state) 
 {
     uint8_t pin_data[8];
     HAL_StatusTypeDef status;
@@ -168,7 +168,7 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pi
     return status;
 }   
 
-HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t *state) 
+HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, bool* state) 
 {
     uint8_t pin_data[8];
     HAL_StatusTypeDef status;
