@@ -11,11 +11,11 @@
 #define TIMEOUT 2000
 
 
-HAL_StatusTypeDef read_reg(max7314_t *max, uint16_t address, uint8_t *data) {
+HAL_StatusTypeDef read_reg(max7314_t *max, uint16_t address, uint8_t data[8]) {
     return HAL_I2C_Mem_Read(max->i2c_handle, max->dev_addr, address, I2C_MEMADD_SIZE_8BIT, data, REG_SIZE, TIMEOUT);
 }
 
-HAL_StatusTypeDef write_reg(max7314_t *max, uint16_t address, uint8_t *data) {
+HAL_StatusTypeDef write_reg(max7314_t *max, uint16_t address, uint8_t data[8]) {
     return HAL_I2C_Mem_Write(max->i2c_handle, max->dev_addr, address, I2C_MEMADD_SIZE_8BIT, data, REG_SIZE, TIMEOUT);
 }
 
@@ -46,24 +46,24 @@ HAL_StatusTypeDef max7314_set_pin_mode(max7314_t *max, uint8_t pin, max7314_pin_
 
     if (pin < 7) {
         /* Read current port configuration */
-        status = read_reg(max, MAX7314_PORT_CONFIG_0_TO_7, &conf_data);
+        status = read_reg(max, MAX7314_PORT_CONFIG_0_TO_7, conf_data);
         if (status != HAL_OK) 
             return status;
 
         /* Change port configuration of desired pin */
         conf_data[pin] = mode;
-        status = write_reg(max, MAX7314_PORT_CONFIG_0_TO_7, &conf_data);
+        status = write_reg(max, MAX7314_PORT_CONFIG_0_TO_7, conf_data);
         if (status != HAL_OK) 
             return status;
 
     } else {
         /* Same as above but for different register */
-        status = read_reg(max, MAX7314_PORT_CONFIG_8_TO_15, &conf_data);
+        status = read_reg(max, MAX7314_PORT_CONFIG_8_TO_15, conf_data);
         if (status != HAL_OK) 
             return status;
         
         conf_data[pin - REG_SIZE] = mode;
-        status = write_reg(max, MAX7314_PORT_CONFIG_8_TO_15, &conf_data);
+        status = write_reg(max, MAX7314_PORT_CONFIG_8_TO_15, conf_data);
         if (status != HAL_OK) 
             return status;
     }
@@ -102,17 +102,17 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, uint8_t *data)
 
     if (pin < 8) {
         /* similar to set_pin_mode */
-        status = read_reg(max, MAX7314_INPUT_PORTS_0_TO_7, &pin_data);
+        status = read_reg(max, MAX7314_INPUT_PORTS_0_TO_7, pin_data);
         if (status != HAL_OK) 
             return status;
 
-        data = pin_data[pin];
+        *data = pin_data[pin];
     } else {
-        status = read_reg(max, MAX7314_INPUT_PORTS_8_TO_15, &pin_data);
+        status = read_reg(max, MAX7314_INPUT_PORTS_8_TO_15, pin_data);
         if (status != HAL_OK) 
             return status;
 
-        data = pin_data[pin - REG_SIZE];
+        *data = pin_data[pin - REG_SIZE];
     }
 
     return HAL_OK;
@@ -147,7 +147,7 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pi
     HAL_StatusTypeDef status;
     
     /* 2 pins, each 4 bits, per register */
-    status = read_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), &pin_data);
+    status = read_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), pin_data);
     if (status != HAL_OK) 
         return status;
 
@@ -163,7 +163,7 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pi
         pin_data[7] = state;
     }
     /* Write to register containing the desired pin */
-    status = write_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), &pin_data);
+    status = write_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), pin_data);
     
     return status;
 }   
@@ -173,7 +173,7 @@ HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, max7314_p
     uint8_t pin_data[8];
     HAL_StatusTypeDef status;
     
-    status = read_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), &pin_data);
+    status = read_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), pin_data);
     if (status != HAL_OK) 
             return status;
     
