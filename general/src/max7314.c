@@ -141,7 +141,7 @@ HAL_StatusTypeDef max7314_read_pins(max7314_t *max, max7314_pin_regs_t reg, uint
     return HAL_OK;
 }
 
-HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t *state) 
+HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pin_states_t state) 
 {
     uint8_t pin_data[8];
     HAL_StatusTypeDef status;
@@ -152,15 +152,15 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint16_t pin, max7314_pi
         return status;
 
     if (pin % 2 == 0) {
-        pin_data[0] = *state;
-        pin_data[1] = *state;
-        pin_data[2] = *state;
-        pin_data[3] = *state;
+        pin_data[0] = state;
+        pin_data[1] = state;
+        pin_data[2] = state;
+        pin_data[3] = state;
     } else {
-        pin_data[4] = *state;
-        pin_data[5] = *state;
-        pin_data[6] = *state;
-        pin_data[7] = *state;
+        pin_data[4] = state;
+        pin_data[5] = state;
+        pin_data[6] = state;
+        pin_data[7] = state;
     }
     /* Write to register containing the desired pin */
     status = write_reg(max, FIRST_OUTPUT_REGISTER + (pin % 2), &pin_data);
