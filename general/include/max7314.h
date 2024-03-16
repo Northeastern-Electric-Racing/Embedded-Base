@@ -5,6 +5,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_i2c.h"
+#include <stdbool.h>
 
 typedef enum {
     MAX7314_PINS_0_TO_7 = 0,
