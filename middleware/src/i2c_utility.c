@@ -7,8 +7,9 @@ char *hex_labels[] = {"00:", "10:", "20:", "30:", "40:", "50:",
  * TODO: Make sure the buffer is the right size.
  * TODO: Implement modes for I2C Communication.
  * TODO: Implement for flags.
+ * Each line is around 
  */
-static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end) {
+int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end) {
     // Initialize the buffer and local variables
     HAL_StatusTypeDef ret;
     uint8_t row = 1;
@@ -19,35 +20,30 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
 
     // Loop through each device address from the start to end
     for(int i = 0x00U; i <= 0x70U; i+=0x10U) {
-        buffer[row] = hex_labels[row - 1];
+        strcat(buffer[row], hex_labels[row - 1]);
         for(int j = 0; j < 16; j++) {
             uint8_t devAddr = i + j;
             // out of range reading
-            if(devAddr < start) {
-                status = SPACING;
-            }
-            else if (devAddr > end) {
-                status = SPACING;
+            if(devAddr < start || devAddr > end) {
+                strcpy(status, SPACING);
             }
             // 
             else {
                 // Use HAL_I2C_IsDeviceReady
-                ret = HAL_I2C_IsDeviceReady(hi2c, ((uint16_t) (devAddr << 1)), MAX_TRIALS, HAL_MAX_DELAY); 
+                ret = HAL_I2C_IsDeviceReady(hi2c, (devAddr << 1), MAX_TRIALS, HAL_MAX_DELAY); 
         
                 // Device status case
                 switch (ret) {
                     case HAL_BUSY:
-                        status = "UU"; // the bus is considered busy
+                        strcpy(status, "UU"); // the bus is considered busy
                         break;
                     case HAL_OK:
                         utoa(devAddr, status, HEX); // reads the hexadecimal address and turns it into a string
                         break;
-                    case HAL_TIMEOUT:
-                        status = "--"; // no response from device
-                        break;
                     case HAL_ERROR:
+                    case HAL_TIMEOUT:
                     default:
-                        return HAL_ERROR; // ask for help on error handling.
+                        strcpy(status, "--"); // no response from device
                         break;
                 }
             }
@@ -73,17 +69,42 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
  * HAL_I2C_Master_Receive() - requests data from slave device. (BLOCKING)
  * HAL_I2C_Mem_Read() - requests data from slave device from a specific memory address. (NON-BLOCKING)
  */
-static int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mode, uint8_t start, uint8_t end) {
+int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mode, uint8_t start, uint8_t end) {
     // Prepare the buffer
     int row = 0;
 
-    // Add the labels to the first row
-    buffer[row] = HEX_LABELS_H;
-    row ++;
-
     // need to read from the given address of a I2C Bus.
     switch(mode) {
-        case 'w': // A word (4 bytes or 16-bit)
+        case 'w': // A word (4 bytes or 32-bit)
+            buffer[row] = "\t\t0    4    8    b";
+            row ++;
+
+            uint8_t data1 = 0;            
+            for(unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
+                buffer[row] = hex_labels[row - 1];
+                char data_str[sizeof(char) * 4 + 1];
+
+                for(unsigned int j = 0x00U; j <= 0x0fU; j += 0x04U) {
+                    uint16_t reg = i + j;
+                    // read memory address
+                    if (HAL_I2C_Mem_Read(hi2c, (devAddress << 1), reg, I2C_MEMADD_SIZE_8BIT, &data1, 4, HAL_MAX_DELAY) != HAL_OK) {
+                        // error
+                        return HAL_ERROR;
+                    }
+
+                    // convert data into char text
+                    utoa(data1, data_str, HEX);
+
+                    // display the value from the memory address
+                    strcat(buffer[row], SPACING);
+                    strcat(buffer[row], data_str);
+
+                    // reset the string array
+                    memset(data_str, 0, strlen(data_str));
+                }
+                strcat(buffer[row], "\n");
+                row++;
+            }
             break;
         case 's': // A SMBus Block
             break;
@@ -91,14 +112,20 @@ static int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, 
             break;
         case 'b': // Byte sized (default)
         default:
-            uint8_t data;
-            for (int i = 0x00U; i <= 0xf0U; i += 0x10U) {
+            // Add the labels to the first row
+            buffer[row] = HEX_LABELS_H;
+            row ++;
+
+            uint8_t data = 0;
+            for (unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
+                // add the vertical labels 
                 buffer[row] = hex_labels[row - 1];
-                char data_str[sizeof(char) * 4 + 1];
-                for(int j = 0x00U; j <= 0x0fU; j++) {
+                char data_str[sizeof(char) * 2 + 1];
+
+                for(unsigned int j = 0x00U; j <= 0x0fU; j++) {
                     uint16_t reg = i + j; // get the memory address
                     // read memory address
-                    if (HAL_I2C_Mem_Read(hi2c, (devAddress << 1), reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY) != HAL_OK) {
+                    if (HAL_I2C_Mem_Read(hi2c, (devAddress << 1), reg, I2C_MEMADD_SIZE_8BIT, &data, 1, HAL_MAX_DELAY) != HAL_OK) {
                         // error
                         return HAL_ERROR;
                     }
@@ -113,6 +140,7 @@ static int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, 
                     // reset the string array
                     memset(data_str, 0, strlen(data_str));
                 }
+                strcat(buffer[row], "\n");
                 row++;
             }
             break;

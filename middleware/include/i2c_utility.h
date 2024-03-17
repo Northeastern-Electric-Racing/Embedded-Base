@@ -2,7 +2,6 @@
 #define I2C_UTILITY_H
 
 #include "stm32f4xx_hal.h"
-#include "timer.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +20,7 @@
  * 
  * @return int
  */
-static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end);
+int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end);
 
 /**
  * @brief Reads and dumps register data at a given register address and i2c bus.
@@ -33,7 +32,7 @@ static int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t s
  * @param start
  * @param end
  */
-static int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mode, uint8_t start, uint8_t end);
+int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mode, uint8_t start, uint8_t end);
 
 
 #endif // I2C_UTILITY_H
