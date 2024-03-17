@@ -1,5 +1,7 @@
 #include "i2c_utility.h"
+
 #define MAX_TRIALS 3    // Max tries to probe
+#define TIMEOUT 50
 #define HEX 16
 char *hex_labels[] = {"00:", "10:", "20:", "30:", "40:", "50:", 
     "60:", "70:", "80:", "90:", "a0:", "b0:", "c0:", "d0:", "e0:", "f0:"};
@@ -19,9 +21,9 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
     buffer[0] = HEX_LABELS_H; //add labels to the first row of the buffer
 
     // Loop through each device address from the start to end
-    for(int i = 0x00U; i <= 0x70U; i+=0x10U) {
+    for(unsigned int i = 0x00U; i <= 0x70U; i+=0x10U) {
         strcat(buffer[row], hex_labels[row - 1]);
-        for(int j = 0; j < 16; j++) {
+        for(unsigned int j = 0x00U; j < 0x10U; j += 0x01U) {
             uint8_t devAddr = i + j;
             // out of range reading
             if(devAddr < start || devAddr > end) {
@@ -30,7 +32,7 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
             // 
             else {
                 // Use HAL_I2C_IsDeviceReady
-                ret = HAL_I2C_IsDeviceReady(hi2c, (devAddr << 1), MAX_TRIALS, HAL_MAX_DELAY); 
+                ret = HAL_I2C_IsDeviceReady(hi2c, (devAddr << 1), MAX_TRIALS, TIMEOUT); 
         
                 // Device status case
                 switch (ret) {
