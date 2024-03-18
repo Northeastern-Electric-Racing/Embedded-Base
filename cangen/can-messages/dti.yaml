@@ -3,7 +3,7 @@ msgs:
 #DTI BROADCAST
 - !CANMsg
     id: "0x416"
-    desc: "ERPM/Duty/Input_Voltage - Status"
+    desc: "ERPM_Duty_Input_Voltage_Status"
     fields:
     - !DiscreteField
         name: "DTI/RPM/ERPM"
@@ -30,7 +30,7 @@ msgs:
 #DTI BROADCAST
 - !CANMsg
     id: "0x436"
-    desc: "Currents - Status"
+    desc: "Currents_Status"
     fields:
     - !DiscreteField
         name: "DTI/Power/AC_Current"
@@ -58,7 +58,7 @@ msgs:
 #DTI_BROADCAST
 - !CANMsg
     id: "0x456"
-    desc: "Temps/Fault_Code - Status"
+    desc: "Temps_Fault_Code_Status"
     fields:
     - !DiscreteField
         name: "DTI/Temps/Controller_Temperature"
@@ -104,7 +104,7 @@ msgs:
 #DTI_BROADCAST
 - !CANMsg
     id: "0x476"
-    desc: "MC_FOC-Algorithm"
+    desc: "MC_FOC_Algorithm"
     fields:
     - !DiscreteField
         name: "DTI/FOC/Component_Id"
@@ -124,7 +124,7 @@ msgs:
 # DTI_BROADCAST        
 - !CANMsg
     id: "0x496"
-    desc: "MC/General_Data"
+    desc: "MC_General_Data"
     fields: 
     - !DiscreteField
         name: "DTI/General/Throttle_Signal"
