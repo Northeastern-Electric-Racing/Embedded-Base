@@ -1,15 +1,12 @@
 #include "i2c_utility.h"
 
-#define MAX_TRIALS 3    // Max tries to probe
-#define TIMEOUT 50
-#define HEX 16
 char *hex_labels[] = {"00:", "10:", "20:", "30:", "40:", "50:", 
     "60:", "70:", "80:", "90:", "a0:", "b0:", "c0:", "d0:", "e0:", "f0:"};
+
 /**
- * TODO: Make sure the buffer is the right size.
  * TODO: Implement modes for I2C Communication.
  * TODO: Implement for flags.
- * Each line is around 
+ * TODO: Check for error handling
  */
 int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, uint8_t end) {
     // Initialize the buffer and local variables
@@ -18,7 +15,7 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
     char status[sizeof(uint8_t) * 8 + 1];
 
     // Add to the appropriate buffer
-    buffer[0] = HEX_LABELS_H; //add labels to the first row of the buffer
+    buffer[0] = HEX_LABELS; //add labels to the first row of the buffer
 
     // Loop through each device address from the start to end
     for(unsigned int i = 0x00U; i <= 0x70U; i+=0x10U) {
@@ -29,7 +26,7 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
             if(devAddr < start || devAddr > end) {
                 strcpy(status, SPACING);
             }
-            // 
+            // in range 
             else {
                 // Use HAL_I2C_IsDeviceReady
                 ret = HAL_I2C_IsDeviceReady(hi2c, (devAddr << 1), MAX_TRIALS, TIMEOUT); 
@@ -45,7 +42,7 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
                     case HAL_ERROR:
                     case HAL_TIMEOUT:
                     default:
-                        strcpy(status, "--"); // no response from device
+                        strcpy(status, "--"); // no response from device or not found
                         break;
                 }
             }
@@ -67,7 +64,7 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start, u
 }
 
 /**
- * TODO: Implementation of i2cdump using HAL_I2C_Master_Receive
+ * TODO: Implement different reading modes
  * HAL_I2C_Master_Receive() - requests data from slave device. (BLOCKING)
  * HAL_I2C_Mem_Read() - requests data from slave device from a specific memory address. (NON-BLOCKING)
  */
@@ -115,7 +112,7 @@ int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mo
         case 'b': // Byte sized (default)
         default:
             // Add the labels to the first row
-            buffer[row] = HEX_LABELS_H;
+            buffer[row] = HEX_LABELS;
             row ++;
 
             uint8_t data = 0;
@@ -149,4 +146,13 @@ int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer, char mo
     }
     // nominal return
     return HAL_OK;
+}
+
+/**
+ * @warning serial_print max size is 128 bytes.
+ */
+void printResult(char **buffer, int len) {
+    for(int i = 0; i < len; i++) {
+        serial_print(buffer[i]);
+    }
 }
