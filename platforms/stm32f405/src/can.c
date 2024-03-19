@@ -26,7 +26,7 @@ static uint8_t add_interface(can_t *interface)
 			return -1;
 
 		/* If empty, add interface */
-		if (can_struct_list[i]->hcan == NULL) {
+		if (can_struct_list[i] == NULL) {
 			can_struct_list[i] = interface;
 			return 0;
 		}
