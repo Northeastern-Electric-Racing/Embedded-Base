@@ -1,22 +1,16 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from .NetworkEncoding import NetworkEncoding
+from ruamel.yaml import Optional
+from .CANField import CANField
 
 @dataclass
 class CANMsg:
     '''
     Represents a CAN message. Has an id, a description, and a number of individual fields.
     '''
-    id: str
-    desc: str
-    networkEncoding: list[NetworkEncoding]
-
-    def __post_init__(self) -> None:
-        idx: int = 0
-        for field in self.networkEncoding[0].fields:
-            if (field.index is not None):
-                field.index = idx
-                idx += field.size
+    id: str     # Hex value of CAN ID, i.e. `0x88`
+    desc: str   # Brief name of CAN message, used for generating function names
+    fields: list[CANField] # List of CAN fields in the message (Optional to allow for only networkEncoding)
 
     def __setstate__(self, state):
         self.__init__(**state)

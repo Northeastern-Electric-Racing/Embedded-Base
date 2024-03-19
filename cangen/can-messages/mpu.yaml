@@ -3,55 +3,32 @@ msgs:
 - !CANMsg
     id: "0x500"
     desc: "MPU Acceleromter"
-    networkEncoding: 
-    - !CSV
-        topic: "MPU/Accel"
+    fields:
+    - !CompositeField   # X, Y, and Z should be decoded together
+        name: "MPU/Accel"
         unit: "g"
-        fields: 
-        - !CANField
-            name: "MPU/Accel/X"
-            unit: "g"
-            size: 2
-            decodings: 
-            - !BigEndian
-                bits: 8
-            format: "acceleration"
-        - !CANField
-            name: "MPU/Accel/Y"
-            unit: "g"
-            size: 2
-            decodings: 
-            - !BigEndian
-                bits: 8
-            format: "acceleration"
-        - !CANField
-            name: "MPU/Accel/Z"
-            unit: "g"
-            size: 2
-            decodings: 
-            - !BigEndian
-                bits: 8
-            format: "acceleration"
+        size: 16
+        num_points: 3
+        format: "acceleration"
+        endianness: "big"
 
 - !CANMsg
     id: "0x501"
     desc: "MPU Status"
-    networkEncoding:
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "MPU/State/Mode"
-            unit: ""
-            size: 1
-        - !CANField
-            name: "MPU/State/Torque_Limit_Percentage"
-            unit: ""
-            size: 1
-        - !CANField
-            name: "MPU/State/Regen_Strength"
-            unit: ""
-            size: 1
-        - !CANField
-            name: "MPU/State/Traction_Control"
-            unit: ""
-            size: 1
+    fields:
+    - !DiscreteField
+        name: "MPU/State/Mode"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/State/Torque_Limit_Percentage"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/State/Regen_Strength"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/State/Traction_Control"
+        unit: ""
+        size: 8

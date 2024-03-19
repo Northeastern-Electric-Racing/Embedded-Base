@@ -21,7 +21,7 @@ class Torque(Format):
 
 @dataclass
 class HighVoltage(Format):
-      repr: str = "high_voltage" 
+      repr: str = "high_voltage"
 
 @dataclass
 class Current(Format):

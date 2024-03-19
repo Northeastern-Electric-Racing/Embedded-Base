@@ -3,14 +3,12 @@ msgs:
 - !CANMsg
     id: "0x680"
     desc: "Wheel State"
-    networkEncoding: 
-    - !SinglePoint
-        fields: 
-        - !CANField
-            name: "WHEEL/Buttons/1"
-            unit: ""
-            size: 1
-        - !CANField
-            name: "WHEEL/Buttons/2"
-            unit: ""
-            size: 1
+    fields:
+    - !DiscreteField
+        name: "WHEEL/Buttons/1"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "WHEEL/Buttons/2"
+        unit: ""
+        size: 1

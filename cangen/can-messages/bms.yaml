@@ -1,255 +1,173 @@
 !Messages
-msgs: 
+msgs:
 #BMS BROADCAST
 - !CANMsg
     id: "0x80"
     desc: "accumulator status"
-    networkEncoding: 
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "BMS/Pack/Voltage"
-            unit: "V"
-            size: 2
-            decodings:
-                - !BigEndian
-                    bits: 8
-            format: "high_voltage"
-        - !CANField
-            name: "BMS/Pack/Current"
-            unit: "A"
-            size: 2
-            decodings:
-                - !BigEndian
-                    bits: 8
-                - !TwosComplement
-                    bits: 16
-            format: "current"
-        - !CANField
-            name: "BMS/Pack/Amp-hours"
-            unit: "Ah"
-            size: 2
-            decodings:
-                - !BigEndian
-                    bits: 8
-        - !CANField
-            name: "BMS/Pack/SOC"
-            unit: "%"
-            size: 1
-        - !CANField
-            name: "BMS/Pack/Health"
-            unit: "%"
-            size: 1
+    fields:
+    - !DiscreteField
+        name: "BMS/Pack/Voltage"
+        unit: "V"
+        size: 16
+        endianness: "big"
+        format: "high_voltage"
+    - !DiscreteField
+        name: "BMS/Pack/Current"
+        unit: "A"
+        size: 16
+        endianness: "big"
+        signed: true
+        format: "current"
+    - !DiscreteField
+        name: "BMS/Pack/Amp-hours"
+        unit: "Ah"
+        size: 16
+        endianness: "big"
+    - !DiscreteField
+        name: "BMS/Pack/SOC"
+        unit: "%"
+        size: 8
+    - !DiscreteField
+        name: "BMS/Pack/Health"
+        unit: "%"
+        size: 8
 
 - !CANMsg
     id: "0x81"
     desc: "BMS Status"
-    networkEncoding: 
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "BMS/State"
-            unit: ""
-            size: 1
-        - !CANField
-            name: "BMS/Faults"
-            unit: ""
-            size: 4
-            decodings:
-            - !LittleEndian
-                bits: 8
-        - !CANField
-            name: "BMS/Temps/Average"
-            unit: "C"
-            size: 1
-            decodings:
-            - !TwosComplement
-                bits: 8
-        - !CANField
-            name: "BMS/Temps/Internal"
-            size: 1
-            unit: "C"
-            decodings:
-            - !TwosComplement
-                bits: 8
-        - !CANField
-            name: "BMS/Cells/BurningStatus"
-            size: 1
-            unit: ""
+    fields:
+    - !DiscreteField
+        name: "BMS/State"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "BMS/Faults"
+        unit: ""
+        size: 32
+        endianness: "little"
+    - !DiscreteField
+        name: "BMS/Temps/Average"
+        unit: "C"
+        size: 8
+        signed: true
+    - !DiscreteField
+        name: "BMS/Temps/Internal"
+        size: 8
+        unit: "C"
+        signed: true
+    - !DiscreteField
+        name: "BMS/Cells/BurningStatus"
+        size: 8
+        unit: ""
 
 - !CANMsg
     id: "0x82"
     desc: "Shutdown Control"
-    networkEncoding: 
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "BMS/Shutdown/MPE"
-            size: 1
-            unit: ""
+    fields:
+    - !DiscreteField
+        name: "BMS/Shutdown/MPE"
+        size: 8
+        unit: ""
 
 - !CANMsg
     id: "0x83"
     desc: "Cell Data"
-    networkEncoding: 
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "BMS/Cells/Volts/High/Value"
-            size: 2
-            unit: "V"
-            decodings: 
-            - !LittleEndian
-                bits: 8
-            format: "cell_voltage"
-        - !CANField
-            name: "BMS/Cells/Volts/High/Chip"
-            size: 1
-            unit: ""
-            decodings: 
-            - !Half
-                bits: 4
-        - !CANField
-            name: "BMS/Cells/Volts/High/Cell"
-            index: 2
-            size: 1
-            unit: ""
-            decodings: 
-            - !Half
-                bits: 0
-        - !CANField
-            name: "BMS/Cells/Volts/Low/Value"
-            size: 2
-            index: 3
-            unit: "V"
-            decodings:
-            - !LittleEndian
-                bits: 8
-            format: "cell_voltage"
-        - !CANField
-            name: "BMS/Cells/Volts/Low/Chip"
-            index: 5
-            size: 1
-            unit: ""
-            decodings: 
-            - !Half
-                bits: 4
-        - !CANField
-            name: "BMS/Cells/Volts/Low/Cell"
-            index: 5
-            size: 1
-            unit: ""
-            decodings:
-            - !Half
-                bits: 0
-        - !CANField
-            name: "BMS/Cells/Volts/Avg/Value"
-            size: 2
-            index: 6
-            unit: "V"
-            decodings:
-            - !LittleEndian
-                bits: 8
-            format: "cell_voltage"
+    fields:
+    - !DiscreteField
+        name: "BMS/Cells/Volts/High/Value"
+        size: 16
+        unit: "V"
+        endianness: "little"
+        format: "cell_voltage"
+    - !DiscreteField
+        name: "BMS/Cells/Volts/High/Chip"
+        size: 4
+        unit: ""
+    - !DiscreteField
+        name: "BMS/Cells/Volts/High/Cell"
+        size: 4
+        unit: ""
+    - !DiscreteField
+        name: "BMS/Cells/Volts/Low/Value"
+        size: 16
+        unit: "V"
+        endianness: "little"
+        format: "cell_voltage"
+    - !DiscreteField
+        name: "BMS/Cells/Volts/Low/Chip"
+        size: 4
+        unit: ""
+    - !DiscreteField
+        name: "BMS/Cells/Volts/Low/Cell"
+        size: 4
+        unit: ""
+    - !DiscreteField
+        name: "BMS/Cells/Volts/Avg/Value"
+        size: 16
+        unit: "V"
+        endianness: "little"
+        format: "cell_voltage"
 
 - !CANMsg
     id: "0x84"
     desc: "Cell Temperatures"
-    networkEncoding: 
-    - !SinglePoint
-        fields: 
-        - !CANField
-            name: "BMS/Cells/Temp/High/Value"
-            unit: "C"
-            size: 2
-            decodings:
-            - !LittleEndian
-                bits: 8
-            - !TwosComplement
-                bits: 16
-        - !CANField
-            name: "BMS/Cells/Temp/High/Cell"
-            unit: ""
-            size: 1
-            decodings:
-            - !Half
-                bits: 4
-        - !CANField
-            name: "BMS/Cells/Temp/High/Chip"
-            unit: ""
-            size: 1
-            index: 2
-            decodings:
-            - !Half
-                bits: 0
-        - !CANField
-            name: "BMS/Cells/Temp/Low/Value"
-            unit: "C"
-            size: 2
-            index: 3
-            decodings: 
-            - !LittleEndian
-                bits: 8
-            - !TwosComplement
-                bits: 16
-        - !CANField
-            name: "BMS/Cells/Temp/Low/Cell"
-            unit: ""
-            size: 1
-            index: 5
-            decodings: 
-            - !Half
-                bits: 4
-        - !CANField
-            name: "BMS/Cells/Temp/Low/Chip"
-            unit: ""
-            size: 1
-            index: 5
-            decodings:
-            - !Half
-                bits: 0
-        - !CANField
-            name: "BMS/Cells/Temp/Avg/Value"
-            unit: "C"
-            size: 2
-            index: 6
-            decodings:
-            - !LittleEndian
-                bits: 8
-            - !TwosComplement
-                bits: 16
+    fields:
+    - !DiscreteField
+        name: "BMS/Cells/Temp/High/Value"
+        unit: "C"
+        size: 16
+        endianness: "little"
+        signed: true
+    - !DiscreteField
+        name: "BMS/Cells/Temp/High/Cell"
+        unit: ""
+        size: 4
+    - !DiscreteField
+        name: "BMS/Cells/Temp/High/Chip"
+        unit: ""
+        size: 4
+    - !DiscreteField
+        name: "BMS/Cells/Temp/Low/Value"
+        unit: "C"
+        size: 16
+        endianness: "little"
+        signed: true
+    - !DiscreteField
+        name: "BMS/Cells/Temp/Low/Cell"
+        unit: ""
+        size: 4
+    - !DiscreteField
+        name: "BMS/Cells/Temp/Low/Chip"
+        unit: ""
+        size: 4
+    - !DiscreteField
+        name: "BMS/Cells/Temp/Avg/Value"
+        unit: "C"
+        size: 16
+        endianness: "little"
+        signed: true
 
 - !CANMsg
     id: "0x85"
     desc: "Segment Temperatures"
-    networkEncoding: 
-    - !SinglePoint
-        fields:
-        - !CANField
-            name: "BMS/Segment/Temp/1"
-            unit: "C"
-            size: 1
-            decodings:
-            - !TwosComplement
-                bits: 8
-        - !CANField
-            name: "BMS/Segment/Temp/2"
-            unit: "C"
-            size: 1
-            decodings: 
-            - !TwosComplement
-                bits: 8
-        - !CANField
-            name: "BMS/Segment/Temp/3"
-            unit: "C"
-            size: 1
-            decodings: 
-            - !TwosComplement
-                bits: 8
-        - !CANField
-            name: "BMS/Segment/Temp/4"
-            unit: "C"
-            size: 1
-            decodings: 
-            - !TwosComplement
-                bits: 8
+    fields:
+    - !DiscreteField
+        name: "BMS/Segment/Temp/1"
+        unit: "C"
+        size: 8
+        signed: true
+    - !DiscreteField
+        name: "BMS/Segment/Temp/2"
+        unit: "C"
+        size: 8
+        signed: true
+    - !DiscreteField
+        name: "BMS/Segment/Temp/3"
+        unit: "C"
+        size: 8
+        signed: true
+    - !DiscreteField
+        name: "BMS/Segment/Temp/4"
+        unit: "C"
+        size: 8
+        signed: true
