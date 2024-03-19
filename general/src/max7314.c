@@ -29,7 +29,7 @@ HAL_StatusTypeDef max7314_init(max7314_t *max, I2C_HandleTypeDef *i2c_handle) {
     if (status != HAL_OK)
         return status;
 
-    if (data != 0b00001100) /* configuration register startup state */
+    if (data[0] != 0b00001100) /* configuration register startup state */
         return HAL_ERROR;
 
     return status;
@@ -132,9 +132,9 @@ HAL_StatusTypeDef max7314_read_pin_state(max7314_t *max, uint16_t pin, bool *sta
         return status;
     
     if (pin % 2 == 0)
-        pin_data[0] = pin_data[0] & ~(0b10000000 | 0b01000000 | 0b00100000 | 0b00010000)
+        pin_data[0] = pin_data[0] & ~(0b10000000 | 0b01000000 | 0b00100000 | 0b00010000);
     else
-        pin_data[0] = pin_data[0] & ~0b00001111
+        pin_data[0] = pin_data[0] & ~0b00001111;
 
     // With the other bits cleared, if the number is greater than zero, then the pin is on
     *state = pin_data[0] > 0;
