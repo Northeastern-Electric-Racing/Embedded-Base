@@ -2,100 +2,68 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define SWITCHBYTES(x)             (((x<<8) | (x>>8)) & 0xFFFF)      //Switches the first and second byte (This is required for all command values)
-
-static HAL_StatusTypeDef sht30_read_reg(sht30_t *sht30, uint8_t *data, uint16_t reg, uint8_t size)
+static HAL_StatusTypeDef sht30_write_reg(sht30_t *sht30, uint16_t command)
 {
-    return HAL_I2C_Mem_Write(sht30->i2c_handle, SHT30_I2C_ADDR, reg, I2C_MEMADD_SIZE_16BIT, data, size, HAL_MAX_DELAY);
-}
+    uint8_t command_buffer[2] = {(command & 0xff00u) >> 8u, command & 0xffu};
 
-static HAL_StatusTypeDef sht30_write_reg(sht30_t *sht30, uint16_t reg, uint8_t *data, uint8_t size)
-{
-    return HAL_I2C_Mem_Write(sht30->i2c_handle, SHT30_I2C_ADDR, reg, I2C_MEMADD_SIZE_16BIT, data, size, HAL_MAX_DELAY);
-}
+	if (HAL_I2C_Master_Transmit(sht30->i2c_handle, SHT30_I2C_ADDR, command_buffer, sizeof(command_buffer),
+	                            30) != HAL_OK) {
+		return false;
+	}
 
-static HAL_StatusTypeDef sht30_handle_status_reg(sht30_t *sht30)
-{
-    HAL_StatusTypeDef status;
-    uint8_t data[3];
-    uint16_t register_status;
-
-    status = sht30_write_reg(sht30, SWITCHBYTES(SHT30_READSTATUS), 0, 2);
-    if (status != HAL_OK)
-        return status;
-
-    status = sht30_read_reg(sht30, data, SWITCHBYTES(SHT30_READSTATUS), 3);
-    if (status != HAL_OK)
-        return status;
-
-    register_status = data[0];
-    register_status <<= 8;
-    register_status |= data[1];
-    sht30->status_reg = register_status;
-    return HAL_OK;
+	return true;
 }
 
 /**
  * @brief Calculates the CRC by using the polynomial x^8 + x^5 + x^4 + 1
  * @param data: the data to use to calculate the CRC
 */
-static uint8_t calculate_crc(uint16_t data) {
-    uint8_t crc = 0xFF, i;
-
-    crc ^= (data >> 8);
-    crc ^= (data & 0xFF);
-    for (i = 0; i < 8; i++) {
-        if (crc & 0x80) {
-            crc = (crc << 1) ^ 0x31;
-        } else {
-            crc = (crc << 1);
-        }
-    }
-    return crc;
+static uint8_t calculate_crc(const uint8_t *data, size_t length) {
+    uint8_t crc = 0xff;
+	for (size_t i = 0; i < length; i++) {
+		crc ^= data[i];
+		for (size_t j = 0; j < 8; j++) {
+			if ((crc & 0x80u) != 0) {
+				crc = (uint8_t)((uint8_t)(crc << 1u) ^ 0x31u);
+			} else {
+				crc <<= 1u;
+			}
+		}
+	}
+	return crc;
 }
 
-HAL_StatusTypeDef sht30_reset(sht30_t *sht30)
+static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 {
-    return sht30_write_reg(sht30, SWITCHBYTES(SHT30_SOFTRESET), 0, 2);
+	return (uint16_t)((uint16_t)msb << 8u) | lsb;
 }
 
 HAL_StatusTypeDef sht30_init(sht30_t *sht30)
 {
-    HAL_StatusTypeDef status;
+    HAL_StatusTypeDef status = HAL_OK;
 
-    status = sht30_reset(sht30);
-    if (status != HAL_OK)
-        return status;
+    uint8_t status_reg_and_checksum[3];
+	if (HAL_I2C_Mem_Read(sht30->i2c_handle, SHT30_I2C_ADDR, SHT3X_COMMAND_READ_STATUS, 2, (uint8_t*)&status_reg_and_checksum,
+					  sizeof(status_reg_and_checksum), 30) != HAL_OK) {
+		return false;
+	}
 
-    //TODO: Replace with UART debug stream if necessary
-    printf("SHT30 is reset.\n");
-    printf("Heating element is enabled: %d\n", sht30_is_heater_enabled(sht30));
+	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
 
-    return HAL_OK;
+	if (calculated_crc != status_reg_and_checksum[2]) {
+		return false;
+	}
+
+    return status;
 }
 
-HAL_StatusTypeDef sht30_is_heater_enabled(sht30_t *sht30)
+HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30, bool enable)
 {
-    HAL_StatusTypeDef status;
-    status = sht30_handle_status_reg(sht30);
-    if (status != HAL_OK)
-        return status;
-
-    sht30->is_heater_enabled = (bool)((sht30->status_reg >> SHT30_REG_HEATER_BIT) & 0x01);
-
-    return HAL_OK;
-}
-
-HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30)
-{
-    uint16_t cmdVal = sht30->is_heater_enabled ? SWITCHBYTES(SHT30_HEATEREN) : SWITCHBYTES(SHT30_HEATERDIS);
-    HAL_StatusTypeDef status;
-
-    status = sht30_write_reg(sht30, cmdVal, 0, 2);
-    if (status != HAL_OK)
-        return status;
-
-    return sht30_is_heater_enabled(sht30);
+    if (enable) {
+		return sht30_write_reg(sht30, SHT3X_COMMAND_HEATER_ENABLE);
+	} else {
+		return sht30_write_reg(sht30, SHT3X_COMMAND_HEATER_DISABLE);
+	}
 }
 
 HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30)
@@ -106,9 +74,9 @@ HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30)
     {
         struct __attribute__((packed))
         {
-            uint16_t temp;
+            uint16_t temp; // The packed attribute does not correctly arrange the bytes
             uint8_t temp_crc;
-            uint16_t humidity;
+            uint16_t humidity; // The packed attribute does not correctly arrange the bytes
             uint8_t humidity_crc;
         } raw_data;
         uint8_t databuf[6];
@@ -116,25 +84,31 @@ HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30)
 
     uint16_t temp, humidity;
 
-    status = sht30_write_reg(sht30, SWITCHBYTES(SHT30_START_CMD_WCS), 0, 2);
-    if (status != HAL_OK)
-        return status;
+    sht30_write_reg(sht30, (SHT30_START_CMD_WCS));
 
-    status = sht30_read_reg(sht30, data.databuf, SWITCHBYTES(SHT30_START_CMD_WCS), 6);
-    if (status != HAL_OK)
-        return status;
+    HAL_Delay(1);
 
-    temp = data.raw_data.temp;
+    status = HAL_I2C_Master_Receive(sht30->i2c_handle, SHT30_I2C_ADDR, data.databuf, sizeof(data.databuf), 30);
+    if (status != HAL_OK) {
+		return false;
+	}
 
-    if (data.raw_data.temp_crc != calculate_crc(temp))
+    temp = uint8_to_uint16(data.databuf[0], data.databuf[1]);
+
+    if (data.raw_data.temp_crc != calculate_crc(data.databuf, 2)) {
         return HAL_ERROR;
+    }
 
-    sht30->temp = temp;
+    float val = -45.0f + 175.0f * (float)temp / 65535.0f;
 
-    humidity = data.raw_data.humidity;
-    if (data.raw_data.humidity_crc != calculate_crc(humidity))
+    sht30->temp = (uint16_t)val;
+
+    humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
+    if (data.raw_data.humidity_crc != calculate_crc(data.databuf + 3, 2)) {
         return HAL_ERROR;
+    }
 
+    humidity = (uint16_t)(100.0f * (float)humidity / 65535.0f);
     sht30->humidity = humidity;
 
     return HAL_OK;
