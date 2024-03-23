@@ -7,6 +7,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_can.h"
+#include "c_utils.h"
 
 /* function pointer type for the callback */
 typedef void (*can_callback_t)(CAN_HandleTypeDef *hcan);
