@@ -5,7 +5,7 @@
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	/* Retrieve the container of the hcan struct then call the callback*/
-	can_t *can = container_of(hcan, can_t, hcan);
+	can_t *can = container_of(&hcan, can_t, hcan);
 	can->callback(hcan);
 }
 
@@ -34,7 +34,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 	sFilterConfig.FilterMaskIdHigh = 0x0000;
 	sFilterConfig.FilterMaskIdLow = 0x0000;
 	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;   
+	sFilterConfig.FilterActivation = ENABLE;
 	sFilterConfig.SlaveStartFilterBank = 14;
 
 	// sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
@@ -55,18 +55,12 @@ HAL_StatusTypeDef can_init(can_t *can)
 	if (err != HAL_OK)
 		return err;
 
-	/* set up interrupt & activate CAN */
-	HAL_CAN_IRQHandler(can->hcan);
-	
 	err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 	if (err != HAL_OK)
 		return err;
 	err = HAL_CAN_Start(can->hcan);
 	if (err != HAL_OK)
 		return err;
-
-	/* Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING */
-	err = add_interface(can);
 
 	return err;
 }
@@ -89,9 +83,4 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 		return HAL_ERROR;
 
 	return HAL_OK;
-}
-
-void CAN1_RX0_IRQHandler(void)
-{
-	HAL_CAN_IRQHandler(&hcan1);
 }
