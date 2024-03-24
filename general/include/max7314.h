@@ -9,8 +9,7 @@
 
 typedef enum {
     MAX7314_PINS_0_TO_7 = 0,
-    MAX7314_PINS_8_TO_15 = 1,
-    MAX7314_ALL_PINS = 2
+    MAX7314_PINS_8_TO_15 = 1
 } max7314_pin_regs_t;
 
 typedef enum {
@@ -41,6 +40,13 @@ HAL_StatusTypeDef max7314_write_config(max7314_t *max, uint8_t *config);
 HAL_StatusTypeDef max7314_set_pin_mode(max7314_t *max, uint8_t pin, max7314_pin_modes_t mode);
 
 HAL_StatusTypeDef max7314_set_pin_modes(max7314_t *max, max7314_pin_regs_t reg, uint8_t *pin_configs);
+
+/** 
+ * @brief Read an input pin
+ */
+HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, uint8_t *data);
+
+HAL_StatusTypeDef max7314_read_pins(max7314_t *max, max7314_pin_regs_t reg, uint8_t *data);
 
 /**
  * @brief Turn an output pin on or off
