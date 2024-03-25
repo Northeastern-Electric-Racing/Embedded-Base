@@ -2,12 +2,10 @@
 #include <string.h>
 #include <stdint.h>
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-{
-	/* Retrieve the container of the hcan struct then call the callback*/
-	can_t *can = container_of(&hcan, can_t, hcan);
-	can->callback(hcan);
-}
+/*
+ * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then implement in
+ * `stm32xxxx_it.c`, which STM32CubeMX generates
+ */
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
@@ -54,6 +52,9 @@ HAL_StatusTypeDef can_init(can_t *can)
 	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
 	if (err != HAL_OK)
 		return err;
+
+	/* set up interrupt & activate CAN */
+	HAL_CAN_IRQHandler(can->hcan);
 
 	err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 	if (err != HAL_OK)
