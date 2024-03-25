@@ -7,17 +7,17 @@
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_can.h"
+#include "c_utils.h"
 
-/* function pointer type for the callback */
-typedef void (*can_callback_t)(CAN_HandleTypeDef *hcan);
+/*
+ * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then implement in
+ * `stm32xxxx_it.c`, which STM32CubeMX generates
+ */
 
 typedef struct{
 	CAN_HandleTypeDef *hcan;
 	const uint16_t *id_list;
 	uint8_t id_list_len;
-
-	/* desired behavior varies by app - so implement this at app level */
-	can_callback_t callback;
 } can_t;
 
 typedef struct{
