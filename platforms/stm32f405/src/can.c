@@ -2,50 +2,10 @@
 #include <string.h>
 #include <stdint.h>
 
-/* NOTE: STM32F405 will have MAX of 3 CAN buses */
-#define MAX_CAN_BUS	3
-extern CAN_HandleTypeDef hcan1;
-
-can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL, NULL};
-
-static can_callback_t find_callback(CAN_HandleTypeDef *hcan)
-{
-	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
-		if (hcan == can_struct_list[i]->hcan)
-			return can_struct_list[i]->callback;
-	}
-	return NULL;
-}
-
-/* Add a CAN interfae to be searched for during the event of a callback */
-static uint8_t add_interface(can_t *interface)
-{
-	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
-		/* Interface already added */
-		if (interface->hcan == can_struct_list[i]->hcan)
-			return -1;
-
-		/* If empty, add interface */
-		if (can_struct_list[i]->hcan == NULL) {
-			can_struct_list[i] = interface;
-			return 0;
-		}
-	}
-
-	/* No open slots, something is wrong */
-	return -2;
-}
-
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-{
-	/* Handle CAN reception event */
-	can_callback_t callback = find_callback(hcan);
-
-	if (callback != NULL)
-	{
-		callback(hcan);
-	}
-}
+/*
+ * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then implement in
+ * `stm32xxxx_it.c`, which STM32CubeMX generates
+ */
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
@@ -72,7 +32,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 	sFilterConfig.FilterMaskIdHigh = 0x0000;
 	sFilterConfig.FilterMaskIdLow = 0x0000;
 	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;   
+	sFilterConfig.FilterActivation = ENABLE;
 	sFilterConfig.SlaveStartFilterBank = 14;
 
 	// sFilterConfig.FilterBank = 0;                       /* Filter bank number (0 to 27 for most STM32 series) */
@@ -95,16 +55,13 @@ HAL_StatusTypeDef can_init(can_t *can)
 
 	/* set up interrupt & activate CAN */
 	HAL_CAN_IRQHandler(can->hcan);
-	
+
 	err = HAL_CAN_ActivateNotification(can->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 	if (err != HAL_OK)
 		return err;
 	err = HAL_CAN_Start(can->hcan);
 	if (err != HAL_OK)
 		return err;
-
-	/* Override the default callback for CAN_IT_RX_FIFO0_MSG_PENDING */
-	err = add_interface(can);
 
 	return err;
 }
@@ -127,9 +84,4 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 		return HAL_ERROR;
 
 	return HAL_OK;
-}
-
-void CAN1_RX0_IRQHandler(void)
-{
-	HAL_CAN_IRQHandler(&hcan1);
 }
