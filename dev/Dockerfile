@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get -y install tzdata
 
 # Download Linux support tools
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
     curl \
