@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get -y install tzdata
 
 # Download Linux support tools
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
     curl \
@@ -32,7 +32,7 @@ COPY ./scripts .
 
 RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 
-# for usb/ip
+# for usb/ip comms and get binary symlinked
 EXPOSE 3240
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
