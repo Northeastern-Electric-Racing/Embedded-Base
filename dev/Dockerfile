@@ -32,7 +32,7 @@ COPY ./scripts .
 
 RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 
-# for usb/ip
+# for usb/ip comms and get binary symlinked
 EXPOSE 3240
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
