@@ -44,6 +44,10 @@ msgs:
             unit: ""
             size: 1
         - !CANField
+            name: "MPU/State/ModeIndex"
+            unit: ""
+            size: 1
+        - !CANField
             name: "MPU/State/Torque_Limit_Percentage"
             unit: ""
             size: 1
