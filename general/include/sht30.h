@@ -9,13 +9,20 @@
  * https://www.mouser.com/datasheet/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf  --Datasheet
  *
  */
-#define SHT30_I2C_ADDR             0x44     /* If ADDR (pin2) is connected to VDD, 0x45 */
-#define SHT30_READSTATUS           0xF32D   /* Read Out of Status Register */
-#define SHT30_CLEARSTATUS          0x3041   /* Clear Status */
-#define SHT30_SOFTRESET            0x30A2   /* Soft Reset */
-#define SHT30_HEATEREN             0x306D   /* Heater Enable */
-#define SHT30_HEATERDIS            0x3066   /* Heater Disable */
-#define SHT30_REG_HEATER_BIT       0x0d     /* Status Register Heater Bit */
+#define SHT30_I2C_ADDR             0x44 << 1u    /* If ADDR (pin2) is connected to VDD, 0x45 */
+
+typedef enum
+{
+	SHT3X_COMMAND_MEASURE_HIGHREP_STRETCH = 0x2c06,
+	SHT3X_COMMAND_CLEAR_STATUS = 0x3041,
+	SHT3X_COMMAND_SOFT_RESET = 0x30A2,
+	SHT3X_COMMAND_HEATER_ENABLE = 0x306d,
+	SHT3X_COMMAND_HEATER_DISABLE = 0x3066,
+	SHT3X_COMMAND_READ_STATUS = 0xf32d,
+	SHT3X_COMMAND_FETCH_DATA = 0xe000,
+	SHT3X_COMMAND_MEASURE_HIGHREP_10HZ = 0x2737,
+	SHT3X_COMMAND_MEASURE_LOWREP_10HZ = 0x272a
+} sht3x_command_t;
 
 /*
  * Start measurement command with clock streching enabled and high repeatability.
@@ -39,39 +46,24 @@ typedef struct
 /**
  * @brief Initializes an SHT30 Driver
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef sht30_init(sht30_t *sht30);
 
 /**
- * @brief Resets the SHT30 chip
- *
- * @param sht30
- * @return HAL_StatusTypeDef
- */
-HAL_StatusTypeDef sht30_reset(sht30_t *sht30);
-
-/**
- * @brief Checks if the internal heater is enabled
- *
- * @param sht30
- * @return HAL_StatusTypeDef
- */
-HAL_StatusTypeDef sht30_is_heater_enabled(sht30_t *sht30);
-
-/**
  * @brief Toggles the status of the internal heater
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
+ * @param enable - true to enable, false to disable
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30);
+HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30, bool enable);
 
 /**
  * @brief Retrieves the temperature and humidity
  *
- * @param sht30
+ * @param sht30 - SHT30 driver
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30);
