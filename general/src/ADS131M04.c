@@ -12,7 +12,9 @@ void ADS131M04_initialize(ads_config *conf, SPI_HandleTypeDef *hspi, GPIO_TypeDe
 
     HAL_GPIO_WritePin(conf->gpio, conf->cs_pin, GPIO_PIN_SET);
 
-    // Add code to do initialization stuff (writing to registers, see data sheet)
+    // Add code for configurations
+
+    ADS131M04_send_command(conf, RESET_CMD);
 
     return conf;
 }
