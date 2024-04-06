@@ -79,7 +79,7 @@ class CSynth:
 		result = ""
 
 		for field in msg.fields:
-			result += f"    msg_data.{'_'.join(field.name.split('/')[-2:]).lower()} = {'_'.join(field.name.split('/')[-2:]).lower()};\n"
+			result += f"    msg_data.{'_'.join(field.name.replace('-', '_').split('/')[-2:]).lower()} = {'_'.join(field.name.replace('-', '_').split('/')[-2:]).lower()};\n"
 
 		return result
 
@@ -130,7 +130,13 @@ class CSynth:
 		"""
 		Helper function to get a reference to the variable name without the data type
 		"""
-		return f"{'_'.join(field.name.split('/')[-2:]).lower()}"
+		return f"{'_'.join(field.name.replace('-', '_').split('/')[-2:]).lower()}"
+	
+	def imports(self) -> str:
+		"""
+		Helper function to get imports used by CSynth
+		"""
+		return CSnippets.decode_data_import
 
 class CSnippets:
 	"""
@@ -148,7 +154,7 @@ class CSnippets:
 
 	packed_struct_end: str = "    } msg_data;\n"
 
-	decode_close: str = ("    can_send_msg(can, &mc_msg);\n}\n"  # Sending the CAN message
+	decode_close: str = ("    can_send_msg(can, &msg);\n}\n"  # Sending the CAN message
 	)
 
 	master_mapping_signature: str = (
@@ -156,5 +162,5 @@ class CSnippets:
 	)
 
 	master_mapping_closing: str = (
-		"        default:\n            break;\n        };\n    }"  # The closing of the master_mapping function and the default case for the match statement that returns the mock decode function
+		"        default:\n            break;\n        };"  # The closing of the master_mapping function and the default case for the match statement that returns the mock decode function
 	)
