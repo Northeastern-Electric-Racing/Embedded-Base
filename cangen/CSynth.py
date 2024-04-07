@@ -131,12 +131,6 @@ class CSynth:
 		Helper function to get a reference to the variable name without the data type
 		"""
 		return f"{'_'.join(field.name.replace('-', '_').split('/')[-2:]).lower()}"
-	
-	def imports(self) -> str:
-		"""
-		Helper function to get imports used by CSynth
-		"""
-		return CSnippets.decode_data_import
 
 class CSnippets:
 	"""
