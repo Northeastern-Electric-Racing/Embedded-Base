@@ -1,4 +1,12 @@
 {#
+    This is a Jinja template, everything in {{ }} or {% %} brackets is replaced with C code.
+    Code inside brackets are Python snippets.
+
+    This file defines macros to be used by other templates.
+-#}
+
+
+{#
     convert msg description to a function name that can be used by can
 -#}
 {% macro function_name(msg) -%}
