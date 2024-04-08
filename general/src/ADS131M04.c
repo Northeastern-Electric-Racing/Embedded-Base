@@ -27,7 +27,7 @@ void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *
 }
 
 /* Method to abstract sending a command to SPI */
-void ads131m04_send_command(ads131_t *adc, uint8_t cmd)
+void ads131m04_send_command(ads131_t *adc, uint16_t cmd)
 {
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
     HAL_SPI_Transmit(adc->spi, cmd, 1, HAL_MAX_DELAY);
@@ -55,7 +55,7 @@ void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
 }
 
 /* Method to abstract reading from a register, will use SPI commands under the hood to do */
-uint8_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
+uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 {
     // Ensure register address is within 6-bit range
     reg &= 0x3F;
@@ -79,7 +79,7 @@ uint8_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 }
 
 /* Method to read values out of the ADC, should be called immediately after the DRDY interrupt is triggered */
-uint8_t ads131m04_read_ADC(ads131_t *adc)
+uint16_t ads131m04_read_ADC(ads131_t *adc)
 {
     uint16_t status_register = 0;
     uint16_t data_register = 0;

@@ -17,13 +17,13 @@ void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *
                           uint8_t cs_pin);
 
 /* Method to abstract sending a command to SPI */
-void ads131m04_send_command(ads131_t *adc, uint8_t cmd);
+void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
 
 /* Method to abstract writing to a register, will use SPI commands under the hood */
-void ads131m04_write_reg(uint8_t reg, uint8_t value);
+void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value);
 
 /* Method to abstract reading from a register, will use SPI commands under the hood to do */
-uint8_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
+uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
 
 /* Method to read values out of the ADC */
-uint8_t ads131m04_read_ADC();
+uint16_t ads131m04_read_ADC(ads131_t *adc);
