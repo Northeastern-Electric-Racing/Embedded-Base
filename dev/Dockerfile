@@ -32,8 +32,7 @@ COPY ./scripts .
 
 RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 
-# for usb/ip comms and get binary symlinked
-EXPOSE 3240
+# for usb/ip
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
