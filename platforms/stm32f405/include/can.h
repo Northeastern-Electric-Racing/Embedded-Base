@@ -21,7 +21,7 @@ typedef struct{
 } can_t;
 
 typedef struct{
-	uint16_t id;
+	uint32_t id;
 	uint8_t data[8];
 	uint8_t len;
 } can_msg_t;
