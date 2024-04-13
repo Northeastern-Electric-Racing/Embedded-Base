@@ -28,7 +28,12 @@ HAL_StatusTypeDef write_word(max7314_t *max, uint16_t address, uint8_t *data) {
 void max7314_init(max7314_t *max, I2C_HandleTypeDef *i2c_handle) {
     max->i2c_handle = i2c_handle;
     max->dev_addr = max->dev_addr << 1u ;  /* shifted one to the left cuz STM says so */
+
+    uint8_t turn_off = 0b11110000;
+    write_reg(max, MAX7314_PHASE_0_OUTPUTS_0_7, &turn_off);
+
 }
+
 
 HAL_StatusTypeDef max7314_set_global_intensity(max7314_t *max, uint8_t level) {
 
@@ -38,58 +43,22 @@ HAL_StatusTypeDef max7314_set_global_intensity(max7314_t *max, uint8_t level) {
     if (level == 0) {
         master_intensity = 0x00;
     } else {
-        master_intensity = 0x0F;
+        master_intensity = 0xFF;
     }
 
     status = write_reg(max, MAX7314_MASTER_INTENSITY, &master_intensity);
     if (status != HAL_OK) {
         return status;
     }
+
+    return HAL_OK;
 }
-
-    // PHASE 0 OUTPUT BIT 1: PIN HIGH NOT PULLED DOWN
-    // PHASE 0 OUTPUT BIT 0: PIN LOW PULLED DOWN
-
-    // uint8_t do_nothing = 0b11111111;
-    // write_reg(max, MAX7314_PHASE_0_OUTPUTS_0_7, &do_nothing);
 
 HAL_StatusTypeDef max7314_write_config(max7314_t *max, uint8_t *config) {
     return write_reg(max, MAX7314_CONFIG_REG, config);
 }
 
 HAL_StatusTypeDef max7314_set_pin_mode(max7314_t *max, uint8_t pin, uint8_t mode)
-{
-    uint8_t conf_data;
-    HAL_StatusTypeDef status;
-
-    if (pin < 7) {
-        /* Read current port configuration */
-        status = read_reg(max, MAX7314_PORT_CONFIG_0_TO_7, &conf_data);
-        if (status != HAL_OK) 
-            return status;
-
-        /* Change port configuration of desired pin. Bit manip sets one bit to mode. */
-        conf_data = (conf_data & ~(1u << pin)) | (mode << pin);
-        status = write_reg(max, MAX7314_PORT_CONFIG_0_TO_7, &conf_data);
-        if (status != HAL_OK) 
-            return status;
-
-    } else {
-        /* Same as above but for different register */
-        status = read_reg(max, MAX7314_PORT_CONFIG_8_TO_15, &conf_data);
-        if (status != HAL_OK) 
-            return status;
-        
-        conf_data = (conf_data & ~(1u << (pin - REG_SIZE))) | (mode << (pin - REG_SIZE));
-        status = write_reg(max, MAX7314_PORT_CONFIG_8_TO_15, &conf_data);
-        if (status != HAL_OK) 
-            return status;
-    }
-    
-    return HAL_OK;
-}
-
-HAL_StatusTypeDef max7314_set_pin_modes(max7314_t *max, max7314_pin_regs_t reg, uint8_t *pin_configs)
 {
     uint8_t conf_data;
     HAL_StatusTypeDef status;
@@ -136,7 +105,7 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state)
         if (status != HAL_OK) 
             return status;
 
-        *state = (pin_data & (1u << pin)) > 0;  
+        *state = (pin_data & (1u << pin)) > 0;
     } else {
         status = read_reg(max, MAX7314_INPUT_PORTS_8_TO_15, &pin_data);
         if (status != HAL_OK) 
@@ -148,6 +117,8 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state)
     return HAL_OK;
 }
 
+/* PHASE 0 OUTPUT BIT 1: PIN HIGH NOT PULLED DOWN */
+/* PHASE 0 OUTPUT BIT 0: PIN LOW PULLED DOWN */
 HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint8_t pin, bool state) 
 {
     uint8_t pin_data;
@@ -159,7 +130,6 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint8_t pin, bool state)
         reg += 1;
     }
 
-    /* Bit manipulation changes only the bits we want to. */
     if (state) {
         pin_state = 1;
     } else {
@@ -172,13 +142,13 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint8_t pin, bool state)
 
     /* Clear bit at position, then set it to state*/
     if (pin < 8) {
-        pin_data = (pin_data & ~(1u << pin)) | (state << pin);
+        pin_data = (pin_data & ~(1u << pin)) | (pin_state << pin);
     } else {
-        pin_data = (pin_data & ~(1u << (pin - REG_SIZE))) | (state << (pin - REG_SIZE));
+        pin_data = (pin_data & ~(1u << (pin - REG_SIZE))) | (pin_state << (pin - REG_SIZE));
     }
 
     // /* Write to register containing the desired pin */
     status = write_reg(max, reg, &pin_data);
     
     return HAL_OK;
-}  
+}   

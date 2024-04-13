@@ -30,6 +30,11 @@ void max7314_init(max7314_t *max, I2C_HandleTypeDef *i2c_handle);
 HAL_StatusTypeDef max7314_write_config(max7314_t *max, uint8_t *config);
 
 /**
+ * @brief Set the intensity of the output pins (low or high)
+*/
+HAL_StatusTypeDef max7314_set_global_intensity(max7314_t *max, uint8_t level);
+
+/**
  * @brief Set pin to be an input or an output pin
  */
 HAL_StatusTypeDef max7314_set_pin_mode(max7314_t *max, uint8_t pin, uint8_t mode);
