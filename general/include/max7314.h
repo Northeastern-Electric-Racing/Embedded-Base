@@ -46,6 +46,11 @@ HAL_StatusTypeDef max7314_set_pin_modes(max7314_t *max, uint8_t *pin_configs);
  */
 HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state);
 
+/** 
+ * @brief Read an input pin
+ */
+HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state);
+
 /**
  * @brief Turn an output pin on or off
  */

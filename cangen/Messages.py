@@ -4,6 +4,6 @@ from .CANMsg import CANMsg
 @dataclass
 class Messages:
       '''
-      Represents a list of CAN messages. Has a list of CANMsgs.
+      Represents a list of CAN messages, used to create a container for each YAML
       '''
       msgs: list[CANMsg]
