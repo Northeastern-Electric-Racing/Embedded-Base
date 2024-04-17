@@ -25,7 +25,9 @@ RUN apt-get update && apt-get install -y \
     cmake \
     libssl-dev \
     python3 \
-    python3-pip
+    python3-pip \
+    udevadm \
+    usbutils
 
 # Install and setup rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
