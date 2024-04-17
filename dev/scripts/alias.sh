@@ -6,3 +6,7 @@ alias emulate='/home/dev/scripts/emulate.sh'
 alias debug='/home/dev/scripts/gdb.sh'
 alias ody-connect='source /home/dev/scripts/ody-connect.sh'
 alias curr-serial='/home/dev/scripts/curr-serial.sh'
+
+function curr-serial() {
+    udevadm info "$DEBUG_PORT" -a | sed -n -e 's/^.*ATTRS{serial}=="//p' | head -n 1 | sed 's/.$//'
+}
