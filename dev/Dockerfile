@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     python3 \
     python3-pip \
-    udevadm \
+    udev \
     usbutils
 
 # Install and setup rust
