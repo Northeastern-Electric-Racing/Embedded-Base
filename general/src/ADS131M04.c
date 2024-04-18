@@ -10,6 +10,14 @@
 #define LOCK_CMD 0x555
 #define UNLOCK_CMD 0x655
 
+/* Private Function Prototypes*/
+/* Method to abstract writing to a register, will use SPI commands under the hood */
+void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value);
+/* Method to abstract reading from a register, will use SPI commands under the hood to do */
+uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
+/* Method to abstract sending a command to SPI */
+void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
+
 /*  Method to initialize communication over SPI and configure the ADC into Continuous Conversion Mode*/
 void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
                           uint8_t cs_pin)
@@ -24,14 +32,6 @@ void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *
     // We can try out different configurations later if we need to, but it seems like the defaults work
 
     return adc;
-}
-
-/* Method to abstract sending a command to SPI */
-void ads131m04_send_command(ads131_t *adc, uint16_t cmd)
-{
-    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
-    HAL_SPI_Transmit(adc->spi, cmd, 1, HAL_MAX_DELAY);
-    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 }
 
 /* Method to abstract writing to a register, will use SPI commands under the hood, value is MSB aligned */
@@ -50,8 +50,10 @@ void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
     spi_word |= (num_registers - 1); // Number of registers (bits 0-6)
 
     // Send command to write to the specified register immediately followed by sending the value we want to write to that register
-    ads131m04_send_command(adc, spi_word);
-    ads131m04_send_command(adc, value);
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(adc->spi, spi_word, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(adc->spi, value, 1, HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 }
 
 /* Method to abstract reading from a register, will use SPI commands under the hood to do */
@@ -68,7 +70,9 @@ uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
     spi_word |= (reg << 7);          // Register address (bits 7-12)
     spi_word |= (num_registers - 1); // Number of registers (bits 0-6)
 
-    ads131m04_send_command(adc, spi_word);
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(adc->spi, spi_word, 1, HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 
     uint16_t res = 0;
 
@@ -79,18 +83,19 @@ uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 }
 
 /* Method to read values out of the ADC, should be called immediately after the DRDY interrupt is triggered */
-uint16_t ads131m04_read_ADC(ads131_t *adc)
+HAL_StatusTypeDef ads131m04_read_ADC(ads131_t *adc, uint32_t *adc_values)
 {
-    uint16_t status_register = 0;
-    uint16_t data_register = 0;
+    HAL_StatusTypeDef ret;
+    uint8_t data[6 * 3]; // Array to store SPI data (6 words * 3 bytes per word)
 
-    // Read the status register
-    if (HAL_SPI_Receive(adc->hspi, (uint8_t *)&status_register, 2, 10) != HAL_OK)
-        return 1;
+    // Read SPI data
+    ret = HAL_SPI_Receive(adc->hspi, data, 6 * 3, HAL_MAX_DELAY);
 
-    // Read the data register
-    if (HAL_SPI_Receive(adc->hspi, (uint8_t *)&data_register, 2, 10) != HAL_OK)
-        return 1;
+    // Process received data into ADC values
+    for (int i = 0; i < 4; i++)
+    {
+        adc_values[i] = (data[(i + 1) * 3] << 16) | (data[(i + 1) * 3 + 1] << 8) | data[(i + 1) * 3 + 2];
+    }
 
-    return data_register;
+    return ret;
 }

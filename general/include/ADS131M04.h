@@ -16,14 +16,5 @@ typedef struct
 void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
                           uint8_t cs_pin);
 
-/* Method to abstract sending a command to SPI */
-void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
-
-/* Method to abstract writing to a register, will use SPI commands under the hood */
-void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value);
-
-/* Method to abstract reading from a register, will use SPI commands under the hood to do */
-uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
-
 /* Method to read values out of the ADC */
-uint16_t ads131m04_read_ADC(ads131_t *adc);
+HAL_StatusTypeDef ads131m04_read_ADC(ads131_t *adc);
