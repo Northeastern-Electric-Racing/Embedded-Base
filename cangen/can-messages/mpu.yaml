@@ -21,6 +21,10 @@ msgs:
         unit: ""
         size: 8
     - !DiscreteField
+        name: "MPU/State/ModeIndex"
+        unit: ""
+        size: 8
+    - !DiscreteField
         name: "MPU/State/Torque_Limit_Percentage"
         unit: ""
         size: 8
