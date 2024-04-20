@@ -30,6 +30,9 @@ void max7314_init(max7314_t *max, I2C_HandleTypeDef *i2c_handle) {
     max->dev_addr = max->dev_addr << 1u ;  /* shifted one to the left cuz STM says so */
 
     uint8_t turn_off = 0b11110000;
+    
+    while (HAL_I2C_IsDeviceReady(max->i2c_handle, max->dev_addr, 1, HAL_MAX_DELAY));
+
     write_reg(max, MAX7314_PHASE_0_OUTPUTS_0_7, &turn_off);
 
 }
