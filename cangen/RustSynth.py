@@ -131,7 +131,7 @@ class RustSynth:
 		#    base = f"{base}.to_le()"
 
 		if field.signed:
-			base = f"{base} as i{field.get_size_bytes() * 8}.wrapping_neg()"
+			base = f"({base} as i{field.get_size_bytes() * 8}).wrapping_neg()"
 
 		return f"{base} as {field.final_type}"
 
