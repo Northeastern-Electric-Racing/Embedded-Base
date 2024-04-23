@@ -124,14 +124,14 @@ class RustSynth:
 		base = f"reader.read_bits({field.size})"
 
 		if field.endianness == "big":
-			base = f"{base}.to_be()"
+			base = f"{base}.swap_bytes()"
 
 		# TODO: Make this configurable based on endianness of platform
 		#elif field.endianness == "little":
 		#    base = f"{base}.to_le()"
 
 		if field.signed:
-			base = f"({base} as i{field.get_size_bytes() * 8}).wrapping_neg()"
+			base = f"({base} as i{field.get_size_bytes() * 8})"
 
 		return f"{base} as {field.final_type}"
 
