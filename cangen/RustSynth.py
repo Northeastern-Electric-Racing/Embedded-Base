@@ -123,7 +123,7 @@ class RustSynth:
 		"""
 		base = f"reader.read_bits({field.size})"
 
-		if field.endianness == "little":
+		if field.endianness == "big":
 			base = f"{base}.swap_bytes()"
 
 		# TODO: Make this configurable based on endianness of platform
