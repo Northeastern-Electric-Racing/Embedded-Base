@@ -107,6 +107,48 @@ msgs:
         unit: "V"
         endianness: "little"
         format: "cell_voltage"
+        
+- !CANMsg
+    id: "0x87"
+    desc: "Cell Voltage"
+    fields:
+    - !DiscreteField
+        name: "BMS/Cells/PerCell/CellId/"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "BMS/Cells/PerCell/InstantVoltage"
+        unit: ""
+        size: 16
+    - !DiscreteField
+        name: "BMS/Cells/PerCell/InternalResistance"
+        unit: ""
+        size: 16
+    - !DiscreteField
+        name: "BMS/Cells/PerCell/Shunted"
+        unit: ""
+        size: 8       
+    - !DiscreteField
+        name: "BMS/Cells/PerCell/OpenVoltage"
+        unit: ""
+        size: 16  
+        
+- !CANMsg
+    id: "0x86"
+    desc: "Current Limits"
+    fields:
+    - !DiscreteField
+        name: "BMS/Pack/DCL"
+        unit: ""
+        size: 16
+    - !DiscreteField
+        name: "BMS/Pack/CCL"
+        unit: ""
+        size: 16
+    - !DiscreteField
+        name: "BMS/Pack/Current"
+        unit: ""
+        size: 16
 
 - !CANMsg
     id: "0x84"

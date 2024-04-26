@@ -9,19 +9,20 @@ msgs:
         name: "DTI/RPM/ERPM"
         unit: "ERPM"
         size: 32
-        endianness: "big"
+        endianness: "little"
         signed: true
     - !DiscreteField
         name: "DTI/Power/Duty_Cycle"
         unit: "%"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         name: "DTI/Power/Input_Voltage"
         unit: "V"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
     
 #DTI BROADCAST
@@ -33,19 +34,21 @@ msgs:
         name: "DTI/Power/AC_Current"
         unit: "A"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         name:  "DTI/Power/DC_Current"
         unit: "A"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         name: "DTI/BA115/Reserved"
         unit: ""
         size: 32
-        endianness: "big"
+        endianness: "little"
         signed: false
        
      
@@ -58,19 +61,21 @@ msgs:
         name: "DTI/Temps/Controller_Temperature"
         size: 16
         unit: "C"
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "temperature"
     - !DiscreteField
         name: "DTI/Temps/Motor_Temperature"
         unit: "C"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "temperature"
     - !DiscreteField
         name: "DTI/Fault/Fault_Code"
         unit: ""
         size: 8
-        endianness: "big"
+        endianness: "little"
         signed: false
         # 0x00 - No Faults
         # 0x01 - Overvoltage
@@ -87,7 +92,7 @@ msgs:
         name: "DTI/BA115/Reserved"
         unit: ""
         size: 24
-        endianness: "big"
+        endianness: "little"
         signed: false
         # All FFs
 
@@ -100,14 +105,16 @@ msgs:
         name: "DTI/FOC/Component_Id"
         unit: "A"
         size: 32
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "high_voltage"
     - !DiscreteField
         name: "DTI/FOC/Component_Iq"
         unit: "A"
         size: 32
-        endianness: "big"
+        endianness: "little"
         signed: true
+        format: "high_voltage"
         
 # DTI_BROADCAST        
 - !CANMsg
@@ -118,13 +125,13 @@ msgs:
         name: "DTI/General/Throttle_Signal"
         unit: "%"
         size: 8
-        endianness: "big"
+        endianness: "little"
         signed: true
     - !DiscreteField
         name:  "DTI/General/Brake_Signal"
         unit: "%"
         size: 8
-        endianness: "big"
+        endianness: "little"
         signed: true
     - !DiscreteField
         name: "DTI/General/Digital_In_1"
@@ -162,7 +169,7 @@ msgs:
         name: "DTI/General/Drive_Enable"
         unit: ""
         size: 8
-        endianness: "Big"
+        endianness: "little"
         signed: false
     - !DiscreteField
         name: "DTI/Limit/Cap_Temp_Limit"
@@ -231,8 +238,9 @@ msgs:
         name: "DTI/Commands/AC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -249,8 +257,9 @@ msgs:
         name: "DTI/Commands/Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -266,7 +275,7 @@ msgs:
         name: "DTI/Commands/ERPM_Target"
         unit: "A"
         size: 32
-        endianness: "Big"
+        endianness: "little"
         signed: true
     - !DiscreteField
         # Fill with FFs
@@ -281,10 +290,11 @@ msgs:
     fields:
     - !DiscreteField
         name: "DTI/Commands/Position_Target"
-        unit: "A"
+        unit: "degree"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "torque"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -300,8 +310,9 @@ msgs:
         name: "DTI/Commands/Relative_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -317,8 +328,9 @@ msgs:
         name: "DTI/Commands/Relative_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -361,8 +373,9 @@ msgs:
         name: "DTI/Commands/Max_AC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -378,8 +391,9 @@ msgs:
         name: "DTI/Commands/Max_AC_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -395,8 +409,9 @@ msgs:
         name: "DTI/Commands/Max_DC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -412,8 +427,9 @@ msgs:
         name: "DTI/Commands/Max_DC_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
+        endianness: "little"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
@@ -429,7 +445,7 @@ msgs:
         name: "DTI/Commands/Drive_Enable_Target"
         unit: ""
         size: 8
-        endianness: "big"
+        endianness: "little"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/B00B5/Unused"
