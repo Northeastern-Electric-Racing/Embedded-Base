@@ -16,7 +16,7 @@
 
 typedef struct{
 	CAN_HandleTypeDef *hcan;
-	const uint16_t *id_list;
+	const uint32_t *id_list;
 	uint8_t id_list_len;
 } can_t;
 
@@ -28,5 +28,6 @@ typedef struct{
 
 HAL_StatusTypeDef can_init(can_t *can);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
+HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg);
 
 #endif // CAN_H
