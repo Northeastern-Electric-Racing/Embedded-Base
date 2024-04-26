@@ -106,13 +106,13 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state)
         if (status != HAL_OK) 
             return status;
 
-        *state = pin_data & (0b1 << pin) > 0;
+        *state = (pin_data & (0b1 << pin)) > 0;
     } else {
         status = read_reg(max, MAX7314_INPUT_PORTS_8_TO_15, &pin_data);
         if (status != HAL_OK) 
             return status;
 
-        *state = pin_data & (0b1 << (pin - REG_SIZE_BITS));
+        *state = (pin_data & (0b1 << (pin - REG_SIZE_BITS))) > 0;
     }
 
     return HAL_OK;
