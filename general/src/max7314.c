@@ -112,6 +112,7 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state)
             return status;
 
         *state = (pin_data & (1u << (pin - REG_SIZE))) > 0;
+        *state = pin_data & (0b1 << (pin - 8));
     }
 
     return HAL_OK;
