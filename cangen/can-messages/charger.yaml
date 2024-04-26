@@ -1,0 +1,54 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x1806E5F4"
+    desc: "BMS Message Send"
+    fields:
+    - !DiscreteField
+        name: "Charger/BMS/Voltage"
+        unit: "V"
+        size: 16
+        endianness: "big"
+        format: "current"
+    - !DiscreteField
+        name: "Charger/BMS/Current"
+        unit: "A"
+        size: 16
+        endianness: "big"
+        format: "current"
+    - !DiscreteField
+        name: "Charger/BMS/Control"
+        unit: ""
+        size: 8
+        endianness: "big"
+
+        
+- !CANMsg
+    id: "0x18FF50E5"
+    desc: "Charger Box Status"
+    fields:
+    - !DiscreteField
+        name: "Charger/Box/Voltage"
+        unit: "V"
+        size: 16
+        endianness: "big"
+        format: "current"
+    - !DiscreteField
+        name: "Charger/Box/Current"
+        unit: "A"
+        size: 16
+        signed: true
+        endianness: "big"
+        format: "current"
+    - !DiscreteField
+        name: "Charger/Box/FaultStatus"
+        unit: ""
+        endianness: "big"
+        size: 8
+    # Fault info Charger/Box/FaultStatus
+    # Bit 0: 0: Normal. 1: Hardware Failure
+    # Bit 1: 0: Normal. 1: Over temperature protection
+    # Bit 2: 0: Input voltage is normal. 1. Input voltage is wrong, the charger will stop working
+    # Bit 3: 0: Battery is connected normally.
+    # Bit 4: 1: Battery is not connected or the battery is connected reversely.
+    # Bit 5: 0: Communication is normal. 1: Communication receive time-out.
