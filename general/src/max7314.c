@@ -11,6 +11,7 @@
 #define FIRST_OUTPUT_REGISTER       0x10
 
 #define REG_SIZE 1 //byte
+#define REG_SIZE_BITS 8 // bit
 #define TIMEOUT 2000
 
 HAL_StatusTypeDef read_reg(max7314_t *max, uint16_t address, uint8_t *data) {
@@ -81,7 +82,7 @@ HAL_StatusTypeDef max7314_set_pin_mode(max7314_t *max, uint8_t pin, uint8_t mode
         if (status != HAL_OK) 
             return status;
         
-        conf_data = (conf_data & ~(1u << (pin - REG_SIZE))) | (mode << (pin - REG_SIZE));
+        conf_data = (conf_data & ~(1u << (pin - REG_SIZE_BITS))) | (mode << (pin - REG_SIZE_BITS));
         status = write_reg(max, MAX7314_PHASE_0_OUTPUTS_8_15, &conf_data);
         if (status != HAL_OK) 
             return status;
@@ -105,13 +106,13 @@ HAL_StatusTypeDef max7314_read_pin(max7314_t *max, uint8_t pin, bool *state)
         if (status != HAL_OK) 
             return status;
 
-        *state = (pin_data & (1u << pin)) > 0;
+        *state = pin_data & (0b1 << pin) > 0;
     } else {
         status = read_reg(max, MAX7314_INPUT_PORTS_8_TO_15, &pin_data);
         if (status != HAL_OK) 
             return status;
 
-        *state = pin_data & (0b1 << (pin - 8));
+        *state = pin_data & (0b1 << (pin - REG_SIZE_BITS));
     }
 
     return HAL_OK;
@@ -144,7 +145,7 @@ HAL_StatusTypeDef max7314_set_pin_state(max7314_t *max, uint8_t pin, bool state)
     if (pin < 8) {
         pin_data = (pin_data & ~(1u << pin)) | (pin_state << pin);
     } else {
-        pin_data = (pin_data & ~(1u << (pin - REG_SIZE))) | (pin_state << (pin - REG_SIZE));
+        pin_data = (pin_data & ~(1u << (pin - REG_SIZE_BITS))) | (pin_state << (pin - REG_SIZE_BITS));
     }
 
     // /* Write to register containing the desired pin */
