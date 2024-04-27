@@ -21,6 +21,10 @@ msgs:
         unit: ""
         size: 8
         endianness: "big"
+    - !DiscreteField
+        name: "Charger/Unimplemented/Data"
+        unit: ""
+        size: 24
 
         
 - !CANMsg
@@ -45,6 +49,10 @@ msgs:
         unit: ""
         endianness: "big"
         size: 8
+    - !DiscreteField
+        name: "Charger/Unimplemented/Data"
+        unit: ""
+        size: 24
     # Fault info Charger/Box/FaultStatus
     # Bit 0: 0: Normal. 1: Hardware Failure
     # Bit 1: 0: Normal. 1: Over temperature protection
