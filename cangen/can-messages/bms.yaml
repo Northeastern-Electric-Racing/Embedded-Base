@@ -9,20 +9,20 @@ msgs:
         name: "BMS/Pack/Voltage"
         unit: "V"
         size: 16
-        endianness: "big"
+        endianness: "little"
         format: "high_voltage"
     - !DiscreteField
         name: "BMS/Pack/Current"
         unit: "A"
         size: 16
-        endianness: "big"
+        endianness: "little"
         signed: true
         format: "current"
     - !DiscreteField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
         size: 16
-        endianness: "big"
+        endianness: "little"
     - !DiscreteField
         name: "BMS/Pack/SOC"
         unit: "%"
