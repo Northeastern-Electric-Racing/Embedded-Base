@@ -10,3 +10,6 @@
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
 #endif /* C_UTILS */
+
+
+void endian_swap(void *ptr, int size);
