@@ -10,7 +10,6 @@ msgs:
         size: 16
         num_points: 3
         format: "acceleration"
-        endianness: "big"
 
 - !CANMsg
     id: "0x501"
@@ -22,5 +21,18 @@ msgs:
         size: 8
     - !DiscreteField
         name: "MPU/State/ModeIndex"
+        unit: ""
+        size: 8
+
+- !CANMsg
+    id: "0x502"
+    desc: "MPU Fault"
+    fields:
+    - !DiscreteField
+        name: "MPU/Fault/Code"
+        unit: ""
+        size: 32
+    - !DiscreteField
+        name: "MPU/Fault/Severity"
         unit: ""
         size: 8
