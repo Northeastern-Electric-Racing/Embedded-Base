@@ -24,15 +24,3 @@ msgs:
         name: "MPU/State/ModeIndex"
         unit: ""
         size: 8
-    - !DiscreteField
-        name: "MPU/State/Torque_Limit_Percentage"
-        unit: ""
-        size: 8
-    - !DiscreteField
-        name: "MPU/State/Regen_Strength"
-        unit: ""
-        size: 8
-    - !DiscreteField
-        name: "MPU/State/Traction_Control"
-        unit: ""
-        size: 8

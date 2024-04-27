@@ -241,11 +241,6 @@ msgs:
         endianness: "little"
         signed: true
         format: "current"
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 48
         
 
 #DTI_COMMAND
@@ -412,11 +407,6 @@ msgs:
         endianness: "little"
         signed: true
         format: "current"
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 48
 
 #DTI_COMMAND
 - !CANMsg
