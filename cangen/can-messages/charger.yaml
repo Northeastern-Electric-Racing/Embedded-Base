@@ -8,19 +8,19 @@ msgs:
         name: "Charger/BMS/Voltage"
         unit: "V"
         size: 16
-        endianness: "big"
+        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/BMS/Current"
         unit: "A"
         size: 16
-        endianness: "big"
+        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/BMS/Control"
         unit: ""
         size: 8
-        endianness: "big"
+        endianness: "little"
     - !DiscreteField
         name: "Charger/Unimplemented/Data"
         unit: ""
@@ -35,19 +35,19 @@ msgs:
         name: "Charger/Box/Voltage"
         unit: "V"
         size: 16
-        endianness: "big"
+        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/Box/Current"
         unit: "A"
         size: 16
         signed: true
-        endianness: "big"
+        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/Box/FaultStatus"
         unit: ""
-        endianness: "big"
+        endianness: "little"
         size: 8
     - !DiscreteField
         name: "Charger/Unimplemented/Data"
