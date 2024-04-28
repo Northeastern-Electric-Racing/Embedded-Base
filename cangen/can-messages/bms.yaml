@@ -16,7 +16,6 @@ msgs:
         unit: "A"
         size: 16
         endianness: "little"
-        signed: true
         format: "current"
     - !DiscreteField
         name: "BMS/Pack/Amp-hours"
@@ -49,12 +48,10 @@ msgs:
         name: "BMS/Status/Temp_Average"
         unit: "C"
         size: 8
-        signed: true
     - !DiscreteField
         name: "BMS/Status/Temp_Internal"
         size: 8
         unit: "C"
-        signed: true
     - !DiscreteField
         name: "BMS/Status/Balancing"
         size: 8
@@ -159,7 +156,6 @@ msgs:
         unit: "C"
         size: 16
         endianness: "little"
-        signed: true
     - !DiscreteField
         name: "BMS/Cells/Temp_High_Cell"
         unit: ""
@@ -173,7 +169,6 @@ msgs:
         unit: "C"
         size: 16
         endianness: "little"
-        signed: true
     - !DiscreteField
         name: "BMS/Cells/Temp_Low_Cell"
         unit: ""
@@ -187,7 +182,6 @@ msgs:
         unit: "C"
         size: 16
         endianness: "little"
-        signed: true
 
 - !CANMsg
     id: "0x85"
