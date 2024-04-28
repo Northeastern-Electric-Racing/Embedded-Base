@@ -36,3 +36,93 @@ msgs:
         name: "MPU/Fault/Severity"
         unit: ""
         size: 8
+        
+- !CANMsg
+    id: "0x123"
+    desc: "MPU Shutdown"
+    fields:
+    - !DiscreteField
+        name: "MPU/Shutdown/CockpitBRB"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BMS"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Inertia"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Spare_GPIO_1"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/IMD"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BSPD"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BOTS"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/HVD_Interlock"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/HVC_Interlock"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Reserved"
+        unit: ""
+        size: 7
+        
+- !CANMsg
+    id: "0x111"
+    desc: "MPU Fuses"
+    fields:
+    - !DiscreteField
+        name: "MPU/Fuses/Battbox"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/LVBox"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/FanRadiator"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/MC"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/FanBattbox"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Pump"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Dashboard"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Brakelight"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/BRB"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Reserved"
+        unit: ""
+        size: 7

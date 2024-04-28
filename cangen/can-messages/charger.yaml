@@ -40,23 +40,23 @@ msgs:
         signed: true
         format: "current"
     - !DiscreteField
-        name: "Charger/Box/HardwareFailure"
+        name: "Charger/Box/F_HardwareFailure"
         unit: "bool"
         size: 1
     - !DiscreteField
-        name: "Charger/Box/OverTemp"
+        name: "Charger/Box/F_OverTemp"
         unit: "bool"
         size: 1
     - !DiscreteField
-        name: "Charger/Box/VoltageWrong"
+        name: "Charger/Box/F_VoltageWrong"
         unit: "bool"
         size: 1
     - !DiscreteField
-        name: "Charger/Box/WrongBatConnection"
+        name: "Charger/Box/F_WrongBatConnection"
         unit: "bool"
         size: 1
     - !DiscreteField
-        name: "Charger/Box/CommTimeout"
+        name: "Charger/Box/F_CommTimeout"
         unit: "bool"
         size: 1
     - !DiscreteField
