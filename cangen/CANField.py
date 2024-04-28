@@ -28,6 +28,9 @@ class CANField:
             num_bytes += 1
 
         return int(num_bytes)
+    
+    def get_size_bits(self):
+        return self.size
 
 @dataclass
 class DiscreteField(CANField):
