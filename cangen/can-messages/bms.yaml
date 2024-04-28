@@ -9,19 +9,16 @@ msgs:
         name: "BMS/Pack/Voltage"
         unit: "V"
         size: 16
-        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "BMS/Pack/Current"
         unit: "A"
         size: 16
-        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
         size: 16
-        endianness: "little"
     - !DiscreteField
         name: "BMS/Pack/SOC"
         unit: "%"
@@ -74,7 +71,6 @@ msgs:
         name: "BMS/Cells/Volts_High_Value"
         size: 16
         unit: "V"
-        endianness: "little"
         format: "cell_voltage"
     - !DiscreteField
         name: "BMS/Cells/Volts_High_Chip"
@@ -88,7 +84,6 @@ msgs:
         name: "BMS/Cells/Volts_Low_Value"
         size: 16
         unit: "V"
-        endianness: "little"
         format: "cell_voltage"
     - !DiscreteField
         name: "BMS/Cells/Volts_Low_Chip"
@@ -102,7 +97,6 @@ msgs:
         name: "BMS/Cells/Volts_Avg_Value"
         size: 16
         unit: "V"
-        endianness: "little"
         format: "cell_voltage"
         
 - !CANMsg
@@ -155,7 +149,6 @@ msgs:
         name: "BMS/Cells/Temp_High_Value"
         unit: "C"
         size: 16
-        endianness: "little"
     - !DiscreteField
         name: "BMS/Cells/Temp_High_Cell"
         unit: ""
@@ -168,7 +161,6 @@ msgs:
         name: "BMS/Cells/Temp_Low_Value"
         unit: "C"
         size: 16
-        endianness: "little"
     - !DiscreteField
         name: "BMS/Cells/Temp_Low_Cell"
         unit: ""
@@ -181,7 +173,6 @@ msgs:
         name: "BMS/Cells/Temp_Avg_Value"
         unit: "C"
         size: 16
-        endianness: "little"
 
 - !CANMsg
     id: "0x85"

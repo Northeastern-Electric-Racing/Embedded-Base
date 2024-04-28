@@ -8,19 +8,16 @@ msgs:
         name: "Charger/BMS/Voltage"
         unit: "V"
         size: 16
-        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/BMS/Current"
         unit: "A"
         size: 16
-        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/BMS/Control"
         unit: ""
         size: 8
-        endianness: "little"
     - !DiscreteField
         name: "Charger/Unimplemented/Data"
         unit: ""
@@ -35,28 +32,34 @@ msgs:
         name: "Charger/Box/Voltage"
         unit: "V"
         size: 16
-        endianness: "little"
         format: "current"
     - !DiscreteField
         name: "Charger/Box/Current"
         unit: "A"
         size: 16
         signed: true
-        endianness: "little"
         format: "current"
     - !DiscreteField
-        name: "Charger/Box/FaultStatus"
-        unit: ""
-        endianness: "little"
-        size: 8
+        name: "Charger/Box/HardwareFailure"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/OverTemp"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/VoltageWrong"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/WrongBatConnection"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/CommTimeout"
+        unit: "bool"
+        size: 1
     - !DiscreteField
         name: "Charger/Unimplemented/Data"
         unit: ""
         size: 24
-    # Fault info Charger/Box/FaultStatus
-    # Bit 0: 0: Normal. 1: Hardware Failure
-    # Bit 1: 0: Normal. 1: Over temperature protection
-    # Bit 2: 0: Input voltage is normal. 1. Input voltage is wrong, the charger will stop working
-    # Bit 3: 0: Battery is connected normally.
-    # Bit 4: 1: Battery is not connected or the battery is connected reversely.
-    # Bit 5: 0: Communication is normal. 1: Communication receive time-out.
