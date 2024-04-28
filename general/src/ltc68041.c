@@ -79,7 +79,7 @@ Copyright 2013 Linear Technology Corp. (LTC)
 */
 uint8_t ADCV[2]; //!< Cell Voltage conversion command.
 uint8_t ADAX[2]; //!< GPIO conversion command.
-
+uint8_t ADAXD[2];
 
 /* private function prototypes */
 void LTC6804_rdcv_reg(ltc_config *config,uint8_t reg, uint8_t total_ic, uint8_t *data);
@@ -149,6 +149,11 @@ void set_adc(uint8_t MD,  // ADC Mode
   ADAX[0] = md_bits + 0x04;
   md_bits = (MD & 0x01) << 7;
   ADAX[1] = md_bits + 0x60 + CHG;
+
+  md_bits = (MD & 0x02) >> 1;
+  ADAXD[0] = md_bits + 0x04;
+  md_bits = (MD & 0x01) << 7;
+  ADAXD[1] = md_bits + 0x00 + CHG;
 }
 
 /*!*********************************************************************************************
@@ -203,6 +208,32 @@ void LTC6804_adcv(ltc_config *config) {
   guaranteed
   4. send broadcast adcv command to LTC6804 daisy chain
 */
+
+/*  */
+void LTC6804_adaxd(ltc_config *config) {
+
+  uint8_t cmd[4];
+  uint16_t cmd_pec;
+
+  // 1
+  cmd[0] = ADAXD[0];
+  cmd[1] = ADAXD[1];
+
+  // 2
+  cmd_pec = pec15_calc(2, ADAXD);
+  cmd[2] = (uint8_t)(cmd_pec >> 8);
+  cmd[3] = (uint8_t)(cmd_pec);
+
+  // 3
+  wakeup_idle(config); // This will guarantee that the LTC6804 isoSPI port is
+                       // awake. This command can be removed.
+
+  // 4
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
+}
+
 
 /*!******************************************************************************************************
  \brief Start an GPIO Conversion
