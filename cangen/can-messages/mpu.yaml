@@ -1,15 +1,16 @@
 !Messages
-msgs:
-- !CANMsg
-    id: "0x500"
-    desc: "MPU Acceleromter"
-    fields:
-    - !CompositeField   # X, Y, and Z should be decoded together
-        name: "MPU/Accel"
-        unit: "g"
-        size: 16
-        num_points: 3
-        format: "acceleration"
+# msgs:
+# - !CANMsg
+#     id: "0x500"
+#     desc: "MPU Acceleromter"
+#     fields:
+#     - !CompositeField   # X, Y, and Z should be decoded together
+#         name: "MPU/Accel"
+#         unit: "g"
+#         size: 16
+#         num_points: 3
+#         format: "acceleration"
+
 
 - !CANMsg
     id: "0x501"
@@ -22,6 +23,10 @@ msgs:
     - !DiscreteField
         name: "MPU/State/ModeIndex"
         unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/State/Speed"
+        unit: "mph"
         size: 8
 
 - !CANMsg

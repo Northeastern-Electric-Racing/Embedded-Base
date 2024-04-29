@@ -40,7 +40,6 @@ msgs:
         name: "BMS/Status/Faults"
         unit: ""
         size: 32
-        endianness: "little"
     - !DiscreteField
         name: "BMS/Status/Temp_Average"
         unit: "C"
