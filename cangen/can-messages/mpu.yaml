@@ -45,6 +45,15 @@ msgs:
         name: "MPU/Fault/Severity"
         unit: ""
         size: 8
+
+- !CANMsg
+    id: "0x503"
+    desc: "MPU Sense"
+    fields:
+    - !DiscreteField
+        name: "MPU/Sense/Voltage"
+        unit: "V"
+        size: 32
         
 - !CANMsg
     id: "0x123"
