@@ -50,7 +50,7 @@ msgs:
     id: "0x123"
     desc: "MPU Shutdown"
     fields:
-     - !DiscreteField
+    - !DiscreteField
         name: "MPU/Shutdown/HVC_Interlock"
         unit: ""
         size: 1
@@ -99,7 +99,7 @@ msgs:
         name: "MPU/Fuses/BRB"
         unit: ""
         size: 1
-     - !DiscreteField
+    - !DiscreteField
         name: "MPU/Fuses/Brakelight"
         unit: ""
         size: 1
