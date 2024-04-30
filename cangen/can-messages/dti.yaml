@@ -40,7 +40,7 @@ msgs:
         signed: true
         format: "current"
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 32
         signed: false
@@ -80,7 +80,7 @@ msgs:
         # 0x09 - CAN Command Error
         # 0x0A - Analog Input Error
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 24
         signed: false
@@ -201,11 +201,11 @@ msgs:
         unit: ""
         size: 1
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 5
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 1
     - !DiscreteField
@@ -240,7 +240,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -256,7 +256,7 @@ msgs:
         signed: true
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 32
 
@@ -273,7 +273,7 @@ msgs:
         format: "torque"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -290,7 +290,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -307,7 +307,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
         
@@ -334,7 +334,7 @@ msgs:
         size: 1
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 60
 
@@ -351,7 +351,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -368,7 +368,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -397,7 +397,7 @@ msgs:
         format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -412,6 +412,6 @@ msgs:
         size: 8
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 63
