@@ -115,7 +115,7 @@ msgs:
         name: "MPU/Fuses/FanBattbox"
         unit: ""
         size: 1
-     - !DiscreteField
+    - !DiscreteField
         name: "MPU/Fuses/MC"
         unit: ""
         size: 1
