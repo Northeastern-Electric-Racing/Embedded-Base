@@ -395,11 +395,6 @@ msgs:
         size: 16
         signed: true
         format: "current"
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/Unused/Unused"
-        unit: ""
-        size: 48
 
 #DTI_COMMAND
 - !CANMsg
@@ -410,8 +405,4 @@ msgs:
         name: "DTI/Commands/Drive_Enable_Target"
         unit: ""
         size: 8
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/Unused/Unused"
-        unit: ""
-        size: 63
+
