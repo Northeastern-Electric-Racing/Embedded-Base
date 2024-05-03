@@ -1,0 +1,65 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x1806E5F4"
+    desc: "BMS Message Send"
+    fields:
+    - !DiscreteField
+        name: "Charger/BMS/Voltage"
+        unit: "V"
+        size: 16
+        format: "current"
+    - !DiscreteField
+        name: "Charger/BMS/Current"
+        unit: "A"
+        size: 16
+        format: "current"
+    - !DiscreteField
+        name: "Charger/BMS/Control"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "Charger/Unimplemented/Data"
+        unit: ""
+        size: 24
+
+        
+- !CANMsg
+    id: "0x18FF50E5"
+    desc: "Charger Box Status"
+    fields:
+    - !DiscreteField
+        name: "Charger/Box/Voltage"
+        unit: "V"
+        size: 16
+        format: "current"
+    - !DiscreteField
+        name: "Charger/Box/Current"
+        unit: "A"
+        size: 16
+        signed: true
+        format: "current"
+    - !DiscreteField
+        name: "Charger/Box/F_HardwareFailure"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/F_OverTemp"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/F_VoltageWrong"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/F_WrongBatConnection"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Box/F_CommTimeout"
+        unit: "bool"
+        size: 1
+    - !DiscreteField
+        name: "Charger/Unimplemented/Data"
+        unit: ""
+        size: 24

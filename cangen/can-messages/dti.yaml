@@ -9,19 +9,17 @@ msgs:
         name: "DTI/RPM/ERPM"
         unit: "ERPM"
         size: 32
-        endianness: "big"
         signed: true
     - !DiscreteField
         name: "DTI/Power/Duty_Cycle"
         unit: "%"
         size: 16
-        endianness: "big"
         signed: true
+        format: "current"
     - !DiscreteField
         name: "DTI/Power/Input_Voltage"
         unit: "V"
         size: 16
-        endianness: "big"
         signed: true
     
 #DTI BROADCAST
@@ -33,19 +31,18 @@ msgs:
         name: "DTI/Power/AC_Current"
         unit: "A"
         size: 16
-        endianness: "big"
         signed: true
+        format: "current"
     - !DiscreteField
         name:  "DTI/Power/DC_Current"
         unit: "A"
         size: 16
-        endianness: "big"
         signed: true
+        format: "current"
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 32
-        endianness: "big"
         signed: false
        
      
@@ -58,19 +55,18 @@ msgs:
         name: "DTI/Temps/Controller_Temperature"
         size: 16
         unit: "C"
-        endianness: "big"
         signed: true
+        format: "temperature"
     - !DiscreteField
         name: "DTI/Temps/Motor_Temperature"
         unit: "C"
         size: 16
-        endianness: "big"
         signed: true
+        format: "temperature"
     - !DiscreteField
         name: "DTI/Fault/Fault_Code"
         unit: ""
         size: 8
-        endianness: "big"
         signed: false
         # 0x00 - No Faults
         # 0x01 - Overvoltage
@@ -84,10 +80,9 @@ msgs:
         # 0x09 - CAN Command Error
         # 0x0A - Analog Input Error
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 24
-        endianness: "big"
         signed: false
         # All FFs
 
@@ -100,14 +95,14 @@ msgs:
         name: "DTI/FOC/Component_Id"
         unit: "A"
         size: 32
-        endianness: "big"
         signed: true
+        format: "high_voltage"
     - !DiscreteField
         name: "DTI/FOC/Component_Iq"
         unit: "A"
         size: 32
-        endianness: "big"
         signed: true
+        format: "high_voltage"
         
 # DTI_BROADCAST        
 - !CANMsg
@@ -118,13 +113,11 @@ msgs:
         name: "DTI/General/Throttle_Signal"
         unit: "%"
         size: 8
-        endianness: "big"
         signed: true
     - !DiscreteField
         name:  "DTI/General/Brake_Signal"
         unit: "%"
         size: 8
-        endianness: "big"
         signed: true
     - !DiscreteField
         name: "DTI/General/Digital_In_1"
@@ -162,7 +155,6 @@ msgs:
         name: "DTI/General/Drive_Enable"
         unit: ""
         size: 8
-        endianness: "Big"
         signed: false
     - !DiscreteField
         name: "DTI/Limit/Cap_Temp_Limit"
@@ -209,11 +201,11 @@ msgs:
         unit: ""
         size: 1
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 5
     - !DiscreteField
-        name: "DTI/BA115/Reserved"
+        name: "DTI/Unused/Reserved"
         unit: ""
         size: 1
     - !DiscreteField
@@ -231,13 +223,8 @@ msgs:
         name: "DTI/Commands/AC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 48
+        format: "current"
         
 
 #DTI_COMMAND
@@ -249,11 +236,11 @@ msgs:
         name: "DTI/Commands/Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -266,11 +253,10 @@ msgs:
         name: "DTI/Commands/ERPM_Target"
         unit: "A"
         size: 32
-        endianness: "Big"
         signed: true
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 32
 
@@ -281,13 +267,13 @@ msgs:
     fields:
     - !DiscreteField
         name: "DTI/Commands/Position_Target"
-        unit: "A"
+        unit: "degree"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "torque"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -300,11 +286,11 @@ msgs:
         name: "DTI/Commands/Relative_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -317,11 +303,11 @@ msgs:
         name: "DTI/Commands/Relative_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
         
@@ -348,7 +334,7 @@ msgs:
         size: 1
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 60
 
@@ -361,11 +347,11 @@ msgs:
         name: "DTI/Commands/Max_AC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -378,11 +364,11 @@ msgs:
         name: "DTI/Commands/Max_AC_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
+        format: "current"
     - !DiscreteField
         # Fill with FFs
-        name: "DTI/B00B5/Unused"
+        name: "DTI/Unused/Unused"
         unit: ""
         size: 48
 
@@ -395,13 +381,8 @@ msgs:
         name: "DTI/Commands/Max_DC_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 48
+        format: "current"
 
 #DTI_COMMAND
 - !CANMsg
@@ -412,13 +393,8 @@ msgs:
         name: "DTI/Commands/Max_DC_Brake_Current_Target"
         unit: "A"
         size: 16
-        endianness: "Big"
         signed: true
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 48
+        format: "current"
 
 #DTI_COMMAND
 - !CANMsg
@@ -429,9 +405,4 @@ msgs:
         name: "DTI/Commands/Drive_Enable_Target"
         unit: ""
         size: 8
-        endianness: "big"
-    - !DiscreteField
-        # Fill with FFs
-        name: "DTI/B00B5/Unused"
-        unit: ""
-        size: 63
+

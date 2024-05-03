@@ -1,18 +1,6 @@
 !Messages
 msgs:
 - !CANMsg
-    id: "0x500"
-    desc: "MPU Acceleromter"
-    fields:
-    - !CompositeField   # X, Y, and Z should be decoded together
-        name: "MPU/Accel"
-        unit: "g"
-        size: 16
-        num_points: 3
-        format: "acceleration"
-        endianness: "big"
-
-- !CANMsg
     id: "0x501"
     desc: "MPU Status"
     fields:
@@ -25,14 +13,134 @@ msgs:
         unit: ""
         size: 8
     - !DiscreteField
-        name: "MPU/State/Torque_Limit_Percentage"
-        unit: ""
+        name: "MPU/State/Speed"
+        unit: "mph"
         size: 8
     - !DiscreteField
-        name: "MPU/State/Regen_Strength"
+        name: "MPU/State/TSMS"
         unit: ""
         size: 8
+        
+        
+# - !CANMsg
+#     id: "0x500"
+#     desc: "MPU Acceleromter"
+#     fields:
+#     - !CompositeField   # X, Y, and Z should be decoded together
+#         name: "MPU/Accel"
+#         unit: "g"
+#         size: 16
+#         num_points: 3
+#         format: "acceleration"
+
+- !CANMsg
+    id: "0x502"
+    desc: "MPU Fault"
+    fields:
     - !DiscreteField
-        name: "MPU/State/Traction_Control"
+        name: "MPU/Fault/Code"
+        unit: ""
+        size: 32
+    - !DiscreteField
+        name: "MPU/Fault/Severity"
         unit: ""
         size: 8
+
+- !CANMsg
+    id: "0x503"
+    desc: "MPU Sense"
+    fields:
+    - !DiscreteField
+        name: "MPU/Sense/Voltage"
+        unit: "V"
+        size: 32
+        
+- !CANMsg
+    id: "0x123"
+    desc: "MPU Shutdown"
+    fields:
+    - !DiscreteField
+        name: "MPU/Shutdown/CockpitBRB"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BMS"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Inertia"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Spare_GPIO_1"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/IMD"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BSPD"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/BOTS"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/HVD_Interlock"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/HVC_Interlock"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Shutdown/Reserved"
+        unit: ""
+        size: 7
+        
+- !CANMsg
+    id: "0x111"
+    desc: "MPU Fuses"
+    fields:
+    - !DiscreteField
+        name: "MPU/Fuses/Battbox"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/LVBox"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/FanRadiator"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/MC"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/FanBattbox"
+        unit: ""
+        size: 1 
+    - !DiscreteField
+        name: "MPU/Fuses/Pump"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Dashboard"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Brakelight"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/BRB"
+        unit: ""
+        size: 1
+    - !DiscreteField
+        name: "MPU/Fuses/Reserved"
+        unit: ""
+        size: 7

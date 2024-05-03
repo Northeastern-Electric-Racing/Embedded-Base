@@ -90,7 +90,7 @@ class RustSynth:
 		return result
 
 	def add_length_check(self, fields: List[CANField]) -> str:
-		field_size = sum(field.get_size_bytes() for field in fields)
+		field_size = sum(field.get_size_bits() for field in fields) / 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
 	def decode_field_value(self, field: CANField) -> str:
@@ -124,14 +124,14 @@ class RustSynth:
 		base = f"reader.read_bits({field.size})"
 
 		if field.endianness == "big":
-			base = f"{base}.to_be()"
+			base = f"{base}.swap_bytes()"
 
 		# TODO: Make this configurable based on endianness of platform
 		#elif field.endianness == "little":
 		#    base = f"{base}.to_le()"
 
 		if field.signed:
-			base = f"{base} as i{field.get_size_bytes() * 8}"
+			base = f"({base} as i{field.get_size_bits()})"
 
 		return f"{base} as {field.final_type}"
 
