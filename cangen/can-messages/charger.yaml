@@ -5,21 +5,21 @@ msgs:
     desc: "BMS Message Send"
     fields:
     - !DiscreteField
-        name: "Charger/BMS/Voltage"
+        name: "BMS/Charging/Voltage"
         unit: "V"
         size: 16
         format: "current"
     - !DiscreteField
-        name: "Charger/BMS/Current"
+        name: "BMS/Charging/Current"
         unit: "A"
         size: 16
         format: "current"
     - !DiscreteField
-        name: "Charger/BMS/Control"
+        name: "BMS/Charging/Control"
         unit: ""
         size: 8
     - !DiscreteField
-        name: "Charger/Unimplemented/Data"
+        name: "BMS/Charging/UnimplementedData"
         unit: ""
         size: 24
 
@@ -60,6 +60,6 @@ msgs:
         unit: "bool"
         size: 1
     - !DiscreteField
-        name: "Charger/Unimplemented/Data"
+        name: "Charger/Box/UnimplementedData"
         unit: ""
         size: 24
