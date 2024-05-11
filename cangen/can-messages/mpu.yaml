@@ -54,6 +54,28 @@ msgs:
         name: "MPU/Sense/Voltage"
         unit: "V"
         size: 32
+
+# debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
+- !CANMsg
+    id: "0x701"
+    desc: "MPU Debug"
+    fields:
+    - !DiscreteField
+        name: "MPU/Debug/Spare0"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/Debug/Spare1"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "MPU/Debug/Spare2"
+        unit: ""
+        size: 16
+     - !DiscreteField
+        name: "MPU/Debug/Spare3"
+        unit: ""
+        size: 32
         
 - !CANMsg
     id: "0x123"

@@ -197,3 +197,25 @@ msgs:
         unit: "C"
         size: 8
         signed: true
+
+# debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
+- !CANMsg
+    id: "0x702"
+    desc: "BMS Debug"
+    fields:
+    - !DiscreteField
+        name: "BMS/Debug/Spare0"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "BMS/Debug/Spare1"
+        unit: ""
+        size: 8
+    - !DiscreteField
+        name: "BMS/Debug/Spare2"
+        unit: ""
+        size: 16
+     - !DiscreteField
+        name: "BMS/Debug/Spare3"
+        unit: ""
+        size: 32
