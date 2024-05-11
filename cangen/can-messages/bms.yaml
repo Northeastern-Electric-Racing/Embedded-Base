@@ -215,7 +215,7 @@ msgs:
         name: "BMS/Debug/Spare2"
         unit: ""
         size: 16
-     - !DiscreteField
+    - !DiscreteField
         name: "BMS/Debug/Spare3"
         unit: ""
         size: 32
