@@ -72,7 +72,7 @@ msgs:
         name: "MPU/Debug/Spare2"
         unit: ""
         size: 16
-     - !DiscreteField
+    - !DiscreteField
         name: "MPU/Debug/Spare3"
         unit: ""
         size: 32
