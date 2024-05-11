@@ -13,9 +13,6 @@ void endian_swap(void *ptr, int size)
     }
 }
 
-/// @brief Reverses the bit order of a byte
-/// @param b byte
-/// @return the same byte but wuth the bits reversed
 unsigned char reverse_bits(unsigned char b) {
    b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
    b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
