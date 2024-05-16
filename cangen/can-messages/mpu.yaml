@@ -55,6 +55,32 @@ msgs:
         unit: "V"
         size: 32
 
+- !CANMsg
+    id: "0x504"
+    desc: "MPU Accel Pedals"
+    fields:
+    - !DiscreteField
+        name: "MPU/Pedals/Accelerator_1"
+        unit: ""
+        size: 32
+    - !DiscreteField
+        name: "MPU/Pedals/Accelerator_2"
+        unit: ""
+        size: 32
+
+- !CANMsg
+    id: "0x505"
+    desc: "MPU Brake Pedals"
+    fields:
+    - !DiscreteField
+        name: "MPU/Pedals/Brake_1"
+        unit: ""
+        size: 32
+    - !DiscreteField
+        name: "MPU/Pedals/Brake_2"
+        unit: ""
+        size: 32
+
 # debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
 - !CANMsg
     id: "0x701"
