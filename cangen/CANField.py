@@ -2,8 +2,8 @@ from __future__ import annotations
 from typing import Optional
 from dataclasses import dataclass
 
-@dataclass(kw_only=True) 
-class CANPoint():
+@dataclass 
+class CANPoint:
     '''
     Represents one set of bits in a CAN message.
     Seperates CAN decoding logic from MQTT encoding information.
@@ -30,7 +30,7 @@ class CANPoint():
         return self.size
     
 @dataclass
-class CANField(CANPoint):
+class NetField:
     '''
     Represents a field in a CAN message.  Contains a MQTT name and unit.
     Differs from CANUnit as it assigns a MQTT message to one unit of can data.
@@ -40,27 +40,6 @@ class CANField(CANPoint):
 
     name: str
     unit: str
-    field_type: str = "*"*42
+    points: list[CANPoint]
     send: bool = True
-    
-
-@dataclass
-class DiscreteField(CANField):
-    """
-    Represents a discrete field inside a CAN message in the sense that
-    it will make sense if it is published to MQTT and timestamped on its own
-    (think State of Charge or Temperature)
-    """
-
-    field_type = "discrete"
-
-@dataclass
-class CompositeField(CANField):
-    """
-    Represents a composite field inside a CAN message in the sense that
-    it will only make sense with other data points in the same message and
-    can't be timestamped on its own (think XYZ acceleration or Roll, Pitch, Yaw)
-    """
-
-    points = list[CANPoint]
-    field_type = "composite"
+    topic_append: bool = False

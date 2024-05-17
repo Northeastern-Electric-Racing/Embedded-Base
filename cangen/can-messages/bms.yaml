@@ -5,217 +5,303 @@ msgs:
     id: "0x80"
     desc: "accumulator status"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Pack/Voltage"
         unit: "V"
-        size: 16
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
         name: "BMS/Pack/Current"
         unit: "A"
-        size: 16
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Pack/SOC"
         unit: "%"
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Pack/Health"
         unit: "%"
-        size: 8
+        points:
+        - !CANPoint
+            size: 8
 
 - !CANMsg
     id: "0x81"
     desc: "BMS Status"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Status/State"
         unit: ""
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Status/Faults"
         unit: ""
-        size: 32
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 32
+    - !NetField
         name: "BMS/Status/Temp_Average"
         unit: "C"
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Status/Temp_Internal"
-        size: 8
         unit: "C"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Status/Balancing"
-        size: 8
         unit: ""
+        points:
+        - !CANPoint
+            size: 8
 
 - !CANMsg
     id: "0x82"
     desc: "Shutdown Control"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Shutdown/MPE"
-        size: 8
         unit: ""
+        points:
+        - !CANPoint
+            size: 8
+
 
 - !CANMsg
     id: "0x83"
     desc: "Cell Data"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Volts_High_Value"
-        size: 16
         unit: "V"
-        format: "divide10000"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10000"
+    - !NetField
         name: "BMS/Cells/Volts_High_Chip"
-        size: 4
+        points:
+        - !CANPoint
+            size: 4
         unit: ""
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Volts_High_Cell"
-        size: 4
+        points:
+        - !CANPoint
+            size: 4
         unit: ""
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Volts_Low_Value"
-        size: 16
         unit: "V"
-        format: "divide10000"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10000"
+    - !NetField
         name: "BMS/Cells/Volts_Low_Chip"
-        size: 4
+        points:
+        - !CANPoint
+            size: 4
         unit: ""
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Volts_Low_Cell"
-        size: 4
+        points:
+        - !CANPoint
+            size: 4
         unit: ""
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Volts_Avg_Value"
-        size: 16
         unit: "V"
-        format: "divide10000"
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10000"
         
 - !CANMsg
     id: "0x87"
     desc: "Cell Voltage"
     fields:
-    - !DiscreteField
-        name: "BMS/PerCell/CellId"
+    - !NetField
+        name: "BMS/PerCell/CellVoltage"
         unit: ""
-        size: 8
-    - !DiscreteField
+        topic_append: true
+        points:
+        - !CANPoint
+            size: 8
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/PerCell/InstantVoltage"
         unit: ""
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/PerCell/InternalResistance"
         unit: ""
-        size: 16
-    - !DiscreteField
-        name: "BMS/PerCell/Shunted"
-        unit: ""
-        size: 8       
-    - !DiscreteField
-        name: "BMS/PerCell/OpenVoltage"
-        unit: ""
-        size: 16  
+        points:
+        - !CANPoint
+            size: 16
+    # - !NetField
+    #     name: "BMS/PerCell/Shunted"
+    #     unit: ""
+    #     points:
+    #     - !CANPoint    
+    #         size: 8   
+    # - !NetField
+    #     name: "BMS/PerCell/OpenVoltage"
+    #     unit: ""
+    #     points:
+    #     - !CANPoint
+    #         size: 8  
         
 - !CANMsg
     id: "0x86"
     desc: "Current Limits"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Pack/DCL"
         unit: ""
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Pack/CCL"
         unit: ""
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Pack/Current"
         unit: ""
-        size: 16
+        points:
+        - !CANPoint
+            size: 16
 
 - !CANMsg
     id: "0x84"
     desc: "Cell Temperatures"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Cells/Temp_High_Value"
         unit: "C"
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Cells/Temp_High_Cell"
         unit: ""
-        size: 4
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 4
+    - !NetField
         name: "BMS/Cells/Temp_High_Chip"
         unit: ""
-        size: 4
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 4
+    - !NetField
         name: "BMS/Cells/Temp_Low_Value"
         unit: "C"
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Cells/Temp_Low_Cell"
         unit: ""
-        size: 4
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 4
+    - !NetField
         name: "BMS/Cells/Temp_Low_Chip"
         unit: ""
-        size: 4
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 4
+    - !NetField
         name: "BMS/Cells/Temp_Avg_Value"
         unit: "C"
-        size: 16
+        points:
+        - !CANPoint
+            size: 16
 
 - !CANMsg
     id: "0x85"
     desc: "Segment Temperatures"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Segment_Temp/1"
         unit: "C"
-        size: 8
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
         name: "BMS/Segment_Temp/2"
         unit: "C"
-        size: 8
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
         name: "BMS/Segment_Temp/3"
         unit: "C"
-        size: 8
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
         name: "BMS/Segment_Temp/4"
         unit: "C"
-        size: 8
-        signed: true
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
 
 # debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
 - !CANMsg
     id: "0x702"
     desc: "BMS Debug"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Debug/Spare0"
         unit: ""
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Debug/Spare1"
         unit: ""
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Debug/Spare2"
         unit: ""
-        size: 16
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
         name: "BMS/Debug/Spare3"
         unit: ""
-        size: 32
+        points:
+        - !CANPoint
+            size: 32

@@ -4,11 +4,15 @@ msgs:
     id: "0x680"
     desc: "Wheel State"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "WHEEL/Buttons/1"
         unit: ""
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "WHEEL/Buttons/2"
         unit: ""
-        size: 8
+        points:
+        - !CANPoint
+            size: 8

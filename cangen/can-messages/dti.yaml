@@ -5,45 +5,57 @@ msgs:
     id: "0x416"
     desc: "ERPM_Duty_Input_Voltage_Status"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/RPM/ERPM"
         unit: "ERPM"
-        size: 32
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 32
+            signed: true
+    - !NetField
         name: "DTI/Power/Duty_Cycle"
         unit: "%"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         name: "DTI/Power/Input_Voltage"
         unit: "V"
-        size: 16
-        signed: true
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
     
 #DTI BROADCAST
 - !CANMsg
     id: "0x436"
     desc: "Currents_Status"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Power/AC_Current"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         name:  "DTI/Power/DC_Current"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         name: "DTI/Unused/Reserved"
         unit: ""
-        size: 32
-        signed: false
+        points:
+        - !CANPoint
+            size: 32
+            signed: false
        
      
 #DTI_BROADCAST
@@ -51,23 +63,29 @@ msgs:
     id: "0x456"
     desc: "Temps_Fault_Code_Status"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Temps/Controller_Temperature"
-        size: 16
         unit: "C"
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            signed: true
+            format: "divide10"
+            size: 16
+    - !NetField
         name: "DTI/Temps/Motor_Temperature"
         unit: "C"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         name: "DTI/Fault/Fault_Code"
         unit: ""
-        size: 8
-        signed: false
+        points:
+        - !CANPoint
+            size: 8
+            signed: false
         # 0x00 - No Faults
         # 0x01 - Overvoltage
         # 0x02 - Undervoltage
@@ -79,11 +97,14 @@ msgs:
         # 0x08 - Sensor general fault
         # 0x09 - CAN Command Error
         # 0x0A - Analog Input Error
-    - !DiscreteField
+    - !NetField
         name: "DTI/Unused/Reserved"
         unit: ""
-        size: 24
-        signed: false
+        send: false
+        points:
+        - !CANPoint
+            size: 24
+            signed: false
         # All FFs
 
 #DTI_BROADCAST
@@ -91,130 +112,186 @@ msgs:
     id: "0x476"
     desc: "MC_FOC_Algorithm"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/FOC/Component_Id"
         unit: "A"
-        size: 32
-        signed: true
-        format: "divide100"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 32
+            signed: true
+            format: "divide100"
+    - !NetField
         name: "DTI/FOC/Component_Iq"
         unit: "A"
-        size: 32
-        signed: true
-        format: "divide100"
+        points:
+        - !CANPoint
+            size: 32
+            signed: true
+            format: "divide100"
         
 # DTI_BROADCAST        
 - !CANMsg
     id: "0x496"
     desc: "MC_General_Data"
     fields: 
-    - !DiscreteField
+    - !NetField
         name: "DTI/General/Throttle_Signal"
         unit: "%"
-        size: 8
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
         name:  "DTI/General/Brake_Signal"
         unit: "%"
-        size: 8
-        signed: true
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
 # NOTE: DTI sends bits in reverse order of how they appear in documentation
-    - !DiscreteField
+    - !NetField
         name: "DTI/General/Digital_Out_4"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_Out_3"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_Out_2"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_Out_1"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_In_4"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_In_3"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_In_2"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/General/Digital_In_1"
         unit: ""
-        size: 1
+        points:
+        - !CANPoint
+            size: 1
 # NEW BYTE
-    - !DiscreteField
+    - !NetField
         name: "DTI/General/Drive_Enable"
         unit: ""
-        size: 8
+        points:
+        - !CANPoint
+            size: 8
 # NEW BYTE
-    - !DiscreteField
+    - !NetField
         name: "DTI/Limit/Motor_Temp_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/Motor_Acc_Temp_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/Input_Voltage_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/IGBT_Temp_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/IGBT_Acc_Temp_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/Drive_Enable_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/DC_Current_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/Cap_Temp_Limit"
         unit: ""
-        size: 1
+        points:
+        - !CANPoint
+            size: 1
 # NEW BYTE - NOTE, this byte may be wrong due to bit stuff
-    - !DiscreteField
+    - !NetField
         name: "DTI/Limit/Power_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/RPM_Max_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Limit/RPM_Min_Limit"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Unused/Reserved"
         unit: ""
-        size: 5
-    - !DiscreteField
+        send: false
+        points:
+        - !CANPoint
+            size: 5
+    - !NetField
         name: "DTI/Unused/Reserved"
         unit: ""
-        size: 8
-    - !DiscreteField
+        send: false
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "DTI/General/CAN_Map_Version"
         unit: ""
-        size: 8
+        points:
+        - !CANPoint
+            size: 8
        
             
 #DTI_COMMAND - Known MPU
@@ -222,12 +299,14 @@ msgs:
     id: "0x036"
     desc: "AC_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "MPU/Commands/AC_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
         
 
 #DTI_COMMAND
@@ -235,177 +314,229 @@ msgs:
     id: "0x056"
     desc: "Brake_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/Brake_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
 
 #DTI_COMMAND
 - !CANMsg
     id: "0x076"
     desc: "ERPM_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/ERPM_Target"
         unit: "A"
-        size: 32
-        signed: true
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 32
+            signed: true
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 32
+        send: false
+        points:
+        - !CANPoint
+            size: 32
 
 #DTI_COMMAND
 - !CANMsg
     id: "0x096"
     desc: "Position_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/Position_Target"
         unit: "degree"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
 
 #DTI_COMMAND
 - !CANMsg
     id: "0x0B6"
     desc: "Relative_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/Relative_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
 
 #DTI_COMMAND
 - !CANMsg
     id: "0x0D6"
     desc: "Relative_Brake_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/Relative_Brake_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
         
 #DTI_COMMAND
 - !CANMsg
     id: "0x0F6"
     desc: "Digital_Output_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "DTI/Commands/Digital_Output_1_Target"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Commands/Digital_Output_2_Target"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Commands/Digital_Output_3_Target"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "DTI/Commands/Digital_Output_4_Target"
         unit: ""
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 60
+        send: false
+        points:
+        - !CANPoint
+            size: 60
 
 #DTI_COMMAND - Assumed BMS
 - !CANMsg
     id: "0x116"
     desc: "Max_AC_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Commands/Max_AC_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
 
 #DTI_COMMAND - Assumed BMS
 - !CANMsg
     id: "0x136"
     desc: "Max_AC_Brake_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Commands/Max_AC_Brake_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         # Fill with FFs
         name: "DTI/Unused/Unused"
         unit: ""
-        size: 48
+        send: false
+        points:
+        - !CANPoint
+            size: 48
 
 #DTI_COMMAND - Known BMS
 - !CANMsg
     id: "0x156"
     desc: "Max_DC_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Commands/Max_DC_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
 
 #DTI_COMMAND - Known BMS
 - !CANMsg
     id: "0x176"
     desc: "Max_DC_Brake_Current_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Commands/Max_DC_Brake_Current_Target"
         unit: "A"
-        size: 16
-        signed: true
-        format: "divide10"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
 
 #DTI_COMMAND - Known MPU
 - !CANMsg
     id: "0x196"
     desc: "Drive_Enable_Command"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "MPU/Commands/Drive_Enable_Target"
         unit: ""
-        size: 8
+        points:
+        - !CANPoint
+            size: 8
 

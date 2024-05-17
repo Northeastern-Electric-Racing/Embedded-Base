@@ -1,7 +1,7 @@
-from cangen.CANField import CANField, CANPoint, CompositeField
+from cangen.CANField import CANPoint
 from cangen.CANMsg import CANMsg
 from cangen.Result import Result
-from typing import List
+from typing import List, Optional
 
 class RustSynth:
 	"""
@@ -46,7 +46,7 @@ class RustSynth:
 		# Generate Function Signature
 		signature: str = self.signature(msg.desc)
 
-		length_check: str = self.add_length_check(msg.fields)
+		length_check: str = self.add_length_check(point for field in msg.fields for point in field.points)
 
 		# Generate a line for each field in the message
 		generated_lines: list[str] = []
@@ -64,44 +64,30 @@ class RustSynth:
 		result = []
 
 		# For all the fields in the CAN message, generate the required code
-		for field in msg.fields:
+		for index, field in enumerate(msg.fields, start=0):
+				if field.send:
+					topic_suffix: str = None
+					if field.topic_append:
+						topic_suffix_pt = field.points.pop(0)
+						result.append(f"          let topic_suffix_{index} = {self.decode_field_value(topic_suffix_pt)};")
+						topic_suffix = f"topic_suffix_{index}"
 
-			# If the field is discrete
-			if field.field_type == "discrete":
-				result.append(f"        {RustSnippets.network_encoding_start}")
-				result.append(f"             {self.decode_field_value(field)}")
-				result.append(f"        {RustSnippets.network_encoding_closing}")
-				result.append(f'        , "{field.name}", "{field.unit}"),')
+					result.append(f"        {RustSnippets.network_encoding_start}")
 
-			# If the data is composite
-			elif field.field_type == "composite":
-				result.append(f"        {RustSnippets.network_encoding_start}")
-				result.append(
-					f"            {','.join(self.decode_field_value(field_unit) for field_unit in field.points)}"
-				)
-				result.append(f"        {RustSnippets.network_encoding_closing}")
-				result.append(
-					f'        , "{field.name}", "{field.unit}")'
-				)
-			else:
-				print("field type not recognized!\n")
-				exit(1)
+					values: str = f"            {','.join(self.decode_field_value(point) for point in field.points)}]"
+					result.append(self.finalize_line(field.name, field.unit, values, topic_appends_name=topic_suffix))
+
+					result.append(f"        {RustSnippets.network_encoding_closing}")
+				elif index < len(msg.fields) -1: 
+					# if field isnt sent, still decode it to get to the next bits, but only if it isnt the last point
+					# if it is the last point, we can just exit out and save the resources of decoding it
+					result.append(f"            {','.join(self.decode_field_value(point) for point in field.points)};")
+
 
 		return result
 
 	def add_length_check(self, fields: List[CANPoint]) -> str:
-		field_size = 0
-		for field in fields:
-			# check if there are child points as a CompositeField as CANUnit children
-			if isinstance(field, CompositeField):
-				for point in field.points:
-					field_size += point.get_size_bits()
-				pass
-			else:
-				print(type(field))
-				field_size += field.get_size_bits()
-				
-		field_size /= 8
+		field_size = sum(field.get_size_bits() for field in fields) / 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
 	def decode_field_value(self, field: CANPoint) -> str:
@@ -121,11 +107,18 @@ class RustSynth:
 		"""
 		return f"pub fn {self.function_name(desc)}(data: &[u8]) -> {RustSnippets.decode_return_type} {{"
 
-	def finalize_line(self, topic: str, unit: str, val: str) -> str:
+	def finalize_line(self, topic: str, unit: str, val: str, topic_appends_name: Optional[str] = None ) -> str:
 		"""
-		Helper function that generates a line the data struct for a given CANField value
+		Helper function that generates a line the data struct for a given CANUnit value
 		"""
-		return f'    Data::new({val}, "{topic}", "{unit}"),'
+		format_topic: str = f'&format!("{topic}'
+		if topic_appends_name is not None:
+			format_topic += "/{}"
+		format_topic += '", '
+		if topic_appends_name is not None:
+			format_topic += f'{topic_appends_name},'
+		format_topic += ")"
+		return f'    {val}, {format_topic}, "{unit}")'
 
 	def parse_decoders(self, field: CANPoint) -> str:
 		"""
@@ -148,8 +141,8 @@ class RustSynth:
 
 	def format_data(self, field: CANPoint, decoded_data: str) -> str:
 		"""
-		Helper function that formats the data for a given CANUnit based off the
-		format of the CANUnit if it exists, returns the decoded data otherwise
+		Helper function that formats the data for a given CANPoint based off the
+		format of the CANPoint if it exists
 		"""
 		cf = decoded_data
 		if field.format:
@@ -234,10 +227,10 @@ impl FormatData {
 
 	decode_return_type: str = "Vec::<Data>"  # The return type of any decode function
 	decode_return_value: str = (
-		f"    let result = vec!["  # Initializing the result vector
+		f"    let mut result: Vec<Data> = Vec::new();"  # Initializing the result vector
 	)
 	decode_close: str = (
-		"    ];\n    result\n}\n"  # Returning the result vector and closing the function
+		"result\n}\n"  # Returning the result vector and closing the function
 	)
 
 	decode_mock: str = """
@@ -248,8 +241,8 @@ pub fn decode_mock(_data: &[u8]) -> Vec::<Data> {
 	result
 }"""  # A debug decode function that is used for messages that don't have a decode function
 
-	network_encoding_start: str = "Data::new(vec!["
-	network_encoding_closing: str = "]"
+	network_encoding_start: str = "result.push(Data::new(vec!["
+	network_encoding_closing: str = ");"
 
 	master_mapping_import: str = (
 		"use super::decode_data::*;\nuse super::data::Data;\n"  # Importing all the functions in decode_data.rs file and the Data struct
