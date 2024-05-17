@@ -22,16 +22,21 @@ msgs:
         size: 8
         
         
-# - !CANMsg
-#     id: "0x500"
-#     desc: "MPU Acceleromter"
-#     fields:
-#     - !CompositeField   # X, Y, and Z should be decoded together
-#         name: "MPU/Accel"
-#         unit: "g"
-#         size: 16
-#         num_points: 3
-#         format: "acceleration"
+- !CANMsg
+    id: "0x500"
+    desc: "MPU Acceleromter"
+    fields:
+    - !CompositeField   # X, Y, and Z should be decoded together
+        name: "MPU/Accel"
+        unit: "g"
+        points:
+        - !CANUnit
+            size: 16
+        - !CANUnit
+            size: 8
+        - !CANUnit
+            size: 16
+
 
 - !CANMsg
     id: "0x502"
@@ -53,6 +58,7 @@ msgs:
     - !DiscreteField
         name: "MPU/Sense/Voltage"
         unit: "V"
+        endianness: "little"
         size: 32
 
 - !CANMsg

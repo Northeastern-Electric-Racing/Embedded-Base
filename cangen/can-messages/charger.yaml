@@ -8,12 +8,12 @@ msgs:
         name: "BMS/Charging/Voltage"
         unit: "V"
         size: 16
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "BMS/Charging/Current"
         unit: "A"
         size: 16
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "BMS/Charging/Control"
         unit: ""
@@ -32,13 +32,13 @@ msgs:
         name: "Charger/Box/Voltage"
         unit: "V"
         size: 16
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "Charger/Box/Current"
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "Charger/Box/F_HardwareFailure"
         unit: "bool"

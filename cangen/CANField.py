@@ -1,23 +1,20 @@
 from __future__ import annotations
-from ruamel.yaml import Optional
+from typing import Optional
 from dataclasses import dataclass
 
-@dataclass
-class CANField:
+@dataclass(kw_only=True) 
+class CANPoint():
     '''
-    Represents a field in a CAN message. Has an id, a name, a unit, a size,
-    and an optional Format and encodings. Also knows its own
-    index within its parent CANMsg, which is assigned at load from YAML.
+    Represents one set of bits in a CAN message.
+    Seperates CAN decoding logic from MQTT encoding information.
 
-    Think 1 MQTT Topic per 1 CAN Field
+    CANField, CompositeField, and DiscreteField all derive from this.
+    This allows CANUnit to define decoding properties and CANField to define encoding properties, 
+    but keep them in one list for the yaml prettiness.
     '''
-
-    name: str
-    unit: str
     size: int # in bits
     signed : bool = False
-    endianness : str = "little"
-    field_type: str = "*"*42
+    endianness : str = "big"
     final_type: str = "f32"
     format: Optional[str] = None
 
@@ -31,6 +28,21 @@ class CANField:
     
     def get_size_bits(self):
         return self.size
+    
+@dataclass
+class CANField(CANPoint):
+    '''
+    Represents a field in a CAN message.  Contains a MQTT name and unit.
+    Differs from CANUnit as it assigns a MQTT message to one unit of can data.
+
+    Think 1 MQTT Topic per 1 CAN Field
+    '''
+
+    name: str
+    unit: str
+    field_type: str = "*"*42
+    send: bool = True
+    
 
 @dataclass
 class DiscreteField(CANField):
@@ -50,5 +62,5 @@ class CompositeField(CANField):
     can't be timestamped on its own (think XYZ acceleration or Roll, Pitch, Yaw)
     """
 
-    num_points: int = 0
+    points = list[CANPoint]
     field_type = "composite"

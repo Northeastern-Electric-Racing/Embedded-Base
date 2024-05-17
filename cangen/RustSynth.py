@@ -1,4 +1,4 @@
-from cangen.CANField import CANField
+from cangen.CANField import CANField, CANPoint, CompositeField
 from cangen.CANMsg import CANMsg
 from cangen.Result import Result
 from typing import List
@@ -77,7 +77,7 @@ class RustSynth:
 			elif field.field_type == "composite":
 				result.append(f"        {RustSnippets.network_encoding_start}")
 				result.append(
-					f"            {','.join(self.decode_field_value(field) for _ in range(field.num_points))}"
+					f"            {','.join(self.decode_field_value(field_unit) for field_unit in field.points)}"
 				)
 				result.append(f"        {RustSnippets.network_encoding_closing}")
 				result.append(
@@ -89,11 +89,22 @@ class RustSynth:
 
 		return result
 
-	def add_length_check(self, fields: List[CANField]) -> str:
-		field_size = sum(field.get_size_bits() for field in fields) / 8
+	def add_length_check(self, fields: List[CANPoint]) -> str:
+		field_size = 0
+		for field in fields:
+			# check if there are child points as a CompositeField as CANUnit children
+			if isinstance(field, CompositeField):
+				for point in field.points:
+					field_size += point.get_size_bits()
+				pass
+			else:
+				print(type(field))
+				field_size += field.get_size_bits()
+				
+		field_size /= 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
-	def decode_field_value(self, field: CANField) -> str:
+	def decode_field_value(self, field: CANPoint) -> str:
 		return f"{self.format_data(field, self.parse_decoders(field))}"
 
 	def function_name(self, desc: str) -> str:
@@ -116,14 +127,14 @@ class RustSynth:
 		"""
 		return f'    Data::new({val}, "{topic}", "{unit}"),'
 
-	def parse_decoders(self, field: CANField) -> str:
+	def parse_decoders(self, field: CANPoint) -> str:
 		"""
-		Helper function that parses the decoders for a given CANField by applying the
-		decoders to the data and casting the result to the final type of the CANField.
+		Helper function that parses the decoders for a given CANUnit by applying the
+		decoders to the data and casting the result to the final type of the CANUnit.
 		"""
 		base = f"reader.read_bits({field.size})"
 
-		if field.endianness == "big":
+		if field.endianness == "little":
 			base = f"{base}.swap_bytes()"
 
 		# TODO: Make this configurable based on endianness of platform
@@ -135,10 +146,10 @@ class RustSynth:
 
 		return f"{base} as {field.final_type}"
 
-	def format_data(self, field: CANField, decoded_data: str) -> str:
+	def format_data(self, field: CANPoint, decoded_data: str) -> str:
 		"""
-		Helper function that formats the data for a given CANField based off the
-		format of the CANField if it exists, returns the decoded data otherwise
+		Helper function that formats the data for a given CANUnit based off the
+		format of the CANUnit if it exists, returns the decoded data otherwise
 		"""
 		cf = decoded_data
 		if field.format:
@@ -197,34 +208,21 @@ impl<'a> BitReader<'a> {
 pub struct FormatData {}
 
 impl FormatData {
-	/* Temperatures are divided by 10 for 1 decimal point precision in C */
-	pub fn temperature(value: f32) -> f32 {
+	pub fn divide10(value: f32) -> f32 {
 		value / 10.0
 	}
 
-	/* Torque values are divided by 10 for one decimal point precision in N-m */
-	pub fn torque(value: f32) -> f32 {
-		value / 10.0
+	pub fn divide100(value: f32) -> f32 {
+		value / 100.0
 	}
 
-	/* Current values are divided by 10 for one decimal point precision in A */
-	pub fn current(value: f32) -> f32 {
-		value / 10.0
-	}
-
-	/* Cell Voltages are recorded on a 10000x multiplier for V, must be divided by 10000 to get accurate number */
-	pub fn cell_voltage(value: f32) -> f32 {
+	pub fn divide10000(value: f32) -> f32 {
 		value / 10000.0
 	}
 
 	/* Acceleration values must be offset by 0.0029 according to datasheet */
 	pub fn acceleration(value: f32) -> f32 {
 		value * 0.0029
-	}
-
-	/* High Voltage values are divided by 100 for one decimal point precision in V, high voltage is in regards to average voltage from the accumulator pack */
-	pub fn high_voltage(value: f32) -> f32 {
-		value / 100.0
 	}
 }"""
 
@@ -245,10 +243,10 @@ impl FormatData {
 	decode_mock: str = """
 pub fn decode_mock(_data: &[u8]) -> Vec::<Data> {
 	let result = vec![
-	Data::new(vec![0.0], "Mock", "")
+	Data::new(vec![0.0], "Calypso/Unknown", "")
 	];
 	result
-}"""  # A mock decode function that is used for messages that don't have a decode function
+}"""  # A debug decode function that is used for messages that don't have a decode function
 
 	network_encoding_start: str = "Data::new(vec!["
 	network_encoding_closing: str = "]"

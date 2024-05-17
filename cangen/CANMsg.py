@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from ruamel.yaml import Optional
 from .CANField import CANField
 
 @dataclass

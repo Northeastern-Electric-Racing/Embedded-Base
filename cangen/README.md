@@ -3,6 +3,23 @@
 
 Here is a custom Python module built to generate embedded code for encoding and decoding CAN messages.
 
+## Adding Messages
+
+Messages should follow these recommendations rules:
+1. Messages must be MSB leftmost bit
+2. Messages <=8 bits endianness should be specified
+3. Wherever possible, bit-wise decoding and byte-wise decoding should happen in seperate bytes to avoid confusion.
+Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before adding a 16 bit number
+4. Message totals should be byte aligned, meaning total bit size of a message should be a power of 8
+
+Message guide:
+1. Use previous examples for most things
+2. For CompositeField, use points: - !CANUnit as many times as needed.  CANUnit does take in all metrics a normal CANField does
+
+
+Note: Single bit messages are memcpy-ed wrong by default, you may need to use `reverse_bits` in `c_utils.h`
+Note: Please use big endian whenever possible, as that is the standard at which our MC, Charger Box, etc. expect it.
+
 ### Directory Structure
 ```
 |

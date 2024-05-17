@@ -15,7 +15,7 @@ msgs:
         unit: "%"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "DTI/Power/Input_Voltage"
         unit: "V"
@@ -32,13 +32,13 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name:  "DTI/Power/DC_Current"
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "DTI/Unused/Reserved"
         unit: ""
@@ -56,13 +56,13 @@ msgs:
         size: 16
         unit: "C"
         signed: true
-        format: "temperature"
+        format: "divide10"
     - !DiscreteField
         name: "DTI/Temps/Motor_Temperature"
         unit: "C"
         size: 16
         signed: true
-        format: "temperature"
+        format: "divide10"
     - !DiscreteField
         name: "DTI/Fault/Fault_Code"
         unit: ""
@@ -96,13 +96,13 @@ msgs:
         unit: "A"
         size: 32
         signed: true
-        format: "high_voltage"
+        format: "divide100"
     - !DiscreteField
         name: "DTI/FOC/Component_Iq"
         unit: "A"
         size: 32
         signed: true
-        format: "high_voltage"
+        format: "divide100"
         
 # DTI_BROADCAST        
 - !CANMsg
@@ -227,7 +227,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
         
 
 #DTI_COMMAND
@@ -240,7 +240,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -273,7 +273,7 @@ msgs:
         unit: "degree"
         size: 16
         signed: true
-        format: "torque"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -290,7 +290,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -307,7 +307,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -351,7 +351,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -368,7 +368,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         # Fill with FFs
         name: "DTI/Unused/Unused"
@@ -385,7 +385,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
 
 #DTI_COMMAND - Known BMS
 - !CANMsg
@@ -397,7 +397,7 @@ msgs:
         unit: "A"
         size: 16
         signed: true
-        format: "current"
+        format: "divide10"
 
 #DTI_COMMAND - Known MPU
 - !CANMsg

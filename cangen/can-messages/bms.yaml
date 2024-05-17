@@ -9,12 +9,12 @@ msgs:
         name: "BMS/Pack/Voltage"
         unit: "V"
         size: 16
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "BMS/Pack/Current"
         unit: "A"
         size: 16
-        format: "current"
+        format: "divide10"
     - !DiscreteField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
@@ -70,7 +70,7 @@ msgs:
         name: "BMS/Cells/Volts_High_Value"
         size: 16
         unit: "V"
-        format: "cell_voltage"
+        format: "divide10000"
     - !DiscreteField
         name: "BMS/Cells/Volts_High_Chip"
         size: 4
@@ -83,7 +83,7 @@ msgs:
         name: "BMS/Cells/Volts_Low_Value"
         size: 16
         unit: "V"
-        format: "cell_voltage"
+        format: "divide10000"
     - !DiscreteField
         name: "BMS/Cells/Volts_Low_Chip"
         size: 4
@@ -96,7 +96,7 @@ msgs:
         name: "BMS/Cells/Volts_Avg_Value"
         size: 16
         unit: "V"
-        format: "cell_voltage"
+        format: "divide10000"
         
 - !CANMsg
     id: "0x87"
