@@ -7,10 +7,6 @@ class CANPoint:
     '''
     Represents one set of bits in a CAN message.
     Seperates CAN decoding logic from MQTT encoding information.
-
-    CANField, CompositeField, and DiscreteField all derive from this.
-    This allows CANUnit to define decoding properties and CANField to define encoding properties, 
-    but keep them in one list for the yaml prettiness.
     '''
     size: int # in bits
     signed : bool = False
@@ -33,9 +29,8 @@ class CANPoint:
 class NetField:
     '''
     Represents a field in a CAN message.  Contains a MQTT name and unit.
-    Differs from CANUnit as it assigns a MQTT message to one unit of can data.
 
-    Think 1 MQTT Topic per 1 CAN Field
+    Think 1 MQTT Topic per 1 Net Field
     '''
 
     name: str

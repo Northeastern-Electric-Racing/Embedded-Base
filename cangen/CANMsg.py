@@ -9,7 +9,7 @@ class CANMsg:
     '''
     id: str     # Hex value of CAN ID, i.e. `0x88`
     desc: str   # Brief name of CAN message, used for generating function names
-    fields: list[NetField] # List of CAN fields in the message (Optional to allow for only networkEncoding)
+    fields: list[NetField] # List of CAN fields in the message
 
     def __setstate__(self, state):
         self.__init__(**state)

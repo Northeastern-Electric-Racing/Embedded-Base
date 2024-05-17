@@ -6,11 +6,12 @@ Here is a custom Python module built to generate embedded code for encoding and 
 ## Adding Messages
 
 Messages should follow these rules:
-1. Messages must be MSB leftmost bit
-2. Messages <=8 bits endianness should be specified
+1. Most significant bit should be the leftmost bit in each byte of data
+2. Messages <=8 bits endianness should not be specified and will not do anything
 3. Wherever possible, bit-wise decoding and byte-wise decoding should happen in seperate bytes to avoid confusion.
 Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before adding a 16 bit number
 4. Message totals should be byte aligned, meaning total bit size of a message should be a power of 8
+5. **Signed messages must be 8,16,32, or 64 bits!**
 
 Message guide:
 1. Use previous examples for most things
@@ -19,12 +20,35 @@ Message guide:
 Note: Single bit messages are memcpy-ed wrong by default, you may need to use `reverse_bits` in `c_utils.h`
 Note: Please use big endian whenever possible, as that is the standard at which our MC, Charger Box, etc. expect it.  Use `endian_swap` in `c_utils.h`
 
+YAML info.
+```
+# all files start with this yaml
+!Messages
+msgs: 
+- !CANMsg
+    id: "0x80" # hexadecimal string of the CAN ID (extended CAN supported)
+    desc: "a quick description goes here"
+    fields: # list of MQTT messages being sent from this CANMsg
+    - !NetField
+        name: "The/Topic/Name" # the message topic name, going 3 levels of slashes is usally prefered, dont put trailing slashes
+        unit: "unit_here" # the unit of the data, ex. mph
+        send: true # (optional) whether this message should be sent over the network, default is true
+        topic_append: false # (optional) whether to append the topic name with the value of the first CANPoint in points
+        points: # list of CAN bits to be used for this message
+        - !CANPoint:
+            size: 8 # the integer size to be read, in bits
+            signed: false # (optional) whether the number is in signed twos complement form, default is false
+            endianness: "big" # (optional) the byte endianness of the bits being read, "big" or "false", "big" is default
+            format: "formatter_name" # (optional) the name of the formatter to use, default is no formatting, see above for formatter info
+            final_type: "f32" # (optional, not recommended) the final type of the data            
+```
+
 ### Directory Structure
 ```
 |
 |───CANField.py:
-|   |───DiscreteField   # Single data point to stand alone
-|   └───CompositeField  # Group of related data points that won't make sense alone
+|   |───NetField # a class which describes the topic and unit of one or more can points
+|   └───CANPoint # a class which describes the decoding operations done to bits of a can message
 |
 |───CANMsg.py:
 |   └───CANMsg          # Represents a full CAN message

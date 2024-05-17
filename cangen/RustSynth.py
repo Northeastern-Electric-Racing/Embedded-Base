@@ -67,14 +67,20 @@ class RustSynth:
 		for index, field in enumerate(msg.fields, start=0):
 				if field.send:
 					topic_suffix: str = None
+					# if we have a topic append, then we create a standalone variable to read the bits before we 
+					# push all the points
 					if field.topic_append:
+						# point to append
 						topic_suffix_pt = field.points.pop(0)
-						result.append(f"          let topic_suffix_{index} = {self.decode_field_value(topic_suffix_pt)};")
+						# init a new variable with index at end to ensure uniqueness in scope
+						result.append(f"let topic_suffix_{index} = {self.decode_field_value(topic_suffix_pt)};")
+						# variable name to be given to format!
 						topic_suffix = f"topic_suffix_{index}"
 
-					result.append(f"        {RustSnippets.network_encoding_start}")
+					result.append(f"    {RustSnippets.network_encoding_start}")
 
-					values: str = f"            {','.join(self.decode_field_value(point) for point in field.points)}]"
+					# get the decoding string for each point and pass it into the final formatter
+					values: str = f"{','.join(self.decode_field_value(point) for point in field.points)}]"
 					result.append(self.finalize_line(field.name, field.unit, values, topic_appends_name=topic_suffix))
 
 					result.append(f"        {RustSnippets.network_encoding_closing}")
@@ -87,10 +93,16 @@ class RustSynth:
 		return result
 
 	def add_length_check(self, fields: List[CANPoint]) -> str:
+		"""
+		Adds a length checker to exit out if the message is too small, will still parse if too big
+		"""
 		field_size = sum(field.get_size_bits() for field in fields) / 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
 	def decode_field_value(self, field: CANPoint) -> str:
+		"""
+		Parse can point to do conversions on it, and maybe wrap in formatter
+		"""
 		return f"{self.format_data(field, self.parse_decoders(field))}"
 
 	def function_name(self, desc: str) -> str:
@@ -109,8 +121,10 @@ class RustSynth:
 
 	def finalize_line(self, topic: str, unit: str, val: str, topic_appends_name: Optional[str] = None ) -> str:
 		"""
-		Helper function that generates a line the data struct for a given CANUnit value
+		Helper function that generates a line the data struct for a given CANPoint value
 		"""
+		# basically attach the name of the variable of the mqtt data to the topic should it exist, 
+		# otherwise format the plain string topic (should compile out)
 		format_topic: str = f'&format!("{topic}'
 		if topic_appends_name is not None:
 			format_topic += "/{}"
@@ -118,7 +132,7 @@ class RustSynth:
 		if topic_appends_name is not None:
 			format_topic += f'{topic_appends_name},'
 		format_topic += ")"
-		return f'    {val}, {format_topic}, "{unit}")'
+		return f'    		 {val}, \n    {format_topic}, "{unit}")'
 
 	def parse_decoders(self, field: CANPoint) -> str:
 		"""
@@ -230,7 +244,7 @@ impl FormatData {
 		f"    let mut result: Vec<Data> = Vec::new();"  # Initializing the result vector
 	)
 	decode_close: str = (
-		"result\n}\n"  # Returning the result vector and closing the function
+		"	result\n}\n"  # Returning the result vector and closing the function
 	)
 
 	decode_mock: str = """
@@ -239,7 +253,7 @@ pub fn decode_mock(_data: &[u8]) -> Vec::<Data> {
 	Data::new(vec![0.0], "Calypso/Unknown", "")
 	];
 	result
-}"""  # A debug decode function that is used for messages that don't have a decode function
+}\n"""  # A debug decode function that is used for messages that don't have a decode function
 
 	network_encoding_start: str = "result.push(Data::new(vec!["
 	network_encoding_closing: str = ");"
