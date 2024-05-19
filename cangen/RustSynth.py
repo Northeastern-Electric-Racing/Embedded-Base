@@ -143,16 +143,14 @@ class RustSynth:
 		if skip:
 			return f"reader.skip({field.size}).unwrap()"
 		
-		size = field.size
-		if field.size < 8:
-			size = 8
-
 		if field.endianness == "big":
 			if field.signed:
-				base = f"reader.read_signed::<i{size}>({field.size}).unwrap()"
+				# doesnt need exact sign bit as it is in big endian form, the form of the native stream
+				base = f"reader.read_signed::<i32>({field.size}).unwrap()"
 			else:
-				base = f"reader.read::<u{size}>({field.size}).unwrap()"
+				base = f"reader.read::<u32>({field.size}).unwrap()"
 		elif field.endianness == "little":
+			# use the read_as_to, which requires byte sized data to get the correct sign bit
 			if field.signed:
 				base = f"reader.read_as_to::<LittleEndian, i{field.size}>().unwrap()"
 			else:

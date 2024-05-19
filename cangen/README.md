@@ -13,6 +13,7 @@ Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before ad
 4. Message totals should be byte aligned, meaning total bit size of a message should be a power of 8
 5. **Signed messages must be 8,16,or 32 bits!**
 6. **Little endian messages must be 8,16, or 32 bits!**
+7. Maximum size of a sent message (default, aka send=True), is 32 bits
 
 Message guide:
 1. Use previous examples for most things
