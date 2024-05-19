@@ -87,7 +87,7 @@ class RustSynth:
 				elif index < len(msg.fields) -1: 
 					# if field isnt sent, still decode it to get to the next bits, but only if it isnt the last point
 					# if it is the last point, we can just exit out and save the resources of decoding it
-					result.append(f"            {','.join(self.decode_field_value(point) for point in field.points)};")
+					result.append(f"            {','.join(self.decode_field_value(point, skip=True) for point in field.points)};")
 
 
 		return result
@@ -134,15 +134,25 @@ class RustSynth:
 		format_topic += ")"
 		return f'    		 {val}, \n    {format_topic}, "{unit}")'
 
-	def parse_decoders(self, field: CANPoint) -> str:
+	def parse_decoders(self, field: CANPoint, skip=False) -> str:
 		"""
 		Helper function that parses the decoders for a given CANUnit by applying the
 		decoders to the data and casting the result to the final type of the CANUnit.
 		"""
+
+		if skip:
+			return f"reader.skip::({field.size}).unwrap()"
+		
 		size = field.size
 		if field.size < 8:
 			size = 8
-		base = f"reader.read::<u{size}>({field.size}).unwrap()"
+
+		if field.signed:
+			base = f"reader.read_signed::<i{size}>({field.size}).unwrap()"
+		else:
+			base = f"reader.read::<u{size}>({field.size}).unwrap()"
+
+			
 
 		return f"{base} as {field.final_type}"
 
