@@ -133,6 +133,7 @@ msgs:
         points:
         - !CANPoint
             size: 16
+            endianness: "little"
     - !NetField
         name: "MPU/Debug/Spare3"
         unit: ""
@@ -140,6 +141,7 @@ msgs:
         - !CANPoint
             size: 32
             signed: true
+            endianness: "little"
         
 - !CANMsg
     id: "0x123"
