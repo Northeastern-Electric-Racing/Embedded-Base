@@ -126,6 +126,7 @@ msgs:
         points:
         - !CANPoint
             size: 8
+            signed: true
     - !NetField
         name: "MPU/Debug/Spare2"
         unit: ""
