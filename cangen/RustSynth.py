@@ -143,15 +143,15 @@ class RustSynth:
 
 		# aware conversion from network to platform endianness
 		if field.endianness == "little":
-			base = f"u32::from_be({base})"
+			base = f"(u{field.get_size_bits()}::from_be({base} as u{field.get_size_bits()}) as i{field.get_size_bits()})"
 		elif field.endianness == "big":
 			base = f"u32::from_le({base})"
 		else:
 			print("Invalid endianness on point!")
 			exit(1)
 
-		if field.signed or field.endianness == "little":
-			base = f"({base} as i{field.get_size_bits()})"
+		# if field.signed or field.endianness == "little":
+		# 	base = f"({base} as i{field.get_size_bits()})"
 
 		return f"{base} as {field.final_type}"
 

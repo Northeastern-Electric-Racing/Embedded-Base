@@ -52,6 +52,7 @@ msgs:
     - !NetField
         name: "DTI/Unused/Reserved"
         unit: ""
+        send: false
         points:
         - !CANPoint
             size: 32
