@@ -139,6 +139,7 @@ msgs:
         points:
         - !CANPoint
             size: 32
+            signed: true
         
 - !CANMsg
     id: "0x123"
