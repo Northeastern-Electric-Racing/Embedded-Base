@@ -142,6 +142,7 @@ class RustSynth:
 		base = f"reader.read_bits({field.size})"
 
 		# aware conversion from network to platform endianness
+		# why this is backwards is beyond me but it works and should work on either platform endianness
 		if field.endianness == "little":
 			base = f"u32::from_be({base})"
 		elif field.endianness == "big":
@@ -149,9 +150,9 @@ class RustSynth:
 		else:
 			print("Invalid endianness on point!")
 			exit(1)
-
+		
 		if field.signed:
-			base = f"({base} as i{field.get_size_bits()}).wrapping_neg()"
+			base = f"({base} as i32)"
 
 		return f"{base} as {field.final_type}"
 
