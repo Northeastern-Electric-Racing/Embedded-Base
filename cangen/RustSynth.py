@@ -141,12 +141,14 @@ class RustSynth:
 		"""
 		base = f"reader.read_bits({field.size})"
 
+		# aware conversion from network to platform endianness
 		if field.endianness == "little":
-			base = f"{base}.swap_bytes()"
-
-		# TODO: Make this configurable based on endianness of platform
-		#elif field.endianness == "little":
-		#    base = f"{base}.to_le()"
+			base = f"{base}.from_le()"
+		elif field.endianness == "big":
+			base = f"{base}.from_be()"
+		else:
+			print("Invalid endianness on point!")
+			exit(1)
 
 		if field.signed:
 			base = f"({base} as i{field.get_size_bits()})"
