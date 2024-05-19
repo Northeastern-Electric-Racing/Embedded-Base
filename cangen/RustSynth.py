@@ -147,10 +147,19 @@ class RustSynth:
 		if field.size < 8:
 			size = 8
 
-		if field.signed:
-			base = f"reader.read_signed::<i{size}>({field.size}).unwrap()"
+		if field.endianness == "big":
+			if field.signed:
+				base = f"reader.read_signed::<i{size}>({field.size}).unwrap()"
+			else:
+				base = f"reader.read::<u{size}>({field.size}).unwrap()"
+		elif field.endianness == "little":
+			if field.signed:
+				base = f"reader.read_as_to::<LittleEndian, i{field.size}>().unwrap()"
+			else:
+				base = f"reader.read_as_to::<LittleEndian, u{field.size}>().unwrap()"
 		else:
-			base = f"reader.read::<u{size}>({field.size}).unwrap()"
+			print("Invalid endianness: ", field.endianness)
+			exit(1)
 
 			
 
@@ -240,8 +249,8 @@ impl FormatData {
 
 	decode_data_import: str = (
 		"""use super::data::Data;
-			use std::io::{Read, Cursor};
-			use bitstream_io::{BigEndian, BitReader, BitRead};\n
+			use std::io::Cursor;
+			use bitstream_io::{BigEndian, LittleEndian, BitReader, BitRead};\n
 		  """  # Importing the Data struct and the FormatData and ProcessData traits
 	)
 
