@@ -99,11 +99,11 @@ class RustSynth:
 		field_size = sum(field.get_size_bits() for field in fields) / 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
-	def decode_field_value(self, field: CANPoint) -> str:
+	def decode_field_value(self, field: CANPoint, skip=False) -> str:
 		"""
 		Parse can point to do conversions on it, and maybe wrap in formatter
 		"""
-		return f"{self.format_data(field, self.parse_decoders(field))}"
+		return f"{self.format_data(field, self.parse_decoders(field, skip))}"
 
 	def function_name(self, desc: str) -> str:
 		"""
@@ -134,14 +134,14 @@ class RustSynth:
 		format_topic += ")"
 		return f'    		 {val}, \n    {format_topic}, "{unit}")'
 
-	def parse_decoders(self, field: CANPoint, skip=False) -> str:
+	def parse_decoders(self, field: CANPoint, skip) -> str:
 		"""
 		Helper function that parses the decoders for a given CANUnit by applying the
 		decoders to the data and casting the result to the final type of the CANUnit.
 		"""
 
 		if skip:
-			return f"reader.skip::({field.size}).unwrap()"
+			return f"reader.skip({field.size}).unwrap()"
 		
 		size = field.size
 		if field.size < 8:
