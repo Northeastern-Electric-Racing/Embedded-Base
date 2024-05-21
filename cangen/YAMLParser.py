@@ -1,6 +1,6 @@
-from ruamel.yaml import YAML, Any
+from ruamel.yaml import YAML
 from cangen.CANMsg import CANMsg
-from cangen.CANField import DiscreteField, CompositeField
+from cangen.CANField import CANPoint, NetField
 from cangen.Format import Format
 from cangen.Messages import Messages
 
@@ -13,12 +13,12 @@ class YAMLParser:
     '''
 
     def __init__(self):
-        self.yaml = YAML()
+        self.yaml = YAML(typ="safe")
         self.yaml.register_class(Messages)
         self.yaml.register_class(CANMsg)
-        self.yaml.register_class(DiscreteField)
-        self.yaml.register_class(CompositeField)
+        self.yaml.register_class(NetField)
+        self.yaml.register_class(CANPoint)
 
-    def parse(self, file: Any) -> Messages:
+    def parse(self, file) -> Messages:
         msgs : Messages = self.yaml.load(file)
         return msgs

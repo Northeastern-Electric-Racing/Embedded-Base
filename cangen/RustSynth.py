@@ -1,7 +1,7 @@
-from cangen.CANField import CANField
+from cangen.CANField import CANPoint
 from cangen.CANMsg import CANMsg
 from cangen.Result import Result
-from typing import List
+from typing import List, Optional
 
 class RustSynth:
 	"""
@@ -16,7 +16,6 @@ class RustSynth:
 		"""
 		result = Result("", "")
 		result.decode_data += RustSnippets.ignore_clippy
-		result.decode_data += RustSnippets.bitreader_impl
 		result.decode_data += RustSnippets.format_impl
 		result.decode_data += RustSnippets.decode_data_import
 		result.decode_data += RustSnippets.decode_mock
@@ -46,7 +45,7 @@ class RustSynth:
 		# Generate Function Signature
 		signature: str = self.signature(msg.desc)
 
-		length_check: str = self.add_length_check(msg.fields)
+		length_check: str = self.add_length_check(point for field in msg.fields for point in field.points)
 
 		# Generate a line for each field in the message
 		generated_lines: list[str] = []
@@ -64,37 +63,46 @@ class RustSynth:
 		result = []
 
 		# For all the fields in the CAN message, generate the required code
-		for field in msg.fields:
+		for index, field in enumerate(msg.fields, start=0):
+				if field.send:
+					topic_suffix: str = None
+					# if we have a topic append, then we create a standalone variable to read the bits before we 
+					# push all the points
+					if field.topic_append:
+						# point to append
+						topic_suffix_pt = field.points.pop(0)
+						# init a new variable with index at end to ensure uniqueness in scope
+						result.append(f"let topic_suffix_{index} = {self.decode_field_value(topic_suffix_pt)};")
+						# variable name to be given to format!
+						topic_suffix = f"topic_suffix_{index}"
 
-			# If the field is discrete
-			if field.field_type == "discrete":
-				result.append(f"        {RustSnippets.network_encoding_start}")
-				result.append(f"             {self.decode_field_value(field)}")
-				result.append(f"        {RustSnippets.network_encoding_closing}")
-				result.append(f'        , "{field.name}", "{field.unit}"),')
+					result.append(f"    {RustSnippets.network_encoding_start}")
 
-			# If the data is composite
-			elif field.field_type == "composite":
-				result.append(f"        {RustSnippets.network_encoding_start}")
-				result.append(
-					f"            {','.join(self.decode_field_value(field) for _ in range(field.num_points))}"
-				)
-				result.append(f"        {RustSnippets.network_encoding_closing}")
-				result.append(
-					f'        , "{field.name}", "{field.unit}")'
-				)
-			else:
-				print("field type not recognized!\n")
-				exit(1)
+					# get the decoding string for each point and pass it into the final formatter
+					values: str = f"{','.join(self.decode_field_value(point) for point in field.points)}]"
+					result.append(self.finalize_line(field.name, field.unit, values, topic_appends_name=topic_suffix))
+
+					result.append(f"        {RustSnippets.network_encoding_closing}")
+				elif index < len(msg.fields) -1: 
+					# if field isnt sent, still decode it to get to the next bits, but only if it isnt the last point
+					# if it is the last point, we can just exit out and save the resources of decoding it
+					result.append(f"            {','.join(self.decode_field_value(point, skip=True) for point in field.points)};")
+
 
 		return result
 
-	def add_length_check(self, fields: List[CANField]) -> str:
+	def add_length_check(self, fields: List[CANPoint]) -> str:
+		"""
+		Adds a length checker to exit out if the message is too small, will still parse if too big
+		"""
 		field_size = sum(field.get_size_bits() for field in fields) / 8
 		return f"    if data.len() < {int(field_size)} {{ return vec![]; }}"
 
-	def decode_field_value(self, field: CANField) -> str:
-		return f"{self.format_data(field, self.parse_decoders(field))}"
+	def decode_field_value(self, field: CANPoint, skip=False) -> str:
+		"""
+		Parse can point to do conversions on it, and maybe wrap in formatter
+		"""
+		return f"{self.format_data(field, self.parse_decoders(field, skip))}"
 
 	def function_name(self, desc: str) -> str:
 		"""
@@ -110,35 +118,54 @@ class RustSynth:
 		"""
 		return f"pub fn {self.function_name(desc)}(data: &[u8]) -> {RustSnippets.decode_return_type} {{"
 
-	def finalize_line(self, topic: str, unit: str, val: str) -> str:
+	def finalize_line(self, topic: str, unit: str, val: str, topic_appends_name: Optional[str] = None ) -> str:
 		"""
-		Helper function that generates a line the data struct for a given CANField value
+		Helper function that generates a line the data struct for a given CANPoint value
 		"""
-		return f'    Data::new({val}, "{topic}", "{unit}"),'
+		# basically attach the name of the variable of the mqtt data to the topic should it exist, 
+		# otherwise format the plain string topic (should compile out)
+		format_topic: str = f'&format!("{topic}'
+		if topic_appends_name is not None:
+			format_topic += "/{}"
+		format_topic += '", '
+		if topic_appends_name is not None:
+			format_topic += f'{topic_appends_name},'
+		format_topic += ")"
+		return f'    		 {val}, \n    {format_topic}, "{unit}")'
 
-	def parse_decoders(self, field: CANField) -> str:
+	def parse_decoders(self, field: CANPoint, skip) -> str:
 		"""
-		Helper function that parses the decoders for a given CANField by applying the
-		decoders to the data and casting the result to the final type of the CANField.
+		Helper function that parses the decoders for a given CANUnit by applying the
+		decoders to the data and casting the result to the final type of the CANUnit.
 		"""
-		base = f"reader.read_bits({field.size})"
 
+		if skip:
+			return f"reader.skip({field.size}).unwrap()"
+		
 		if field.endianness == "big":
-			base = f"{base}.swap_bytes()"
+			if field.signed:
+				# doesnt need exact sign bit as it is in big endian form, the form of the native stream
+				base = f"reader.read_signed::<i32>({field.size}).unwrap()"
+			else:
+				base = f"reader.read::<u32>({field.size}).unwrap()"
+		elif field.endianness == "little":
+			# use the read_as_to, which requires byte sized data to get the correct sign bit
+			if field.signed:
+				base = f"reader.read_as_to::<LittleEndian, i{field.size}>().unwrap()"
+			else:
+				base = f"reader.read_as_to::<LittleEndian, u{field.size}>().unwrap()"
+		else:
+			print("Invalid endianness: ", field.endianness)
+			exit(1)
 
-		# TODO: Make this configurable based on endianness of platform
-		#elif field.endianness == "little":
-		#    base = f"{base}.to_le()"
-
-		if field.signed:
-			base = f"({base} as i{field.get_size_bits()})"
+			
 
 		return f"{base} as {field.final_type}"
 
-	def format_data(self, field: CANField, decoded_data: str) -> str:
+	def format_data(self, field: CANPoint, decoded_data: str) -> str:
 		"""
-		Helper function that formats the data for a given CANField based off the
-		format of the CANField if it exists, returns the decoded data otherwise
+		Helper function that formats the data for a given CANPoint based off the
+		format of the CANPoint if it exists
 		"""
 		cf = decoded_data
 		if field.format:
@@ -155,41 +182,6 @@ class RustSnippets:
 		"#![allow(clippy::all)]\n"  # Ignoring clippy for decode_data because it's autogenerated and has some unnecessary type casting to ensure correct types
 	)
 
-	bitreader_impl: str = ("""
-/* Struct to decode a byte array bit by bit, sequentially */
-struct BitReader<'a> {
-	data: &'a [u8],
-	byte_pos: usize,
-	bit_pos: u8,
-}
-
-impl<'a> BitReader<'a> {
-	fn new(data: &'a [u8]) -> Self {
-		Self {
-			data,
-			byte_pos: 0,
-			bit_pos: 0,
-		}
-	}
-
-	fn read_bits(&mut self, num_bits: u8) -> u32 {
-		let mut value: u32 = 0;
-		for _ in 0..num_bits {
-			let bit = (self.data[self.byte_pos] >> (7 - self.bit_pos)) & 1;
-			value = (value << 1) | bit as u32;
-
-			self.bit_pos += 1;
-			if self.bit_pos == 8 {
-				self.bit_pos = 0;
-				self.byte_pos += 1;
-			}
-		}
-		value
-	}
-}
-"""
-	)
-
 	format_impl = """
 /**
  * Class to contain the data formatting functions
@@ -197,23 +189,15 @@ impl<'a> BitReader<'a> {
 pub struct FormatData {}
 
 impl FormatData {
-	/* Temperatures are divided by 10 for 1 decimal point precision in C */
-	pub fn temperature(value: f32) -> f32 {
+	pub fn divide10(value: f32) -> f32 {
 		value / 10.0
 	}
 
-	/* Torque values are divided by 10 for one decimal point precision in N-m */
-	pub fn torque(value: f32) -> f32 {
-		value / 10.0
+	pub fn divide100(value: f32) -> f32 {
+		value / 100.0
 	}
 
-	/* Current values are divided by 10 for one decimal point precision in A */
-	pub fn current(value: f32) -> f32 {
-		value / 10.0
-	}
-
-	/* Cell Voltages are recorded on a 10000x multiplier for V, must be divided by 10000 to get accurate number */
-	pub fn cell_voltage(value: f32) -> f32 {
+	pub fn divide10000(value: f32) -> f32 {
 		value / 10000.0
 	}
 
@@ -221,37 +205,35 @@ impl FormatData {
 	pub fn acceleration(value: f32) -> f32 {
 		value * 0.0029
 	}
-
-	/* High Voltage values are divided by 100 for one decimal point precision in V, high voltage is in regards to average voltage from the accumulator pack */
-	pub fn high_voltage(value: f32) -> f32 {
-		value / 100.0
-	}
 }"""
 
-	bitreader_create = "    let mut reader = BitReader::new(data);"
+	bitreader_create = "    let mut reader = BitReader::endian(Cursor::new(&data), BigEndian);"
 
 	decode_data_import: str = (
-		"use super::data::Data;\n"  # Importing the Data struct and the FormatData and ProcessData traits
+		"""use super::data::Data;
+			use std::io::Cursor;
+			use bitstream_io::{BigEndian, LittleEndian, BitReader, BitRead};\n
+		  """  # Importing the Data struct and the bistream io libraries
 	)
 
 	decode_return_type: str = "Vec::<Data>"  # The return type of any decode function
 	decode_return_value: str = (
-		f"    let result = vec!["  # Initializing the result vector
+		f"    let mut result: Vec<Data> = Vec::new();"  # Initializing the result vector
 	)
 	decode_close: str = (
-		"    ];\n    result\n}\n"  # Returning the result vector and closing the function
+		"	result\n}\n"  # Returning the result vector and closing the function
 	)
 
 	decode_mock: str = """
 pub fn decode_mock(_data: &[u8]) -> Vec::<Data> {
 	let result = vec![
-	Data::new(vec![0.0], "Mock", "")
+	Data::new(vec![0.0], "Calypso/Unknown", "")
 	];
 	result
-}"""  # A mock decode function that is used for messages that don't have a decode function
+}\n"""  # A debug decode function that is used for messages that don't have a decode function
 
-	network_encoding_start: str = "Data::new(vec!["
-	network_encoding_closing: str = "]"
+	network_encoding_start: str = "result.push(Data::new(vec!["
+	network_encoding_closing: str = ");"
 
 	master_mapping_import: str = (
 		"use super::decode_data::*;\nuse super::data::Data;\n"  # Importing all the functions in decode_data.rs file and the Data struct

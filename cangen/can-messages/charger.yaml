@@ -4,62 +4,88 @@ msgs:
     id: "0x1806E5F4"
     desc: "BMS Message Send"
     fields:
-    - !DiscreteField
+    - !NetField
         name: "BMS/Charging/Voltage"
         unit: "V"
-        size: 16
-        format: "current"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
         name: "BMS/Charging/Current"
         unit: "A"
-        size: 16
-        format: "current"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
         name: "BMS/Charging/Control"
         unit: ""
-        size: 8
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
         name: "BMS/Charging/UnimplementedData"
         unit: ""
-        size: 24
+        send: false
+        points:
+        - !CANPoint
+            size: 24
 
         
 - !CANMsg
     id: "0x18FF50E5"
     desc: "Charger Box Status"
-    fields:
-    - !DiscreteField
+    fields: 
+    - !NetField
         name: "Charger/Box/Voltage"
         unit: "V"
-        size: 16
-        format: "current"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
         name: "Charger/Box/Current"
         unit: "A"
-        size: 16
-        signed: true
-        format: "current"
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
         name: "Charger/Box/F_HardwareFailure"
         unit: "bool"
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "Charger/Box/F_OverTemp"
         unit: "bool"
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "Charger/Box/F_VoltageWrong"
         unit: "bool"
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "Charger/Box/F_WrongBatConnection"
         unit: "bool"
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "Charger/Box/F_CommTimeout"
         unit: "bool"
-        size: 1
-    - !DiscreteField
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
         name: "Charger/Box/UnimplementedData"
         unit: ""
-        size: 24
+        send: false
+        points:
+        - !CANPoint
+            size: 24
