@@ -16,7 +16,6 @@ class RustSynth:
 		"""
 		result = Result("", "")
 		result.decode_data += RustSnippets.ignore_clippy
-		# result.decode_data += RustSnippets.bitreader_impl
 		result.decode_data += RustSnippets.format_impl
 		result.decode_data += RustSnippets.decode_data_import
 		result.decode_data += RustSnippets.decode_mock
