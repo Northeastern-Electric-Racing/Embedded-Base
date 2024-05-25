@@ -31,7 +31,7 @@ HAL_StatusTypeDef pca_read_reg(pca9539_t *pca, uint16_t address, pca9539_port_t 
     return HAL_I2C_Mem_Read(pca->i2c_handle, pca->dev_addr << 1, address, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), TIMEOUT);
 }
 
-static uint8_t create_buf(pca9539_pin_mode_t config[8])
+static uint8_t create_buf(bool config[8])
 {
     uint8_t data = 0;
     for (uint8_t i = 0; i < 8; i++)
@@ -41,7 +41,7 @@ static uint8_t create_buf(pca9539_pin_mode_t config[8])
     return data;
 }
 
-static void deconstruct_buf(uint8_t *data, pca9539_pin_mode_t *config)
+static void deconstruct_buf(uint8_t *data, bool *config)
 {
     for (uint8_t i = 0; i < 8; i++)
     {
@@ -49,13 +49,13 @@ static void deconstruct_buf(uint8_t *data, pca9539_pin_mode_t *config)
     }
 }
 
-void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, pca9539_addr_t *dev_addr)
+void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, uint8_t dev_addr)
 {
     pca->i2c_handle = i2c_handle;
-    pca->dev_addr = pca->dev_addr << 1u; /* shifted one to the left cuz STM says so */
+    pca->dev_addr = dev_addr << 1u; /* shifted one to the left cuz STM says so */
 }
 
-HAL_StatusTypeDef read_pins(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pin_mode_t config[8])
+HAL_StatusTypeDef pca9539_read_pins(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, bool config[8])
 {
 
     uint8_t data = create_buf(config);
@@ -70,7 +70,7 @@ HAL_StatusTypeDef read_pins(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539
     return status;
 }
 
-HAL_StatusTypeDef read_pin(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pins_t pin, pca9539_pin_mode_t *config)
+HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pins_t pin, bool *config)
 {
     uint8_t data;
     HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, port, &data);
@@ -84,14 +84,14 @@ HAL_StatusTypeDef read_pin(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_
     return status;
 }
 
-HAL_StatusTypeDef write_pins(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pin_mode_t config[8])
+HAL_StatusTypeDef pca9539_write_pins(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, bool config[8])
 {
 
     uint8_t buf = create_buf(config);
     return pca_write_reg(pca, reg_type, port, &buf);
 }
 
-HAL_StatusTypeDef write_pin(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pins_t pin, pca9539_pin_mode_t config)
+HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, pca9539_reg_type_t reg_type, pca9539_port_t port, pca9539_pins_t pin, bool config)
 {
 
     uint8_t data;
