@@ -6,14 +6,14 @@
 HAL_StatusTypeDef pca_write_reg(pca9539_t* pca, uint16_t address, uint8_t* data)
 {
 	// ensure shifting left one, HAL adds the write bit
-	return HAL_I2C_Mem_Write(pca->i2c_handle, pca->dev_addr << 1, address, I2C_MEMADD_SIZE_8BIT,
+	return HAL_I2C_Mem_Write(pca->i2c_handle, pca->dev_addr, address, I2C_MEMADD_SIZE_8BIT,
 							 data, sizeof(data), TIMEOUT);
 }
 
 HAL_StatusTypeDef pca_read_reg(pca9539_t* pca, uint16_t address, uint8_t* data)
 {
 
-	return HAL_I2C_Mem_Read(pca->i2c_handle, pca->dev_addr << 1, address, I2C_MEMADD_SIZE_8BIT,
+	return HAL_I2C_Mem_Read(pca->i2c_handle, pca->dev_addr, address, I2C_MEMADD_SIZE_8BIT,
 							data, sizeof(data), TIMEOUT);
 }
 

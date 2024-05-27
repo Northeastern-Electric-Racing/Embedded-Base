@@ -3,7 +3,6 @@
 
 #include "stm32f4xx_hal.h"
 #include <stdint.h>
-#include <stdbool.h>
 
 /*
 PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
