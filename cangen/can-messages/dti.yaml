@@ -316,7 +316,7 @@ msgs:
     desc: "Brake_Current_Command"
     fields:
     - !NetField
-        name: "DTI/Commands/Brake_Current_Target"
+        name: "MPU/Commands/Brake_Current_Target"
         unit: "A"
         points:
         - !CANPoint

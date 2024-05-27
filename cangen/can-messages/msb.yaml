@@ -1,0 +1,95 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x602"
+    desc: "Front Left MSB Humidity/Temp"
+    fields:
+    - !NetField
+        name: "MSB/FL/Temp"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
+        name: "MSB/FL/Humidity"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+
+
+- !CANMsg
+    id: "0x603"
+    desc: "Front Left MSB Accel"
+    fields:
+    - !NetField
+        name: "MSB/FL/Accel"
+        unit: "g"
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x604"
+    desc: "Front Left MSB Gyro"
+    fields:
+    - !NetField
+        name: "MSB/FL/Gyro"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x605"
+    desc: "Front Left Strain"
+    fields:
+    - !NetField
+        name: "MSB/FL/Strain"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+        - !CANPoint
+            size: 32
+
+- !CANMsg
+    id: "0x606"
+    desc: "Front Left Shockpot"
+    fields:
+    - !NetField
+        name: "MSB/FL/Shock"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+
+- !CANMsg
+    id: "0x607"
+    desc: "Front Left Ride Height"
+    fields:
+    - !NetField
+        name: "MSB/FL/RideHeight"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x608"
+    desc: "Front Left Wheel Temp"
+    fields:
+    - !NetField
+        name: "MSB/FL/WheelTemp"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 16

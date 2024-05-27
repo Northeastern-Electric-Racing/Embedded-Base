@@ -41,7 +41,22 @@ msgs:
         - !CANPoint
             size: 16
         - !CANPoint
-            size: 8
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x500"
+    desc: "MPU Acceleromter"
+    fields:
+    - !NetField   # X, Y, and Z should be decoded together
+        name: "MPU/Sense/Accel"
+        unit: "g"
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
         - !CANPoint
             size: 16
 
@@ -65,7 +80,7 @@ msgs:
 
 - !CANMsg
     id: "0x503"
-    desc: "MPU Sense"
+    desc: "MPU Sense Voltage"
     fields:
     - !NetField
         name: "MPU/Sense/Voltage"
