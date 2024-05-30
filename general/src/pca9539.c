@@ -59,7 +59,7 @@ HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pi
 
 	uint8_t data;
 
-	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &buf);
+	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &data);
 	if (status)
 	{
 		return status;
