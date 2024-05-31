@@ -15,10 +15,12 @@ msgs:
     - !NetField
         name: "BMS/Pack/Current"
         unit: "A"
+        send: false
         points:
         - !CANPoint
             size: 16
             format: "divide10"
+            signed: true
     - !NetField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
@@ -195,6 +197,7 @@ msgs:
         points:
         - !CANPoint
             size: 16
+            signed: true
 
 - !CANMsg
     id: "0x84"
