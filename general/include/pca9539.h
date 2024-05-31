@@ -46,7 +46,7 @@ void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, uint8_t dev_add
 
 /// @brief Read all pins on a bus, for example using reg_type input to get incoming logic level
 HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-								   uint8_t buf);
+								   uint8_t *buf);
 /// @brief Read a specific pin on a bus, do not iterate over this, use read_pins instead
 HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
 								   uint8_t pin, uint8_t *buf);
