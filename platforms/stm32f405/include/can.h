@@ -5,8 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_can.h"
+#include "stm32xx_hal.h"
 #include "c_utils.h"
 
 /*
