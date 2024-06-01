@@ -65,7 +65,7 @@ HAL_StatusTypeDef pca9539_write_pin(pca9539_t* pca, uint8_t reg_type, uint8_t pi
 		return status;
 	}
 
-	data_new = reverse_bits(data & ~(1u << pin)) | (buf << pin);
+	data_new = (data & ~(1u << pin)) | (buf << pin);
 
 	return pca_write_reg(pca, reg_type, &data_new);
 }
