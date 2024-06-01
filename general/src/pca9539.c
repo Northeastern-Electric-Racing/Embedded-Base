@@ -1,5 +1,7 @@
 #include "pca9539.h"
 
+#include "../../middleware/include/c_utils.h"
+
 #define REG_SIZE_BITS 8
 
 HAL_StatusTypeDef pca_write_reg(pca9539_t* pca, uint16_t address, uint8_t* data)
@@ -56,13 +58,14 @@ HAL_StatusTypeDef pca9539_write_pin(pca9539_t* pca, uint8_t reg_type, uint8_t pi
 {
 
 	uint8_t data;
+	uint8_t data_new;
 
 	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &data);
 	if (status) {
 		return status;
 	}
 
-	uint8_t data_new = (data & ~(1 << pin)) | (buf << pin);
+	data_new = reverse_bits(data & ~(1u << pin)) | (buf << pin);
 
 	return pca_write_reg(pca, reg_type, &data_new);
 }
