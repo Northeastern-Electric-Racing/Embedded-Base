@@ -19,7 +19,6 @@ msgs:
         points:
         - !CANPoint
             size: 16
-            format: "divide10"
     - !NetField
         name: "BMS/Pack/Amp-hours"
         unit: "Ah"
