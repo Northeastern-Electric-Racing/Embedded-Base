@@ -309,7 +309,7 @@ msgs:
 
 - !CANMsg
     id: "0x703"
-    desc: "BMS Debug"
+    desc: "BMS Fault Debug"
     fields:
     - !NetField
         name: "BMS/FaultDebug/Status"
