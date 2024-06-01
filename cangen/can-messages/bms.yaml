@@ -306,3 +306,28 @@ msgs:
         points:
         - !CANPoint
             size: 32
+
+- !CANMsg
+    id: "0x703"
+    desc: "BMS Debug"
+    fields:
+    - !NetField
+        name: "BMS/FaultDebug/Status"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/FaultDebug/PackCurrent"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+    - !NetField
+        name: "BMS/FaultDebug/DCL"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
