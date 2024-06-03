@@ -5,8 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "stm32g4xx_hal.h"
-#include "stm32g4xx_hal_fdcan.h"
+#include "stm32xx_hal.h"
 
 /* function pointer type for the callback */
 typedef void (*can_callback_t)(FDCAN_HandleTypeDef *hcan);

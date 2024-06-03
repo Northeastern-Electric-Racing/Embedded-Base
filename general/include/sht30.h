@@ -1,7 +1,7 @@
 #ifndef sht30_h
 #define sht30_h
 
-#include "stm32f4xx_hal.h"
+#include "stm32xx_hal.h"
 #include <stdint.h>
 #include <stdbool.h>
 
