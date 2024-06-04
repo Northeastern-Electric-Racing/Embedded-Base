@@ -1,4 +1,4 @@
-#include "ADS131M04.h"
+#include "ads131m04.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,8 +29,6 @@ void ads131m04_init(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
 
     // Channel 0 has Gain default set to level 1, which is what we want for this application
     // We can try out different configurations later if we need to, but it seems like the defaults work
-
-    return adc;
 }
 
 /* Method to abstract writing to a register, will use SPI commands under the hood, value is MSB aligned */
@@ -50,8 +48,8 @@ static void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
 
     // Send command to write to the specified register immediately followed by sending the value we want to write to that register
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
-    HAL_SPI_Transmit(adc->spi, spi_word, 1, HAL_MAX_DELAY);
-    HAL_SPI_Transmit(adc->spi, value, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(adc->spi, &spi_word, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(adc->spi, &value, 1, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 }
 
@@ -70,12 +68,12 @@ static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
     spi_word |= (num_registers - 1); // Number of registers (bits 0-6)
 
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
-    HAL_SPI_Transmit(adc->spi, spi_word, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(adc->spi, &spi_word, 1, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 
     uint16_t res = 0;
 
-    if (HAL_SPI_Receive(adc->hspi, (uint16_t *)&res, 1, 10) != HAL_OK)
+    if (HAL_SPI_Receive(adc->spi, (uint16_t *)&res, 1, 10) != HAL_OK)
         return 1;
 
     return res;
@@ -89,7 +87,7 @@ HAL_StatusTypeDef ads131m04_read_adc(ads131_t *adc, uint32_t *adc_values)
 
     // Read SPI data
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
-    ret = HAL_SPI_Receive(adc->hspi, data, 6 * 3, HAL_MAX_DELAY);
+    ret = HAL_SPI_Receive(adc->spi, data, 6 * 3, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 
     // Process received data into ADC values
