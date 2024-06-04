@@ -19,8 +19,7 @@ static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
 static void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
 
 /*  Method to initialize communication over SPI and configure the ADC into Continuous Conversion Mode*/
-void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
-                          uint8_t cs_pin)
+void ads131m04_init(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin)
 {
     adc->spi = hspi;
     adc->gpio = hgpio;
@@ -83,13 +82,15 @@ static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 }
 
 /* Method to read values out of the ADC, should be called immediately after the DRDY interrupt is triggered */
-HAL_StatusTypeDef ads131m04_read_ADC(ads131_t *adc, uint32_t *adc_values)
+HAL_StatusTypeDef ads131m04_read_adc(ads131_t *adc, uint32_t *adc_values)
 {
     HAL_StatusTypeDef ret;
     uint8_t data[6 * 3]; // Array to store SPI data (6 words * 3 bytes per word)
 
     // Read SPI data
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_RESET);
     ret = HAL_SPI_Receive(adc->hspi, data, 6 * 3, HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(adc->gpio, adc->cs_pin, GPIO_PIN_SET);
 
     // Process received data into ADC values
     for (int i = 0; i < 4; i++) {
