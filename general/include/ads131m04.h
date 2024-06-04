@@ -13,4 +13,6 @@ typedef struct {
 void ads131m04_init(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio, uint8_t cs_pin);
 
 /* Method to read values out of the ADC */
-HAL_StatusTypeDef ads131m04_read_adc(ads131_t *adc);
+HAL_StatusTypeDef ads131m04_read_adc(ads131_t *adc, uint32_t *adc_values);
+
+#endif /* ADS131M04_H */
