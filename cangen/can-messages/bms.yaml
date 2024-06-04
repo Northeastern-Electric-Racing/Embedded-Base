@@ -284,37 +284,37 @@ msgs:
     desc: "BMS Voltage Noise"
     fields:
     - !NetField
-        name: "BMS/NoiseVoltage/1
+        name: "BMS/NoiseVoltage/1"
         unit: "%"
         points:
         - !CANPoint
             size: 8
     - !NetField
-        name: "BMS/NoiseVoltage/2
+        name: "BMS/NoiseVoltage/2"
         unit: "%"
         points:
         - !CANPoint
             size: 8
     - !NetField
-        name: "BMS/NoiseVoltage/3
+        name: "BMS/NoiseVoltage/3"
         unit: "%"
         points:
         - !CANPoint
             size: 8
     - !NetField
-        name: "BMS/NoiseVoltage/4
+        name: "BMS/NoiseVoltage/4"
         unit: "%"
         points:
         - !CANPoint
             size: 8
     - !NetField
-        name: "BMS/NoiseVoltage/5
+        name: "BMS/NoiseVoltage/5"
         unit: "%"
         points:
         - !CANPoint
             size: 8
     - !NetField
-        name: "BMS/NoiseVoltage/6
+        name: "BMS/NoiseVoltage/6"
         unit: "%"
         points:
         - !CANPoint
