@@ -85,3 +85,22 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 
 	return HAL_OK;
 }
+
+HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg) {
+	CAN_TxHeaderTypeDef tx_header;
+	tx_header.StdId = 0;
+	tx_header.ExtId = msg->id;
+	tx_header.IDE = CAN_ID_EXT;
+	tx_header.RTR = CAN_RTR_DATA;
+	tx_header.DLC = msg->len;
+	tx_header.TransmitGlobalTime = DISABLE;
+
+	uint32_t tx_mailbox;
+	if (HAL_CAN_GetTxMailboxesFreeLevel(can->hcan) == 0)
+		return HAL_BUSY;
+
+	if (HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox))
+		return HAL_ERROR;
+
+	return HAL_OK;
+}

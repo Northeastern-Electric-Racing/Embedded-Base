@@ -10,8 +10,7 @@
 #define LTC4015_H_
 
 #include <stdint.h>
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_i2c.h"
+#include "stm32xx_hal.h"
 
 //Device address 
 #define LTC4015_ADDR_68 (0x68) 

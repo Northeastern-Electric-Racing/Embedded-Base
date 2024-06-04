@@ -10,3 +10,12 @@
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
 #endif /* C_UTILS */
+
+
+void endian_swap(void *ptr, int size);
+
+
+/// @brief Reverses the bit order of a byte
+/// @param b byte
+/// @return the same byte but wuth the bits reversed
+unsigned char reverse_bits(unsigned char b);

@@ -9,8 +9,7 @@
 #ifndef LSM6DSO_H
 #define LSM6DSO_H
 #include <stdint.h>
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_i2c.h"
+#include "stm32xx_hal.h"
 
 #define LSM6DSO_I2C_ADDRESS                 0x6A << 1   /* Shifted because datasheet said to */
 // Not sure if these are all needed, also not sure if more need to be added

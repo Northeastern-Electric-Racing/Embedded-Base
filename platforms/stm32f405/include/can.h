@@ -5,8 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_can.h"
+#include "stm32xx_hal.h"
 #include "c_utils.h"
 
 /*
@@ -16,17 +15,18 @@
 
 typedef struct{
 	CAN_HandleTypeDef *hcan;
-	const uint16_t *id_list;
+	const uint32_t *id_list;
 	uint8_t id_list_len;
 } can_t;
 
 typedef struct{
-	uint16_t id;
+	uint32_t id;
 	uint8_t data[8];
 	uint8_t len;
 } can_msg_t;
 
 HAL_StatusTypeDef can_init(can_t *can);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
+HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg);
 
 #endif // CAN_H

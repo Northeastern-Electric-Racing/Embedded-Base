@@ -50,8 +50,7 @@ Copyright 2013 Linear Technology Corp. (LTC)
 #ifndef LTC68041_H
 #define LTC68041_H
 
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_spi.h"
+#include "stm32xx_hal.h"
 
 #define LTC_MAX_RETRIES 10
 #define LTC_BAD_READ 0xFEEEEEEE

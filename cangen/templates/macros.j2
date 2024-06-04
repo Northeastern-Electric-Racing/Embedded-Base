@@ -1,0 +1,44 @@
+{#
+    This is a Jinja template, everything in {{ }} or {% %} brackets is replaced with C code.
+    Code inside brackets are Python snippets.
+
+    This file defines macros to be used by other templates.
+-#}
+
+
+{#
+    convert msg description to a function name that can be used by can
+-#}
+{% macro function_name(msg) -%}
+
+    {{- msg.desc.replace(' ', '_').lower() -}}
+    
+{% endmacro -%}
+
+
+{# 
+    get the C type of each field variable (ex. uint16_t)
+-#}
+{% macro field_type(field) -%}
+
+    {%- if field.signed -%}
+
+        int{{ field.get_size_bytes() * 8 }}_t
+
+    {%- else -%}
+
+        uint{{ field.get_size_bytes() * 8 }}_t
+
+    {%- endif -%}
+
+{% endmacro -%}
+
+
+{#-
+    convert field name to one that can be used by C
+-#}
+{% macro field_name(field) -%}
+
+    {{- '_'.join(field.name.split('/')[-2:]).replace('-', '_').lower() -}}
+
+{% endmacro -%}

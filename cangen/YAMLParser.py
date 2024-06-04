@@ -1,10 +1,10 @@
-from ruamel.yaml import YAML, Any
+from ruamel.yaml import YAML
 from cangen.CANMsg import CANMsg
-from cangen.CANField import CANField
+from cangen.CANField import CANPoint, NetField
 from cangen.Format import Format
-from cangen.Decoding import Decoding
 from cangen.Messages import Messages
-from cangen.NetworkEncoding import NetworkEncoding
+
+MAX_MSG_SIZE = 8    # Note: Max size for CAN 2.0, change if FDCAN
 
 class YAMLParser:
     '''
@@ -13,14 +13,12 @@ class YAMLParser:
     '''
 
     def __init__(self):
-        self.yaml = YAML()
+        self.yaml = YAML(typ="safe")
         self.yaml.register_class(Messages)
         self.yaml.register_class(CANMsg)
-        self.yaml.register_class(CANField)
-        for encoding in NetworkEncoding.__subclasses__():
-            self.yaml.register_class(encoding)
-        for decoding in Decoding.__subclasses__():
-            self.yaml.register_class(decoding)
+        self.yaml.register_class(NetField)
+        self.yaml.register_class(CANPoint)
 
-    def parse(self, file: Any) -> Messages:
-        return self.yaml.load(file)
+    def parse(self, file) -> Messages:
+        msgs : Messages = self.yaml.load(file)
+        return msgs

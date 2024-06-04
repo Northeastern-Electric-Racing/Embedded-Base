@@ -1,0 +1,91 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x1806E5F4"
+    desc: "BMS Message Send"
+    fields:
+    - !NetField
+        name: "BMS/Charging/Voltage"
+        unit: "V"
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
+        name: "BMS/Charging/Current"
+        unit: "A"
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
+        name: "BMS/Charging/Control"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/Charging/UnimplementedData"
+        unit: ""
+        send: false
+        points:
+        - !CANPoint
+            size: 24
+
+        
+- !CANMsg
+    id: "0x18FF50E5"
+    desc: "Charger Box Status"
+    fields: 
+    - !NetField
+        name: "Charger/Box/Voltage"
+        unit: "V"
+        points:
+        - !CANPoint
+            size: 16
+            format: "divide10"
+    - !NetField
+        name: "Charger/Box/Current"
+        unit: "A"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+            format: "divide10"
+    - !NetField
+        name: "Charger/Box/F_HardwareFailure"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/F_OverTemp"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/F_VoltageWrong"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/F_WrongBatConnection"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/F_CommTimeout"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/UnimplementedData"
+        unit: ""
+        send: false
+        points:
+        - !CANPoint
+            size: 24

@@ -5,8 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "stm32g4xx_hal.h"
-#include "stm32g4xx_hal_fdcan.h"
+#include "stm32xx_hal.h"
 
 /* function pointer type for the callback */
 typedef void (*can_callback_t)(FDCAN_HandleTypeDef *hcan);
@@ -21,7 +20,7 @@ typedef struct{
 } can_t;
 
 typedef struct{
-	uint16_t id;
+	uint32_t id;
 	uint8_t data[8];
 	uint8_t len;
 } can_msg_t;
