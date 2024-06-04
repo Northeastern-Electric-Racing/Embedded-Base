@@ -134,68 +134,6 @@ msgs:
         - !CANPoint
             size: 16
             format: "divide10000"
-        
-- !CANMsg
-    id: "0x87"
-    desc: "Cell Voltage"
-    fields:
-    - !NetField
-        name: "BMS/PerCell/CellVoltage"
-        unit: ""
-        topic_append: true
-        points:
-        - !CANPoint
-            size: 8
-        - !CANPoint
-            size: 16
-    - !NetField
-        name: "BMS/PerCell/InstantVoltage"
-        unit: ""
-        points:
-        - !CANPoint
-            size: 16
-    - !NetField
-        name: "BMS/PerCell/InternalResistance"
-        unit: ""
-        points:
-        - !CANPoint
-            size: 16
-    # - !NetField
-    #     name: "BMS/PerCell/Shunted"
-    #     unit: ""
-    #     points:
-    #     - !CANPoint    
-    #         size: 8   
-    # - !NetField
-    #     name: "BMS/PerCell/OpenVoltage"
-    #     unit: ""
-    #     points:
-    #     - !CANPoint
-    #         size: 8  
-        
-- !CANMsg
-    id: "0x86"
-    desc: "Current Limits"
-    fields:
-    - !NetField
-        name: "BMS/Pack/DCL"
-        unit: ""
-        points:
-        - !CANPoint
-            size: 16
-    - !NetField
-        name: "BMS/Pack/CCL"
-        unit: ""
-        points:
-        - !CANPoint
-            size: 16
-    - !NetField
-        name: "BMS/Pack/Current"
-        unit: ""
-        points:
-        - !CANPoint
-            size: 16
-            signed: true
 
 - !CANMsg
     id: "0x84"
@@ -276,6 +214,111 @@ msgs:
         - !CANPoint
             size: 8
             signed: true
+    - !NetField
+        name: "BMS/Segment_Temp/5"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
+        name: "BMS/Segment_Temp/6"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+
+- !CANMsg
+    id: "0x86"
+    desc: "Current Limits"
+    fields:
+    - !NetField
+        name: "BMS/Pack/DCL"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
+        name: "BMS/Pack/CCL"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
+        name: "BMS/Pack/Current"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+
+- !CANMsg
+    id: "0x87"
+    desc: "Cell Voltage"
+    fields:
+    - !NetField
+        name: "BMS/PerCell/CellVoltage"
+        unit: ""
+        topic_append: true
+        points:
+        - !CANPoint
+            size: 8
+        - !CANPoint
+            size: 16
+    - !NetField
+        name: "BMS/PerCell/InstantVoltage"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+    - !NetField
+        name: "BMS/PerCell/InternalResistance"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x88"
+    desc: "BMS Voltage Noise"
+    fields:
+    - !NetField
+        name: "BMS/NoiseVoltage/1
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/NoiseVoltage/2
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/NoiseVoltage/3
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/NoiseVoltage/4
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/NoiseVoltage/5
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "BMS/NoiseVoltage/6
+        unit: "%"
+        points:
+        - !CANPoint
+            size: 8
 
 # debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
 - !CANMsg
