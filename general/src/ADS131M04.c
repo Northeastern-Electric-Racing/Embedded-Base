@@ -12,11 +12,11 @@
 
 /* Private Function Prototypes*/
 /* Method to abstract writing to a register, will use SPI commands under the hood */
-void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value);
+static void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value);
 /* Method to abstract reading from a register, will use SPI commands under the hood to do */
-uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
+static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg);
 /* Method to abstract sending a command to SPI */
-void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
+static void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
 
 /*  Method to initialize communication over SPI and configure the ADC into Continuous Conversion Mode*/
 void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
@@ -35,7 +35,7 @@ void ads131m04_initialize(ads131_t *adc, SPI_HandleTypeDef *hspi, GPIO_TypeDef *
 }
 
 /* Method to abstract writing to a register, will use SPI commands under the hood, value is MSB aligned */
-void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
+static void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
 {
     // Ensure register address is within 6-bit range
     reg &= 0x3F;
@@ -57,7 +57,7 @@ void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
 }
 
 /* Method to abstract reading from a register, will use SPI commands under the hood to do */
-uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
+static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 {
     // Ensure register address is within 6-bit range
     reg &= 0x3F;
@@ -92,8 +92,7 @@ HAL_StatusTypeDef ads131m04_read_ADC(ads131_t *adc, uint32_t *adc_values)
     ret = HAL_SPI_Receive(adc->hspi, data, 6 * 3, HAL_MAX_DELAY);
 
     // Process received data into ADC values
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         adc_values[i] = (data[(i + 1) * 3] << 16) | (data[(i + 1) * 3 + 1] << 8) | data[(i + 1) * 3 + 2];
     }
 
