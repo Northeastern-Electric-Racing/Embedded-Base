@@ -73,8 +73,9 @@ msgs:
         unit: "V"
         points:
         - !CANPoint
-            endianness: "little"
             size: 32
+            endianness: "little"
+            format: "divide10000"
 
 - !CANMsg
     id: "0x504"
