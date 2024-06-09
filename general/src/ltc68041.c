@@ -107,7 +107,7 @@ void LTC6804_initialize(ltc_config* conf, SPI_HandleTypeDef *hspi, GPIO_TypeDef 
   HAL_GPIO_WritePin(conf->gpio, conf->cs_pin, GPIO_PIN_SET);
 
   // TODO make sure shepherd app configures ADC with these settings:
-  set_adc(MD_NORMAL,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
+  set_adc(MD_FILTERED,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
 }
 
 /*!*******************************************************************************************************************

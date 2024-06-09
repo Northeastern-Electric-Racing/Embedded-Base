@@ -207,6 +207,8 @@ uint8_t LTC6804_rdcv(ltc_config *config, uint8_t reg, uint8_t total_ic,
 int8_t LTC6804_rdaux(ltc_config *config, uint8_t reg, uint8_t nIC,
                      uint16_t aux_codes[][6]);
 
+void LTC6804_clraux(ltc_config *config);
+
 void LTC6804_wrcfg(ltc_config *config, uint8_t nIC, uint8_t data_config[][6]);
 
 int8_t LTC6804_rdcfg(ltc_config *config, uint8_t nIC, uint8_t r_config[][8]);
