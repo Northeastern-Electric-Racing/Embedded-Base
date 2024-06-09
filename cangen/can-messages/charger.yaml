@@ -53,19 +53,7 @@ msgs:
             signed: true
             format: "divide10"
     - !NetField
-        name: "Charger/Box/F_HardwareFailure"
-        unit: "bool"
-        points:
-        - !CANPoint
-            size: 1
-    - !NetField
-        name: "Charger/Box/F_OverTemp"
-        unit: "bool"
-        points:
-        - !CANPoint
-            size: 1
-    - !NetField
-        name: "Charger/Box/F_VoltageWrong"
+        name: "Charger/Box/F_CommTimeout"
         unit: "bool"
         points:
         - !CANPoint
@@ -76,8 +64,22 @@ msgs:
         points:
         - !CANPoint
             size: 1
+
     - !NetField
-        name: "Charger/Box/F_CommTimeout"
+        name: "Charger/Box/F_VoltageWrong"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+
+    - !NetField
+        name: "Charger/Box/F_OverTemp"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "Charger/Box/F_HardwareFailure"
         unit: "bool"
         points:
         - !CANPoint
