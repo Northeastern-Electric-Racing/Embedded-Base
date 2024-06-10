@@ -22,6 +22,7 @@ msgs:
         points:
         - !CANPoint
             size: 8
+            signed: true
     - !NetField
         name: "MPU/State/TSMS"
         unit: ""
@@ -72,8 +73,9 @@ msgs:
         unit: "V"
         points:
         - !CANPoint
-            endianness: "little"
             size: 32
+            endianness: "little"
+            format: "divide10000"
 
 - !CANMsg
     id: "0x504"
