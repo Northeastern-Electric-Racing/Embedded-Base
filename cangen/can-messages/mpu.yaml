@@ -32,11 +32,26 @@ msgs:
 
 - !CANMsg
     id: "0x500"
-    desc: "MPU Acceleromter"
+    desc: "MPU Sense Acceleromter"
     fields:
     - !NetField   # X, Y, and Z should be decoded together
         name: "MPU/Sense/Accel"
         unit: "g"
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x506"
+    desc: "MPU Sense Gyro"
+    fields:
+    - !NetField   # X, Y, and Z should be decoded together
+        name: "MPU/Sense/Gyro"
+        unit: ""
         points:
         - !CANPoint
             size: 16
