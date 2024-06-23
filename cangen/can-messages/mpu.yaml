@@ -29,21 +29,6 @@ msgs:
         - !CANPoint
             size: 8
         
-        
-- !CANMsg
-    id: "0x500"
-    desc: "MPU Acceleromter"
-    fields:
-    - !NetField   # X, Y, and Z should be decoded together
-        name: "MPU/Accel"
-        unit: "g"
-        points:
-        - !CANPoint
-            size: 16
-        - !CANPoint
-            size: 16
-        - !CANPoint
-            size: 16
 
 - !CANMsg
     id: "0x500"
