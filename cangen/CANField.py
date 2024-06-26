@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Optional
 from dataclasses import dataclass
+import math
 
 @dataclass 
 class CANPoint:
@@ -13,6 +14,7 @@ class CANPoint:
     endianness : str = "big"
     final_type: str = "f32"
     format: Optional[str] = None
+    default: Optional[float] = 0
 
     def get_size_bytes(self):
         # Calculate max number of bytes to represent value
@@ -24,6 +26,9 @@ class CANPoint:
     
     def get_size_bits(self):
         return self.size
+    
+    def get_size_min_bytes(self):
+        return math.ceil(self.size / 8.0) * 8 
     
 @dataclass
 class NetField:
