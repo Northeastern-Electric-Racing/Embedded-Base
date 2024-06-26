@@ -167,7 +167,7 @@ class RustSynth:
 		"""
 		Parse can point to do conversions on it, and maybe wrap in formatter
 		"""
-		return f"	{self.parse_encoders(field, index)};\n"
+		return f"	{self.parse_encoders(field, index)};"
 
 	def function_name_decode(self, desc: str) -> str:
 		"""
@@ -248,7 +248,7 @@ class RustSynth:
 		encoders to the data and casting the result to the final type of the CANUnit.
 		"""
 
-		default_statement = f"&({field.default} as f32)"
+		default_statement = f"&({field.default}_f32)"
 		float_final = self.format_data(field, f"*data.get({index}).unwrap_or({default_statement})")
 		
 		if field.endianness == "big":
@@ -292,11 +292,11 @@ class RustSynth:
 
 	def encode_data_inst(self, msg: EncodableCANMsg) -> str:
 		return f"""
-	return EncodeData {{
+	EncodeData {{
 		value: writer.into_writer(),
 		id: {int(msg.id, 16)},   // {msg.id}
 		is_ext: {str(msg.is_ext).lower()},
-	}};"""
+	}}"""
 
 
 class RustSnippets:
@@ -373,11 +373,11 @@ pub fn decode_mock(_data: &[u8]) -> Vec::<DecodeData> {
 pub fn encode_mock(data: Vec<f32>) -> EncodeData {
     let mut writer = BitWriter::endian(Vec::new(), BigEndian);
     writer.write_from::<u8>(data.len() as u8).unwrap();
-    return EncodeData {
+    EncodeData {
         value: writer.into_writer(),
         id: 2047, // 0x7FF
         is_ext: false,
-    };
+    }
 }\n"""  # A debug decode function that is used for messages that don't have a decode function
 
 	network_encoding_start: str = "result.push(DecodeData::new(vec!["
