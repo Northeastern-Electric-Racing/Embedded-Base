@@ -30,7 +30,7 @@ msgs:
         - !CANPoint
             size: 8
         
-
+        
 - !CANMsg
     id: "0x500"
     desc: "MPU Sense Acceleromter"

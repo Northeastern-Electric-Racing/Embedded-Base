@@ -1,5 +1,5 @@
 from ruamel.yaml import YAML
-from cangen.CANMsg import CANMsg
+from cangen.CANMsg import CANMsg, EncodableCANMsg
 from cangen.CANField import CANPoint, NetField
 from cangen.Format import Format
 from cangen.Messages import Messages
@@ -16,6 +16,7 @@ class YAMLParser:
         self.yaml = YAML(typ="safe")
         self.yaml.register_class(Messages)
         self.yaml.register_class(CANMsg)
+        self.yaml.register_class(EncodableCANMsg)
         self.yaml.register_class(NetField)
         self.yaml.register_class(CANPoint)
 
