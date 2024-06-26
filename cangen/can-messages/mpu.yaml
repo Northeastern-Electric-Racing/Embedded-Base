@@ -66,7 +66,7 @@ msgs:
     desc: "MPU Sense Temp"
     fields:
     - !NetField
-        name: "MPU/Sense/Temp_TOF"
+        name: "MPU/Sense/Temp_IMU"
         unit: "C"
         points:
         - !CANPoint
