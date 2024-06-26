@@ -33,18 +33,58 @@ msgs:
         
 - !CANMsg
     id: "0x500"
-    desc: "MPU Acceleromter"
+    desc: "MPU Sense Acceleromter"
     fields:
     - !NetField   # X, Y, and Z should be decoded together
-        name: "MPU/Accel"
+        name: "MPU/Sense/Accel"
         unit: "g"
         points:
         - !CANPoint
             size: 16
         - !CANPoint
-            size: 8
+            size: 16
         - !CANPoint
             size: 16
+
+- !CANMsg
+    id: "0x506"
+    desc: "MPU Sense Gyro"
+    fields:
+    - !NetField   # X, Y, and Z should be decoded together
+        name: "MPU/Sense/Gyro"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x507"
+    desc: "MPU Sense Temp"
+    fields:
+    - !NetField
+        name: "MPU/Sense/Temp_IMU"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+    # - !NetField
+    #     name: "MPU/Sense/Temp_SHT"
+    #     unit: "C"
+    #     points:
+    #     - !CANPoint
+    #         size: 16
+    #         signed: tre
+    # - !NetField
+    #     name: "MPU/Sense/Humidity_SHT"
+    #     unit: ""
+    #     points:
+    #     - !CANPoint
+    #         size: 16
 
 
 - !CANMsg
@@ -66,7 +106,7 @@ msgs:
 
 - !CANMsg
     id: "0x503"
-    desc: "MPU Sense"
+    desc: "MPU Sense Voltage"
     fields:
     - !NetField
         name: "MPU/Sense/Voltage"
