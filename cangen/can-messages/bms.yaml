@@ -245,6 +245,7 @@ msgs:
         points:
         - !CANPoint
             size: 16
+            signed: true
     - !NetField
         name: "BMS/Pack/Current"
         unit: ""
