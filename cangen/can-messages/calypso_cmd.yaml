@@ -11,17 +11,16 @@ msgs:
         unit: "Z"
         points:
         - !CANPoint
-            size: 16
-            endianness: "little"
+            size: 32
+            endianness: "big"
             format: "divide10000"
-            default: 69.55
+            default: 18.443
     - !NetField
         name: "Calypso/Bidir/State/FirstOff/B"
         unit: "G"
         points:
         - !CANPoint
-            size: 16
-            endianness: "big"
+            size: 8
             signed: true
             default: 35.4
     - !NetField
@@ -29,7 +28,7 @@ msgs:
         unit: "G"
         points:
         - !CANPoint
-            size: 16
+            size: 8
             endianness: "big"
             default: 19
     - !NetField
@@ -39,6 +38,7 @@ msgs:
         - !CANPoint
             size: 16
             endianness: "little"
+            format: "divide100"
             signed: true
             default: -21.8
 

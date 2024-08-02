@@ -11,8 +11,8 @@ Messages should follow these rules:
 3. Wherever possible, bit-wise decoding and byte-wise decoding should happen in seperate bytes to avoid confusion.
 Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before adding a 16 bit number
 4. Message totals should be byte aligned, meaning total bit size of a message should be a power of 2
-5. **Signed messages must be 8,16,or 32 bits!**
-6. **Little endian messages must be 8,16, or 32 bits!**
+5. **Signed messages must be 8,16,or 32 bits and byte aligned!**
+6. **Little endian messages must be 8,16, or 32 bits and byte aligned!**
 7. Maximum size of a sent message (default, aka send=True), is 32 bits
 8. Unsent messages should only contain the size parameter
 9. Make the topic of an EncodableCANMsg be "Calypso/Bidir/State/{key}/{field_name}"

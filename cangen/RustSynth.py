@@ -57,7 +57,7 @@ class RustSynth:
 		Helper function that maps a given CANMsg to its decode function
 		"""
 		return f"    {msg.id} => DecodeMessageInfo::new({self.function_name_decode(msg.desc)}),\n"
-	
+
 	def map_msg_to_encoder(self, msg: EncodableCANMsg) -> str:
 		"""
 		Helper function that maps a given EncodableCANMsg to its encode function
@@ -85,7 +85,7 @@ class RustSynth:
 			+ [RustSnippets.decode_close]
 		)
 		return "\n".join(total_list)
-	
+
 	def synthesize_encode(self, msg: EncodableCANMsg) -> str:
 		"""
 		Helper function that synthesizes the encode function for a given EncodableCANMsg
@@ -115,7 +115,7 @@ class RustSynth:
 		for index, field in enumerate(msg.fields, start=0):
 				if field.send:
 					topic_suffix: str = None
-					# if we have a topic append, then we create a standalone variable to read the bits before we 
+					# if we have a topic append, then we create a standalone variable to read the bits before we
 					# push all the points
 					if field.topic_append:
 						# point to append
@@ -132,13 +132,13 @@ class RustSynth:
 					result.append(self.finalize_line(field.name, field.unit, values, topic_appends_name=topic_suffix))
 
 					result.append(f"        {RustSnippets.network_encoding_closing}")
-				elif index < len(msg.fields) -1: 
+				elif index < len(msg.fields) -1:
 					# if field isnt sent, still decode it to get to the next bits, but only if it isnt the last point
 					# if it is the last point, we can just exit out and save the resources of decoding it
 					result.append(f"            {','.join(self.decode_field_value(point, skip=True) for point in field.points)};")
 
 		return result
-	
+
 	def parse_msg_encode(self, msg: EncodableCANMsg) -> list[str]:
 		result = []
 		# flatten list to get points
@@ -161,7 +161,7 @@ class RustSynth:
 		"""
 		Parse can point to do conversions on it, and maybe wrap in formatter
 		"""
-		return f"{self.format_data(field, self.parse_decoders(field, skip))}"
+		return f"{self.decode_format_data(field, self.parse_decoders(field, skip))}"
 
 	def encode_field_value(self, field: CANPoint, index: int) -> str:
 		"""
@@ -189,7 +189,7 @@ class RustSynth:
 		given CANMsg based off the can message description
 		"""
 		return f"pub fn {self.function_name_decode(desc)}(data: &[u8]) -> {RustSnippets.decode_return_type} {{"
-	
+
 	def signature_encode(self, desc: str) -> str:
 		"""
 		Helper function that generates the signature of a decode function for a
@@ -201,7 +201,7 @@ class RustSynth:
 		"""
 		Helper function that generates a line the data struct for a given CANPoint value
 		"""
-		# basically attach the name of the variable of the mqtt data to the topic should it exist, 
+		# basically attach the name of the variable of the mqtt data to the topic should it exist,
 		# otherwise format the plain string topic (should compile out)
 		format_topic: str = f'&format!("{topic}'
 		if topic_appends_name is not None:
@@ -220,13 +220,13 @@ class RustSynth:
 
 		if skip:
 			return f"reader.skip({field.size}).unwrap()"
-		
+
 		if field.endianness == "big":
 			if field.signed:
 				# doesnt need exact sign bit as it is in big endian form, the form of the native stream
-				base = f"reader.read_signed::<i32>({field.size}).unwrap()"
+				base = f"reader.read_signed_in::<{field.size}, i32>().unwrap()"
 			else:
-				base = f"reader.read::<u32>({field.size}).unwrap()"
+				base = f"reader.read_in::<{field.size}, u32>().unwrap()"
 		elif field.endianness == "little":
 			if (field.size != field.get_size_min_bytes()):
 				print("You cannot have a non byte sized signed number!")
@@ -249,14 +249,14 @@ class RustSynth:
 		"""
 
 		default_statement = f"&({field.default}_f32)"
-		float_final = self.format_data(field, f"*data.get({index}).unwrap_or({default_statement})")
-		
+		float_final = self.encode_format_data(field, f"*data.get({index}).unwrap_or({default_statement})")
+
 		if field.endianness == "big":
 			if field.signed:
 				# doesnt need exact sign bit as it is in big endian form, the form of the native stream
-				base = f"writer.write_signed::<i{field.get_size_min_bytes()}>({field.size}, {float_final} as i{field.get_size_min_bytes()}).unwrap()"
+				base = f"writer.write_signed_out::<{field.size}, i{field.get_size_min_bytes()}>({float_final} as i{field.get_size_min_bytes()}).unwrap()"
 			else:
-				base = f"writer.write::<u{field.get_size_min_bytes()}>({field.size}, {float_final} as u{field.get_size_min_bytes()}).unwrap()"
+				base = f"writer.write_out::<{field.size}, u{field.get_size_min_bytes()}>({float_final} as u{field.get_size_min_bytes()}).unwrap()"
 		elif field.endianness == "little":
 			if (field.size != field.get_size_min_bytes()):
 				print("You cannot have a non byte sized signed number!")
@@ -272,14 +272,24 @@ class RustSynth:
 
 		return base
 
-	def format_data(self, field: CANPoint, decoded_data: str) -> str:
+	def decode_format_data(self, field: CANPoint, decoded_data: str) -> str:
 		"""
 		Helper function that formats the data for a given CANPoint based off the
-		format of the CANPoint if it exists
+		format of the CANPoint if it exists, for the decoding
 		"""
 		cf = decoded_data
 		if field.format:
-			cf = f"FormatData::{field.format}({decoded_data})"
+			cf = f"FormatData::{field.format}_d({decoded_data})"
+		return cf
+
+	def encode_format_data(self, field: CANPoint, encoded_data: str) -> str:
+		"""
+		Helper function that formats the data for a given CANPoint based off the
+		format of the CANPoint if it exists, for the encoding alternative
+		"""
+		cf = encoded_data
+		if field.format:
+			cf = f"FormatData::{field.format}_e({encoded_data})"
 		return cf
 
 	def create_encode_key(self, list_of_keys) -> str:
@@ -311,25 +321,39 @@ class RustSnippets:
 	format_impl = """
 /**
  * Class to contain the data formatting functions
+ * _d = a func to decode a value
+ * _e = its counterpart to encode a value for sending on CAN line
  */
 pub struct FormatData {}
 
 impl FormatData {
-	pub fn divide10(value: f32) -> f32 {
+	pub fn divide10_d(value: f32) -> f32 {
 		value / 10.0
 	}
-
-	pub fn divide100(value: f32) -> f32 {
-		value / 100.0
+	pub fn divide10_e(value: f32) -> f32 {
+		value * 10.0
 	}
 
-	pub fn divide10000(value: f32) -> f32 {
+	pub fn divide100_d(value: f32) -> f32 {
+		value / 100.0
+	}
+	pub fn divide100_e(value: f32) -> f32 {
+		value * 100.0
+	}
+
+	pub fn divide10000_d(value: f32) -> f32 {
 		value / 10000.0
+	}
+	pub fn divide10000_e(value: f32) -> f32 {
+		value * 10000.0
 	}
 
 	/* Acceleration values must be offset by 0.0029 according to datasheet */
-	pub fn acceleration(value: f32) -> f32 {
+	pub fn acceleration_d(value: f32) -> f32 {
 		value * 0.0029
+	}
+	pub fn acceleration_e(value: f32) -> f32 {
+		value / 0.0029
 	}
 }"""
 
@@ -396,7 +420,7 @@ pub fn encode_mock(data: Vec<f32>) -> EncodeData {
 	)
 
 	encode_master_mapping_signature: str = (
-		"pub fn get_message_info(key: String) -> EncodeMessageInfo {\n   let key_owned = key.as_str();\n	match key_owned {"  
+		"pub fn get_message_info(key: String) -> EncodeMessageInfo {\n   let key_owned = key.as_str();\n	match key_owned {"
 		# The signature of the master_mapping function
 	)
 
