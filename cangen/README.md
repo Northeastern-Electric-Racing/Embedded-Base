@@ -11,9 +11,12 @@ Messages should follow these rules:
 3. Wherever possible, bit-wise decoding and byte-wise decoding should happen in seperate bytes to avoid confusion.
 Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before adding a 16 bit number
 4. Message totals should be byte aligned, meaning total bit size of a message should be a power of 2
-5. **Signed messages must be 8,16,or 32 bits!**
-6. **Little endian messages must be 8,16, or 32 bits!**
+5. **Signed messages must be 8,16,or 32 bits and byte aligned!**
+6. **Little endian messages must be 8,16, or 32 bits and byte aligned!**
 7. Maximum size of a sent message (default, aka send=True), is 32 bits
+8. Unsent messages should only contain the size parameter
+9. Make the topic of an EncodableCANMsg be "Calypso/Bidir/State/{key}/{field_name}"
+10. The description field must be only letters and spaces, upper or lowercase
 
 Message guide:
 1. Use previous examples for most things
@@ -22,7 +25,10 @@ Message guide:
 Note: Single bit messages are memcpy-ed wrong by default, you may need to use `reverse_bits` in `c_utils.h`
 Note: Please use big endian whenever possible, as that is the standard at which our MC, Charger Box, etc. expect it.  Use `endian_swap` in `c_utils.h`
 
-YAML info.
+## YAML Spec.
+
+### Decodable messages 
+
 ```
 # all files start with this yaml
 !Messages
@@ -42,7 +48,22 @@ msgs:
             signed: false # (optional) whether the number is in signed twos complement form, default is false
             endianness: "big" # (optional) the byte endianness of the bits being read, "big" or "false", "big" is default
             format: "formatter_name" # (optional) the name of the formatter to use, default is no formatting, see above for formatter info
-            final_type: "f32" # (optional, not recommended) the final type of the data            
+            final_type: "f32" # (optional, not recommended) the final type of the data           
+
+```
+
+### Encodable messages
+Occassionally you may want Calypso to also send a message on the CAN network.  Use the above fields, with these modifications/additions:
+It is recommended that the decoding of the message be done to the topic "Calypso/Bidir/State/{key}/{field_name}".  Note decoding works exactly the same with these messages, so serves as an accurate representation of what Calypso is current sending out to the car.
+
+```
+- !EncodableCANMsg # use this instead of CANMsg
+    is_ext: false # (optional) whether the CAN ID of the message is extended or standard, default is false
+    key: # the key to index the encodable message to, so it would be sent to Calypso on "Calypso/Bidir/Command/{key}"
+
+
+        - !CANPoint:
+            default: 0 # (optional) the default value to be sent before a command is recieved or when an empty command is recieved, default is 0.  This is ignored when decoding the point
 ```
 
 ### Directory Structure
@@ -57,11 +78,6 @@ msgs:
 |
 |───Messages.py:
 |   └───Messages        # Container for all messages related to a node
-|
-|───Decoding.py:
-|   |───LittleEndian
-|   |───BigEndian
-|   └───TwosComplement
 |
 |───YAMLParser.py:
 |   └───YAMLParser      # Parses a YAML file into CAN message structures

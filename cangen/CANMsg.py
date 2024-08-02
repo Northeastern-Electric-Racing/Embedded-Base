@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from typing import Optional
 from .CANField import NetField
 
 @dataclass
@@ -11,5 +12,19 @@ class CANMsg:
     desc: str   # Brief name of CAN message, used for generating function names
     fields: list[NetField] # List of CAN fields in the message
 
-    def __setstate__(self, state):
-        self.__init__(**state)
+@dataclass
+class EncodableCANMsg(CANMsg):
+    '''
+    Represents a CAN message that can also be encoded to using the command_data protobuf spec.
+    Has all properties of a decodable message, but also has a key and optional is_ext field.
+
+    IMPORTANT: Use the default flag in each CANPoint to specify a default value to be sent before a command is sent.
+    '''
+    '''
+    The name to be used to look up command data over mqtt
+    '''
+    key: str
+    '''
+    Whether the CAN ID is extended or standard
+    '''
+    is_ext: Optional[bool] = False
