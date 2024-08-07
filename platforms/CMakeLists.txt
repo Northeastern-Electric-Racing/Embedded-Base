@@ -1,0 +1,7 @@
+if (STM32F405xx)
+    add_subdirectory(stm32f405)
+elseif(STM32G431xx)
+    add_subdirectory(stm32g431)
+else()
+    message("No STM definition found!")
+endif()
