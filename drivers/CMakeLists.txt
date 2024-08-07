@@ -1,0 +1,11 @@
+#add_subdirectory(ads131m04)
+add_subdirectory(lsm6dso)
+add_subdirectory(ltc4015)
+#add_subdirectory(ltc68041)
+add_subdirectory(m24c32)
+add_subdirectory(max7314)
+#add_subdirectory(mcp23008) DOES NOT COMPILE
+add_subdirectory(pca9539)
+add_subdirectory(pi4ioe)
+add_subdirectory(sht30)
+add_subdirectory(vl6180x)
