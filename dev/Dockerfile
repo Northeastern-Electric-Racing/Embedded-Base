@@ -8,6 +8,7 @@ RUN apt-get update && \
 # Download Linux support tools
 RUN apt-get update && apt-get install -y \
     build-essential \
+    cmake \
     wget \
     curl \
     openocd \
