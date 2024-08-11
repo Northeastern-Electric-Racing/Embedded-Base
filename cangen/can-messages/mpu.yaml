@@ -151,6 +151,51 @@ msgs:
         - !CANPoint
             size: 32
 
+# versioning message, identical to shep
+- !CANMsg
+    id: "0x698"
+    desc: "Cerberus Version Tag"
+    feilds:
+    - !NetField: # the version number
+        name: "MPU/Version/Tag"
+        unit: "major.minor.patch"
+        points:
+        - !CANPoint
+            size: 8
+        - !CANPoint
+            size: 8
+        - !CANPoint
+            size: 8
+    - !NetField: # whether there were uncommitted changes
+        name: "MPU/Version/Dirty"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField: # whether there were local commits not pushed to the remote
+        name: "MPU/Version/LocalCommit"
+        unit: "bool"
+        points:
+        - !CANPoint
+            size: 8
+
+- !CANMsg
+    id: "0x699"
+    desc: "Cerberus Version Hash"
+    feilds:
+    - !NetField: # the short hash of the code when make was ran
+        name: "MPU/Version/ShortHash" # use `git show $(echo "obase=16; <value>")` to fetch
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+    - !NetField: # a random commit hash of the individual's git name who ran make
+        name: "MPU/Version/AuthorHash" # use `git log --format=%an -1 -p $(echo "obase=16; <value>") | head -n 1` to fetch
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+
 # debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
 - !CANMsg
     id: "0x701"
