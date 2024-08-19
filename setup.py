@@ -42,8 +42,6 @@ def modify_activation_scripts(venv_path):
     # Modify the activate script to start Docker container
     try:
         with open(activate_path, 'a') as activate_file:
-            activate_file.write("\n# Start Docker container when venv is activated\n")
-            activate_file.write("docker-compose up -d ner-gcc-arm\n")
 
             # aliases
           
@@ -108,7 +106,7 @@ def main():
     check_docker_and_rust()
 
     os_type = platform.system()
-    venv_path = ".venv"
+    venv_path = ".ner-venv"
 
     # Step 1: Create the Python virtual environment
     create_venv(venv_path)

@@ -8,7 +8,7 @@ def run_cmake_in_docker():
     # Run CMake inside the Docker container
     try:
         subprocess.run(
-            'docker-compose exec -T build_service bash -c "cmake -S . -B build && cmake --build build"',
+            'docker-compose run --rm ner-gcc-arm /bin/sh -c "make""',
             shell=True,
             check=True
         )
