@@ -22,8 +22,8 @@ def run_command(command, check=True, shell=False):
 def check_docker_and_rust():
     print("This script requires Docker and Rust to be installed.")
     answer = input("Do you have Docker and Rust installed? (yes/no): ").strip().lower()
-    if answer != 'yes':
-        print("Please install Docker and Rust before running this script.")
+    if 'y' not in answer:
+        print("ERROR: Please install Docker and Rust before running this script.")
         sys.exit(1)
 
 def create_venv(venv_path):
@@ -31,7 +31,7 @@ def create_venv(venv_path):
         venv.EnvBuilder(with_pip=True).create(venv_path)
         print(f"Virtual environment created at {venv_path}")
     except Exception as e:
-        print(f"Failed to create virtual environment: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to create virtual environment: {e}", file=sys.stderr)
         sys.exit(1)
 
 def modify_activation_scripts(venv_path):
@@ -43,44 +43,47 @@ def modify_activation_scripts(venv_path):
     try:
         with open(activate_path, 'a') as activate_file:
             activate_file.write("\n# Start Docker container when venv is activated\n")
-            activate_file.write("docker-compose up -d\n")
+            activate_file.write("docker-compose up -d ner-gcc-arm\n")
 
-	    # aliases
-	    
+            # aliases
+          
         print("Activation script modified to start Docker container.")
     except Exception as e:
-        print(f"Failed to modify activation script: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to modify activation script: {e}", file=sys.stderr)
         sys.exit(1)
 
     # Modify the deactivate script to stop Docker container
     try:
         with open(deactivate_path, 'a') as deactivate_file:
             deactivate_file.write("\n# Stop Docker container when venv is deactivated\n")
-            deactivate_file.write("docker-compose down\n")
+            deactivate_file.write("docker-compose down ner-gcc-arm\n")
         print("Deactivation script modified to stop Docker container.")
     except Exception as e:
-        print(f"Failed to modify deactivation script: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to modify deactivation script: {e}", file=sys.stderr)
         sys.exit(1)
 
 def install_requirements(venv_python):
+    print("Installing requirements.txt...")
     try:
         run_command([venv_python, '-m', 'pip', 'install', '-r', 'requirements.txt'])
     except Exception as e:
-        print(f"Failed to install requirements: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to install requirements: {e}", file=sys.stderr)
         sys.exit(1)
 
 def install_precommit(venv_python):
+    print("Installing pre-commit hook...")
     try:
         run_command([venv_python, '-m', 'pre_commit', 'install'])
     except Exception as e:
-        print(f"Failed to install pre-commit: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to install pre-commit: {e}", file=sys.stderr)
         sys.exit(1)
 
 def install_probe_rs(venv_python):
+    print("Installing probe-rs...")
     try:
         run_command([venv_python, '-m', 'pip', 'install', 'probe-rs'])
     except Exception as e:
-        print(f"Failed to install probe-rs: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to install probe-rs: {e}", file=sys.stderr)
         sys.exit(1)
 
 def install_usbip():
@@ -93,11 +96,14 @@ def install_usbip():
         elif distro_name == "arch":
             run_command(["sudo", "pacman", "-S", "--noconfirm", "usbip"])
         else:
-            print(f"USBIP installation not supported for {distro_name}", file=sys.stderr)
+            print("We haven't added USBIP install support for your distro, but if you're actually on linux, you can install it manually!"))
     else:
-        print("distro module not found, cannot determine Linux distribution", file=sys.stderr)
+        print("You should only see this if im stupid!" Let someone know if you see this message")
 
 def main():
+    print("Welcome to NER Embedded Software! If this script shits the bed, let a system head or lead know!)
+    print("-----------------------------------------------------------------------------------------------")
+
     # Step 0: Check for Docker and Rust
     check_docker_and_rust()
 
