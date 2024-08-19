@@ -1,5 +1,4 @@
 distro
 pre-commit
-probe-rs
 docker
 docker-compose
