@@ -137,43 +137,61 @@ def install_usbip():
 def main():
     print("Welcome to NER Embedded Software! If this script shits the bed, let your system head or lead know!")
     print("-----------------------------------------------------------------------------------------------")
+    print("Every step below will have an option to skip. While most users will *not* want to skip anything")
+    print("Everyone's system is different, and if you already have something installed, or know exactly")
+    print("what you are doing, feel free to manually go about this as needed.")
 
     # Step 0: Check for Docker and Rust
     check_docker_and_rust()
 	
-    # Step 1: pull image    
-    image_url = "https://github.com/Northeastern-Electric-Racing/Embedded-Base/pkgs/container/embedded-base"
-    docker_pull(image_url)
+    # Step 1: pull image
+    answer = input("Would you like to pull the docker image? (yes/no)")
+    if 'y' in answer:    
+        image_url = "docker pull ghcr.io/northeastern-electric-racing/embedded-base:main"
+        docker_pull(image_url)
 
     os_type = platform.system()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     parent_directory = os.path.dirname(current_directory)
     venv_path = os.path.join(parent_directory, 'ner-venv')
-    # Step 1: Create the Python virtual environment
-    create_venv(venv_path)
 
-    # Step 2: Modify activation and deactivation scripts
-    aliases_file = os.path.join(current_directory, 'aliases.txt')
-    load_aliases(venv_path, aliases_file)
+    
+    # Step 2: Create the Python virtual environment
+    answer = input("Would you like to setup the virtual environment (yes/no)")
+    if 'y' in answer:
+        create_venv(venv_path)
+        
+        answer = input("Would you like to add necesarry alias commands? (yes/no)")
+        if 'y' in answer:
 
-    # Use the venv's Python
-    venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
+            # Step 3: Modify activation and deactivation scripts
+            aliases_file = os.path.join(current_directory, 'aliases.txt')
+            load_aliases(venv_path, aliases_file)
 
-    # Step 3: Install all Python packages from requirements.txt
+        answer = input("Would you like to install all python packages in the venv? (yes/no)")
+        if 'y' in answer:
+        # Use the venv's Python
+        venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
 
-    install_cython_and_wheel(venv_python)
-    install_pyyaml_no_build_isolation(venv_python)
-    install_requirements(venv_python)
+        # Step 4: Install all Python packages from requirements.txt
 
-    # Step 4: Run pre-commit install
-    install_precommit(venv_python)
+        install_cython_and_wheel(venv_python)
+        install_pyyaml_no_build_isolation(venv_python)
+        install_requirements(venv_python)
 
-    # Step 5: Install probe-rs
-    install_probe_rs()
+        # Step 4: Run pre-commit install
+        install_precommit(venv_python)
+
+    answer = input("Would you like to install probe-rs? (do this manually if on a weird linux ditro!) (yes/no)")
+    if 'y' in answer:
+        # Step 5: Install probe-rs
+        install_probe_rs()
 
     # Step 6: Install usbip if on Linux
     if os_type == "Linux":
-        install_usbip()
+        answer = input("Would you like to install usbip? (yes/no)")
+        if 'y' in answer:
+            install_usbip()
 
     print("Setup completed successfully!")
 
