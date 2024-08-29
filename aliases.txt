@@ -1,0 +1,1 @@
+build="docker-compose run --rm ner-gcc-arm make"
