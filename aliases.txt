@@ -1,1 +1,5 @@
-build="docker-compose run --rm ner-gcc-arm make"
+build="docker compose run --rm ner-gcc-arm make"
+flash="probe-rs run --chip STM32F405RGTx ./build/*.elf"
+cerbcon="sudo usbip attach -r 192.168.100.12 -b 1-1.3"
+shepcon="sudo usbip attach -r 192.168.100.12 -b 1-1.4" 
+peyton="echo \" Shut the fuck up Peyton, fucking hell\" "

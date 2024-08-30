@@ -29,8 +29,8 @@ def check_docker_and_rust():
     if os_type == 'Windows':
         print("Windows OS detected. If on windows, you must be using cmd (not powershell!)") 
         answer = input("Are you using CMD? (yes/no): ").strip().lower()
-   	if 'y' not in answer:
-	sys.exit(1)  
+        if 'y' not in answer:
+	        sys.exit(1)  
 
 def docker_pull(image_url):
     print("Pulling Docker image...")
@@ -52,7 +52,7 @@ def load_aliases(venv_path, aliases_file):
             activate_file.write('\n# Aliases\n')
             for alias in aliases:
                 alias_name, alias_command = alias.strip().split('=', 1)
-		alias_command = alias_command.strip('"')
+                alias_command = alias_command.strip('"')
                 if os_type == 'Windows':
                     # Assuming CMD
                     activate_file.write(f'doskey {alias_name}={alias_command}\n')
@@ -147,7 +147,7 @@ def main():
     # Step 1: pull image
     answer = input("Would you like to pull the docker image? (yes/no)")
     if 'y' in answer:    
-        image_url = "docker pull ghcr.io/northeastern-electric-racing/embedded-base:main"
+        image_url = "ghcr.io/northeastern-electric-racing/embedded-base:main"
         docker_pull(image_url)
 
     os_type = platform.system()
@@ -171,16 +171,16 @@ def main():
         answer = input("Would you like to install all python packages in the venv? (yes/no)")
         if 'y' in answer:
         # Use the venv's Python
-        venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
+            venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
 
         # Step 4: Install all Python packages from requirements.txt
 
-        install_cython_and_wheel(venv_python)
-        install_pyyaml_no_build_isolation(venv_python)
-        install_requirements(venv_python)
+            #install_cython_and_wheel(venv_python)
+            #install_pyyaml_no_build_isolation(venv_python)
+            install_requirements(venv_python)
 
-        # Step 4: Run pre-commit install
-        install_precommit(venv_python)
+        # Step 5: Run pre-commit install
+            install_precommit(venv_python)
 
     answer = input("Would you like to install probe-rs? (do this manually if on a weird linux ditro!) (yes/no)")
     if 'y' in answer:
