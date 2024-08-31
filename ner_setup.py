@@ -72,13 +72,15 @@ def create_venv(venv_path):
         print(f"ERROR: Failed to create virtual environment: {e}", file=sys.stderr)
         sys.exit(1)
 
-def install_requirements(venv_python):
-    print("Installing requirements.txt...")
+def run_setup(venv_python):
+    print("Running setup.py...")
     try:
-        run_command([venv_python, '-m', 'pip', 'install', '-r', 'requirements.txt'])
-    except Exception as e:
-        print(f"Failed to install requirements: {e}", file=sys.stderr)
+        # Run the pip install -e . command
+        run_command([venv_python, '-m', 'pip', 'install', '-e', '.'])
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to run pip install -e .: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def install_precommit(venv_python):
     print("Installing pre-commit hook...")
@@ -157,16 +159,13 @@ def main():
         # Use the venv's Python
             venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
 
-        # Step 4: Install all Python packages from requirements.txt
+            # Step 4: run setup.py (installs requirements and entry points)
+            run_setup(venv_python)
 
-            #install_cython_and_wheel(venv_python)
-            #install_pyyaml_no_build_isolation(venv_python)
-            install_requirements(venv_python)
-
-        # Step 5: Run pre-commit install
+            # Step 5: Run pre-commit install
             install_precommit(venv_python)
 
-    answer = input("Would you like to install probe-rs? (do this manually if on a weird linux ditro!) (yes/no)")
+    answer = input("Would you like to install probe-rs? (do this manually if on a weird linux distro!) (yes/no)")
     if 'y' in answer:
         # Step 5: Install probe-rs
         install_probe_rs()
