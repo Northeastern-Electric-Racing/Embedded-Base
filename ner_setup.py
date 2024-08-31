@@ -95,9 +95,12 @@ def install_probe_rs():
     print("Installing probe-rs...")
     try:
         if os_type == "Windows":
-            # For Windows, using PowerShell to execute the script
-            command = ["powershell", "-Command", "irm https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.ps1 | iex"]
-            run_command(command, shell=False)
+        # Using CMD to run PowerShell for downloading and executing the script
+            command = [
+                "cmd", "/c",
+                "powershell -Command \"Invoke-RestMethod https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.ps1 | Invoke-Expression\""
+            ]
+            run_command(command)
         else:
             # For Unix-like systems (Linux, macOS)
             command = ["bash", "-c", "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.sh | sh"]
