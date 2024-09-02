@@ -27,12 +27,16 @@ def check_docker_and_rust():
 
     os_type = platform.system()
     if os_type == 'Windows':
-        print("Windows OS detected. If on windows, you must be using cmd (not powershell!)") 
-        answer = input("Are you using CMD? (yes/no): ").strip().lower()
+        print("Windows OS detected. If on windows, you must be using bash (included with git), instead of cmd or powershell") 
+        answer = input("Are you using bash? (yes/no): ").strip().lower()
         if 'y' not in answer:
 	        sys.exit(1)  
 
 def docker_pull(image_url):
+    os_type = platform.system()
+    if os_type=='Windows':
+        print("On Windows, please open the Docker Desktop application before proceeding")
+        answer =input("Is the Docker Desktop app running? (yes/no)")
     print("Pulling Docker image...")
     run_command(["docker", "pull", image_url])
     print("Docker image pulled successfully.")
@@ -40,9 +44,9 @@ def docker_pull(image_url):
 def load_aliases(venv_path, aliases_file):
     os_type = platform.system()
     if os_type == 'Windows':
-        activate_path = os.path.join(venv_path, 'Scripts', 'activate.bat')  # Command Prompt batch script
+        activate_path = os.path.join(venv_path, 'Scripts', 'activate')  # Bash script for Git Bash on Windows
     else:
-        activate_path = os.path.join(venv_path, 'bin', 'activate')  # bash script
+        activate_path = os.path.join(venv_path, 'bin', 'activate')  # bash script for Unix-like systems
     
     try:
         with open(aliases_file, 'r') as f:
@@ -53,11 +57,7 @@ def load_aliases(venv_path, aliases_file):
             for alias in aliases:
                 alias_name, alias_command = alias.strip().split('=', 1)
                 alias_command = alias_command.strip('"')
-                if os_type == 'Windows':
-                    # Assuming CMD
-                    activate_file.write(f'doskey {alias_name}={alias_command}\n')
-                else:
-                    activate_file.write(f'alias {alias_name}="{alias_command}"\n')
+                activate_file.write(f'alias {alias_name}="{alias_command}"\n')
 
         print("Aliases added to the activation script successfully.")
     except Exception as e:
@@ -95,12 +95,10 @@ def install_probe_rs():
     print("Installing probe-rs...")
     try:
         if os_type == "Windows":
-        # Using CMD to run PowerShell for downloading and executing the script
+        # Using bash to run PowerShell for downloading and executing the script
             command = [
-                "cmd", "/c",
-                "powershell -Command \"Invoke-RestMethod https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.ps1 | Invoke-Expression\""
-            ]
-            run_command(command)
+                      "powershell", "-Command", "Invoke-RestMethod https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.ps1 | Invoke-Expression"]
+            run_command(command, shell=False)
         else:
             # For Unix-like systems (Linux, macOS)
             command = ["bash", "-c", "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.sh | sh"]
