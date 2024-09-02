@@ -15,6 +15,7 @@ setup(
             'ner_setup=ner_setup:main',  # Command 'ner_setup' runs 'main' function in ner_setup.py
             'clang_restage=clang_restage:main',
             'serial=miniterm:main',
+            'launchpad=launchpad:main',
            
         ],
     },
