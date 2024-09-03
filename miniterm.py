@@ -37,7 +37,7 @@ def list_usb_devices():
 def run_miniterm(device, baudrate=9600):
     """Run pyserial-miniterm with the specified device and baudrate."""
     try:
-        subprocess.run(['pyserial-miniterm', device, '-b', str(baudrate)], check=True)
+        subprocess.run(['pyserial-miniterm', device, '--baud', str(baudrate)], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Failed to run pyserial-miniterm: {e}", file=sys.stderr)
         sys.exit(1)

@@ -2,6 +2,7 @@ import subprocess
 import sys
 import os
 import platform
+import shutil
 
 def install_platformio(venv_path):
     """Install PlatformIO package and set up aliases."""
@@ -43,6 +44,9 @@ def uninstall_platformio(venv_path):
         # Uninstall the platformio package
         subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', 'platformio'])
 
+        # Remove PlatformIO directory
+        remove_platformio_directory()
+
         # Determine OS and adjust alias handling
         os_type = platform.system()
         if os_type == 'Windows':
@@ -76,6 +80,18 @@ def remove_aliases(activate_path):
         print(f"Failed to remove aliases: {e}", file=sys.stderr)
         sys.exit(1)
 
+def remove_platformio_directory():
+    """Remove the PlatformIO directory."""
+    platformio_dir = os.path.expanduser('~/.platformio')
+    if os.path.isdir(platformio_dir):
+        try:
+            shutil.rmtree(platformio_dir)
+            print("PlatformIO directory removed.")
+        except OSError as e:
+            print(f"Failed to remove PlatformIO directory: {e}", file=sys.stderr)
+            sys.exit(1)
+    else:
+        print("PlatformIO directory does not exist.")
 def main():
     if len(sys.argv) != 2:
         print("Usage: launchpad.py [install|uninstall]", file=sys.stderr)
