@@ -34,8 +34,8 @@ def check_docker_and_rust():
 
 def docker_pull(image_url):
     os_type = platform.system()
-    if os_type=='Windows':
-        print("On Windows, please open the Docker Desktop application before proceeding")
+    if os_type=='Windows' or os_type == 'Darwin':
+        print("Please open the Docker Desktop application before proceeding")
         answer =input("Is the Docker Desktop app running? (yes/no)")
     print("Pulling Docker image...")
     run_command(["docker", "pull", image_url])
