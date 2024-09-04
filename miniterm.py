@@ -23,7 +23,8 @@ def list_usb_devices():
     elif os_name == 'Linux' or os_name == 'Darwin':  # Darwin is macOS
         # List USB devices on Unix-like systems
         try:
-            result = subprocess.run(['ls', '/dev/tty*'], capture_output=True, text=True)
+            result = subprocess.run(['ls /dev/tty*'], shell=True, capture_output=True, text=True)
+
             devices = [device for device in result.stdout.splitlines() if 'ttyUSB' in device or 'ttyACM' in device]
             return devices
         except Exception as e:
@@ -34,10 +35,10 @@ def list_usb_devices():
         print(f"Unsupported operating system: {os_name}", file=sys.stderr)
         sys.exit(1)
 
-def run_miniterm(device, baudrate=9600):
+def run_miniterm(device, baudrate=115200):
     """Run pyserial-miniterm with the specified device and baudrate."""
     try:
-        subprocess.run(['pyserial-miniterm', device, '--baud', str(baudrate)], check=True)
+        subprocess.run(['pyserial-miniterm', device, str(baudrate)], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Failed to run pyserial-miniterm: {e}", file=sys.stderr)
         sys.exit(1)

@@ -1,4 +1,5 @@
 build="docker compose run --rm ner-gcc-arm make"
-cerbcon="sudo usbip attach -r 192.168.100.12 -b 1-1.3"
-shepcon="sudo usbip attach -r 192.168.100.12 -b 1-1.4" 
+cerbcon="sudo modprobe vhci_hcd && sudo usbip attach -r 192.168.100.12 -b 1-1.3"
+disconnect="sudo usbip detach -p 0"
+shepcon="sudo modprobe vhci_hcd && sudo usbip attach -r 192.168.100.12 -b 1-1.4"
 peyton="echo \" Shut the fuck up Peyton, fucking hell\" "
