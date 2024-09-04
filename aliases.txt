@@ -1,6 +1,4 @@
 build="docker compose run --rm ner-gcc-arm make"
-flash="probe-rs download --verify --chip STM32F405RGTx ./build/*.elf && probe-rs reset --chip STM32F405RGTx"
-debug="{(probe-rs gdb --reset-halt --gdb-connection-string 0.0.0.0:1337 --chip STM32F405RGTx)&} && ID=$! && sleep 1 && docker compose run --rm -P ner-gcc-arm "arm-none-eabi-gdb" /home/app$(ls ./build/*.elf | cut -c2-) -ex "target remote host.docker.internal:1337" && kill $ID && probe-rs reset --chip STM32F405RGTx"
 cerbcon="sudo usbip attach -r 192.168.100.12 -b 1-1.3"
 shepcon="sudo usbip attach -r 192.168.100.12 -b 1-1.4" 
 peyton="echo \" Shut the fuck up Peyton, fucking hell\" "

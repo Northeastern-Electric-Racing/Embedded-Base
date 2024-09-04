@@ -8,7 +8,7 @@ def parse_requirements(filename):
 setup(
     name='ner-setup',
     version='0.1',
-    py_modules=['ner_setup', 'launchpad', 'clang_restage', 'miniterm'],
+    py_modules=['ner_setup', 'launchpad', 'clang_restage', 'miniterm' , 'load_alias'],
     install_requires=parse_requirements('requirements.txt'),
     entry_points={
         'console_scripts': [
@@ -16,6 +16,7 @@ setup(
             'clang_restage=clang_restage:main',
             'serial=miniterm:main',
             'launchpad=launchpad:main',
+            'load-alias=load_alias:main',
            
         ],
     },

@@ -16,8 +16,6 @@ def main():
     # Get a list of staged files
     staged_files = get_staged_files()
     
-    
-
     # Run clang-format on staged files
     result = subprocess.run(['clang-format', '-i', '--style=file', '--fallback-style=Google'] + staged_files, 
                             )
