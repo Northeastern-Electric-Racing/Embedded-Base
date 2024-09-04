@@ -3,8 +3,16 @@ import sys
 import os
 
 def get_staged_files():
+    # Run the git command to get staged files
     result = subprocess.run(['git', 'diff', '--cached', '--name-only'], stdout=subprocess.PIPE, text=True)
-    return result.stdout.splitlines()
+    
+    # Get the list of staged files from stdout
+    staged_files = result.stdout.splitlines()
+    
+    # Filter files based on their extensions
+    filtered_files = [f for f in staged_files if f.endswith(('.c', '.cpp', '.h'))]
+    
+    return filtered_files
 
 def restage_files(files):
     if files:
@@ -17,8 +25,8 @@ def main():
     staged_files = get_staged_files()
     
     # Run clang-format on staged files
-    result = subprocess.run(['clang-format', '-i', '--style=file', '--fallback-style=Google'] + staged_files, 
-                            )
+    result = subprocess.run(['clang-format', '--style=file', '-i'] + staged_files, 
+                            capture_output=True, text=True)
 
     if result.returncode == 0:
         restage_files(staged_files)

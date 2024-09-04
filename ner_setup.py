@@ -119,7 +119,7 @@ def install_usbip():
         else:
             print("We haven't added USBIP install support for your distro, but if you're actually on linux, you can install it manually!")
     else:
-        print("You should only see this if im stupid! Let someone know if you see this message")
+        print("You should only see this if im stupid! Let someone know if you see this message -> ID=STUPID1")
 
 def main():
     print("Welcome to NER Embedded Software! If this script shits the bed, let your system head or lead know!")
