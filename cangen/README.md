@@ -68,24 +68,25 @@ It is recommended that the decoding of the message be done to the topic "Calypso
 
 ### Directory Structure
 ```
-|
-|───CANField.py:
-|   |───NetField # a class which describes the topic and unit of one or more can points
-|   └──────CANPoint # a class which describes the decoding operations done to bits of a can message
-|
-|───CANMsg.py:
-|   └───CANMsg          # Represents a full CAN message
-|
-|───Messages.py:
-|   └───Messages        # Container for all messages related to a node
-|
-|───YAMLParser.py:
-|   └───YAMLParser      # Parses a YAML file into CAN message structures
-|
-|───RustSynth.py:
-|   └───RustSynth       # Generates Rust code from a CAN messages structure
-|
-|───CSynth.py:
-|   └───CSynth          # Generates  code from a CAN messages structure
-|
-└───README.md           # This file!
+│
+├── CANField.py:
+│   ├── NetField # a class which describes the topic and unit of one or more can points
+│   └── CANPoint # a class which describes the decoding operations done to bits of a can message
+│
+├── CANMsg.py:
+│   └── CANMsg          # Represents a full CAN message
+│
+├── Messages.py:
+│   └── Messages        # Container for all messages related to a node
+│
+├── YAMLParser.py:
+│   └── YAMLParser      # Parses a YAML file into CAN message structures
+│
+├── RustSynth.py:
+│   └── RustSynth       # Generates Rust code from a CAN messages structure
+│
+├── CSynth.py:
+│   └── CSynth          # Generates code from a CAN messages structure
+│
+└── README.md           # This file!
+```
