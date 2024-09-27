@@ -13,28 +13,45 @@
 	4 /* The range of values in g's returned from accelerometer */
 #define GYRO_RANGE 1000 /* The range of values from the gyro in dps */
 
-static inline HAL_StatusTypeDef lsm6dso_read_reg(lsm6dso_t *imu, uint8_t *data,
-						 uint8_t reg)
+lsm6dso_t *imu;
+
+static inline HAL_StatusTypeDef hal_lsm6dso_read_reg(lsm6dso_t *imu,
+						     uint8_t *data, uint8_t reg)
 {
 	return HAL_I2C_Mem_Read(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
 				I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 }
 
-static inline HAL_StatusTypeDef lsm6dso_read_mult_reg(lsm6dso_t *imu,
-						      uint8_t *data,
-						      uint8_t reg,
-						      uint8_t length)
+static inline HAL_StatusTypeDef hal_lsm6dso_read_mult_reg(lsm6dso_t *imu,
+							  uint8_t *data,
+							  uint8_t reg,
+							  uint8_t length)
 {
 	return HAL_I2C_Mem_Read(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
 				I2C_MEMADD_SIZE_8BIT, data, length,
 				HAL_MAX_DELAY);
 }
 
-static inline HAL_StatusTypeDef lsm6dso_write_reg(lsm6dso_t *imu, uint8_t reg,
-						  uint8_t *data)
+static inline HAL_StatusTypeDef
+hal_lsm6dso_write_reg(lsm6dso_t *imu, uint8_t reg, uint8_t *data)
 {
-	return HAL_I2C_Mem_Write(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
-				 I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	return (imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT,
+		data, 1, HAL_MAX_DELAY);
+}
+
+uint8_t lsm6dso_read_reg(uint8_t *data, uint8_t reg)
+{
+	return hal_lsm6dso_read_reg(imu, data, reg);
+}
+
+uint8_t lsm6dso_read_mult_reg(uint8_t *data, uint8_t reg, uint8_t length)
+{
+	return hal_lsm6dso_read_mult_reg(imu, data, reg, length);
+}
+
+uint8_t lsm6dso_write_reg(uint8_t *data, uint8_t reg)
+{
+	return hal_lsm6dso_write_reg(imu, data, reg);
 }
 
 static int16_t accel_data_convert(int16_t raw_accel)
