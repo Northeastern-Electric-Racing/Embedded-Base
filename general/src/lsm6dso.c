@@ -35,23 +35,23 @@ static inline HAL_StatusTypeDef lsm6dso_read_mult_reg(lsm6dso_t *imu,
 static inline HAL_StatusTypeDef lsm6dso_write_reg(lsm6dso_t *imu, uint8_t reg,
 						  uint8_t *data)
 {
-	return (imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT,
+	return HAL_I2C_Mem_Write(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT,
 		data, 1, HAL_MAX_DELAY);
 }
 
-uint8_t read_reg(uint8_t *data, uint8_t reg)
+uint8_t lsm6dso_read(uint8_t *data, uint8_t reg)
 {
-	return hal_lsm6dso_read_reg(imu, data, reg);
+	return lsm6dso_read_reg(imu, data, reg);
 }
 
-uint8_t read_mult_reg(uint8_t *data, uint8_t reg, uint8_t length)
+uint8_t lsm6dso_read_mult(uint8_t *data, uint8_t reg, uint8_t length)
 {
-	return hal_lsm6dso_read_mult_reg(imu, data, reg, length);
+	return lsm6dso_read_mult_reg(imu, data, reg, length);
 }
 
-uint8_t write_reg(uint8_t *data, uint8_t reg)
+uint8_t lsm6dso_write(uint8_t *data, uint8_t reg)
 {
-	return hal_lsm6dso_write_reg(imu, data, reg);
+	return lsm6dso_write_reg(imu, reg, data);
 }
 
 static int16_t accel_data_convert(int16_t raw_accel)
