@@ -1,0 +1,318 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x501"
+    desc: "MPU Status"
+    fields:
+    - !NetField
+        name: "MPU/State/Mode"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "MPU/State/ModeIndex"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "MPU/State/Speed"
+        unit: "mph"
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
+        name: "MPU/State/TSMS"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+        
+        
+- !CANMsg
+    id: "0x500"
+    desc: "MPU Sense Acceleromter"
+    fields:
+    - !NetField   # X, Y, and Z should be decoded together
+        name: "MPU/Sense/Accel"
+        unit: "g"
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x506"
+    desc: "MPU Sense Gyro"
+    fields:
+    - !NetField   # X, Y, and Z should be decoded together
+        name: "MPU/Sense/Gyro"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+        - !CANPoint
+            size: 16
+
+- !CANMsg
+    id: "0x507"
+    desc: "MPU Sense Temp"
+    fields:
+    - !NetField
+        name: "MPU/Sense/Temp_IMU"
+        unit: "C"
+        points:
+        - !CANPoint
+            size: 16
+            signed: true
+    # - !NetField
+    #     name: "MPU/Sense/Temp_SHT"
+    #     unit: "C"
+    #     points:
+    #     - !CANPoint
+    #         size: 16
+    #         signed: tre
+    # - !NetField
+    #     name: "MPU/Sense/Humidity_SHT"
+    #     unit: ""
+    #     points:
+    #     - !CANPoint
+    #         size: 16
+
+
+- !CANMsg
+    id: "0x502"
+    desc: "MPU Fault"
+    fields:
+    - !NetField
+        name: "MPU/Fault/Code"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+    - !NetField
+        name: "MPU/Fault/Severity"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+
+- !CANMsg
+    id: "0x503"
+    desc: "MPU Sense Voltage"
+    fields:
+    - !NetField
+        name: "MPU/Sense/Voltage"
+        unit: "V"
+        points:
+        - !CANPoint
+            size: 32
+            endianness: "little"
+            format: "divide10000"
+
+- !CANMsg
+    id: "0x504"
+    desc: "MPU Accel Pedals"
+    fields:
+    - !NetField
+        name: "MPU/Pedals/Accelerator_1"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+    - !NetField
+        name: "MPU/Pedals/Accelerator_2"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+
+- !CANMsg
+    id: "0x505"
+    desc: "MPU Brake Pedals"
+    fields:
+    - !NetField
+        name: "MPU/Pedals/Brake_1"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+    - !NetField
+        name: "MPU/Pedals/Brake_2"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+
+# debugging only - use messages as needed, be sure to fill rest with FFs and only send from one place in code
+- !CANMsg
+    id: "0x701"
+    desc: "MPU Debug"
+    fields:
+    - !NetField
+        name: "MPU/Debug/Spare0"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "MPU/Debug/Spare1"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+    - !NetField
+        name: "MPU/Debug/Spare2"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 16
+            endianness: "little"
+    - !NetField
+        name: "MPU/Debug/Spare3"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 32
+            signed: true
+            endianness: "little"
+        
+- !CANMsg
+    id: "0x123"
+    desc: "MPU Shutdown"
+    fields:
+    - !NetField
+        name: "MPU/Shutdown/CockpitBRB"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/BMS"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/Inertia"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/Spare_GPIO_1"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/IMD"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/BSPD"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/BOTS"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/HVD_Interlock"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/HVC_Interlock"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Shutdown/Reserved"
+        unit: ""
+        send: false
+        points:
+        - !CANPoint
+            size: 7
+        
+- !CANMsg
+    id: "0x111"
+    desc: "MPU Fuses"
+    fields:
+    - !NetField
+        name: "MPU/Fuses/Battbox"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/LVBox"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/FanRadiator"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/MC"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/FanBattbox"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/Pump"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/Dashboard"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/Brakelight"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/BRB"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 1
+    - !NetField
+        name: "MPU/Fuses/Reserved"
+        unit: ""
+        send: false
+        points:
+        - !CANPoint
+            size: 7

@@ -1,0 +1,69 @@
+!Messages
+msgs:
+
+- !EncodableCANMsg
+  id: "0x450"
+  desc: "Example Enc Msg"
+  key: "FirstOff"
+  fields:
+    - !NetField
+        name: "Calypso/Bidir/State/FirstOff/A"
+        unit: "Z"
+        points:
+        - !CANPoint
+            size: 32
+            endianness: "big"
+            format: "divide10000"
+            default: 18.443
+    - !NetField
+        name: "Calypso/Bidir/State/FirstOff/B"
+        unit: "G"
+        points:
+        - !CANPoint
+            size: 8
+            signed: true
+            default: 35.4
+    - !NetField
+        name: "Calypso/Bidir/State/FirstOff/C"
+        unit: "G"
+        points:
+        - !CANPoint
+            size: 8
+            endianness: "big"
+            default: 19
+    - !NetField
+        name: "Calypso/Bidir/State/FirstOff/D"
+        unit: "G"
+        points:
+        - !CANPoint
+            size: 16
+            endianness: "little"
+            format: "divide100"
+            signed: true
+            default: -21.8
+
+- !EncodableCANMsg
+  id: "0xFFFFF"
+  desc: "Example Enc Msg Ext"
+  key: "SecondOff"
+  is_ext: true
+  fields:
+    - !NetField
+        name: "Calypso/Bidir/State/SecondOff/A"
+        unit: "GG"
+        points:
+        - !CANPoint
+            size: 32
+            endianness: "little"
+            default: 0
+
+- !CANMsg
+  id: "0x7FF"
+  desc: "Calypso bidir unknown key"
+  fields:
+    - !NetField
+        name: "Calypso/Bidir/Unknown"
+        unit: "pts" # this is the count of points in the unknown message, for debugging
+        points:
+        - !CANPoint
+          size: 8

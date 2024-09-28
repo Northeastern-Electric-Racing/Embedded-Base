@@ -1,0 +1,18 @@
+!Messages
+msgs:
+- !CANMsg
+    id: "0x680"
+    desc: "Wheel State"
+    fields:
+    - !NetField
+        name: "WHEEL/Buttons/1"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
+    - !NetField
+        name: "WHEEL/Buttons/2"
+        unit: ""
+        points:
+        - !CANPoint
+            size: 8
