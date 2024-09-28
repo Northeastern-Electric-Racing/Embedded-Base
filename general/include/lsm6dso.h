@@ -99,7 +99,7 @@ HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle);
  * @param reg
  * @return 0 if HAL_OK, 1 if HAL_ERROR
  */
-uint8_t read_reg(uint8_t *data, uint8_t reg);
+uint8_t lsm6dso_read(uint8_t *data, uint8_t reg);
 
 /**
  * @brief reads multiple LSM6DSO memory registers
@@ -109,7 +109,7 @@ uint8_t read_reg(uint8_t *data, uint8_t reg);
  * @param length
  * @return 0 if HAL_OK, 1 if HAL_ERROR
  */
-uint8_t read_mult_reg(uint8_t *data, uint8_t reg, uint8_t length);
+uint8_t lsm6dso_read_mult(uint8_t *data, uint8_t reg, uint8_t length);
 
 /**
  * @brief wrties to LSM6DSO memory register
@@ -118,7 +118,7 @@ uint8_t read_mult_reg(uint8_t *data, uint8_t reg, uint8_t length);
  * @param reg
  * @return 0 if HAL_OK, 1 if HAL_ERROR
  */
-uint8_t write_reg(uint8_t *data, uint8_t reg);
+uint8_t lsm6dso_write(uint8_t *data, uint8_t reg);
 
 /* IMU Setting Configuration */
 /**
