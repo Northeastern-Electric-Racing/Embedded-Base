@@ -1,0 +1,505 @@
+"msgs": [
+  {
+    "id": "0x501",
+    "desc": "MPU Status",
+    "fields": [
+      {
+        "name": "MPU/State/Mode",
+        "unit": "",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/State/ModeIndex",
+        "unit": "",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/State/Speed",
+        "unit": "mph",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/State/TSMS",
+        "unit": "",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x500",
+    "desc": "MPU Sense Acceleromter",
+    "fields": [
+      {
+        "name": "MPU/Sense/Accel",
+        "unit": "g",
+        "points": [
+          {
+            "size": 16,
+            "signed": false
+          }
+        ,
+          {
+            "size": 16,
+            "signed": false
+          }
+        ,
+          {
+            "size": 16,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x506",
+    "desc": "MPU Sense Gyro",
+    "fields": [
+      {
+        "name": "MPU/Sense/Gyro",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": false
+          }
+        ,
+          {
+            "size": 16,
+            "signed": false
+          }
+        ,
+          {
+            "size": 16,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x507",
+    "desc": "MPU Sense Temp",
+    "fields": [
+      {
+        "name": "MPU/Sense/Temp_IMU",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x502",
+    "desc": "MPU Fault",
+    "fields": [
+      {
+        "name": "MPU/Fault/Code",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fault/Severity",
+        "unit": "",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x503",
+    "desc": "MPU Sense Voltage",
+    "fields": [
+      {
+        "name": "MPU/Sense/Voltage",
+        "unit": "V",
+        "points": [
+          {
+            "size": 32,
+            "signed": false,
+            "endianness": "little",
+            "format": "divide10000"
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x504",
+    "desc": "MPU Accel Pedals",
+    "fields": [
+      {
+        "name": "MPU/Pedals/Accelerator_1",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Pedals/Accelerator_2",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x505",
+    "desc": "MPU Brake Pedals",
+    "fields": [
+      {
+        "name": "MPU/Pedals/Brake_1",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Pedals/Brake_2",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x701",
+    "desc": "MPU Debug",
+    "fields": [
+      {
+        "name": "MPU/Debug/Spare0",
+        "unit": "",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Debug/Spare1",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Debug/Spare2",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": false,
+            "endianness": "little"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Debug/Spare3",
+        "unit": "",
+        "points": [
+          {
+            "size": 32,
+            "endianness": "little"
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x123",
+    "desc": "MPU Shutdown",
+    "fields": [
+      {
+        "name": "MPU/Shutdown/CockpitBRB",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/BMS",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/Inertia",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/Spare_GPIO_1",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/IMD",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/BSPD",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/BOTS",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/HVD_Interlock",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/HVC_Interlock",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Shutdown/Reserved",
+        "unit": "",
+        "points": [
+          {
+            "size": 7,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x111",
+    "desc": "MPU Fuses",
+    "fields": [
+      {
+        "name": "MPU/Fuses/Battbox",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/LVBox",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/FanRadiator",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/MC",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/FanBattbox",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/Pump",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/Dashboard",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/Brakelight",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/BRB",
+        "unit": "",
+        "points": [
+          {
+            "size": 1,
+            "signed": false
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MPU/Fuses/Reserved",
+        "unit": "",
+        "points": [
+          {
+            "size": 7,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+]

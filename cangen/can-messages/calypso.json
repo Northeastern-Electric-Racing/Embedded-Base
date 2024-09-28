@@ -1,0 +1,91 @@
+"msgs": [
+  {
+    "id": "0x450",
+    "desc": "Example Enc Msg",
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/FirstOff/A",
+        "unit": "Z",
+        "points": [
+          {
+            "size": 32,
+            "signed": false,
+            "format": "divide10000",
+            "default": 18.443
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Calypso/Bidir/State/FirstOff/B",
+        "unit": "G",
+        "points": [
+          {
+            "size": 8,
+            "default": 35.4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Calypso/Bidir/State/FirstOff/C",
+        "unit": "G",
+        "points": [
+          {
+            "size": 8,
+            "signed": false,
+            "default": 19
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Calypso/Bidir/State/FirstOff/D",
+        "unit": "G",
+        "points": [
+          {
+            "size": 16,
+            "endianness": "little",
+            "format": "divide100",
+            "default": -21.8
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0xFFFFF",
+    "desc": "Example Enc Msg Ext",
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/SecondOff/A",
+        "unit": "GG",
+        "points": [
+          {
+            "size": 32,
+            "signed": false,
+            "endianness": "little"
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x7FF",
+    "desc": "Calypso bidir unknown key",
+    "fields": [
+      {
+        "name": "Calypso/Bidir/Unknown",
+        "unit": "pts",
+        "points": [
+          {
+            "size": 8,
+            "signed": false
+          }
+        ]
+      }
+    ]
+  }
+]
