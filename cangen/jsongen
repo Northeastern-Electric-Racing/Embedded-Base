@@ -43,6 +43,11 @@ for key in all_messages.keys():
       new_file.write("  {\n")
       new_file.write(f"    \"id\": \"{msg.id}\",\n") 
       new_file.write(f"    \"desc\": \"{msg.desc}\",\n") 
+      # Handle if msg is an instance of EncodableCANMsg
+      if isinstance(msg, getattr(cangen, 'EncodableCANMsg')):
+          new_file.write(f"    \"key\": \"{msg.key}\",\n")
+          if msg.is_ext:
+              new_file.write(f"    \"is_ext\": {str(msg.is_ext).lower()},\n")
       new_file.write("    \"fields\": [\n")
 
       # Add all NetFields

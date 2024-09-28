@@ -2,6 +2,7 @@
   {
     "id": "0x450",
     "desc": "Example Enc Msg",
+    "key": "FirstOff",
     "fields": [
       {
         "name": "Calypso/Bidir/State/FirstOff/A",
@@ -57,6 +58,8 @@
   {
     "id": "0xFFFFF",
     "desc": "Example Enc Msg Ext",
+    "key": "SecondOff",
+    "is_ext": true,
     "fields": [
       {
         "name": "Calypso/Bidir/State/SecondOff/A",
