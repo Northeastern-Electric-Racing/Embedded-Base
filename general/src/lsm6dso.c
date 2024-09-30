@@ -91,12 +91,9 @@ int lsm6dso_set_gyro_cfg(int8_t odr_sel, int8_t fs_sel, int8_t fs_125)
 	return lsm6dso_write_reg(&imu.gyro_config, LSM6DSO_REG_GYRO_CTRL);
 }
 
-int lsm6dso_init(I2C_HandleTypeDef *i2c_handle, I2C_Read read_func,
-		 I2C_Write write_func)
+int lsm6dso_init(I2C_Read read_func, I2C_Write write_func)
 {
 	int status;
-
-	imu.i2c_handle = i2c_handle;
 
 	imu.accel_data[LSM6DSO_X_AXIS] = 0;
 	imu.accel_data[LSM6DSO_Y_AXIS] = 0;

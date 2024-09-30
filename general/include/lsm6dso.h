@@ -63,8 +63,6 @@ enum lsm6dso_axes {
  *
  */
 typedef struct {
-	I2C_HandleTypeDef *i2c_handle;
-
 	uint8_t accel_config; // TODO: We should make these cfg packed unions with
 		// bitfield structs
 
@@ -83,11 +81,9 @@ typedef struct {
 /**
  * @brief Initializes the LSM6DSO IMU
  *
- * @param i2c_handle
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_init(I2C_HandleTypeDef *i2c_handle, I2C_Read read_func,
-		 I2C_Write write_func);
+int lsm6dso_init(I2C_Read read_func, I2C_Write write_func);
 
 /* IMU Setting Configuration */
 /**
