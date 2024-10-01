@@ -1,5 +1,5 @@
 from cangen.RustSynth import RustSynth
-from cangen.RusySynthFromJSON import RusySynthFromJSON
+from cangen.RustSynthFromJSON import RustSynthFromJSON
 from cangen.YAMLParser import YAMLParser
 from cangen.CANMsg import CANMsg
 from cangen.CANMsg import EncodableCANMsg
