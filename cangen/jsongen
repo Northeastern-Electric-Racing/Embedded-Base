@@ -28,7 +28,7 @@ all_messages["msb"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{mod
 
 for key in all_messages.keys():
   with open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/{key}.json", "w") as new_file:
-    new_file.write("\"msgs\": [\n")
+    new_file.write("[\n")
     messages = all_messages[key]
     # flag to check if we need to add comma separator between sequential objects
     first_msg = True
