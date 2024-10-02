@@ -9,7 +9,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10"
           }
         ]
@@ -21,8 +20,7 @@
         "send": "false",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -32,8 +30,7 @@
         "unit": "Ah",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -43,8 +40,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -54,8 +50,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -71,8 +66,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -82,8 +76,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -93,8 +86,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -104,8 +96,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -115,8 +106,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -132,8 +122,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -150,7 +139,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10000"
           }
         ]
@@ -161,8 +149,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -172,8 +159,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -184,7 +170,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10000"
           }
         ]
@@ -195,8 +180,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -206,8 +190,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -218,7 +201,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10000"
           }
         ]
@@ -235,8 +217,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -246,8 +227,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -257,8 +237,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -268,8 +247,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -279,8 +257,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -290,8 +267,7 @@
         "unit": "",
         "points": [
           {
-            "size": 4,
-            "signed": false
+            "size": 4
           }
         ]
       }
@@ -301,8 +277,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -318,7 +293,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -328,7 +304,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -338,7 +315,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -348,7 +326,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -358,7 +337,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -368,7 +348,8 @@
         "unit": "C",
         "points": [
           {
-            "size": 8
+            "size": 8,
+            "signed": true
           }
         ]
       }
@@ -384,8 +365,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -395,7 +375,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -405,7 +386,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -422,13 +404,11 @@
         "topic_append": "true",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -438,8 +418,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -449,8 +428,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -466,8 +444,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -477,8 +454,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -488,8 +464,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -499,8 +474,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -510,8 +484,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -521,8 +494,7 @@
         "unit": "%",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -538,8 +510,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -549,8 +520,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -560,8 +530,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -571,8 +540,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -588,8 +556,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -599,7 +566,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -609,7 +577,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }

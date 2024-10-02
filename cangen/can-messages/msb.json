@@ -8,8 +8,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -19,8 +18,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -36,18 +34,15 @@
         "unit": "g",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -63,18 +58,15 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -90,13 +82,11 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ,
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -112,8 +102,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -129,7 +118,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -145,8 +135,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -162,8 +151,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -173,8 +161,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -190,18 +177,15 @@
         "unit": "g",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -217,18 +201,15 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -244,13 +225,11 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ,
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -266,8 +245,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -283,7 +261,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -299,8 +278,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -316,8 +294,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -327,8 +304,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -344,18 +320,15 @@
         "unit": "g",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -371,18 +344,15 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -398,13 +368,11 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ,
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -420,8 +388,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -437,7 +404,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -453,8 +421,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -470,8 +437,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -481,8 +447,7 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -498,18 +463,15 @@
         "unit": "g",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -525,18 +487,15 @@
         "unit": "",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ,
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }
@@ -552,13 +511,11 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ,
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -574,8 +531,7 @@
         "unit": "",
         "points": [
           {
-            "size": 32,
-            "signed": false
+            "size": 32
           }
         ]
       }
@@ -591,7 +547,8 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -607,8 +564,7 @@
         "unit": "C",
         "points": [
           {
-            "size": 16,
-            "signed": false
+            "size": 16
           }
         ]
       }

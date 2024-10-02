@@ -76,9 +76,9 @@ for key in all_messages.keys():
                 new_file.write("        ,\n")
             new_file.write("          {\n")
             new_file.write(f"            \"size\": {point.size}")
-            if not point.signed:
+            if point.signed:
                 new_file.write(",\n")
-                new_file.write(f"            \"signed\": {str(point.signed).lower()}")
+                new_file.write(f"            \"signed\": true")
             if point.endianness != "big":
                 new_file.write(",\n")
                 new_file.write(f"            \"endianness\": \"{point.endianness}\"")

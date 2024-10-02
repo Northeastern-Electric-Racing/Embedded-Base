@@ -8,8 +8,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -19,8 +18,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }

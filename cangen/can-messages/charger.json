@@ -9,7 +9,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10"
           }
         ]
@@ -21,7 +20,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10"
           }
         ]
@@ -32,8 +30,7 @@
         "unit": "",
         "points": [
           {
-            "size": 8,
-            "signed": false
+            "size": 8
           }
         ]
       }
@@ -44,8 +41,7 @@
         "send": "false",
         "points": [
           {
-            "size": 24,
-            "signed": false
+            "size": 24
           }
         ]
       }
@@ -62,7 +58,6 @@
         "points": [
           {
             "size": 16,
-            "signed": false,
             "format": "divide10"
           }
         ]
@@ -74,6 +69,7 @@
         "points": [
           {
             "size": 16,
+            "signed": true,
             "format": "divide10"
           }
         ]
@@ -84,8 +80,7 @@
         "unit": "bool",
         "points": [
           {
-            "size": 1,
-            "signed": false
+            "size": 1
           }
         ]
       }
@@ -95,8 +90,7 @@
         "unit": "bool",
         "points": [
           {
-            "size": 1,
-            "signed": false
+            "size": 1
           }
         ]
       }
@@ -106,8 +100,7 @@
         "unit": "bool",
         "points": [
           {
-            "size": 1,
-            "signed": false
+            "size": 1
           }
         ]
       }
@@ -117,8 +110,7 @@
         "unit": "bool",
         "points": [
           {
-            "size": 1,
-            "signed": false
+            "size": 1
           }
         ]
       }
@@ -128,8 +120,7 @@
         "unit": "bool",
         "points": [
           {
-            "size": 1,
-            "signed": false
+            "size": 1
           }
         ]
       }
@@ -140,8 +131,7 @@
         "send": "false",
         "points": [
           {
-            "size": 24,
-            "signed": false
+            "size": 24
           }
         ]
       }
