@@ -26,36 +26,67 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
 /// POLARITY: Inversion state, 1=Inverted 0=Uninverted
 /// DIRECTION: Input/Output selection 1=Input 0=Output
 
-#define PCA_INPUT_0_REG 0x00
-#define PCA_INPUT_1_REG 0x01
-#define PCA_OUTPUT_0_REG 0x02
-#define PCA_OUTPUT_1_REG 0x03
-#define PCA_POLARITY_0_REG 0x04
-#define PCA_POLARITY_1_REG 0x05
+#define PCA_INPUT_0_REG	    0x00
+#define PCA_INPUT_1_REG	    0x01
+#define PCA_OUTPUT_0_REG    0x02
+#define PCA_OUTPUT_1_REG    0x03
+#define PCA_POLARITY_0_REG  0x04
+#define PCA_POLARITY_1_REG  0x05
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
-typedef struct
-{
+//Function Pointer Initializiation, read/write functions will get assigned to these
+typedef int(*I2C_WriteFuncPtr){ uint16_t address, uint8_t reg_type,
+				uint8_t data };
+typedef int(*I2C_ReadFuncPtr){ uint16_t address, uint8_t reg_type,
+			       uint8_t data };
+//typedef void(*I2C_ReadPinFuncPtr){uint16_t };
+//typedef void(*I2C_WritePinFuncPtr){};
+
+typedef struct {
 	I2C_HandleTypeDef *i2c_handle;
 	uint16_t dev_addr;
+
+	// Two Function Pointers
+	I2C_WriteFuncPtr local_I2C_Write;
+	I2C_ReadFuncPtr local_I2C_Read;
+	//I2C_ReadPinFuncPtr local_I2C_Read_Pin;
+	//I2C_WritePinFuncPtr local_I2C_Write_Pin;
+
 } pca9539_t;
 
 /// Init PCA9539, a 16 bit I2C GPIO expander
-void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, uint8_t dev_addr);
+//Includes use of Function Pointers with instance writeFunc and readFunc
+void pca9539_init(pca9539_t *pca, I2C_WriteFuncPtr writeFunc,
+		  I2C_ReadFuncPtr readFunc, I2C_HandleTypeDef *i2c_handle,
+		  uint8_t dev_addr);
 
+//READ/WRITE
+//Don't need struct pointer from initialization?
+//***The pointers for these functions will be general pca_read_reg, general pca_write_reg which are linked to HAL functions
+int pca9539_read_reg(pca9539_t *pca, uint16_t reg_type, uint8_t *buf);
+
+int pca9539_write_reg(pca9539_t *pca, uint16_t reg_type, uint8_t buf);
+
+/*
 /// @brief Read all pins on a bus, for example using reg_type input to get incoming logic level
 HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
 								   uint8_t *buf);
-/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins instead
-HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
-								   uint8_t pin, uint8_t *buf);
 
 /// @brief Write all pins on a bus, for example using reg_type OUTPUT to set logic level or DIRECTION to set as
 /// output
 HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
+*/
+
+//PIN WRITE/READ
+
 /// @brief Write a specific pin on a bus, do not iterate over this, use write_pins instead
-HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
-									uint8_t buf);
+//HAL_StatusTypeDef
+int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		      uint8_t buf);
+/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins instead
+//HAL_StatusTypeDef
+int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		     uint8_t *buf);
 
 #endif
