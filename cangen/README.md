@@ -101,7 +101,8 @@ Within the `points` member of a NetField object, there is a list of Point object
 - `size`, an integer representing the size to be read in bits
 - `signed` (optional), boolean representing whether or not the number is signed in two's complement form (`false` by default) 
 - `endianness` (optional), string representing the byte endianness of the bits being read, either `"big"` or `"little"` (`"big"` by default)
-- `format` (optional, not recommended), string representing the final type of the data (`"f32"` by default)
+- `format` (optional), string representing the formatter to be used on the decoded data. Ignored in encoding (none by default)
+- `final_type` (optional, not recommended), string representing the final type of the data (`"f32"` by default)
 - `default` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
 
 
@@ -114,11 +115,20 @@ Within the `points` member of a NetField object, there is a list of Point object
 │   └── ...
 │
 ├── CANField.py:
-│   ├── NetField # a class which describes the topic and unit of one or more can points
-│   └── CANPoint # a class which describes the decoding operations done to bits of a can message
+│   ├── NetField            # a class which describes the topic and unit of one or more can points
+│   └── CANPoint            # a class which describes the decoding operations done to bits of a can message
 │
 ├── CANMsg.py:
 │   └── CANMsg              # Represents a full CAN message
+│
+├── Format.py:
+│   ├── Format              # Class representing a format to apply to decoded data 
+│   ├── Divide10            # Format to divide decoded data by 10 
+│   ├── Divide100           # Format to divide decoded data by 100 
+│   ├── Divide10000         # Format to divide decoded data by 10000
+│   └── Acceleration        # Format to represent decoded data as acceleration 
+│
+├── jsongen:                # Python script to convert YAML files into equivalent JSON
 │
 ├── Messages.py:
 │   └── Messages            # Container for all messages related to a node
@@ -131,8 +141,6 @@ Within the `points` member of a NetField object, there is a list of Point object
 │
 ├── RustSynthFromJSON.py:
 │   └── RustSynthFromJSON   # Generates Rust code from a JSON CAN messages structure
-│
-├── jsongen:                # Python script to convert YAML files into equivalent JSON
 │
 └── README.md               # This file!
 ```
