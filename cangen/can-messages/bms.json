@@ -1,0 +1,587 @@
+[
+  {
+    "id": "0x80",
+    "desc": "accumulator status",
+    "fields": [
+      {
+        "name": "BMS/Pack/Voltage",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/Current",
+        "unit": "A",
+        "send": "false",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/Amp-hours",
+        "unit": "Ah",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/SOC",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/Health",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x81",
+    "desc": "BMS Status",
+    "fields": [
+      {
+        "name": "BMS/Status/State",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Status/Faults",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Status/Temp_Average",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Status/Temp_Internal",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Status/Balancing",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x82",
+    "desc": "Shutdown Control",
+    "fields": [
+      {
+        "name": "BMS/Shutdown/MPE",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x83",
+    "desc": "Cell Data",
+    "fields": [
+      {
+        "name": "BMS/Cells/Volts_High_Value",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10000"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_High_Chip",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_High_Cell",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_Low_Value",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10000"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_Low_Chip",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_Low_Cell",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Volts_Avg_Value",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10000"
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x84",
+    "desc": "Cell Temperatures",
+    "fields": [
+      {
+        "name": "BMS/Cells/Temp_High_Value",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_High_Cell",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_High_Chip",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_Low_Value",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_Low_Cell",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_Low_Chip",
+        "unit": "",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Cells/Temp_Avg_Value",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x85",
+    "desc": "Segment Temperatures",
+    "fields": [
+      {
+        "name": "BMS/Segment_Temp/1",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Segment_Temp/2",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Segment_Temp/3",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Segment_Temp/4",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Segment_Temp/5",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Segment_Temp/6",
+        "unit": "C",
+        "points": [
+          {
+            "size": 8,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x86",
+    "desc": "Current Limits",
+    "fields": [
+      {
+        "name": "BMS/Pack/DCL",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/CCL",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Pack/Current",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x87",
+    "desc": "Cell Voltage",
+    "fields": [
+      {
+        "name": "BMS/PerCell/CellVoltage",
+        "unit": "",
+        "topic_append": "true",
+        "points": [
+          {
+            "size": 8
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/PerCell/InstantVoltage",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/PerCell/InternalResistance",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x88",
+    "desc": "BMS Voltage Noise",
+    "fields": [
+      {
+        "name": "BMS/NoiseVoltage/1",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/NoiseVoltage/2",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/NoiseVoltage/3",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/NoiseVoltage/4",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/NoiseVoltage/5",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/NoiseVoltage/6",
+        "unit": "%",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x702",
+    "desc": "BMS Debug",
+    "fields": [
+      {
+        "name": "BMS/Debug/Spare0",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Debug/Spare1",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Debug/Spare2",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Debug/Spare3",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x703",
+    "desc": "BMS Fault Debug",
+    "fields": [
+      {
+        "name": "BMS/FaultDebug/Status",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/FaultDebug/PackCurrent",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/FaultDebug/DCL",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+]

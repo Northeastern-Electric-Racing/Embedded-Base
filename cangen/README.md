@@ -1,7 +1,7 @@
 # CANGEN
 > Definition of all CAN messages to be sent across the car with Python scripts to generate code to encode and decode
 
-Here is a custom Python module built to generate embedded code for encoding and decoding CAN messages.
+Here is a custom Python module built to generate embedded code for encoding and decoding CAN messages. The end of this module is nigh.
 
 ## Adding Messages
 
@@ -15,7 +15,7 @@ Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before ad
 6. **Little endian messages must be 8,16, or 32 bits and byte aligned!**
 7. Maximum size of a sent message (default, aka send=True), is 32 bits
 8. Unsent messages should only contain the size parameter
-9. Make the topic of an EncodableCANMsg be "Calypso/Bidir/State/{key}/{field_name}"
+9. Make the topic of an EncodableCANMsg be `"Calypso/Bidir/State/{key}/{field_name}"`
 10. The description field must be only letters and spaces, upper or lowercase
 
 Message guide:
@@ -25,67 +25,114 @@ Message guide:
 Note: Single bit messages are memcpy-ed wrong by default, you may need to use `reverse_bits` in `c_utils.h`
 Note: Please use big endian whenever possible, as that is the standard at which our MC, Charger Box, etc. expect it.  Use `endian_swap` in `c_utils.h`
 
-## YAML Spec.
 
-### Decodable messages 
+## JSON Spec.
 
+
+### Decodable Messages
+For example:
+```json 
+[
+  {
+    "id": "0x80",
+    "desc": "A quick description goes here",
+    "fields": [
+      {
+        "name": "The/Topic/Name",
+        "unit": "unit_here",
+        "points": [
+          {
+            "size": 8,
+          }
+          ,
+          {
+            ...
+          }
+        ]
+      }
+      ,
+      {
+        ...
+      }
+    ]
+  }
+  ,
+  {
+    ...
+  }
+]
 ```
-# all files start with this yaml
-!Messages
-msgs: 
-- !CANMsg
-    id: "0x80" # hexadecimal string of the CAN ID (extended CAN supported)
-    desc: "a quick description goes here"
-    fields: # list of MQTT messages being sent from this CANMsg
-    - !NetField
-        name: "The/Topic/Name" # the message topic name, going 3 levels of slashes is usally prefered, dont put trailing slashes
-        unit: "unit_here" # the unit of the data, ex. mph
-        send: true # (optional) whether this message should be sent over the network, default is true
-        topic_append: false # (optional) whether to append the topic name with the value of the first CANPoint in points
-        points: # list of CAN bits to be used for this message
-        - !CANPoint:
-            size: 8 # the integer size to be read, in bits
-            signed: false # (optional) whether the number is in signed twos complement form, default is false
-            endianness: "big" # (optional) the byte endianness of the bits being read, "big" or "false", "big" is default
-            format: "formatter_name" # (optional) the name of the formatter to use, default is no formatting, see above for formatter info
-            final_type: "f32" # (optional, not recommended) the final type of the data           
-
-```
-
-### Encodable messages
-Occassionally you may want Calypso to also send a message on the CAN network.  Use the above fields, with these modifications/additions:
-It is recommended that the decoding of the message be done to the topic "Calypso/Bidir/State/{key}/{field_name}".  Note decoding works exactly the same with these messages, so serves as an accurate representation of what Calypso is current sending out to the car.
-
-```
-- !EncodableCANMsg # use this instead of CANMsg
-    is_ext: false # (optional) whether the CAN ID of the message is extended or standard, default is false
-    key: # the key to index the encodable message to, so it would be sent to Calypso on "Calypso/Bidir/Command/{key}"
 
 
-        - !CANPoint:
-            default: 0 # (optional) the default value to be sent before a command is recieved or when an empty command is recieved, default is 0.  This is ignored when decoding the point
-```
+### Structure 
+
+JSON files should be structured according to a strict hierarchy of:
+1. Message objects (in a list)
+2. NetField objects (in a list within a Message object)
+3. CANPoint objects (in a list within a NetField object)
+
+
+#### Message
+
+At the root of any spec-compliant JSON file is a list of Message objects. Each Message object has the following members:
+- `id`, a hexadecimal string of the CAN ID (extended CAN supported and default)
+- `desc`, string representing a quick descroption of the CAN message
+- `fields`, a list of MQTT messages being sent from the Message
+
+Occassionally you may want Calypso to also send a message on the CAN network. Use the above fields, with these modifications/additions to treat the Message as an Encodable Message:
+- `key`, string representing the key to index the Encodable Message to, e.g. it would be sent to Calypso on `"Calypso/Bidir/Command/{key}"` 
+- `is_ext`, boolean representing whether the CAN ID is extended or standard (`false` by default)
+It is recommended that the decoding of the message be done to the topic `"Calypso/Bidir/State/{key}/{field_name}"`. Note decoding works exactly the same with these messages, so serves as an accurate representation of what Calypso is current sending out to the car.
+
+
+#### NetField
+
+Within the `fields` member of a Message object, there is a list of NetField objects. Think 1 MQTT Topic per NetField. Each NetField has the following members:
+- `name`, string of the message topic name, e.g. `The/Topic/Name`. Going 3 levels of slashes is usually preferred, don't put trailing slashes.
+- `unit`, string of the unit of the data, e.g. `mph`
+- `points`, a list of Point objects to be used for this MQTT message
+- `send` (optional), boolean representing whether this message should be send over the network (`true` by default)
+- `topic_append` (optional), boolean representing whether to append the topic name with the value of the first CANPoint in `points` (`false` by default)
+
+
+#### Point
+
+Within the `points` member of a NetField object, there is a list of Point objects. A Point object represents one set of bits in a CAN message. This separates CAN decoding logic from MQTT encoding information. Each Point has the following members:
+- `size`, an integer representing the size to be read in bits
+- `signed` (optional), boolean representing whether or not the number is signed in two's complement form (`false` by default) 
+- `endianness` (optional), string representing the byte endianness of the bits being read, either `"big"` or `"little"` (`"big"` by default)
+- `format` (optional, not recommended), string representing the final type of the data (`"f32"` by default)
+- `default` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
+
 
 ### Directory Structure
 ```
-|
-|───CANField.py:
-|   |───NetField # a class which describes the topic and unit of one or more can points
-|   └──────CANPoint # a class which describes the decoding operations done to bits of a can message
-|
-|───CANMsg.py:
-|   └───CANMsg          # Represents a full CAN message
-|
-|───Messages.py:
-|   └───Messages        # Container for all messages related to a node
-|
-|───YAMLParser.py:
-|   └───YAMLParser      # Parses a YAML file into CAN message structures
-|
-|───RustSynth.py:
-|   └───RustSynth       # Generates Rust code from a CAN messages structure
-|
-|───CSynth.py:
-|   └───CSynth          # Generates  code from a CAN messages structure
-|
-└───README.md           # This file!
+│
+├── can-messages/
+│   ├── .json files defining decode/encode specs 
+│   ├── ...
+│   └── ...
+│
+├── CANField.py:
+│   ├── NetField # a class which describes the topic and unit of one or more can points
+│   └── CANPoint # a class which describes the decoding operations done to bits of a can message
+│
+├── CANMsg.py:
+│   └── CANMsg              # Represents a full CAN message
+│
+├── Messages.py:
+│   └── Messages            # Container for all messages related to a node
+│
+├── YAMLParser.py:
+│   └── YAMLParser          # Parses a YAML file into CAN message structures
+│
+├── RustSynth.py:
+│   └── RustSynth           # Generates Rust code from a YAML CAN messages structure
+│
+├── RustSynthFromJSON.py:
+│   └── RustSynthFromJSON   # Generates Rust code from a JSON CAN messages structure
+│
+├── jsongen:                # Python script to convert YAML files into equivalent JSON
+│
+└── README.md               # This file!
+```
