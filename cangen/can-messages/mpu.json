@@ -354,7 +354,7 @@
       {
         "name": "MPU/Shutdown/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 7
@@ -461,7 +461,7 @@
       {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 7

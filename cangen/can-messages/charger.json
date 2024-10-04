@@ -38,7 +38,7 @@
       {
         "name": "BMS/Charging/UnimplementedData",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 24
@@ -128,7 +128,7 @@
       {
         "name": "Charger/Box/UnimplementedData",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 24
