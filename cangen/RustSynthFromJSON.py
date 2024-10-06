@@ -1,6 +1,8 @@
 from cangen.Result import Result
 from typing import List, Dict, Optional
 import math
+import re
+import logging
 
 class RustSynthFromJSON:
     """
@@ -13,7 +15,8 @@ class RustSynthFromJSON:
         returns a Result object that contains the synthesized Rust code for the
         decode_data.rs and master_mapping.rs files
         """
-        result = Result("", "", "", "", "")
+
+        result = Result("", "", "", "", "", "")
         result.decode_data += RustSnippets.ignore_clippy
         result.decode_data += RustSnippets.decode_data_import
         result.decode_data += RustSnippets.decode_mock
@@ -49,6 +52,7 @@ class RustSynthFromJSON:
 
         result.format_data = RustSnippets.format_impl
 
+        result.simulate_data = self.create_simulate_data(msgs)
 
         return result
 
@@ -342,6 +346,75 @@ class RustSynthFromJSON:
         id: {int(msg['id'], 16)},   // {msg['id']}
         is_ext: {str(msg['is_ext'] if 'is_ext' in msg else 'false').lower()},
     }}"""
+
+    def create_simulate_data(self, msgs: List[Dict]) -> str:
+        def sanitize_fnname(name):
+            name = re.sub(r'\W|^(?=\d)', '_', name)  
+            name = name.lower()  
+            return name
+        
+        sim_funcbody = ""
+        # process each CAN message    
+        for msg in msgs:
+            if ('sim_freq' in msg.keys()):
+                id = msg['id']
+                desc = msg['desc']
+                sim_freq = msg['sim_freq']
+                net_fields = msg['fields']
+                for netfield in net_fields:
+                    # check if sim_min, sim_max, sim_inc_max, sim_inc_min, points are present
+                    if ("sim_min" not in netfield.keys() or
+                        "sim_max" not in netfield.keys() or 
+                        "sim_inc_max" not in netfield.keys() or 
+                        "sim_inc_min" not in netfield.keys()):
+                        continue
+
+                    cmp_name = netfield['name']
+                    func_name = sanitize_fnname(cmp_name)
+                    unit = netfield['unit']
+                    sim_min = netfield['sim_min']
+                    sim_max = netfield['sim_max']
+                    sim_inc_max = netfield['sim_inc_max']
+                    sim_inc_min = netfield['sim_inc_min']
+                    n_canpoints = len(netfield['points'])
+                    format = ""
+                    if 'format' in netfield:
+                        format = netfield['format']
+                    signed = False
+                    if 'signed' in netfield:
+                        signed = netfield['signed']
+
+                    new_component = f"""
+                    let {func_name} = SimulatedComponents::new(
+                        "{cmp_name}".to_string(),
+                        "{unit}".to_string(),
+                        {float(sim_min)},
+                        {float(sim_max)},
+                        {float(sim_inc_min)},
+                        {float(sim_inc_max)},
+                        {float(sim_freq)},
+                        {n_canpoints},
+                        "{format}".to_string(),
+                        "{id}".to_string(),
+                        {str(signed).lower()},
+                    );
+                    simulatable_messages.push({func_name});
+                    """
+                    sim_funcbody += new_component
+
+
+        sim_fnblock = f"""
+        #![allow(clippy::all)]
+        use crate::simulatable_message::SimulatedComponents;
+        pub fn create_simulated_components() -> Vec<SimulatedComponents> {{
+            let mut simulatable_messages: Vec<SimulatedComponents> = Vec::new();
+
+            {sim_funcbody}
+
+            simulatable_messages
+        }}
+        """
+        return sim_fnblock
 
 
 
