@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # Read the contents of requirements.txt
 def parse_requirements(filename):
@@ -6,20 +6,17 @@ def parse_requirements(filename):
         return [line.strip() for line in file if line.strip() and not line.startswith('#')]
 
 setup(
-    name='ner-setup',
-    version='0.1',
-    py_modules=['ner_setup', 'launchpad', 'clang_restage', 'miniterm' , 'load_alias'],
-    install_requires=parse_requirements('requirements.txt'),
+    name='ner-setup',  # The name of the package
+    version='0.1',  # The package version
+    packages=find_packages(),  # Automatically find packages in the current directory
+    py_modules=['ner_setup', 'launchpad', 'clang_restage'],  # List of standalone modules
+    install_requires=parse_requirements('requirements.txt'),  # Install dependencies from requirements.txt
     entry_points={
         'console_scripts': [
             'ner_setup=ner_setup:main',  # Command 'ner_setup' runs 'main' function in ner_setup.py
             'clang_restage=clang_restage:main',
-            'serial=miniterm:main',
             'launchpad=launchpad:main',
-            'load-alias=load_alias:main',
-           
+            'ner=build_system:main',  # Adding the entry point for 'ner'
         ],
     },
-
-    
 )
