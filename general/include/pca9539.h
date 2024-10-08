@@ -5,7 +5,8 @@
 #include <stdint.h>
 
 /*
-PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
+PCA 9539 16 bit GPIO expander.  Datasheet:
+https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 */
 
 /// Possible I2C addresses, see comment below
@@ -35,27 +36,31 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
-typedef struct
-{
-	I2C_HandleTypeDef *i2c_handle;
-	uint16_t dev_addr;
+typedef struct {
+  I2C_HandleTypeDef *i2c_handle;
+  uint16_t dev_addr;
 } pca9539_t;
 
 /// Init PCA9539, a 16 bit I2C GPIO expander
-void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, uint8_t dev_addr);
+void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle,
+                  uint8_t dev_addr);
 
-/// @brief Read all pins on a bus, for example using reg_type input to get incoming logic level
+/// @brief Read all pins on a bus, for example using reg_type input to get
+/// incoming logic level
 HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-								   uint8_t *buf);
-/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins instead
+                                   uint8_t *buf);
+/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins
+/// instead
 HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
-								   uint8_t pin, uint8_t *buf);
+                                   uint8_t pin, uint8_t *buf);
 
-/// @brief Write all pins on a bus, for example using reg_type OUTPUT to set logic level or DIRECTION to set as
-/// output
-HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
-/// @brief Write a specific pin on a bus, do not iterate over this, use write_pins instead
-HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
-									uint8_t buf);
+/// @brief Write all pins on a bus, for example using reg_type OUTPUT to set
+/// logic level or DIRECTION to set as output
+HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type,
+                                    uint8_t buf);
+/// @brief Write a specific pin on a bus, do not iterate over this, use
+/// write_pins instead
+HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type,
+                                    uint8_t pin, uint8_t buf);
 
 #endif

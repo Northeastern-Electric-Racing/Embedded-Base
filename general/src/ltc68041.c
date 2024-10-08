@@ -68,8 +68,8 @@ Copyright 2013 Linear Technology Corp. (LTC)
 
 #include "ltc68041.h"
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // TODO ensure shepherd app configures SPI with these settings:
 // const SPISettings ltcSPISettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
@@ -80,15 +80,18 @@ Copyright 2013 Linear Technology Corp. (LTC)
 uint8_t ADCV[2]; //!< Cell Voltage conversion command.
 uint8_t ADAX[2]; //!< GPIO conversion command.
 
-
 /* private function prototypes */
-void LTC6804_rdcv_reg(ltc_config *config,uint8_t reg, uint8_t total_ic, uint8_t *data);
+void LTC6804_rdcv_reg(ltc_config *config, uint8_t reg, uint8_t total_ic,
+                      uint8_t *data);
 void wakeup_idle(ltc_config *config);
 void wakeup_sleep(ltc_config *config);
 uint16_t pec15_calc(uint8_t len, uint8_t *data);
-void write_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t data[]);
-void LTC6804_rdaux_reg(ltc_config *config, uint8_t reg, uint8_t total_ic, uint8_t *data);
-int8_t read_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t *rx_data);
+void write_68(ltc_config *config, uint8_t total_ic, uint8_t tx_cmd[2],
+              uint8_t data[]);
+void LTC6804_rdaux_reg(ltc_config *config, uint8_t reg, uint8_t total_ic,
+                       uint8_t *data);
+int8_t read_68(ltc_config *config, uint8_t total_ic, uint8_t tx_cmd[2],
+               uint8_t *rx_data);
 
 /*!
   \brief This function will initialize all 6804 variables and the SPI port.
@@ -98,8 +101,8 @@ int8_t read_68(ltc_config *config, uint8_t total_ic,  uint8_t tx_cmd[2], uint8_t
   to convert all cell and GPIO voltages in the Normal ADC mode.
 */
 
-void LTC6804_initialize(ltc_config* conf, SPI_HandleTypeDef *hspi, GPIO_TypeDef *hgpio,
-                               uint8_t cs_pin) {
+void LTC6804_initialize(ltc_config *conf, SPI_HandleTypeDef *hspi,
+                        GPIO_TypeDef *hgpio, uint8_t cs_pin) {
   conf->spi = hspi;
   conf->gpio = hgpio;
   conf->cs_pin = cs_pin;
@@ -107,7 +110,7 @@ void LTC6804_initialize(ltc_config* conf, SPI_HandleTypeDef *hspi, GPIO_TypeDef 
   HAL_GPIO_WritePin(conf->gpio, conf->cs_pin, GPIO_PIN_SET);
 
   // TODO make sure shepherd app configures ADC with these settings:
-  set_adc(MD_FILTERED,DCP_DISABLED,CELL_CH_ALL,AUX_CH_ALL);
+  set_adc(MD_FILTERED, DCP_DISABLED, CELL_CH_ALL, AUX_CH_ALL);
 }
 
 /*!*******************************************************************************************************************
@@ -972,7 +975,7 @@ void LTC6804_wrcfg(
     cfg_pec = (uint16_t)pec15_calc(
         BYTES_IN_REG,
         &data_config[current_ic - 1][0]); // calculating the PEC for each ICs
-                                     // configuration register data
+                                          // configuration register data
     cmd[cmd_index] = (uint8_t)(cfg_pec >> 8);
     cmd[cmd_index + 1] = (uint8_t)cfg_pec;
     cmd_index = cmd_index + 2;
@@ -1117,7 +1120,8 @@ LTC6804_rdcfg(ltc_config *config,
  *****************************************************/
 void wakeup_idle(ltc_config *config) {
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
-  //delayMicroseconds(2); // Guarantees the isoSPI will be in ready mode - ADD BACK IF NEEDED
+  // delayMicroseconds(2); // Guarantees the isoSPI will be in ready mode - ADD
+  // BACK IF NEEDED
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 
@@ -1128,7 +1132,7 @@ void wakeup_idle(ltc_config *config) {
  *****************************************************/
 void wakeup_sleep(ltc_config *config) {
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
-  //delay(1); // Guarantees the LTC6804 will be in standby - ADD BACK IF NEEDED
+  // delay(1); // Guarantees the LTC6804 will be in standby - ADD BACK IF NEEDED
   HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
 }
 /*!**********************************************************
