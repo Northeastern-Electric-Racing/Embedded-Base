@@ -1,3 +1,0 @@
-distro
-pre-commit
-clang-format
