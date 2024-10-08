@@ -20,26 +20,25 @@ void start_timer(nertimer_t *timer, uint32_t duration);
 
 /**
  * @brief cancels an active timer
- * 
+ *
  * @param timer The timer to act on
-*/
+ */
 void cancel_timer(nertimer_t *timer);
 
 /**
  * @brief Checks if the timer has expired
- * 
+ *
  * @param timer The timer to act on
  * @return true if the timer has expired, false otherwise
-*/
+ */
 bool is_timer_expired(nertimer_t *timer);
 
 /**
  * @brief Checks if the timer is active
- * 
+ *
  * @param timer The timer to act on
  * @return true if the timer is active, false otherwise
-*/
+ */
 bool is_timer_active(nertimer_t *timer);
-
 
 #endif // TIMER_H
