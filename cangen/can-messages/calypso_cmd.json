@@ -3,10 +3,15 @@
     "id": "0x450",
     "desc": "Example Enc Msg",
     "key": "FirstOff",
+    "sim_freq": 750,
     "fields": [
       {
         "name": "Calypso/Bidir/State/FirstOff/A",
         "unit": "Z",
+        "sim_min": 1,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 2,
         "points": [
           {
             "size": 32,
@@ -19,6 +24,10 @@
       {
         "name": "Calypso/Bidir/State/FirstOff/B",
         "unit": "G",
+        "sim_min": 1,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 2,
         "points": [
           {
             "size": 8,
@@ -31,6 +40,10 @@
       {
         "name": "Calypso/Bidir/State/FirstOff/C",
         "unit": "G",
+        "sim_min": 1,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 2,
         "points": [
           {
             "size": 8,
@@ -42,6 +55,10 @@
       {
         "name": "Calypso/Bidir/State/FirstOff/D",
         "unit": "G",
+        "sim_min": 1,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 2,
         "points": [
           {
             "size": 16,
@@ -60,10 +77,15 @@
     "desc": "Example Enc Msg Ext",
     "key": "SecondOff",
     "is_ext": true,
+    "sim_freq": 750,
     "fields": [
       {
         "name": "Calypso/Bidir/State/SecondOff/A",
         "unit": "GG",
+        "sim_min": 1,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 2,
         "points": [
           {
             "size": 32,
@@ -77,10 +99,15 @@
   {
     "id": "0x7FF",
     "desc": "Calypso bidir unknown key",
+    "sim_freq": 750,
     "fields": [
       {
         "name": "Calypso/Bidir/Unknown",
         "unit": "pts",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 0,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8
