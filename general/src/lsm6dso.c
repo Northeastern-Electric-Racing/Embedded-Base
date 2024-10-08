@@ -1,9 +1,9 @@
 /*
-	LSM6DSOXTR IMU DRIVER Source File
-	Link to part Datasheet for reference:
-	https://www.st.com/resource/en/datasheet/lsm6dsox.pdf
+        LSM6DSOXTR IMU DRIVER Source File
+        Link to part Datasheet for reference:
+        https://www.st.com/resource/en/datasheet/lsm6dsox.pdf
 
-	Author: Hamza Iqbal
+        Author: Hamza Iqbal
 */
 
 #include "lsm6dso.h"
@@ -41,25 +41,23 @@ static inline int lsm6dso_write_mult_reg(uint8_t *data,
 	return imu.write_reg(data, reg, length);
 }
 
-static int16_t accel_data_convert(int16_t raw_accel)
-{
-	int8_t msb, lsb;
-	int16_t val;
-	msb = (raw_accel & 0x00FF) << 8;
-	lsb = (raw_accel & 0xFF00) >> 8;
-	val = msb | lsb;
+static int16_t accel_data_convert(int16_t raw_accel) {
+  int8_t msb, lsb;
+  int16_t val;
+  msb = (raw_accel & 0x00FF) << 8;
+  lsb = (raw_accel & 0xFF00) >> 8;
+  val = msb | lsb;
 
-	return (int16_t)(((int32_t)val * ACCEL_RANGE * 1000) / REG_RESOLUTION);
+  return (int16_t)(((int32_t)val * ACCEL_RANGE * 1000) / REG_RESOLUTION);
 }
 
-static int16_t gyro_data_convert(int16_t gyro_accel)
-{
-	int8_t msb, lsb;
-	int16_t val;
-	msb = (gyro_accel & 0x00FF) << 8;
-	lsb = (gyro_accel & 0xFF00) >> 8;
-	val = msb | lsb;
-	return (int16_t)(((int32_t)val * GYRO_RANGE * 100) / REG_RESOLUTION);
+static int16_t gyro_data_convert(int16_t gyro_accel) {
+  int8_t msb, lsb;
+  int16_t val;
+  msb = (gyro_accel & 0x00FF) << 8;
+  lsb = (gyro_accel & 0xFF00) >> 8;
+  val = msb | lsb;
+  return (int16_t)(((int32_t)val * GYRO_RANGE * 100) / REG_RESOLUTION);
 }
 
 static int lsm6dso_ping_imu()
