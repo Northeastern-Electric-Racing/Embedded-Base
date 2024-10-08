@@ -25,7 +25,7 @@
               "sim_max": 50,
               "sim_inc_min": 0,
               "sim_inc_max": 3,
-              "send": "false",
+              "send": false,
               "points": [
                   {
                       "size": 16
