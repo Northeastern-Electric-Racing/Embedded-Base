@@ -114,8 +114,15 @@ Within the `points` member of a NetField object, there is a list of Point object
 │   └── ...
 │
 ├── CANField.py:
-│   ├── NetField # a class which describes the topic and unit of one or more can points
-│   └── CANPoint # a class which describes the decoding operations done to bits of a can message
+│   ├── NetField            # Class which describes the topic and unit of one or more can points
+│   └── CANPoint            # Class which describes the decoding operations done to bits of a can message
+│
+├── Format.py:
+│   ├── Format              # Represents a format to apply to data after decoding 
+│   ├── Divide10            # Format indicating decoded data should be divided by 10 
+│   ├── Divide100           # Format indicating decoded data should be divided by 100 
+│   ├── Divide1000          # Format indicating decoded data should be divided by 10000
+│   └── Acceleration        # Format indicating decoded data should be handled as acceleration (* or / 0.0029) 
 │
 ├── CANMsg.py:
 │   └── CANMsg              # Represents a full CAN message
