@@ -70,7 +70,7 @@
       {
         "name": "DTI/Unused/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 32
@@ -121,7 +121,7 @@
       {
         "name": "DTI/Unused/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 24
@@ -390,7 +390,7 @@
       {
         "name": "DTI/Unused/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 5
@@ -401,7 +401,7 @@
       {
         "name": "DTI/Unused/Reserved",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 8
@@ -458,7 +458,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
@@ -486,7 +486,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 32
@@ -515,7 +515,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
@@ -544,7 +544,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
@@ -573,7 +573,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
@@ -630,7 +630,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 60
@@ -659,7 +659,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
@@ -688,7 +688,7 @@
       {
         "name": "DTI/Unused/Unused",
         "unit": "",
-        "send": "false",
+        "send": false,
         "points": [
           {
             "size": 48
