@@ -1,0 +1,27 @@
+[
+  {
+    "id": "0x680",
+    "desc": "Wheel State",
+    "fields": [
+      {
+        "name": "WHEEL/Buttons/1",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "WHEEL/Buttons/2",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  }
+]

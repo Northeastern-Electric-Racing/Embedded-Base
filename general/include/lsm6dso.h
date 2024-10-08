@@ -49,14 +49,17 @@ typedef int (*I2C_Read)(uint8_t *data, uint8_t reg,
 				     uint8_t length);
 typedef int (*I2C_Write)(uint8_t *data, uint8_t reg, uint8_t length);
 
+
 /**
  * @brief Enumeration of axes of data available from the LSM6DSO IMU
  *
  */
 enum lsm6dso_axes {
+  
 	LSM6DSO_X_AXIS = 0,
 	LSM6DSO_Y_AXIS = 1,
 	LSM6DSO_Z_AXIS = 2
+
 };
 
 /**
@@ -97,6 +100,7 @@ int lsm6dso_init(I2C_Read read_func, I2C_Write write_func);
  * @param lp_f2_enable
  * @return 0 if OK, other if ERROR
  */
+
 int lsm6dso_set_accel_cfg(int8_t odr_sel,
 					int8_t fs_sel, int8_t lp_f2_enable);
 
@@ -108,6 +112,7 @@ int lsm6dso_set_accel_cfg(int8_t odr_sel,
  * @param fs_125
  * @return 0 if OK, other if ERROR
  */
+
 int lsm6dso_set_gyro_cfg(int8_t odr_sel,
 				       int8_t fs_sel, int8_t fs_125);
 

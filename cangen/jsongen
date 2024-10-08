@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+import importlib.util
+import sys
+
+# Full path to the directory containing the cangen module
+EMBEDDED_BASE_PATH = ".."
+module_name = "cangen"
+
+# Full path to the cangen module file
+module_path = f"{EMBEDDED_BASE_PATH}/{module_name}/__init__.py"
+
+# Add the cangen directory to the system's path
+sys.path.append(EMBEDDED_BASE_PATH)
+
+# Load the module
+spec = importlib.util.spec_from_file_location(module_name, module_path)
+cangen = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cangen)
+
+all_messages = {}
+all_messages["bms"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/bms.yaml", "r"))
+all_messages["mpu"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/mpu.yaml", "r"))
+all_messages["wheel"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/wheel.yaml", "r"))
+all_messages["dti"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/dti.yaml", "r"))
+all_messages["calypso"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/calypso_cmd.yaml", "r"))
+all_messages["charger"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/charger.yaml", "r"))
+all_messages["msb"] = cangen.YAMLParser().parse(open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/msb.yaml", "r"))
+
+for key in all_messages.keys():
+  with open(f"{EMBEDDED_BASE_PATH}/{module_name}/can-messages/{key}.json", "w") as new_file:
+    new_file.write("[\n")
+    messages = all_messages[key]
+    # flag to check if we need to add comma separator between sequential objects
+    first_msg = True
+
+    # Add all CANMsgs
+    for msg in messages.msgs:
+      if first_msg == True:
+        first_msg = False
+      else:
+        new_file.write("  ,\n")
+      
+      new_file.write("  {\n")
+      new_file.write(f"    \"id\": \"{msg.id}\",\n") 
+      new_file.write(f"    \"desc\": \"{msg.desc}\",\n") 
+      # Handle if msg is an instance of EncodableCANMsg
+      if isinstance(msg, getattr(cangen, 'EncodableCANMsg')):
+          new_file.write(f"    \"key\": \"{msg.key}\",\n")
+          if msg.is_ext:
+              new_file.write(f"    \"is_ext\": {str(msg.is_ext).lower()},\n")
+      new_file.write("    \"fields\": [\n")
+
+      # Add all NetFields
+      first_field = True
+      for field in msg.fields:
+        if first_field == True:
+          first_field = False
+        else:
+          new_file.write("      ,\n")
+        new_file.write("      {\n")
+        
+        new_file.write(f"        \"name\": \"{field.name}\",\n")
+        new_file.write(f"        \"unit\": \"{field.unit}\",\n")
+        if not field.send:
+            new_file.write(f"        \"send\": false,\n")
+        if field.topic_append:
+            new_file.write(f"        \"topic_append\": true,\n")
+        new_file.write("        \"points\": [\n")
+        
+        # Add all CANPoints
+        first_point = True 
+        for point in field.points:
+            if first_point == True:
+                first_point = False 
+            else:
+                new_file.write("        ,\n")
+            new_file.write("          {\n")
+            new_file.write(f"            \"size\": {point.size}")
+            if point.signed:
+                new_file.write(",\n")
+                new_file.write(f"            \"signed\": true")
+            if point.endianness != "big":
+                new_file.write(",\n")
+                new_file.write(f"            \"endianness\": \"{point.endianness}\"")
+            if point.final_type != "f32":
+                new_file.write(",\n")
+                new_file.write(f"            \"final_type\": \"{point.final_type}\"")
+            if point.format:
+                new_file.write(",\n") # finish prev line
+                new_file.write(f"            \"format\": \"{point.format}\"")
+            if point.default:
+                new_file.write(",\n")
+                new_file.write(f"            \"default\": {point.default}")
+            new_file.write("\n")
+            new_file.write("          }\n")
+            # ^ close CANPoint
+        new_file.write("        ]\n")
+        # ^ close points list
+        
+        new_file.write("      }\n")
+        # ^ close NetField 
+      
+      new_file.write("    ]\n")
+      # ^ close fields list 
+
+      new_file.write("  }\n")
+      # ^ close CANMsg
+    
+    new_file.write("]\n")
+    # ^ close msgs list for this key
+
+
+
+# result = cangen.RustSynth().parse_messages(bms_messages.msgs)
+#
+# decode_data.write(result.decode_data)
+# decode_data.close()
+#
+# decode_master_mapping.write(result.decode_master_mapping)
+# decode_master_mapping.close()
+#
+# encode_data.write(result.encode_data)
+# encode_data.close()
+#
+# encode_master_mapping.write(result.encode_master_mapping)
+# encode_master_mapping.close()
+#
+# format_data.write(result.format_data)
+# format_data.close()
+

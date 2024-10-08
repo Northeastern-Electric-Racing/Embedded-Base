@@ -9,6 +9,7 @@
 #include "lsm6dso.h"
 
 #define REG_RESOLUTION 32768 /* Half the range of a 16 bit signed integer */
+
 #define ACCEL_RANGE \
 	4 /* The range of values in g's returned from accelerometer */
 #define GYRO_RANGE 1000 /* The range of values from the gyro in dps */

@@ -1,0 +1,573 @@
+[
+  {
+    "id": "0x602",
+    "desc": "Front Left MSB Env",
+    "fields": [
+      {
+        "name": "MSB/FL/Temp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MSB/FL/Humidity",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x603",
+    "desc": "Front Left MSB Accel",
+    "fields": [
+      {
+        "name": "MSB/FL/Accel",
+        "unit": "g",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x604",
+    "desc": "Front Left MSB Gyro",
+    "fields": [
+      {
+        "name": "MSB/FL/Gyro",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x605",
+    "desc": "Front Left MSB Strain",
+    "fields": [
+      {
+        "name": "MSB/FL/Strain",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ,
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x606",
+    "desc": "Front Left Shockpot",
+    "fields": [
+      {
+        "name": "MSB/FL/Shock",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x607",
+    "desc": "Front Left Ride Height",
+    "fields": [
+      {
+        "name": "MSB/FL/RideHeight",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x608",
+    "desc": "Front Left Wheel Temp",
+    "fields": [
+      {
+        "name": "MSB/FL/WheelTemp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x622",
+    "desc": "Front Right MSB Env",
+    "fields": [
+      {
+        "name": "MSB/FR/Temp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MSB/FR/Humidity",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x623",
+    "desc": "Front Right MSB Accel",
+    "fields": [
+      {
+        "name": "MSB/FR/Accel",
+        "unit": "g",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x624",
+    "desc": "Front Right MSB Gyro",
+    "fields": [
+      {
+        "name": "MSB/FR/Gyro",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x625",
+    "desc": "Front Right MSB Strain",
+    "fields": [
+      {
+        "name": "MSB/FR/Strain",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ,
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x626",
+    "desc": "Front Right Shockpot",
+    "fields": [
+      {
+        "name": "MSB/FR/Shock",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x627",
+    "desc": "Front Right Ride Height",
+    "fields": [
+      {
+        "name": "MSB/FR/RideHeight",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x628",
+    "desc": "Front Right Wheel Temp",
+    "fields": [
+      {
+        "name": "MSB/FR/WheelTemp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x642",
+    "desc": "Back Left MSB Env",
+    "fields": [
+      {
+        "name": "MSB/BL/Temp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MSB/BL/Humidity",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x643",
+    "desc": "Back Left MSB Accel",
+    "fields": [
+      {
+        "name": "MSB/BL/Accel",
+        "unit": "g",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x644",
+    "desc": "Back Left MSB Gyro",
+    "fields": [
+      {
+        "name": "MSB/BL/Gyro",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x645",
+    "desc": "Back Left MSB Strain",
+    "fields": [
+      {
+        "name": "MSB/BL/Strain",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ,
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x646",
+    "desc": "Back Left Shockpot",
+    "fields": [
+      {
+        "name": "MSB/BL/Shock",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x647",
+    "desc": "Front Back Ride Height",
+    "fields": [
+      {
+        "name": "MSB/BL/RideHeight",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x648",
+    "desc": "Back Left Wheel Temp",
+    "fields": [
+      {
+        "name": "MSB/BL/WheelTemp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x662",
+    "desc": "Back Right MSB Env",
+    "fields": [
+      {
+        "name": "MSB/BR/Temp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+      ,
+      {
+        "name": "MSB/BR/Humidity",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x663",
+    "desc": "Back Right MSB Accel",
+    "fields": [
+      {
+        "name": "MSB/BR/Accel",
+        "unit": "g",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x664",
+    "desc": "Back Right MSB Gyro",
+    "fields": [
+      {
+        "name": "MSB/BR/Gyro",
+        "unit": "",
+        "points": [
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ,
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x665",
+    "desc": "Back Right MSB Strain",
+    "fields": [
+      {
+        "name": "MSB/BR/Strain",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ,
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x666",
+    "desc": "Back Right Shockpot",
+    "fields": [
+      {
+        "name": "MSB/BR/Shock",
+        "unit": "",
+        "points": [
+          {
+            "size": 32
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x667",
+    "desc": "Back Right Ride Height",
+    "fields": [
+      {
+        "name": "MSB/BR/RideHeight",
+        "unit": "",
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x668",
+    "desc": "Back Right Wheel Temp",
+    "fields": [
+      {
+        "name": "MSB/BR/WheelTemp",
+        "unit": "C",
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      }
+    ]
+  }
+]
