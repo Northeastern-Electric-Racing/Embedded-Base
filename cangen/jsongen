@@ -62,9 +62,9 @@ for key in all_messages.keys():
         new_file.write(f"        \"name\": \"{field.name}\",\n")
         new_file.write(f"        \"unit\": \"{field.unit}\",\n")
         if not field.send:
-            new_file.write(f"        \"send\": \"false\",\n")
+            new_file.write(f"        \"send\": false,\n")
         if field.topic_append:
-            new_file.write(f"        \"topic_append\": \"true\",\n")
+            new_file.write(f"        \"topic_append\": true,\n")
         new_file.write("        \"points\": [\n")
         
         # Add all CANPoints
