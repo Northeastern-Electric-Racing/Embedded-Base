@@ -2,10 +2,15 @@
   {
     "id": "0x416",
     "desc": "ERPM_Duty_Input_Voltage_Status",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/RPM/ERPM",
         "unit": "ERPM",
+        "sim_min": -2147483648,
+        "sim_max": 2147483648,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 32,
@@ -17,6 +22,10 @@
       {
         "name": "DTI/Power/Duty_Cycle",
         "unit": "%",
+        "sim_min": -32768,
+        "sim_max": 32767,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 16,
@@ -29,6 +38,10 @@
       {
         "name": "DTI/Power/Input_Voltage",
         "unit": "V",
+        "sim_min": 0,
+        "sim_max": 505,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 10,
         "points": [
           {
             "size": 16,
@@ -42,10 +55,15 @@
   {
     "id": "0x436",
     "desc": "Currents_Status",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Power/AC_Current",
         "unit": "A",
+        "sim_min": -125,
+        "sim_max": 250,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 20,
         "points": [
           {
             "size": 16,
@@ -58,6 +76,10 @@
       {
         "name": "DTI/Power/DC_Current",
         "unit": "A",
+        "sim_min": -300,
+        "sim_max": 300,
+        "sim_inc_min": 2,
+        "sim_inc_max": 5,
         "points": [
           {
             "size": 16,
@@ -83,10 +105,15 @@
   {
     "id": "0x456",
     "desc": "Temps_Fault_Code_Status",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Temps/Controller_Temperature",
         "unit": "C",
+        "sim_min": 5,
+        "sim_max": 80,
+        "sim_inc_min": 0.05,
+        "sim_inc_max": 0.5,
         "points": [
           {
             "size": 16,
@@ -99,6 +126,10 @@
       {
         "name": "DTI/Temps/Motor_Temperature",
         "unit": "C",
+        "sim_min": 5,
+        "sim_max": 80,
+        "sim_inc_min": 0.05,
+        "sim_inc_max": 0.5,
         "points": [
           {
             "size": 16,
@@ -111,6 +142,10 @@
       {
         "name": "DTI/Fault/Fault_Code",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 10,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8
@@ -134,10 +169,15 @@
   {
     "id": "0x476",
     "desc": "MC_FOC_Algorithm",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/FOC/Component_Id",
         "unit": "A",
+        "sim_min": -2147483648,
+        "sim_max": 2147483648,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 32,
@@ -150,6 +190,10 @@
       {
         "name": "DTI/FOC/Component_Iq",
         "unit": "A",
+        "sim_min": -2147483648,
+        "sim_max": 2147483648,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 32,
@@ -164,10 +208,15 @@
   {
     "id": "0x496",
     "desc": "MC_General_Data",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/General/Throttle_Signal",
         "unit": "%",
+        "sim_min": -100,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8,
@@ -179,6 +228,10 @@
       {
         "name": "DTI/General/Brake_Signal",
         "unit": "%",
+        "sim_min": -100,
+        "sim_max": 100,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8,
@@ -190,6 +243,10 @@
       {
         "name": "DTI/General/Digital_Out_4",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -200,6 +257,10 @@
       {
         "name": "DTI/General/Digital_Out_3",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -210,6 +271,10 @@
       {
         "name": "DTI/General/Digital_Out_2",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -220,6 +285,10 @@
       {
         "name": "DTI/General/Digital_Out_1",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -230,6 +299,10 @@
       {
         "name": "DTI/General/Digital_In_4",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -240,6 +313,10 @@
       {
         "name": "DTI/General/Digital_In_3",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -250,6 +327,10 @@
       {
         "name": "DTI/General/Digital_In_2",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -260,6 +341,10 @@
       {
         "name": "DTI/General/Digital_In_1",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -270,6 +355,10 @@
       {
         "name": "DTI/General/Drive_Enable",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8
@@ -280,6 +369,10 @@
       {
         "name": "DTI/Limit/Motor_Temp_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -290,6 +383,10 @@
       {
         "name": "DTI/Limit/Motor_Acc_Temp_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -300,6 +397,10 @@
       {
         "name": "DTI/Limit/Input_Voltage_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -310,6 +411,10 @@
       {
         "name": "DTI/Limit/IGBT_Temp_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -320,6 +425,10 @@
       {
         "name": "DTI/Limit/IGBT_Acc_Temp_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -330,6 +439,10 @@
       {
         "name": "DTI/Limit/Drive_Enable_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -340,6 +453,10 @@
       {
         "name": "DTI/Limit/DC_Current_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -350,6 +467,10 @@
       {
         "name": "DTI/Limit/Cap_Temp_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -360,6 +481,10 @@
       {
         "name": "DTI/Limit/Power_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -370,6 +495,10 @@
       {
         "name": "DTI/Limit/RPM_Max_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -380,6 +509,10 @@
       {
         "name": "DTI/Limit/RPM_Min_Limit",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -412,6 +545,10 @@
       {
         "name": "DTI/General/CAN_Map_Version",
         "unit": "",
+        "sim_min": 20,
+        "sim_max": 24,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8
@@ -424,10 +561,15 @@
   {
     "id": "0x036",
     "desc": "AC_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "MPU/Commands/AC_Current_Target",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 380,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 25,
         "points": [
           {
             "size": 16,
@@ -442,10 +584,15 @@
   {
     "id": "0x056",
     "desc": "Brake_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "MPU/Commands/Brake_Current_Target",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 150,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 10,
         "points": [
           {
             "size": 16,
@@ -471,10 +618,15 @@
   {
     "id": "0x076",
     "desc": "ERPM_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Commands/ERPM_Target",
         "unit": "A",
+        "sim_min": -2147483648,
+        "sim_max": 2147483648,
+        "sim_inc_min": 1,
+        "sim_inc_max": 10,
         "points": [
           {
             "size": 32,
@@ -499,10 +651,15 @@
   {
     "id": "0x096",
     "desc": "Position_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Commands/Position_Target",
         "unit": "degree",
+        "sim_min": 0,
+        "sim_max": 360,
+        "sim_inc_min": 0.05,
+        "sim_inc_max": 5,
         "points": [
           {
             "size": 16,
@@ -528,10 +685,15 @@
   {
     "id": "0x0B6",
     "desc": "Relative_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Commands/Relative_Current_Target",
         "unit": "A",
+        "sim_min": -100,
+        "sim_max": 100,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 5,
         "points": [
           {
             "size": 16,
@@ -557,10 +719,15 @@
   {
     "id": "0x0D6",
     "desc": "Relative_Brake_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Commands/Relative_Brake_Current_Target",
         "unit": "A",
+        "sim_min": -100,
+        "sim_max": 100,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 5,
         "points": [
           {
             "size": 16,
@@ -586,10 +753,15 @@
   {
     "id": "0x0F6",
     "desc": "Digital_Output_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "DTI/Commands/Digital_Output_1_Target",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -600,6 +772,10 @@
       {
         "name": "DTI/Commands/Digital_Output_2_Target",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -610,6 +786,10 @@
       {
         "name": "DTI/Commands/Digital_Output_3_Target",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -620,6 +800,10 @@
       {
         "name": "DTI/Commands/Digital_Output_4_Target",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -643,10 +827,15 @@
   {
     "id": "0x116",
     "desc": "Max_AC_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "BMS/Commands/Max_AC_Current_Target",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 250,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 25,
         "points": [
           {
             "size": 16,
@@ -672,10 +861,15 @@
   {
     "id": "0x136",
     "desc": "Max_AC_Brake_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "BMS/Commands/Max_AC_Brake_Current_Target",
         "unit": "A",
+        "sim_min": -250,
+        "sim_max": 0,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 25,
         "points": [
           {
             "size": 16,
@@ -701,10 +895,15 @@
   {
     "id": "0x156",
     "desc": "Max_DC_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "BMS/Commands/Max_DC_Current_Target",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 505,
+        "sim_inc_min": 0.05,
+        "sim_inc_max": 5,
         "points": [
           {
             "size": 16,
@@ -719,10 +918,15 @@
   {
     "id": "0x176",
     "desc": "Max_DC_Brake_Current_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "BMS/Commands/Max_DC_Brake_Current_Target",
         "unit": "A",
+        "sim_min": -250,
+        "sim_max": 0,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 10,
         "points": [
           {
             "size": 16,
@@ -737,10 +941,15 @@
   {
     "id": "0x196",
     "desc": "Drive_Enable_Command",
+    "sim_freq": 25,
     "fields": [
       {
         "name": "MPU/Commands/Drive_Enable_Target",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 8

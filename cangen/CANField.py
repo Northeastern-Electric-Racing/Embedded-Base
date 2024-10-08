@@ -43,3 +43,7 @@ class NetField:
     points: list[CANPoint]
     send: bool = True
     topic_append: bool = False
+    sim_min: Optional[float] = -1.0
+    sim_max: Optional[float] = -1.0
+    sim_inc_min: Optional[float] = -1.0
+    sim_inc_max: Optional[float] = -1.0
