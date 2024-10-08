@@ -2,11 +2,11 @@
 #define C_UTILS
 
 /*
- * Will retrieve the container of a certain pointer given the container type and its pointer
- * Trick pulled from Linux Kernel
+ * Will retrieve the container of a certain pointer given the container type and
+ * its pointer Trick pulled from Linux Kernel
  */
-#define CONTAINER_OF(ptr, type, member) \
-	((type *)((char *)(ptr) - offsetof(type, member)))
+#define CONTAINER_OF(ptr, type, member)                                        \
+  ((type *)((char *)(ptr) - offsetof(type, member)))
 
 #endif /* C_UTILS */
 
