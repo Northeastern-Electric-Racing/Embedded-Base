@@ -352,7 +352,7 @@ class RustSynthFromJSON:
             name = re.sub(r'\W|^(?=\d)', '_', name)  
             name = name.lower()  
             return name
-        
+
         sim_funcbody = ""
         # process each CAN message    
         for msg in msgs:
@@ -369,45 +369,42 @@ class RustSynthFromJSON:
                         "sim_inc_min" not in netfield.keys()):
                         continue
 
-                    cmp_name = netfield['name']
-                    func_name = sanitize_fnname(cmp_name)
+                    component_name = netfield['name']
+                    component_var = sanitize_fnname(component_name)
                     unit = netfield['unit']
                     sim_min = netfield['sim_min']
                     sim_max = netfield['sim_max']
                     sim_inc_max = netfield['sim_inc_max']
                     sim_inc_min = netfield['sim_inc_min']
                     n_canpoints = len(netfield['points'])
-                    format = ""
-                    if 'format' in netfield:
-                        format = netfield['format']
-                    signed = False
-                    if 'signed' in netfield:
-                        signed = netfield['signed']
 
                     new_component = f"""
-                    let {func_name} = SimulatedComponents::new(
-                        "{cmp_name}".to_string(),
+                    let {component_var}_attr: SimulatedComponentAttr = SimulatedComponentAttr {{
+                        sim_min: {float(sim_min)},
+                        sim_max: {float(sim_max)},
+                        sim_inc_min: {float(sim_inc_min)},
+                        sim_inc_max: {float(sim_inc_max)},
+                        sim_freq: {float(sim_freq)},
+                        n_canpoints: {n_canpoints},
+                        id: "{id}".to_string(),
+                    }};
+
+
+                    let {component_var} = SimulatedComponent::new(
+                        "{component_name}".to_string(),
                         "{unit}".to_string(),
-                        {float(sim_min)},
-                        {float(sim_max)},
-                        {float(sim_inc_min)},
-                        {float(sim_inc_max)},
-                        {float(sim_freq)},
-                        {n_canpoints},
-                        "{format}".to_string(),
-                        "{id}".to_string(),
-                        {str(signed).lower()},
+                        {component_var}_attr,
                     );
-                    simulatable_messages.push({func_name});
+                    simulatable_messages.push({component_var});
                     """
                     sim_funcbody += new_component
 
 
         sim_fnblock = f"""
         #![allow(clippy::all)]
-        use crate::simulatable_message::SimulatedComponents;
-        pub fn create_simulated_components() -> Vec<SimulatedComponents> {{
-            let mut simulatable_messages: Vec<SimulatedComponents> = Vec::new();
+        use crate::simulatable_message::{{SimulatedComponent, SimulatedComponentAttr}};
+        pub fn create_simulated_components() -> Vec<SimulatedComponent> {{
+            let mut simulatable_messages: Vec<SimulatedComponent> = Vec::new();
 
             {sim_funcbody}
 
