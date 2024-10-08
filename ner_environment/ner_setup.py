@@ -41,29 +41,6 @@ def docker_pull(image_url):
     run_command(["docker", "pull", image_url])
     print("Docker image pulled successfully.")
 
-def load_aliases(venv_path, aliases_file):
-    os_type = platform.system()
-    if os_type == 'Windows':
-        activate_path = os.path.join(venv_path, 'Scripts', 'activate')  # Bash script for Git Bash on Windows
-    else:
-        activate_path = os.path.join(venv_path, 'bin', 'activate')  # bash script for Unix-like systems
-    
-    try:
-        with open(aliases_file, 'r') as f:
-            aliases = f.readlines()
-
-        with open(activate_path, 'a') as activate_file:
-            activate_file.write('\n# Aliases\n')
-            for alias in aliases:
-                alias_name, alias_command = alias.strip().split('=', 1)
-                alias_command = alias_command.strip('"')
-                activate_file.write(f'alias {alias_name}="{alias_command}"\n')
-
-        print("Aliases added to the activation script successfully.")
-    except Exception as e:
-        print(f"Failed to add aliases: {e}", file=sys.stderr)
-        sys.exit(1)
-
 def create_venv(venv_path):
     try:
         venv.EnvBuilder(with_pip=True).create(venv_path)
@@ -76,7 +53,7 @@ def run_setup(venv_python):
     print("Running setup.py...")
     try:
         # Run the pip install -e . command
-        run_command([venv_python, '-m', 'pip', 'install', '-e', '.'])
+        run_command([venv_python, '-m', 'pip', 'install', '-e', 'ner_environment'])
     except subprocess.CalledProcessError as e:
         print(f"Failed to run pip install -e .: {e}", file=sys.stderr)
         sys.exit(1)
@@ -140,6 +117,7 @@ def main():
     os_type = platform.system()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     parent_directory = os.path.dirname(current_directory)
+    parent_directory = os.path.dirname(parent_directory)
     venv_path = os.path.join(parent_directory, 'ner-venv')
 
     
@@ -148,13 +126,6 @@ def main():
     if 'y' in answer:
         create_venv(venv_path)
         
-        answer = input("Would you like to add necesarry alias commands? (yes/no)")
-        if 'y' in answer:
-
-            # Step 3: Modify activation and deactivation scripts
-            aliases_file = os.path.join(current_directory, 'aliases.txt')
-            load_aliases(venv_path, aliases_file)
-
         answer = input("Would you like to install all python packages in the venv? (yes/no)")
         if 'y' in answer:
         # Use the venv's Python
