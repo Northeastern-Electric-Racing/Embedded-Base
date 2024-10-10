@@ -1,34 +1,27 @@
 #include "timer.h"
 
-void start_timer(nertimer_t *timer, uint32_t duration)
-{
-    /* this function assumes tick set to default 1 ms. Update or use HAL_GetTickFreq() if not the case */
-    timer->start_time = HAL_GetTick();
-    timer->end_time = timer->start_time + duration;
-    timer->active = true;
-    timer->completed = false;
+void start_timer(nertimer_t *timer, uint32_t duration) {
+  /* this function assumes tick set to default 1 ms. Update or use
+   * HAL_GetTickFreq() if not the case */
+  timer->start_time = HAL_GetTick();
+  timer->end_time = timer->start_time + duration;
+  timer->active = true;
+  timer->completed = false;
 }
 
-void cancel_timer(nertimer_t *timer)
-{
-    timer->active = false;
-    timer->completed = false;
+void cancel_timer(nertimer_t *timer) {
+  timer->active = false;
+  timer->completed = false;
 }
 
-bool is_timer_expired(nertimer_t *timer)
-{
-    if (timer->active)
-    {
-        if (HAL_GetTick() >= timer->end_time)
-        {
-            timer->active = false;
-            timer->completed = true;
-        }
+bool is_timer_expired(nertimer_t *timer) {
+  if (timer->active) {
+    if (HAL_GetTick() >= timer->end_time) {
+      timer->active = false;
+      timer->completed = true;
     }
-    return timer->completed;
+  }
+  return timer->completed;
 }
 
-bool is_timer_active(nertimer_t *timer)
-{
-    return timer->active;
-}
+bool is_timer_active(nertimer_t *timer) { return timer->active; }

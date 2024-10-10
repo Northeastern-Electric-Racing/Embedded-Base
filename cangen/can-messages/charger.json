@@ -1,0 +1,140 @@
+[
+  {
+    "id": "0x1806E5F4",
+    "desc": "BMS Message Send",
+    "fields": [
+      {
+        "name": "BMS/Charging/Voltage",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Charging/Current",
+        "unit": "A",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Charging/Control",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+      ,
+      {
+        "name": "BMS/Charging/UnimplementedData",
+        "unit": "",
+        "send": false,
+        "points": [
+          {
+            "size": 24
+          }
+        ]
+      }
+    ]
+  }
+  ,
+  {
+    "id": "0x18FF50E5",
+    "desc": "Charger Box Status",
+    "fields": [
+      {
+        "name": "Charger/Box/Voltage",
+        "unit": "V",
+        "points": [
+          {
+            "size": 16,
+            "format": "divide10"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/Current",
+        "unit": "A",
+        "points": [
+          {
+            "size": 16,
+            "signed": true,
+            "format": "divide10"
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/F_CommTimeout",
+        "unit": "bool",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/F_WrongBatConnection",
+        "unit": "bool",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/F_VoltageWrong",
+        "unit": "bool",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/F_OverTemp",
+        "unit": "bool",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/F_HardwareFailure",
+        "unit": "bool",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+      ,
+      {
+        "name": "Charger/Box/UnimplementedData",
+        "unit": "",
+        "send": false,
+        "points": [
+          {
+            "size": 24
+          }
+        ]
+      }
+    ]
+  }
+]

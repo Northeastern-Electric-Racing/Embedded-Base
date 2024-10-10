@@ -5,7 +5,8 @@
 #include <stdint.h>
 
 /*
-PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
+PCA 9539 16 bit GPIO expander.  Datasheet:
+https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 */
 
 /// Possible I2C addresses, see comment below
