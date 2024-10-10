@@ -16,7 +16,7 @@ modification, are permitted provided that the following conditions are met:
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS ARE DISCLAIMED. 
+NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS ARE DISCLAIMED.
 IN NO EVENT SHALL STMICROELECTRONICS INTERNATIONAL N.V. BE LIABLE FOR ANY
 DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
@@ -40,29 +40,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @defgroup porting_type  Basic type definition
  *  @ingroup  porting
  *
- *  @brief  file vl6180x_types.h file holds basic type definitions that may require porting
+ *  @brief  file vl6180x_types.h file holds basic type definitions that may
+ * require porting
  *
  *  Contains type that must be defined for the platform\n
- *  When target platform and compiler provide stdint.h and stddef.h, it is enough to include it.\n
- *  If stdint.h is not available review and adapt all signed and unsigned 8/16/32 bits basic types. \n
- *  If stddef.h is not available review and adapt NULL definition .
+ *  When target platform and compiler provide stdint.h and stddef.h, it is
+ * enough to include it.\n If stdint.h is not available review and adapt all
+ * signed and unsigned 8/16/32 bits basic types. \n If stddef.h is not available
+ * review and adapt NULL definition .
  */
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #ifndef NULL
 #error "TODO review  NULL definition or add required include "
 #endif
 
-#if ! defined(STDINT_H) &&  !defined(_GCC_STDINT_H) &&!defined(__STDINT_DECLS) && !defined(_GCC_WRAP_STDINT_H)
+#if !defined(STDINT_H) && !defined(_GCC_STDINT_H) &&                           \
+    !defined(__STDINT_DECLS) && !defined(_GCC_WRAP_STDINT_H)
 
-#pragma message("Please review  type definition of STDINT define for your platform and add to list above ")
+#pragma message(                                                               \
+    "Please review  type definition of STDINT define for your platform and add to list above ")
 
- /*
-  *  target platform do not provide stdint or use a different #define than above
-  *  to avoid seeing the message below addapt the #define list above or implement
-  *  all type and delete these pragma
-  */
+/*
+ *  target platform do not provide stdint or use a different #define than above
+ *  to avoid seeing the message below addapt the #define list above or implement
+ *  all type and delete these pragma
+ */
 
 /** \ingroup porting_type
  * @{

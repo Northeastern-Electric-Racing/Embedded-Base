@@ -41,29 +41,6 @@ def docker_pull(image_url):
     run_command(["docker", "pull", image_url])
     print("Docker image pulled successfully.")
 
-def load_aliases(venv_path, aliases_file):
-    os_type = platform.system()
-    if os_type == 'Windows':
-        activate_path = os.path.join(venv_path, 'Scripts', 'activate')  # Bash script for Git Bash on Windows
-    else:
-        activate_path = os.path.join(venv_path, 'bin', 'activate')  # bash script for Unix-like systems
-    
-    try:
-        with open(aliases_file, 'r') as f:
-            aliases = f.readlines()
-
-        with open(activate_path, 'a') as activate_file:
-            activate_file.write('\n# Aliases\n')
-            for alias in aliases:
-                alias_name, alias_command = alias.strip().split('=', 1)
-                alias_command = alias_command.strip('"')
-                activate_file.write(f'alias {alias_name}="{alias_command}"\n')
-
-        print("Aliases added to the activation script successfully.")
-    except Exception as e:
-        print(f"Failed to add aliases: {e}", file=sys.stderr)
-        sys.exit(1)
-
 def create_venv(venv_path):
     try:
         venv.EnvBuilder(with_pip=True).create(venv_path)
@@ -76,7 +53,7 @@ def run_setup(venv_python):
     print("Running setup.py...")
     try:
         # Run the pip install -e . command
-        run_command([venv_python, '-m', 'pip', 'install', '-e', '.'])
+        run_command([venv_python, '-m', 'pip', 'install', '-e', 'ner_environment'])
     except subprocess.CalledProcessError as e:
         print(f"Failed to run pip install -e .: {e}", file=sys.stderr)
         sys.exit(1)
@@ -90,21 +67,29 @@ def install_precommit(venv_python):
         print(f"Failed to install pre-commit: {e}", file=sys.stderr)
         sys.exit(1)
 
-def install_probe_rs():
+def install_openocd():
     os_type = platform.system()
-    print("Installing probe-rs...")
     try:
         if os_type == "Windows":
-        # Using bash to run PowerShell for downloading and executing the script
-            command = [
-                      "powershell", "-Command", "Invoke-RestMethod https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.ps1 | Invoke-Expression"]
-            run_command(command, shell=False)
-        else:
-            # For Unix-like systems (Linux, macOS)
-            command = ["bash", "-c", "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.sh | sh"]
-            run_command(command, shell=False)
+            print("Please install OpenOCD manually on Windows. You can download it from https://gnutoolchains.com/arm-eabi/openocd/")
+            print("You will need to unzip the downloaded file and run the exe file.")
+            return
+        elif os_type == "Darwin":
+            run_command(["brew", "install", "openocd"])
+
+        elif os_type == "Linux":
+            distro_name = distro.id()
+            if distro_name in ["ubuntu", "debian"]:
+                run_command(["sudo", "apt-get", "install", "-y", "openocd"])
+            elif distro_name == "fedora":
+                run_command(["sudo", "dnf", "install", "-y", "openocd"])
+            elif distro_name == "arch":
+                run_command(["sudo", "pacman", "-S", "--noconfirm", "openocd"])
+            else:
+                print("We haven't added OpenOCD install support for your distro, but if you're actually on linux, you can install it manually!")
+
     except Exception as e:
-        print(f"Failed to install probe-rs: {e}", file=sys.stderr)
+        print(f"Failed to install OpenOCD: {e}", file=sys.stderr)
         sys.exit(1)
 
 def install_usbip():
@@ -140,6 +125,7 @@ def main():
     os_type = platform.system()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     parent_directory = os.path.dirname(current_directory)
+    parent_directory = os.path.dirname(parent_directory)
     venv_path = os.path.join(parent_directory, 'ner-venv')
 
     
@@ -148,13 +134,6 @@ def main():
     if 'y' in answer:
         create_venv(venv_path)
         
-        answer = input("Would you like to add necesarry alias commands? (yes/no)")
-        if 'y' in answer:
-
-            # Step 3: Modify activation and deactivation scripts
-            aliases_file = os.path.join(current_directory, 'aliases.txt')
-            load_aliases(venv_path, aliases_file)
-
         answer = input("Would you like to install all python packages in the venv? (yes/no)")
         if 'y' in answer:
         # Use the venv's Python
@@ -166,10 +145,10 @@ def main():
             # Step 5: Run pre-commit install
             install_precommit(venv_python)
 
-    answer = input("Would you like to install probe-rs? (do this manually if on a weird linux distro!) (yes/no)")
+    answer = input("Would you like to install openOCD? (do this manually if on a weird linux distro!) (yes/no)")
     if 'y' in answer:
         # Step 5: Install probe-rs
-        install_probe_rs()
+        install_openocd()
 
     # Step 6: Install usbip if on Linux
     if os_type == "Linux":
