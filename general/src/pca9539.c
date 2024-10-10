@@ -4,7 +4,7 @@
 
 #define REG_SIZE_BITS 8
 
-<<<<<<< HEAD
+
 void pca9539_init(pca9539_t *pca, I2C_WriteFuncPtr writeFunc,
 		  I2C_ReadFuncPtr readFunc, I2C_HandleTypeDef *i2c_handle,
 		  uint8_t dev_addr)
@@ -109,12 +109,10 @@ HAL_StatusTypeDef pca9539_read_reg(pca9539_t* pca, uint8_t reg_type, uint8_t* bu
 void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle,
                   uint8_t dev_addr) {
   pca->i2c_handle = i2c_handle;
-  pca->dev_addr = dev_addr << 1u; /* shifted one to the left cuz STM says so */
+  pca->dev_addr = dev_addr << 1u; shifted one to the left cuz STM says so */
 
-
-HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-                                   uint8_t *buf) {
-
+/*
+HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf) {
 
   HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, buf);
   if (status) {
@@ -160,4 +158,4 @@ HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type,
 
 
 	return pca_write_reg(pca, reg_type, &data_new);
-}
+}*/
