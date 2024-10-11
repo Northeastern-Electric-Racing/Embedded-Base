@@ -16,7 +16,6 @@
 import argparse
 import subprocess
 import sys
-import glob
 import os
 
 # custom modules for functinality that is too large to be included in this script directly
@@ -65,35 +64,20 @@ def debug(args):
 def flash(args):
 
     if args.docker:
-        
-        command = [
-            "docker", "run", "--rm",
-            "-v", "/home/app/build:/build",  
-            "ner-gcc-arm",
-            "sh", "-c", "flash"
-        ]
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
 
+    command = command + ["openocd"]
+
+    if args.ftdi:
+        current_directory = os.getcwd()
+        ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi.cfg")
+        command = command + ["-f", ftdi_path]
     else:
-        build_directory = os.path.join("build", "*.elf")
-        elf_files = glob.glob(build_directory)
-
-        if not elf_files:
-            print("Error: No ELF file found in ./build/")
-            sys.exit(1)
-
-        elf_file = elf_files[0]  # Take the first ELF file found
-        print(f"Found ELF file: {elf_file}")
-
+        command = command + ["-f", "interface-dap.cfg"]
         
-        command = [
-            "openocd",
-            "-f", "interface/cmsis-dap.cfg",
-            "-f", f"target/{args.device}.cfg",
-            "-c", "adapter speed 5000",
-            "-c", f"program {elf_file} verify reset exit"
-        ]
-
-    run_command(command)
+    command = command + ["-f", "flash.cfg"]
+    
+    run_command(command, stream_output=True)
 
 
 # ==============================================================================
@@ -202,10 +186,9 @@ def main():
 
     parser_flash = subparsers.add_parser('flash', help="Flash the firmware")
     parser_flash.add_argument(
-        '--device', 
-        type=str, 
-        help="Specify the target device (e.g., stm32f405, stm32f407)", 
-        default="stm32f405"
+        '--ftdi', 
+        action="store_true",
+        help="Set this flag if the device uses an FTDI chip", 
     )
     parser_flash.add_argument(
         '--docker', 
@@ -252,15 +235,41 @@ def main():
 # Helper functions - not direct commands
 # ==============================================================================
 
-def run_command(command):
-    """Run a shell command."""
-    try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True)
-        print(result.stdout)
-    except subprocess.CalledProcessError as e:
-        print(f"Error occurred: {e}", file=sys.stderr)
-        print(e.stderr, file=sys.stderr)
-        sys.exit(e.returncode)
+def run_command(command, stream_output=False):
+    """Run a shell command. Optionally stream the output in real-time."""
+    
+    if stream_output:
+        # Use subprocess.Popen to stream output in real-time
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Stream the output in real-time
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                print(output.strip())
+
+        # Stream any remaining error messages
+        stderr_output = process.stderr.read()
+        if stderr_output:
+            print(stderr_output, file=sys.stderr)
+
+        # Wait for the process to complete and return the exit code
+        returncode = process.wait()
+        if returncode != 0:
+            print(f"Error: Command exited with code {returncode}", file=sys.stderr)
+            sys.exit(returncode)
+    
+    else:
+        # Use subprocess.run to capture output all at once
+        try:
+            result = subprocess.run(command, check=True, capture_output=True, text=True)
+            print(result.stdout)
+        except subprocess.CalledProcessError as e:
+            print(f"Error occurred: {e}", file=sys.stderr)
+            print(e.stderr, file=sys.stderr)
+            sys.exit(e.returncode)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
