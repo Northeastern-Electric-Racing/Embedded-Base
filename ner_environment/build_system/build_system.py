@@ -86,7 +86,7 @@ def flash(args):
 # ==============================================================================
 
 def serial(args):
-    miniterm()
+    miniterm(args)
 
 # ==============================================================================
 # Update command
@@ -141,7 +141,7 @@ def main():
 
     subparsers = parser.add_subparsers(
         title="Commands", 
-        description="Available commands: build, flash, debug, update, usbip",
+        description="Available commands: build, flash, debug, update, usbip, serial",
         dest="command",
         required=True
     )
@@ -229,6 +229,20 @@ def main():
         help="Specify the device to connect or disconnect (e.g., shepherd, cerberus)"
     )
     parser_usbip.set_defaults(func=usbip)
+
+    parser_serial = subparsers.add_parser('serial', help="Open UART terminal of conneced device")
+    parser_serial.add_argument(
+        '--list',
+        action="store_true",
+        help="List connectet TTY devices"
+    )
+    parser_serial.add_argument(
+        '--device',
+        type=str,
+        help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)",
+        default=""
+    )
+    parser_serial.set_defaults(func=serial)
 
     # ==============================================================================
 
