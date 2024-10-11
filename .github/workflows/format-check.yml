@@ -14,7 +14,8 @@ jobs:
       uses: Northeastern-Electric-Racing/clang-format-action@main
       with:
         clang-format-version: '18'
-        # only check core, embedded base covered internally
         check-path: "General/"
+        # exclude vl6180x
+        exclude-regex: "vl6180x*"
         # use the clang-format from embedded base
         format-filepath: "./clang-format"
