@@ -234,13 +234,12 @@ def main():
     parser_serial.add_argument(
         '--list',
         action="store_true",
-        help="List connectet TTY devices"
+        help="List connected TTY devices"
     )
     parser_serial.add_argument(
         '--device',
         type=str,
         help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)",
-        default=""
     )
     parser_serial.set_defaults(func=serial)
 
