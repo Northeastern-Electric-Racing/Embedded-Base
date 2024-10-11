@@ -193,7 +193,7 @@ void LTC6804_adcv(ltc_config *config)
 	// 3
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake. This command can be removed.
+	// awake. This command can be removed.
 
 	// 4
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
@@ -243,7 +243,7 @@ void LTC6804_adax(ltc_config *config)
 
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake. This command can be removed.
+	// awake. This command can be removed.
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_SET);
@@ -346,7 +346,7 @@ LTC6804_rdcv(ltc_config *config,
 						cell_data[data_counter] +
 						(cell_data[data_counter + 1]
 						 << 8); // Each cell code is received as
-						// two bytes and is combined to
+					// two bytes and is combined to
 					// create the parsed cell voltage code
 
 					cell_codes[current_ic][current_cell +
@@ -363,7 +363,7 @@ LTC6804_rdcv(ltc_config *config,
 					(cell_data[data_counter] << 8) +
 					cell_data[data_counter +
 						  1]; // The received PEC for the current_ic
-					// is transmitted as the 7th and 8th
+				// is transmitted as the 7th and 8th
 				// after the 6 cell voltage data bytes
 				data_pec = pec15_calc(
 					BYT_IN_REG,
@@ -371,13 +371,13 @@ LTC6804_rdcv(ltc_config *config,
 				if (received_pec != data_pec) {
 					pec_error =
 						-1; // The pec_error variable is simply set negative if
-						// any PEC errors
+					// any PEC errors
 					// are detected in the serial data
 				}
 				data_counter =
 					data_counter +
 					2; // Because the transmitted PEC code is
-					// 2 bytes long the data_counter
+				// 2 bytes long the data_counter
 				// must be incremented by 2 bytes to point to the next ICs cell voltage
 				// data
 			}
@@ -403,7 +403,7 @@ LTC6804_rdcv(ltc_config *config,
 					cell_data[data_counter] +
 					(cell_data[data_counter + 1]
 					 << 8); // Each cell code is received as
-					// two bytes and is combined to
+				// two bytes and is combined to
 				// create the parsed cell voltage code
 
 				cell_codes[current_ic]
@@ -420,7 +420,7 @@ LTC6804_rdcv(ltc_config *config,
 				(cell_data[data_counter] << 8) +
 				cell_data[data_counter +
 					  1]; // The received PEC for the current_ic is
-				// transmitted as the 7th and 8th
+			// transmitted as the 7th and 8th
 			// after the 6 cell voltage data bytes
 			data_pec =
 				pec15_calc(BYT_IN_REG,
@@ -428,13 +428,13 @@ LTC6804_rdcv(ltc_config *config,
 			if (received_pec != data_pec) {
 				pec_error =
 					-1; // The pec_error variable is simply set negative if any
-					// PEC errors
+				// PEC errors
 				// are detected in the serial data
 			}
 			data_counter =
 				data_counter +
 				2; // Because the transmitted PEC code is 2
-				// bytes long the data_counter
+			// bytes long the data_counter
 			// must be incremented by 2 bytes to point to the next ICs cell voltage
 			// data
 		}
@@ -536,7 +536,7 @@ void LTC6804_rdcv_reg(
 	// 3
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake. This command can be removed.
+	// awake. This command can be removed.
 
 	// 4
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
@@ -624,7 +624,7 @@ int8_t LTC6804_rdaux(
 				LTC6804_rdaux_reg(
 					config, gpio_reg, total_ic,
 					data); // Reads the raw auxiliary register data into
-					// the data[] array
+				// the data[] array
 
 				for (uint8_t current_ic = 0;
 				     current_ic < total_ic;
@@ -644,7 +644,7 @@ int8_t LTC6804_rdaux(
 							data[data_counter] +
 							(data[data_counter + 1]
 							 << 8); // Each gpio codes is received as
-							// two bytes and is combined to
+						// two bytes and is combined to
 						// create the parsed gpio voltage code
 
 						aux_codes[current_ic]
@@ -662,7 +662,7 @@ int8_t LTC6804_rdaux(
 						(data[data_counter] << 8) +
 						data[data_counter +
 						     1]; // The received PEC for the current_ic is
-						// transmitted as the 7th and 8th
+					// transmitted as the 7th and 8th
 					// after the 6 gpio voltage data bytes
 					data_pec = pec15_calc(
 						BYT_IN_REG,
@@ -670,7 +670,7 @@ int8_t LTC6804_rdaux(
 					if (received_pec == data_pec) {
 						pec_error =
 							0; // The pec_error variable is simply set negative if
-							// any PEC errors
+						// any PEC errors
 						// are detected in the received serial data
 					} else if (received_pec != data_pec) {
 						if (retries ==
@@ -690,7 +690,7 @@ int8_t LTC6804_rdaux(
 					data_counter =
 						data_counter +
 						2; // Because the transmitted PEC code
-						// is 2 bytes long the data_counter
+					// is 2 bytes long the data_counter
 					// must be incremented by 2 bytes to point to the next ICs gpio
 					// voltage data
 				}
@@ -716,7 +716,7 @@ int8_t LTC6804_rdaux(
 						(data[data_counter] +
 						 (data[data_counter + 1]
 						  << 8)); // Each gpio codes is received as
-						// two bytes and is combined to
+					// two bytes and is combined to
 					// create the parsed gpio voltage code
 					aux_codes[current_ic]
 						 [current_gpio +
@@ -732,7 +732,7 @@ int8_t LTC6804_rdaux(
 					(data[data_counter] << 8) +
 					data[data_counter +
 					     1]; // The received PEC for the current_ic is
-					// transmitted as the 7th and 8th
+				// transmitted as the 7th and 8th
 				// after the 6 gpio voltage data bytes
 				data_pec = pec15_calc(
 					BYT_IN_REG,
@@ -740,7 +740,7 @@ int8_t LTC6804_rdaux(
 				if (received_pec != data_pec) {
 					pec_error =
 						-1; // The pec_error variable is simply set negative if
-						// any PEC errors
+					// any PEC errors
 					// are detected in the received serial data
 				} else {
 					pec_error = 0;
@@ -749,7 +749,7 @@ int8_t LTC6804_rdaux(
 				data_counter =
 					data_counter +
 					2; // Because the transmitted PEC code is
-					// 2 bytes long the data_counter
+				// 2 bytes long the data_counter
 				// must be incremented by 2 bytes to point to the next ICs gpio voltage
 				// data
 			}
@@ -840,7 +840,7 @@ void LTC6804_rdaux_reg(
 	// 3
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake, this command can be removed.
+	// awake, this command can be removed.
 	// 4
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
@@ -889,7 +889,7 @@ void LTC6804_clrcell(ltc_config *config)
 	// 3
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake. This command can be removed.
+	// awake. This command can be removed.
 
 	// 4
 
@@ -944,7 +944,7 @@ void LTC6804_clraux(ltc_config *config)
 	// 3
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake.This command can be removed.
+	// awake.This command can be removed.
 	// 4
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
@@ -1034,7 +1034,7 @@ void LTC6804_wrcfg(
 			cmd[cmd_index] =
 				data_config[current_ic - 1]
 					   [current_byte]; // adding the config data
-				// to the array to be sent
+			// to the array to be sent
 			cmd_index = cmd_index + 1;
 		}
 		// 3
@@ -1042,7 +1042,7 @@ void LTC6804_wrcfg(
 			BYTES_IN_REG,
 			&data_config[current_ic - 1]
 				    [0]); // calculating the PEC for each ICs
-			// configuration register data
+		// configuration register data
 		cmd[cmd_index] = (uint8_t)(cfg_pec >> 8);
 		cmd[cmd_index + 1] = (uint8_t)cfg_pec;
 		cmd_index = cmd_index + 2;
@@ -1051,7 +1051,7 @@ void LTC6804_wrcfg(
 	// 4
 	wakeup_idle(
 		config); // This will guarantee that the LTC6804 isoSPI port is
-		// awake.This command can be removed.
+	// awake.This command can be removed.
 	// 5
 
 	HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
@@ -1134,7 +1134,7 @@ LTC6804_rdcfg(ltc_config *config,
 		// 2
 		wakeup_idle(
 			config); // This will guarantee that the LTC6804 isoSPI port is
-			// awake. This command can be removed.
+		// awake. This command can be removed.
 		// 3
 		HAL_GPIO_WritePin(config->gpio, config->cs_pin, GPIO_PIN_RESET);
 		HAL_SPI_Transmit(config->spi, cmd, 4, HAL_MAX_DELAY);
@@ -1237,7 +1237,7 @@ pec15_calc(uint8_t len, // Number of bytes that will be used to calculate a PEC
 	}
 	return (remainder *
 		2); // The CRC15 has a 0 in the LSB so the remainder must
-		// be multiplied by 2
+	// be multiplied by 2
 }
 
 void write_68(ltc_config *config,
@@ -1277,7 +1277,7 @@ void write_68(ltc_config *config,
 			BYTES_IN_REG,
 			&data[(current_ic - 1) *
 			      6]); // Calculating the PEC for each ICs
-			// configuration register data
+		// configuration register data
 		cmd[cmd_index] = (uint8_t)(data_pec >> 8);
 		cmd[cmd_index + 1] = (uint8_t)data_pec;
 		cmd_index = cmd_index + 2;
