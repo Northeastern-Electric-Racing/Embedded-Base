@@ -70,10 +70,10 @@ def flash(args):
 
     if args.ftdi:
         current_directory = os.getcwd()
-        ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi.cfg")
+        ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
     else:
-        command = command + ["-f", "interface-dap.cfg"]
+        command = command + ["-f", "interface/cmsis-dap.cfg"]
         
     command = command + ["-f", "flash.cfg"]
     
