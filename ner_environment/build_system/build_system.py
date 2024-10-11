@@ -239,7 +239,7 @@ def main():
 # Helper functions - not direct commands
 # ==============================================================================
 
-def run_command(command, stream_output=False):
+def run_command(command, stream_output=False, exit_on_fail=True):
     """Run a shell command. Optionally stream the output in real-time."""
     
     if stream_output:
@@ -263,7 +263,8 @@ def run_command(command, stream_output=False):
         returncode = process.wait()
         if returncode != 0:
             print(f"Error: Command exited with code {returncode}", file=sys.stderr)
-            sys.exit(returncode)
+            if exit_on_fail:
+                sys.exit(returncode)
     
     else:
         try:
@@ -272,12 +273,13 @@ def run_command(command, stream_output=False):
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {e}", file=sys.stderr)
             print(e.stderr, file=sys.stderr)
-            sys.exit(e.returncode)
+            if exit_on_fail:
+                sys.exit(e.returncode)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
     command = ["sudo", "usbip", "detach", "-p", "0"]
-    run_command(command)
+    run_command(command, exit_on_fail=False)
 
 
 if __name__ == "__main__":
