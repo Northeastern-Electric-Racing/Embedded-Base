@@ -30,7 +30,7 @@ def build(args):
     if args.clean:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
     else:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make"]
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
     run_command(command)
 
 # ==============================================================================
