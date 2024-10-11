@@ -120,6 +120,9 @@ def usbip(args):
         else:
             print("Error: Invalid device name")
             sys.exit(1)
+        
+        run_command(commands[0])
+        run_command(commands[1])
     
     elif args.disconnect:
         disconnect_usbip()
@@ -239,7 +242,7 @@ def run_command(command, stream_output=False):
     """Run a shell command. Optionally stream the output in real-time."""
     
     if stream_output:
-        # Use subprocess.Popen to stream output in real-time
+     
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
         # Stream the output in real-time
@@ -250,19 +253,18 @@ def run_command(command, stream_output=False):
             if output:
                 print(output.strip())
 
-        # Stream any remaining error messages
+        # Capture any remaining output
         stderr_output = process.stderr.read()
         if stderr_output:
             print(stderr_output, file=sys.stderr)
 
-        # Wait for the process to complete and return the exit code
+  
         returncode = process.wait()
         if returncode != 0:
             print(f"Error: Command exited with code {returncode}", file=sys.stderr)
             sys.exit(returncode)
     
     else:
-        # Use subprocess.run to capture output all at once
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
             print(result.stdout)
