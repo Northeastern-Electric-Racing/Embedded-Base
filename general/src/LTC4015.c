@@ -62,7 +62,7 @@ HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev, uint16_t prescaler,
 		LTC4015_write(dev, CONFIG_BITS, 0x1000); // suspends charger
 		return (QCOUNT,
 			highAlert) // Need away to tell its being flagged, but not
-			// really sure what to return
+		// really sure what to return
 	} else if (LIMIT_ALERTS | 0x2000 == 0x2000) {
 		LTC4015_write(dev, EN_LIMIT_ALERTS, EN_LIMIT_ALERTS ^ 0x2000);
 		LTC4015_write(dev, CONFIG_BITS, 0x1000); // suspends charger
