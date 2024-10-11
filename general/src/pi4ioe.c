@@ -11,9 +11,7 @@
 // and remove this comment the values should be correct though, just the order
 // is wrong
 
-#define PI4IOE_I2C_ADDR                                                    \
-	0x20 //? @hamza does HAL driver handle shifting for read/write bit \
-		//automatically? if not should be added here
+#define PI4IOE_I2C_ADDR 0x20
 
 #define IO_CONFIG_REG 0x06
 #define IO_CONFIG_BUF 0x10 /* = 0001 0000, bit 4 = TSMS = input */
