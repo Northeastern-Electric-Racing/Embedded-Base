@@ -4,13 +4,13 @@
 #include <stdint.h>
 
 struct eeprom_partition {
-  char *id;         /*  key  */
-  uint16_t size;    /* bytes */
-  uint16_t address; /* start address */
+	char *id; /*  key  */
+	uint16_t size; /* bytes */
+	uint16_t address; /* start address */
 };
 
 struct eeprom_partition eeprom_data[NUM_EEPROM_ITEMS]{
-    /*  ____________KEY________________         _BYTES_   */
+	/*  ____________KEY________________         _BYTES_   */
 
 };
 

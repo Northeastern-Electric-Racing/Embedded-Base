@@ -5,12 +5,12 @@
 #include <stdint.h>
 
 typedef struct {
-  void **buffer;
-  size_t capacity;
-  size_t element_size;
-  size_t front;
-  size_t rear;
-  size_t count;
+	void **buffer;
+	size_t capacity;
+	size_t element_size;
+	size_t front;
+	size_t rear;
+	size_t count;
 
 } ringbuffer_t;
 
