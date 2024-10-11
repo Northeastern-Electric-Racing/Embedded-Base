@@ -1,4 +1,3 @@
-import os
 import subprocess
 import platform
 import sys
@@ -43,16 +42,28 @@ def run_miniterm(device, baudrate=115200):
         print(f"Failed to run pyserial-miniterm: {e}", file=sys.stderr)
         sys.exit(1)
 
-def main():
+def main(args):
     # Detect the operating system and find USB devices
-    devices = list_usb_devices()
-    
-    if not devices:
-        print("No USB devices found.", file=sys.stderr)
-        sys.exit(1)
-    
-    # Default to the first device if available
-    selected_device = devices[0]
+    if not args.device:
+        # reverse so FTDI is the default if present, can always be overridden
+        devices = list(reversed(list_usb_devices()))
+        
+        if not devices:
+            print("No USB devices found.", file=sys.stderr)
+            sys.exit(1)
+
+        if args.list:
+            print("Devices present:")
+            for i, device in enumerate(devices):
+                print(device)
+            
+            print("The first device will be selected if --device not specified.")
+            sys.exit(0)
+        
+        # Default to the first device if available
+        selected_device = devices[0]
+    else:
+        selected_device = args.device
     print(f"Selected USB device: {selected_device}")
     
     # Run pyserial-miniterm with the selected device
