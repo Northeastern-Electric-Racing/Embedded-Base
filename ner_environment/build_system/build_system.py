@@ -63,6 +63,7 @@ def debug(args):
 
 def flash(args):
 
+    command = []
     if args.docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
 
