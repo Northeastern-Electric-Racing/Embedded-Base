@@ -14,15 +14,15 @@
  */
 
 typedef struct {
-  CAN_HandleTypeDef *hcan;
-  const uint32_t *id_list;
-  uint8_t id_list_len;
+	CAN_HandleTypeDef *hcan;
+	const uint32_t *id_list;
+	uint8_t id_list_len;
 } can_t;
 
 typedef struct {
-  uint32_t id;
-  uint8_t data[8];
-  uint8_t len;
+	uint32_t id;
+	uint8_t data[8];
+	uint8_t len;
 } can_msg_t;
 
 HAL_StatusTypeDef can_init(can_t *can);

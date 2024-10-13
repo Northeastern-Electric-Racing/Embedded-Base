@@ -27,40 +27,40 @@ https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 /// POLARITY: Inversion state, 1=Inverted 0=Uninverted
 /// DIRECTION: Input/Output selection 1=Input 0=Output
 
-#define PCA_INPUT_0_REG 0x00
-#define PCA_INPUT_1_REG 0x01
-#define PCA_OUTPUT_0_REG 0x02
-#define PCA_OUTPUT_1_REG 0x03
-#define PCA_POLARITY_0_REG 0x04
-#define PCA_POLARITY_1_REG 0x05
+#define PCA_INPUT_0_REG	    0x00
+#define PCA_INPUT_1_REG	    0x01
+#define PCA_OUTPUT_0_REG    0x02
+#define PCA_OUTPUT_1_REG    0x03
+#define PCA_POLARITY_0_REG  0x04
+#define PCA_POLARITY_1_REG  0x05
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
 typedef struct {
-  I2C_HandleTypeDef *i2c_handle;
-  uint16_t dev_addr;
+	I2C_HandleTypeDef *i2c_handle;
+	uint16_t dev_addr;
 } pca9539_t;
 
 /// Init PCA9539, a 16 bit I2C GPIO expander
 void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle,
-                  uint8_t dev_addr);
+		  uint8_t dev_addr);
 
 /// @brief Read all pins on a bus, for example using reg_type input to get
 /// incoming logic level
 HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-                                   uint8_t *buf);
+				   uint8_t *buf);
 /// @brief Read a specific pin on a bus, do not iterate over this, use read_pins
 /// instead
 HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
-                                   uint8_t pin, uint8_t *buf);
+				   uint8_t pin, uint8_t *buf);
 
 /// @brief Write all pins on a bus, for example using reg_type OUTPUT to set
 /// logic level or DIRECTION to set as output
 HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type,
-                                    uint8_t buf);
+				    uint8_t buf);
 /// @brief Write a specific pin on a bus, do not iterate over this, use
 /// write_pins instead
 HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type,
-                                    uint8_t pin, uint8_t buf);
+				    uint8_t pin, uint8_t buf);
 
 #endif

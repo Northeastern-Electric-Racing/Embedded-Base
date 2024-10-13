@@ -13,8 +13,8 @@
 #include <stdint.h>
 
 typedef struct {
-  I2C_HandleTypeDef *i2c_handle;
-  uint8_t port_config;
+	I2C_HandleTypeDef *i2c_handle;
+	uint8_t port_config;
 
 } pi4ioe_t;
 
@@ -38,7 +38,7 @@ HAL_StatusTypeDef pi4ioe_init(pi4ioe_t *gpio, I2C_HandleTypeDef *hi2c);
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef pi4ioe_write(uint8_t device, uint8_t val,
-                               I2C_HandleTypeDef *i2c_handle);
+			       I2C_HandleTypeDef *i2c_handle);
 
 /**
  * @brief Reads from the PI4IOE5V9535ZDEX GPIO Expander

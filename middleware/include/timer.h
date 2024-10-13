@@ -5,10 +5,10 @@
 #include <stdbool.h>
 
 typedef struct {
-  uint32_t start_time;
-  uint32_t end_time;
-  bool active;
-  bool completed;
+	uint32_t start_time;
+	uint32_t end_time;
+	bool active;
+	bool completed;
 } nertimer_t;
 
 /**
