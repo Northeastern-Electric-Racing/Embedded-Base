@@ -79,7 +79,7 @@ int lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
 		(((odr_sel << 4) | (fs_sel << 2) | (lp_f2_enable << 1)) << 1);
 	imu->accel_config = config;
 
-	return lsm6dso_write_reg(imu, imu->accel_config,
+	return lsm6dso_write_reg(imu, &imu->accel_config,
 				 LSM6DSO_REG_ACCEL_CTRL);
 }
 
@@ -90,7 +90,7 @@ int lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
 		(((odr_sel << 4) | (fs_sel << 2) | (fs_125 << 1)) << 1);
 	imu->gyro_config = config;
 
-	return lsm6dso_write_reg(imu, imu->gyro_config, LSM6DSO_REG_GYRO_CTRL);
+	return lsm6dso_write_reg(imu, &imu->gyro_config, LSM6DSO_REG_GYRO_CTRL);
 }
 
 int lsm6dso_init(lsm6dso_t *imu, I2C_Read read_func, I2C_Write write_func)
