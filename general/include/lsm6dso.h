@@ -53,6 +53,7 @@ typedef int (*I2C_Write)(uint8_t *data, uint8_t reg, uint8_t length);
  *
  */
 enum lsm6dso_axes {
+
 	LSM6DSO_X_AXIS = 0,
 	LSM6DSO_Y_AXIS = 1,
 	LSM6DSO_Z_AXIS = 2
@@ -83,7 +84,7 @@ typedef struct {
  *
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_init(I2C_Read read_func, I2C_Write write_func);
+int lsm6dso_init(lsm6dso_t *imu, I2C_Read read_func, I2C_Write write_func);
 
 /* IMU Setting Configuration */
 /**
@@ -95,7 +96,9 @@ int lsm6dso_init(I2C_Read read_func, I2C_Write write_func);
  * @param lp_f2_enable
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_set_accel_cfg(int8_t odr_sel, int8_t fs_sel, int8_t lp_f2_enable);
+
+int lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			  int8_t lp_f2_enable);
 
 /**
  * @brief Configures the accelerometer of the LSM6DSO IMU
@@ -105,19 +108,21 @@ int lsm6dso_set_accel_cfg(int8_t odr_sel, int8_t fs_sel, int8_t lp_f2_enable);
  * @param fs_125
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_set_gyro_cfg(int8_t odr_sel, int8_t fs_sel, int8_t fs_125);
+
+int lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			 int8_t fs_125);
 
 /* Data Aquisition */
 /**
  * @brief Retrieves accelerometer data from the LSM6DSO IMU
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_read_accel();
+int lsm6dso_read_accel(lsm6dso_t *imu);
 
 /**
  * @brief Retreives the gyroscope data from the LSM6DSO IMU
  * @return 0 if OK, other if ERROR
  */
-int lsm6dso_read_gyro();
+int lsm6dso_read_gyro(lsm6dso_t *imu);
 
 #endif // LSM6DSO_H
