@@ -14,6 +14,7 @@
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
 import argparse
+import platform
 import subprocess
 import sys
 import os
@@ -86,12 +87,21 @@ def debug(args):
     ocd = subprocess.Popen(halt_command)
     time.sleep(1)
     
-    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "arm-none-eabi-gdb", f"/home/app/build/{elf_file}", "-ex", "target extended-remote host.docker.internal:3333"]
+    # for some reason the host docker internal thing is broken on linux despite compose being set correctly, hence this hack
+    gdb_uri  = "host.docker.internal"
+    if platform.system() == "Linux":
+        gdb_uri = "localhost"
+
+    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "arm-none-eabi-gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
+
+    print(send_command)
     subprocess.run(send_command)
 
     # make terminal clearer
+    time.sleep(4)
+    print("\nKilling openocd...")
+    ocd.terminate()
     time.sleep(1)
-    print("\n")
 
     
     
