@@ -89,12 +89,11 @@ def debug(args):
     
     # for some reason the host docker internal thing is broken on linux despite compose being set correctly, hence this hack
     gdb_uri  = "host.docker.internal"
-    if platform.system() == "Linux":
+    if platform.system() == "Linux" and is_wsl() == 0:
         gdb_uri = "localhost"
 
     send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "arm-none-eabi-gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
 
-    print(send_command)
     subprocess.run(send_command)
 
     # make terminal clearer
@@ -344,6 +343,18 @@ def disconnect_usbip():
     """Disconnect the current USB device."""
     command = ["sudo", "usbip", "detach", "-p", "0"]
     run_command(command, exit_on_fail=False)
+
+def is_wsl(v: str = platform.uname().release) -> int:
+    """
+    detects if Python is running in WSL
+    """
+
+    if v.endswith("-Microsoft"):
+        return 1
+    elif v.endswith("microsoft-standard-WSL2"):
+        return 2
+
+    return 0
 
 
 if __name__ == "__main__":
