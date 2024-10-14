@@ -8,20 +8,23 @@
 
 #include "LTC4015.h"
 
-int LTC4015_Init(LTC4015_T *dev)
+int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write)
 {
+	dev->read = read;
+	dev->write = write;
+
 	//Gets the value from the Charging state register
 	LtC4015_read(dev, LTC4015_CHGSTATE, dev->CHGdata);
 }
 
 int LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data)
 {
-	return dev->local_mem_read(LTC4015_ADDR_68, reg, 0x00000001U, data, 1);
+	return dev->read(LTC4015_ADDR_68, reg, 0x00000001U, data, 1);
 }
 
 int LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data)
 {
-	return dev->local_mem_read(LTC4015_ADDR_68, reg, 0x00000001U, data, 1);
+	return dev->write(LTC4015_ADDR_68, reg, 0x00000001U, data, 1);
 }
 
 int LTC4015_Qcounter(LTC4015_T *dev, uint16_t prescaler, uint16_t highAlert,

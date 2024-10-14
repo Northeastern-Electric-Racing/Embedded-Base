@@ -39,15 +39,19 @@
 //Enable Coulomb Counter Low Alert.(0xOD Bit 13)
 //Enable Coulomb Counter High Alert.(0xOD Bit 12)
 
-typedef int (*Mem_Read)(uint16_t DevAddress, uint16_t MemAddress,
+typedef int (*Read_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
 			uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
+
+typedef int (*Write_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
+			 uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
 
 typedef struct {
 	uint16_t chargeFaults; //Stores error faults from CHGSTATE register
 	uint16_t qcount;
 	uint16_t limitAlerts;
 
-	Mem_Read local_mem_read;
+	Read_Ptr read;
+	Write_Ptr write;
 } LTC4015_T;
 
 /**
@@ -57,7 +61,7 @@ typedef struct {
  * @param hi2c
  * @return HAL_StatusTypeDef
  */
-int LTC4015_Init(LTC4015_T *dev);
+int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write);
 
 /**
  * @brief Reads from the LTC4015EUHF#PBF load switch 
