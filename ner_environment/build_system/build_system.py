@@ -113,6 +113,10 @@ def debug(args):
 def flash(args):
 
     command = []
+    if args.docker and args.ftdi:
+        print("Cannot flash ftdi from docker")
+        sys.exit(1)
+
     if args.docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
 
