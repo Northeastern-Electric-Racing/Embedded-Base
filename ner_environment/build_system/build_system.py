@@ -14,9 +14,12 @@
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
 import argparse
+import platform
 import subprocess
 import sys
 import os
+import glob
+import time
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
@@ -31,7 +34,7 @@ def build(args):
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
     else:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
-    run_command(command)
+    run_command(command, stream_output=True)
 
 # ==============================================================================
 # Clang command
@@ -55,7 +58,53 @@ def clang(args):
 # ==============================================================================
 
 def debug(args):
-    pass
+
+    command = []
+    #if args.docker:
+    #    print("Dockerized openocd unsupported for gdb")
+    #    sys.exit(1)
+    
+    command = command + ["openocd"]
+
+    current_directory = os.getcwd()
+    if args.ftdi:
+        ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
+        command = command + ["-f", ftdi_path]
+    else:
+        command = command + ["-f", "interface/cmsis-dap.cfg"]
+
+    build_directory = os.path.join("build", "*.elf")
+    elf_files = glob.glob(build_directory)
+    if not elf_files:
+        print("Error: No ELF file found in ./build/")
+        sys.exit(1)
+
+    elf_file = os.path.basename(os.path.normpath(elf_files[0]))  # Take the first ELF file found
+    print(f"Found ELF file: {elf_file}")
+
+    halt_command = command + ["-f", "flash.cfg", "-f", os.path.join(current_directory, "Drivers", "Embedded-Base", "openocd.cfg"),
+"-c", "init", "-c", "reset halt"]
+    ocd = subprocess.Popen(halt_command)
+    time.sleep(1)
+    
+    # for some reason the host docker internal thing is broken on linux despite compose being set correctly, hence this hack
+    gdb_uri  = "host.docker.internal"
+    if platform.system() == "Linux" and is_wsl() == 0:
+        gdb_uri = "localhost"
+
+    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "arm-none-eabi-gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
+
+    subprocess.run(send_command)
+
+    # make terminal clearer
+    time.sleep(4)
+    print("\nKilling openocd...")
+    ocd.terminate()
+    time.sleep(1)
+
+    
+    
+	
 
 # ==============================================================================
 # Flash command
@@ -64,6 +113,10 @@ def debug(args):
 def flash(args):
 
     command = []
+    if args.docker and args.ftdi:
+        print("Cannot flash ftdi from docker")
+        sys.exit(1)
+
     if args.docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
 
@@ -75,8 +128,18 @@ def flash(args):
         command = command + ["-f", ftdi_path]
     else:
         command = command + ["-f", "interface/cmsis-dap.cfg"]
-        
-    command = command + ["-f", "flash.cfg"]
+    
+
+    build_directory = os.path.join("build", "*.elf")
+    elf_files = glob.glob(build_directory)
+    if not elf_files:
+        print("Error: No ELF file found in ./build/")
+        sys.exit(1)
+
+    elf_file = elf_files[0]  # Take the first ELF file found
+    print(f"Found ELF file: {elf_file}")
+
+    command = command + ["-f", "flash.cfg", "-c", f"program {elf_file} verify reset exit"]
     
     run_command(command, stream_output=True)
 
@@ -206,6 +269,11 @@ def main():
     # ==============================================================================
 
     parser_debug = subparsers.add_parser('debug', help="Start a debug session")
+    parser_debug.add_argument(
+        '--ftdi',
+        action="store_true",
+        help="Set this flag if the device uses an FTDI chip",
+    )
     parser_debug.set_defaults(func=debug)
 
     # ==============================================================================
@@ -257,21 +325,7 @@ def run_command(command, stream_output=False, exit_on_fail=True):
     
     if stream_output:
      
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        # Stream the output in real-time
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                print(output.strip())
-
-        # Capture any remaining output
-        stderr_output = process.stderr.read()
-        if stderr_output:
-            print(stderr_output, file=sys.stderr)
-
+        process = subprocess.Popen(command, text=True)
   
         returncode = process.wait()
         if returncode != 0:
@@ -293,6 +347,18 @@ def disconnect_usbip():
     """Disconnect the current USB device."""
     command = ["sudo", "usbip", "detach", "-p", "0"]
     run_command(command, exit_on_fail=False)
+
+def is_wsl(v: str = platform.uname().release) -> int:
+    """
+    detects if Python is running in WSL
+    """
+
+    if v.endswith("-Microsoft"):
+        return 1
+    elif v.endswith("microsoft-standard-WSL2"):
+        return 2
+
+    return 0
 
 
 if __name__ == "__main__":
