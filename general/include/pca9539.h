@@ -37,9 +37,9 @@ https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 #define PCA_DIRECTION_1_REG 0x07
 
 //Function Pointer Initializiation, read/write functions will get assigned to these
-typedef int(*I2C_WritePtr)( uint16_t address, uint8_t reg_type,
+typedef int(*WritePtr)( uint16_t address, uint8_t reg_type,
 				uint8_t data );
-typedef int(*I2C_ReadPtr)( uint16_t address, uint8_t reg_type,
+typedef int(*ReadPtr)( uint16_t address, uint8_t reg_type,
 			       uint8_t data );
 //typedef void(*I2C_ReadPinFuncPtr){uint16_t };
 //typedef void(*I2C_WritePinFuncPtr){};
