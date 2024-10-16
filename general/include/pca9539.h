@@ -49,8 +49,8 @@ typedef struct {
 	uint16_t dev_addr;
 
 	// Two Function Pointers
-	I2C_WritePtr I2C_Write;
-	I2C_ReadPtr I2C_Read;
+	WritePtr Write;
+	ReadPtr Read;
 	//I2C_ReadPinFuncPtr local_I2C_Read_Pin;
 	//I2C_WritePinFuncPtr local_I2C_Write_Pin;
 
@@ -58,8 +58,8 @@ typedef struct {
 
 /// Init PCA9539, a 16 bit I2C GPIO expander
 //Includes use of Function Pointers with instance writeFunc and readFunc
-void pca9539_init(pca9539_t *pca, I2C_WriteFuncPtr writeFunc,
-		  I2C_ReadFuncPtr readFunc, I2C_HandleTypeDef *i2c_handle,
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc,
+		  ReadPtr readFunc, I2C_HandleTypeDef *i2c_handle,
 		  uint8_t dev_addr);
 
 //READ/WRITE
