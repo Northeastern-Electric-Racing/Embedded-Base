@@ -49,8 +49,8 @@ typedef struct {
 	uint16_t dev_addr;
 
 	// Two Function Pointers
-	I2C_WritePtr local_I2C_Write;
-	I2C_ReadPtr local_I2C_Read;
+	I2C_WritePtr I2C_Write;
+	I2C_ReadPtr I2C_Read;
 	//I2C_ReadPinFuncPtr local_I2C_Read_Pin;
 	//I2C_WritePinFuncPtr local_I2C_Write_Pin;
 
