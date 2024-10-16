@@ -2,10 +2,15 @@
   {
     "id": "0x1806E5F4",
     "desc": "BMS Message Send",
+    "sim_freq": 700,
     "fields": [
       {
         "name": "BMS/Charging/Voltage",
         "unit": "V",
+        "sim_min": 400,
+        "sim_max": 505,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 0.3,
         "points": [
           {
             "size": 16,
@@ -17,6 +22,10 @@
       {
         "name": "BMS/Charging/Current",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 12,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 16,
@@ -28,6 +37,10 @@
       {
         "name": "BMS/Charging/Control",
         "unit": "",
+        "sim_min": 0,
+        "sim_max": 255,
+        "sim_inc_min": 255,
+        "sim_inc_max": 255,
         "points": [
           {
             "size": 8
@@ -51,10 +64,15 @@
   {
     "id": "0x18FF50E5",
     "desc": "Charger Box Status",
+    "sim_freq": 1000,
     "fields": [
       {
         "name": "Charger/Box/Voltage",
         "unit": "V",
+        "sim_min": 400,
+        "sim_max": 505,
+        "sim_inc_min": 0.01,
+        "sim_inc_max": 0.3,
         "points": [
           {
             "size": 16,
@@ -66,6 +84,10 @@
       {
         "name": "Charger/Box/Current",
         "unit": "A",
+        "sim_min": 0,
+        "sim_max": 12,
+        "sim_inc_min": 0.1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 16,
@@ -78,6 +100,10 @@
       {
         "name": "Charger/Box/F_CommTimeout",
         "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -88,6 +114,10 @@
       {
         "name": "Charger/Box/F_WrongBatConnection",
         "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -98,6 +128,10 @@
       {
         "name": "Charger/Box/F_VoltageWrong",
         "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -108,6 +142,10 @@
       {
         "name": "Charger/Box/F_OverTemp",
         "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1
@@ -118,6 +156,10 @@
       {
         "name": "Charger/Box/F_HardwareFailure",
         "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
         "points": [
           {
             "size": 1

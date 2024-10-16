@@ -10,10 +10,12 @@ class Result:
    encode_data: str
    encode_master_mapping: str
    format_data: str
+   simulate_data: str
 
-   def __init__(self, decode_data: str, master_mapping: str, encode_data: str, encode_master_mapping: str, format_data: str):
+   def __init__(self, decode_data: str, master_mapping: str, encode_data: str, encode_master_mapping: str, format_data: str, simulate_data: str = ""):
       self.decode_data = decode_data
       self.decode_master_mapping = master_mapping
       self.encode_data = encode_data
       self.encode_master_mapping = encode_master_mapping
       self.format_data = format_data
+      self.simulate_data = simulate_data

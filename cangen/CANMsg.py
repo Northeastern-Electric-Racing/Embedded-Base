@@ -11,6 +11,7 @@ class CANMsg:
     id: str     # Hex value of CAN ID, i.e. `0x88`
     desc: str   # Brief name of CAN message, used for generating function names
     fields: list[NetField] # List of CAN fields in the message
+    sim_freq: Optional[int] # Frequency to simulate this message at, in ms
 
 @dataclass
 class EncodableCANMsg(CANMsg):
