@@ -163,17 +163,12 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
 
 @app.command(help="Open UART terminal of conneced device")
 def serial(list: bool = typer.Option(False, "--list", help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)"),
-           device: str = typer.Option(None, "--device", "-d", help="Specify the board to connect to")):
-
-    if device:
-        dev = device
-    else:
-        dev = None
+           device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to")):
 
     if list:
-        miniterm(list=True, device=dev)
+        miniterm(list=True, device=device)
     else:
-        miniterm(list=False, device=dev)
+        miniterm(device=device)
 
 # ==============================================================================
 # Update command
