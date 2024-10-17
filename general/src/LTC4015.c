@@ -14,7 +14,7 @@ int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write)
 	dev->write = write;
 
 	//Gets the value from the Charging state register
-	LtC4015_read(dev, LTC4015_CHGSTATE, dev->CHGdata);
+	LtC4015_read(dev, LTC4015_CHGSTATE, &dev->chargeFaults);
 }
 
 int LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data)
