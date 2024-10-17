@@ -28,15 +28,15 @@ int pca9539_write_reg(pca9539_t *pca, uint16_t reg_type, uint8_t buf)
 int pca9539_write_pin(pca9539_t *pca, uint16_t reg_type, uint8_t pin,
 		      uint8_t buf)
 {
-	//int8_t data;
+	//uint8_t data;
+	//uint8_t data_new; 
 	
 
 	int status = pca->write(pca->dev_addr, reg_type, buf);
 	if (status) {
 		return status;
 	}
-	//uint8_t data_new; 
-	
+
 	//data_new = (data & ~(1u << pin)) | (buf << pin);
 
 	return pca->write(pca->dev_addr, reg_type, buf);
@@ -53,6 +53,6 @@ int pca9539_read_pin(pca9539_t *pca, uint16_t reg_type, uint8_t pin,
 		return status;
 	}
 	//*buf = (data & (1 << pin)) > 0; 
-
+	
 	return pca->read(pca->dev_addr, reg_type, *buf);
 }
