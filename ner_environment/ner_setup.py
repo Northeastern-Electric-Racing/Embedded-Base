@@ -9,6 +9,18 @@ try:
 except ImportError:
     distro = None
 
+def is_wsl(v: str = platform.uname().release) -> int:
+    """
+    detects if Python is running in WSL
+    """
+
+    if v.endswith("-Microsoft"):
+        return 1
+    elif v.endswith("microsoft-standard-WSL2"):
+        return 2
+
+    return 0
+
 def run_command(command, check=True, shell=False):
     try:
         result = subprocess.run(command, check=check, shell=shell, text=True, capture_output=True)
@@ -19,22 +31,20 @@ def run_command(command, check=True, shell=False):
         print(f"Command failed: {e.cmd}\nReturn code: {e.returncode}\nOutput: {e.output}\nError: {e.stderr}", file=sys.stderr)
         sys.exit(1)
 
-def check_docker_and_rust():
-    print("This script requires Docker and Rust to be installed.")
-    answer = input("Do you have Docker and Rust installed? (yes/no): ").strip().lower()
+def check_docker():
+    print("This script requires Docker to be installed.")
+    answer = input("Do you have Docker installed? (yes/no): ").strip().lower()
     if 'y' not in answer:
         sys.exit(1)
 
     os_type = platform.system()
     if os_type == 'Windows':
-        print("Windows OS detected. If on windows, you must be using bash (included with git), instead of cmd or powershell") 
-        answer = input("Are you using bash? (yes/no): ").strip().lower()
-        if 'y' not in answer:
-	        sys.exit(1)  
+        print("Windows OS detected. If on windows, you must be using WSL. Revist the docs and reinstall. Sorry") 
+        sys.exit(1) 
 
 def docker_pull(image_url):
     os_type = platform.system()
-    if os_type=='Windows' or os_type == 'Darwin':
+    if is_wsl() or os_type == 'Darwin':
         print("Please open the Docker Desktop application before proceeding")
         answer =input("Is the Docker Desktop app running? (yes/no)")
     print("Pulling Docker image...")
@@ -70,11 +80,7 @@ def install_precommit(venv_python):
 def install_openocd():
     os_type = platform.system()
     try:
-        if os_type == "Windows":
-            print("Please install OpenOCD manually on Windows. You can download it from https://gnutoolchains.com/arm-eabi/openocd/")
-            print("You will need to unzip the downloaded file and run the exe file.")
-            return
-        elif os_type == "Darwin":
+        if os_type == "Darwin":
             run_command(["brew", "install", "openocd"])
 
         elif os_type == "Linux":
@@ -113,8 +119,8 @@ def main():
     print("Everyone's system is different, and if you already have something installed, or know exactly")
     print("what you are doing, feel free to manually go about this as needed.")
 
-    # Step 0: Check for Docker and Rust
-    check_docker_and_rust()
+    # Step 0: Check for Docker
+    check_docker()
 	
     # Step 1: pull image
     answer = input("Would you like to pull the docker image? (yes/no)")
@@ -137,7 +143,7 @@ def main():
         answer = input("Would you like to install all python packages in the venv? (yes/no)")
         if 'y' in answer:
         # Use the venv's Python
-            venv_python = os.path.join(venv_path, 'Scripts', 'python') if os_type == "Windows" else os.path.join(venv_path, 'bin', 'python')
+            venv_python = os.path.join(venv_path, 'bin', 'python')
 
             # Step 4: run setup.py (installs requirements and entry points)
             run_setup(venv_python)
@@ -151,7 +157,7 @@ def main():
         install_openocd()
 
     # Step 6: Install usbip if on Linux
-    if os_type == "Linux":
+    if os_type == "Linux" and is_wsl() == 0:
         answer = input("Would you like to install usbip? (yes/no)")
         if 'y' in answer:
             install_usbip()
