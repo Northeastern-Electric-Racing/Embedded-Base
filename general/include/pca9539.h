@@ -41,52 +41,33 @@ typedef int(*WritePtr)( uint16_t address, uint8_t reg_type,
 				uint8_t data );
 typedef int(*ReadPtr)( uint16_t address, uint8_t reg_type,
 			       uint8_t data );
-//typedef void(*I2C_ReadPinFuncPtr){uint16_t };
-//typedef void(*I2C_WritePinFuncPtr){};
+
 
 typedef struct {
-	I2C_HandleTypeDef *i2c_handle;
-	uint16_t dev_addr;
+	
+	uint8_t dev_addr;
 
 	// Two Function Pointers
-	WritePtr Write;
-	ReadPtr Read;
-	//I2C_ReadPinFuncPtr local_I2C_Read_Pin;
-	//I2C_WritePinFuncPtr local_I2C_Write_Pin;
+	WritePtr write;
+	ReadPtr read;
 
 } pca9539_t;
 
-/// Init PCA9539, a 16 bit I2C GPIO expander
-//Includes use of Function Pointers with instance writeFunc and readFunc
-void pca9539_init(pca9539_t *pca, WritePtr writeFunc,
-		  ReadPtr readFunc, I2C_HandleTypeDef *i2c_handle,
-		  uint8_t dev_addr);
 
-//READ/WRITE
-//Don't need struct pointer from initialization?
-//***The pointers for these functions will be general pca_read_reg, general pca_write_reg which are linked to HAL functions
+//Includes use of Function Pointers with instance writeFunc and readFunc
+
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc,
+		  ReadPtr readFunc, uint8_t dev_addr);
+
+
 int pca9539_read_reg(pca9539_t *pca, uint16_t reg_type, uint8_t *buf);
 
 int pca9539_write_reg(pca9539_t *pca, uint16_t reg_type, uint8_t buf);
 
-/*
-/// @brief Read all pins on a bus, for example using reg_type input to get incoming logic level
-HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-								   uint8_t *buf);
 
-/// @brief Write all pins on a bus, for example using reg_type OUTPUT to set logic level or DIRECTION to set as
-/// output
-HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
-*/
-
-//PIN WRITE/READ
-
-/// @brief Write a specific pin on a bus, do not iterate over this, use write_pins instead
-//HAL_StatusTypeDef
 int pca9539_write_pin(pca9539_t *pca, uint16_t reg_type, uint8_t pin,
 		      uint8_t buf);
-/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins instead
-//HAL_StatusTypeDef
+
 int pca9539_read_pin(pca9539_t *pca, uint16_t reg_type, uint8_t pin,
 		     uint8_t *buf);
 
