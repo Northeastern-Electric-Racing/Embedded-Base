@@ -21,6 +21,7 @@ import sys
 import os
 import glob
 import time
+from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
@@ -178,7 +179,7 @@ def serial(list: bool = typer.Option(False, "--list", help="Specify the device t
 def update():
 
     dir = os.getcwd()
-    if dir == "Embedded-Base":
+    if "bedded" in dir:
         command = ["pip", "install", "-e", "ner_environment"]
 
     else:  
@@ -186,12 +187,12 @@ def update():
         if os.path.exists(os.path.join(dir, "Drivers", "Embedded-Base")):
             os.chdir("..")
 
-        # here from app or started from root
-        if os.path.exists(os.path.join(dir, "Embedded-Base")):
 
-            command = ["pip", "install", "-e", os.path.join(dir, "Embedded-Base", "ner_environment")]
+        # here from app or started from root
+        if contains_subdir(os.getcwd(), "bedded"):
+            command = ["pip", "install", "-e", os.path.join("Embedded-Base", "ner_environment")]
         else:
-            print("[bold red] Error: No ner_environment found in current directory")
+            print("[bold red] Error: No ner_environment found in current directory. Run from NER root, app, or Embedded-Base directories")
             sys.exit(1)
 
     run_command(command)
@@ -270,6 +271,13 @@ def is_wsl() -> int:
     if platform.system() == "Linux" and "microsoft" in platform.uname().release.lower():
         return 2  # WSL2
     return 0  # Not WSL
+
+def contains_subdir(base_path, search_str):
+    base_dir = Path(base_path)
+    for item in base_dir.iterdir():
+        if item.is_dir() and search_str in item.name:
+            return True
+    return False
 
 # ==============================================================================
 # Entry
