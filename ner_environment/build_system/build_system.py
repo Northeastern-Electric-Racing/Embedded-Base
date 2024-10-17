@@ -44,7 +44,7 @@ def unsupported_option_cb(value:bool):
 # ==============================================================================
 
 @app.command(help="Build the project with GCC ARM Toolchain and Make")
-def build(profile: str = typer.Option("release", "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
+def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
     if clean:
