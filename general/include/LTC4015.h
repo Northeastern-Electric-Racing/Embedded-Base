@@ -39,12 +39,19 @@
 //Enable Coulomb Counter Low Alert.(0xOD Bit 13)
 //Enable Coulomb Counter High Alert.(0xOD Bit 12)
 
+typedef int (*Read_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
+			uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
+
+typedef int (*Write_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
+			 uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
+
 typedef struct {
-	I2C_HandleTypeDef *i2cHandle;
 	uint16_t chargeFaults; //Stores error faults from CHGSTATE register
 	uint16_t qcount;
 	uint16_t limitAlerts;
 
+	Read_Ptr read;
+	Write_Ptr write;
 } LTC4015_T;
 
 /**
@@ -54,7 +61,7 @@ typedef struct {
  * @param hi2c
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle);
+int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write);
 
 /**
  * @brief Reads from the LTC4015EUHF#PBF load switch 
@@ -63,7 +70,7 @@ HAL_StatusTypeDef LTC4015_Init(LTC4015_T *dev, I2C_HandleTypeDef *i2cHandle);
  * @param dev
  * @param i2c_handle
  */
-HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data);
+int LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data);
 
 /**
  * @brief Writes to the LTC4015EUHF#PBF load switch 
@@ -73,7 +80,7 @@ HAL_StatusTypeDef LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data);
  * @param i2c_handle
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
+int LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
 
 /**
  * @brief Checks coulombs of charger to see if within a given range, more info on page 38-40
@@ -85,8 +92,8 @@ HAL_StatusTypeDef LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
  * @param lowAlert
  * @return HAL_StatusTypeDef, QCOUNT, Faulted 
  */
-HAL_StatusTypeDef LTC4015_Qcounter(LTC4015_T *dev, uint16_t prescaler,
-				   uint16_t highAlert, uint16_t lowAlert);
+int LTC4015_Qcounter(LTC4015_T *dev, uint16_t prescaler, uint16_t highAlert,
+		     uint16_t lowAlert);
 
 #ifndef MAX_NUM_LTC4015_INSTANCES
 #define MAX_NUM_LTC4015_INSTANCES 1
