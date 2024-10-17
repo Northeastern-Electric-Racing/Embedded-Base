@@ -33,13 +33,18 @@ from .miniterm import main as miniterm
 app = typer.Typer(help="Northeastern Electric Racing Firmware Build System",
                   epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/611516420/NER+Build+System",
                   add_completion=False)
+
+def unsupported_option_cb(value:bool):
+    if value:
+        print("[bold red] WARNING: the selected option is not currently implemented. This is either because is is an planned or deprecated feature")
+        raise typer.Exit()
       
 # ==============================================================================
 # Build command
 # ==============================================================================
 
 @app.command(help="Build the project with GCC ARM Toolchain and Make")
-def build(profile: str = typer.Option("release", "--profile", "-p", help="Specify the build profile (e.g., debug, release) NOT YET SUPPORTED", show_default=True),
+def build(profile: str = typer.Option("release", "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
     if clean:
@@ -75,7 +80,7 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 
 @app.command(help="Start a debug session")
 def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the device uses an FTDI chip"),
-          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
+          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
     command = ["openocd"]
     current_directory = os.getcwd()
