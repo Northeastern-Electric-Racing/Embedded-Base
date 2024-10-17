@@ -43,7 +43,7 @@ typedef int (*Read_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
 			uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
 
 typedef int (*Write_Ptr)(uint16_t DevAddress, uint16_t MemAddress,
-			uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
+			 uint16_t MemAddSize, uint8_t *pData, uint16_t Size);
 
 typedef struct {
 	uint16_t chargeFaults; //Stores error faults from CHGSTATE register
@@ -59,7 +59,7 @@ typedef struct {
  *
  * @param dev
  * @param hi2c
- * @return HAL_StatusTypeDef
+ * @return int
  */
 int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write);
 
@@ -68,17 +68,18 @@ int LTC4015_Init(LTC4015_T *dev, Read_Ptr read, Write_Ptr write);
  * @note always reads from both input registers
  *
  * @param dev
- * @param i2c_handle
+ * @param reg
+ * @param data
  */
 int LTC4015_read(LTC4015_T *dev, uint16_t reg, uint16_t *data);
 
 /**
  * @brief Writes to the LTC4015EUHF#PBF load switch 
  *
- * @param device
+ * @param dev
+ * @param reg
  * @param data
- * @param i2c_handle
- * @return HAL_StatusTypeDef
+ * @return int
  */
 int LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
 
@@ -90,7 +91,7 @@ int LTC4015_write(LTC4015_T *dev, uint16_t reg, uint16_t data);
  * @param highAlert
  * @param prescaler
  * @param lowAlert
- * @return HAL_StatusTypeDef, QCOUNT, Faulted 
+ * @return int
  */
 int LTC4015_Qcounter(LTC4015_T *dev, uint16_t prescaler, uint16_t highAlert,
 		     uint16_t lowAlert);
