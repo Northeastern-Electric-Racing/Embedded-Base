@@ -2,35 +2,52 @@
 # Northeastern Electric Racing Firmware Build System
 # v0.1 10.07.2024
 # Original Author: Dylan Donahue
-# Last Modified: 10.08.2024 by Dylan Donahue
+# Last Modified: 10.15.2024 by Dylan Donahue
 #
 # This script defines a custom build system wrapper for our combined docker and python virtual environment build system.
 # Provided here is a comprehensive set of commands that allow for the complete interaction with NERs toolset.
 # Each command is defined as a function and is called by the main function, and has help messages and configuration options.
 # Commands can be run with the virtual environment active by prefixing the command with `ner <command>`.
 # 
-# See more documentation at <confluence link>
+# See more documentation at https://nerdocs.atlassian.net/wiki/spaces/NER/pages/611516420/NER+Build+System
 #
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
-import argparse
+import typer
+from rich import print
 import platform
 import subprocess
 import sys
 import os
 import glob
 import time
+from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
 
 # ==============================================================================
+# Typer application setup
+# ==============================================================================
+    
+app = typer.Typer(help="Northeastern Electric Racing Firmware Build System",
+                  epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/611516420/NER+Build+System",
+                  add_completion=False)
+
+def unsupported_option_cb(value:bool):
+    if value:
+        print("[bold red] WARNING: the selected option is not currently implemented. This is either because is is an planned or deprecated feature")
+        raise typer.Exit()
+      
+# ==============================================================================
 # Build command
 # ==============================================================================
 
-def build(args):
+@app.command(help="Build the project with GCC ARM Toolchain and Make")
+def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
+          clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
-    if args.clean:
+    if clean:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
     else:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
@@ -40,15 +57,19 @@ def build(args):
 # Clang command
 # ==============================================================================
 
-def clang(args):
-    if args.disable:
+@app.command(help="Configure autoformatter settings")
+def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable clang-format"),
+          enable: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
+          run: bool = typer.Option(False, "--run", "-r", help="Run clang-format")):
+    
+    if disable:
         command = ["pre-commit", "uninstall"]
-    elif args.enable:
+    elif enable:
         command = ["pre-commit", "install"]
-    elif args.run:
+    elif run:
         command = ["pre-commit", "run", "--all-files"]
     else:
-        print("Error: No valid option specified")
+        print("[bold red] Error: No valid option specified")
         sys.exit(1)
         
     run_command(command)
@@ -57,17 +78,14 @@ def clang(args):
 # Debug command
 # ==============================================================================
 
-def debug(args):
+@app.command(help="Start a debug session")
+def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the device uses an FTDI chip"),
+          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
-    command = []
-    #if args.docker:
-    #    print("Dockerized openocd unsupported for gdb")
-    #    sys.exit(1)
-    
-    command = command + ["openocd"]
-
+    command = ["openocd"]
     current_directory = os.getcwd()
-    if args.ftdi:
+
+    if ftdi:
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
     else:
@@ -76,18 +94,21 @@ def debug(args):
     build_directory = os.path.join("build", "*.elf")
     elf_files = glob.glob(build_directory)
     if not elf_files:
-        print("Error: No ELF file found in ./build/")
+        print("[bold red] Error: No ELF file found in ./build/")
         sys.exit(1)
 
     elf_file = os.path.basename(os.path.normpath(elf_files[0]))  # Take the first ELF file found
-    print(f"Found ELF file: {elf_file}")
+    print(f"[bold blue] Found ELF file: [/bold blue] [blue] {elf_file}")
 
     halt_command = command + ["-f", "flash.cfg", "-f", os.path.join(current_directory, "Drivers", "Embedded-Base", "openocd.cfg"),
-"-c", "init", "-c", "reset halt"]
+                              "-c", "init", "-c", "reset halt"]
+    
     ocd = subprocess.Popen(halt_command)
     time.sleep(1)
     
     # for some reason the host docker internal thing is broken on linux despite compose being set correctly, hence this hack
+    # TODO: fix this properly
+
     gdb_uri  = "host.docker.internal"
     if platform.system() == "Linux" and is_wsl() == 0:
         gdb_uri = "localhost"
@@ -102,27 +123,26 @@ def debug(args):
     ocd.terminate()
     time.sleep(1)
 
-    
-    
-	
-
 # ==============================================================================
 # Flash command
 # ==============================================================================
 
-def flash(args):
+@app.command(help="Flash the firmware")
+def flash(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the device uses an FTDI chip"),
+          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
 
     command = []
-    if args.docker and args.ftdi:
-        print("Cannot flash ftdi from docker")
+
+    if docker and ftdi:
+        print("[bold red] Cannot flash ftdi from docker")
         sys.exit(1)
 
-    if args.docker:
+    if docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
 
     command = command + ["openocd"]
 
-    if args.ftdi:
+    if ftdi:
         current_directory = os.getcwd()
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
@@ -133,189 +153,92 @@ def flash(args):
     build_directory = os.path.join("build", "*.elf")
     elf_files = glob.glob(build_directory)
     if not elf_files:
-        print("Error: No ELF file found in ./build/")
+        print("[bold red] Error: No ELF file found in ./build/")
         sys.exit(1)
 
     elf_file = elf_files[0]  # Take the first ELF file found
-    print(f"Found ELF file: {elf_file}")
+    print(f"[bold blue] Found ELF file: [/bold blue] [blue] {elf_file}")
 
     command = command + ["-f", "flash.cfg", "-c", f"program {elf_file} verify reset exit"]
     
     run_command(command, stream_output=True)
 
-
 # ==============================================================================
 # Serial command
 # ==============================================================================
 
-def serial(args):
-    miniterm(args)
+@app.command(help="Open UART terminal of conneced device")
+def serial(ls: bool = typer.Option(False, "--list", help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)"),
+           device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to")):
+
+    if ls:
+        miniterm(ls=True, device=device)
+    else:
+        miniterm(device=device)
 
 # ==============================================================================
 # Update command
 # ==============================================================================
 
-def update(args):
-    pass
+@app.command(help="Update the ner_environment package")
+def update():
 
+    dir = os.getcwd()
+    if "bedded" in dir:
+        command = ["pip", "install", "-e", "ner_environment"]
+
+    else:  
+        # app folder - go up one level to root                                      
+        if os.path.exists(os.path.join(dir, "Drivers", "Embedded-Base")):
+            os.chdir("..")
+
+
+        # here from app or started from root
+        if contains_subdir(os.getcwd(), "bedded"):
+            command = ["pip", "install", "-e", os.path.join("Embedded-Base", "ner_environment")]
+        else:
+            print("[bold red] Error: No ner_environment found in current directory. Run from NER root, app, or Embedded-Base directories")
+            sys.exit(1)
+
+    run_command(command)
+    
 # ==============================================================================
 # USBIP command
 # ==============================================================================
 
-def usbip(args):
-    if args.connect:
-        if args.device is None:
-            print("Error --device must be specified when using --connect")
+@app.command(help="Interact with the USB over IP system")
+def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a USB device"),
+          disconnect: bool = typer.Option(False, "--disconnect", help="Disconnect the connected USB device"),
+          device: str = typer.Option(None, "--device", "-d", help="Specify the device to connect or disconnect (e.g., shepherd, cerberus)")):
+
+    if connect:
+        if device is None:
+            print("[bold red] Error --device must be specified when using --connect")
         
         disconnect_usbip() # Disconnect the current USB device
         
-        if args.device == "shep" or args.device == "shepherd":
+        if device == "shep" or device == "shepherd":
             commands = [
                 ["sudo", "modprobe", "vhci_hcd"],
                 ["sudo", "usbip", "attach", "-r", "192.168.100.12", "-b", "1-1.4"]
             ]
 
-        elif args.device == "cerb" or args.device == "cerberus":
+        elif device == "cerb" or device == "cerberus":
             commands = [
                  ["sudo", "modprobe", "vhci_hcd"],
                 ["sudo", "usbip", "attach", "-r", "192.168.100.12", "-b", "1-1.3"]
             ]
         
         else:
-            print("Error: Invalid device name")
+            print("[bold red] Error: Invalid device name")
             sys.exit(1)
         
         run_command(commands[0])
         run_command(commands[1])
     
-    elif args.disconnect:
+    elif disconnect:
         disconnect_usbip()
-
-# ==============================================================================
-# Main function
-# ==============================================================================
-
-def main():
-
-    parser = argparse.ArgumentParser(
-        description="NER: Embedded Build System", 
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-
-    subparsers = parser.add_subparsers(
-        title="Commands", 
-        description="Available commands: build, flash, debug, update, usbip, serial",
-        dest="command",
-        required=True
-    )
-
-    # ==============================================================================
-
-    parser_build = subparsers.add_parser('build', help="Build the project with CMake")
-    parser_build.add_argument(
-        '--profile', 
-        type=str, 
-        help="Specify the build profile (e.g., debug, release)", 
-        default="debug"
-    )
-    parser_build.add_argument(
-        '--clean', 
-        action="store_true", 
-        help="Clean the build directory before building"
-    )
-    parser_build.set_defaults(func=build)
-
-    # ==============================================================================
-
-    # ==============================================================================
-
-    parser_clang = subparsers.add_parser('clang', help="Configure autoformatter settings")
-    parser_clang.add_argument(
-        '--disable',
-        action="store_true",
-        help="Disable clang-format"
-    )
-    parser_clang.add_argument(
-        '--enable',
-        action="store_true",
-        help="Enable clang-format"
-    )
-    parser_clang.add_argument(
-        '--run',
-        action="store_true",
-        help="Run clang-format"
-    )
-    parser_clang.set_defaults(func=clang)
-
-    # ==============================================================================
-
-    # ==============================================================================
-
-    parser_flash = subparsers.add_parser('flash', help="Flash the firmware")
-    parser_flash.add_argument(
-        '--ftdi', 
-        action="store_true",
-        help="Set this flag if the device uses an FTDI chip", 
-    )
-    parser_flash.add_argument(
-        '--docker', 
-        action="store_true", 
-        help="Use OpenOCD in the container instead of locally, requires linux"
-    )
-    parser_flash.set_defaults(func=flash)
-
-    # ==============================================================================
-
-    # ==============================================================================
-
-    parser_debug = subparsers.add_parser('debug', help="Start a debug session")
-    parser_debug.add_argument(
-        '--ftdi',
-        action="store_true",
-        help="Set this flag if the device uses an FTDI chip",
-    )
-    parser_debug.set_defaults(func=debug)
-
-    # ==============================================================================
-
-    # ==============================================================================
-
-    parser_usbip = subparsers.add_parser('usbip', help="Connect or disconnect USB devices over IP")
-    parser_usbip.add_argument(
-        '--connect',
-        action="store_true",
-        help="Connect a USB device"
-    )
-    parser_usbip.add_argument(
-        '--disconnect',
-        action="store_true",
-        help="Disconnect a USB device"
-    )
-    parser_usbip.add_argument(
-        '--device',
-        type=str,
-        help="Specify the device to connect or disconnect (e.g., shepherd, cerberus)"
-    )
-    parser_usbip.set_defaults(func=usbip)
-
-    parser_serial = subparsers.add_parser('serial', help="Open UART terminal of conneced device")
-    parser_serial.add_argument(
-        '--list',
-        action="store_true",
-        help="List connected TTY devices"
-    )
-    parser_serial.add_argument(
-        '--device',
-        type=str,
-        help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)",
-    )
-    parser_serial.set_defaults(func=serial)
-
-    # ==============================================================================
-
-    args = parser.parse_args()
-    args.func(args)
-    
+ 
 # ==============================================================================
 # Helper functions - not direct commands
 # ==============================================================================
@@ -348,21 +271,25 @@ def disconnect_usbip():
     command = ["sudo", "usbip", "detach", "-p", "0"]
     run_command(command, exit_on_fail=False)
 
-def is_wsl(v: str = platform.uname().release) -> int:
-    """
-    detects if Python is running in WSL
-    """
+def is_wsl() -> int:
+    """Detects if Python is running in WSL by checking the system name."""
+    if platform.system() == "Linux" and "microsoft" in platform.uname().release.lower():
+        return 2  # WSL2
+    return 0  # Not WSL
 
-    if v.endswith("-Microsoft"):
-        return 1
-    elif v.endswith("microsoft-standard-WSL2"):
-        return 2
+def contains_subdir(base_path, search_str):
+    base_dir = Path(base_path)
+    for item in base_dir.iterdir():
+        if item.is_dir() and search_str in item.name:
+            return True
+    return False
 
-    return 0
-
+# ==============================================================================
+# Entry
+# ==============================================================================
 
 if __name__ == "__main__":
-    main()
+    app(prog_name="ner")
 
 
  
