@@ -68,8 +68,6 @@ int sht30_get_temp_humid(sht30_t *sht30) {
     return status;
   }
 
-  sht30->delay(1u);
-
   status = sht30->i2c_receive(SHT30_I2C_ADDR, data.databuf, sizeof(data.databuf), 30u);
   if (status != 0) {
     return status;
@@ -80,7 +78,6 @@ int sht30_get_temp_humid(sht30_t *sht30) {
     return -1;
   }
 
-  uint32_t temp_val = (uint32_t)(175000u * (uint32_t)temp / 65535u - 45000u);
   sht30->temp = (uint16_t)(temp_val / 1000u);
 
   uint16_t humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
@@ -88,7 +85,8 @@ int sht30_get_temp_humid(sht30_t *sht30) {
     return -1;
   }
 
-  sht30->humidity = (uint16_t)((100000u * (uint32_t)humidity) / 65535u);
+  humidity = (uint16_t)(100.0f * (float)humidity / 65535.0f);
+  sht30->humidity = humidity;
 
   return 0;
 }
