@@ -1,6 +1,4 @@
-# from cangen.RustSynth import RustSynth
 from cangen.RustSynthFromJSON import RustSynthFromJSON
-# from cangen.YAMLParser import YAMLParser
 from cangen.CANMsg import CANMsg
 from cangen.CANMsg import EncodableCANMsg
 from cangen.CANField import NetField
