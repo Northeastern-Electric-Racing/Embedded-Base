@@ -4,12 +4,12 @@
 #include "stm32xx_hal.h"
 
 /* Function Pointers*/
-typedef void (*GPIO_WriteFuncPtr)(uint16_t cs_pin, uint8_t PinState);
+typedef void (*GPIO_WriteFuncPtr)(uint8_t cs_pin, uint8_t PinState);
 typedef void (*SPI_TransmitFuncPtr)(uint8_t *pData, uint16_t size);
 typedef int (*SPI_ReceiveFuncPtr)(uint8_t *pData, uint16_t size);
 
 typedef struct {
-	uint16_t cs_pin;
+	uint8_t cs_pin;
 	GPIO_WriteFuncPtr local_GPIO_Write;
 	SPI_TransmitFuncPtr local_SPI_Transmit;
 	SPI_ReceiveFuncPtr local_SPI_Receive;
