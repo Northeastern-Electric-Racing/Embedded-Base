@@ -9,51 +9,41 @@
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
-	/* set up filter */
-	uint16_t high_id = can->id_list[0];
-	uint16_t low_id = can->id_list[0];
+	// Set Up Filters
+	uint8_t err = HAL_OK;
+	uint32_t filters_to_add[4];
 
-	for (uint8_t i = 0; i < can->id_list_len; i++) {
-		if (can->id_list[i] > high_id)
-			high_id = can->id_list[i];
-		if (can->id_list[i] < low_id)
-			low_id = can->id_list[i];
+	for (uint8_t i = 0; i < can->id_list_len - (can->id_list_len % 4); i++) {
+		if ((i + 1) % 4 == 0)
+			err = can_add_filter(can, 
+								filters_to_add[i-3], 
+								filters_to_add[i-2], 
+								filters_to_add[i-1], 
+								filters_to_add[i]);
+		
+		filters_to_add[i % 4] = can->id_list[i];
 	}
 
-	// uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
+	// Ugly Code
+	if (can->id_list_len % 4 == 3)
+		err = can_add_filter(can, 
+							can->id_list[can->id_list_len-3], 
+							can->id_list[can->id_list_len-2], 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1]);
+	else if (can->id_list_len % 4 == 2)
+		err = can_add_filter(can, 
+							can->id_list[can->id_list_len-2], 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1]);
+	else if (can->id_list_len % 4 == 1)
+		err = can_add_filter(can, 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1], 
+							can->id_list[can->id_list_len-1]);
 
-	CAN_FilterTypeDef sFilterConfig;
-
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-
-	// sFilterConfig.FilterBank = 0;                       /* Filter bank number
-	// (0 to 27 for most STM32 series) */ sFilterConfig.FilterMode =
-	// CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
-	// sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier
-	// list */
-
-	// sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
-	// sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
-
-	// sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for
-	// ID range */ sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to
-	// all ones for ID range */
-
-	// sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the
-	// filter to */ sFilterConfig.FilterActivation = ENABLE;            /* Enable
-	// the filter */
-
-	uint8_t err = 0;
-	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
 	if (err != HAL_OK)
 		return err;
 
@@ -70,6 +60,29 @@ HAL_StatusTypeDef can_init(can_t *can)
 
 	return err;
 }
+
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_t id3, uint32_t id4) {
+	CAN_FilterTypeDef filter;
+
+	filter.FilterActivation     = ENABLE;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterScale          = CAN_FILTERSCALE_16BIT;
+	filter.FilterMode           = CAN_FILTERMODE_IDLIST;
+	
+	filter.FilterIdLow          = id1 << 5u;
+	filter.FilterMaskIdLow      = id2 << 5u;
+	filter.FilterIdHigh         = id3 << 5u;
+	filter.FilterMaskIdHigh     = id4 << 5u;
+
+	tsCanFilter.FilterBank      = 0;
+	
+	uint8_t err = 0;
+	err = HAL_CAN_ConfigFilter(&can->hcan, &tsCanFilter );
+	if (err != HAL_OK)
+		return err;
+
+	return HAL_CAN_Start(can->hcan);
+} 
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
