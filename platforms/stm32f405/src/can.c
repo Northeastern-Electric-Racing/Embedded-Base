@@ -74,10 +74,10 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_
 	filter.FilterIdHigh         = id3 << 5u;
 	filter.FilterMaskIdHigh     = id4 << 5u;
 
-	tsCanFilter.FilterBank      = 0;
+	filter.FilterBank      = 0;
 	
 	uint8_t err = 0;
-	err = HAL_CAN_ConfigFilter(&can->hcan, &tsCanFilter );
+	err = HAL_CAN_ConfigFilter(can->hcan, &filter);
 	if (err != HAL_OK)
 		return err;
 
