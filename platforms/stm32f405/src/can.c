@@ -61,7 +61,8 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_t id3, uint32_t id4) {
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_t id3, uint32_t id4) 
+{
 	CAN_FilterTypeDef filter;
 
 	filter.FilterActivation     = ENABLE;
@@ -80,7 +81,7 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_
 	err = HAL_CAN_ConfigFilter(can->hcan, &filter);
 	if (err != HAL_OK)
 		return err;
-
+ 
 	return HAL_CAN_Start(can->hcan);
 } 
 
