@@ -22,16 +22,15 @@ static void ads131m04_send_command(ads131_t *adc, uint16_t cmd);
 
 /*  Method to initialize communication over SPI and configure the ADC into
  * Continuous Conversion Mode*/
-void ads131m04_init(ads131_t *adc, GPIO_WriteFuncPtr GPIO_write,
-		    SPI_TransmitFuncPtr SPI_transmit,
-		    SPI_ReceiveFuncPtr SPI_receive, uint8_t cs_pin)
+void ads131m04_init(ads131_t *adc, GPIO_WritePtr gpio_write, WritePtr write,
+		    ReadPtr read, uint8_t pin)
 {
-	adc->local_GPIO_Write = GPIO_write;
-	adc->local_SPI_Transmit = SPI_transmit;
-	adc->local_SPI_Receive = SPI_receive;
-	adc->cs_pin = cs_pin;
+	adc->gpio_write = gpio_write;
+	adc->write = write;
+	adc->read = read;
+	adc->pin = pin;
 
-	adc->local_GPIO_Write(adc->cs_pin, 1);
+	adc->gpio_write(adc->pin, 1);
 
 	// Channel 0 has Gain default set to level 1, which is what we want for this
 	// application We can try out different configurations later if we need to,
@@ -56,10 +55,10 @@ static void ads131m04_write_reg(ads131_t *adc, uint8_t reg, uint16_t value)
 
 	// Send command to write to the specified register immediately followed by
 	// sending the value we want to write to that register
-	adc->local_GPIO_Write(adc->cs_pin, 0);
-	adc->local_SPI_Transmit(&spi_word, 1);
-	adc->local_SPI_Transmit(&value, 1);
-	adc->local_GPIO_Write(adc->cs_pin, 1);
+	adc->gpio_write(adc->pin, 0);
+	adc->write(&spi_word, 1);
+	adc->write(&value, 1);
+	adc->gpio_write(adc->pin, 1);
 }
 
 /* Method to abstract reading from a register, will use SPI commands under the
@@ -77,13 +76,13 @@ static uint16_t ads131m04_read_reg(ads131_t *adc, uint8_t reg)
 	spi_word |= (reg << 7); // Register address (bits 7-12)
 	spi_word |= (num_registers - 1); // Number of registers (bits 0-6)
 
-	adc->local_GPIO_Write(adc->cs_pin, 0);
-	adc->local_SPI_Transmit(&spi_word, 1);
-	adc->local_GPIO_Write(adc->cs_pin, 1);
+	adc->gpio_write(adc->pin, 0);
+	adc->write(&spi_word, 1);
+	adc->gpio_write(adc->pin, 1);
 
 	uint16_t res = 0;
 
-	if (adc->local_SPI_Receive((uint16_t *)&res, 1) != 0)
+	if (adc->read((uint16_t *)&res, 1) != 0)
 		return 1;
 
 	return res;
@@ -98,9 +97,9 @@ int ads131m04_read_adc(ads131_t *adc, uint32_t *adc_values)
 		     3]; // Array to store SPI data (6 words * 3 bytes per word)
 
 	// Read SPI data
-	adc->local_GPIO_Write(adc->cs_pin, 0);
-	ret = adc->local_SPI_Receive(data, 6 * 3);
-	adc->local_GPIO_Write(adc->cs_pin, 1);
+	adc->gpio_write(adc->pin, 0);
+	ret = adc->read(data, 6 * 3);
+	adc->gpio_write(adc->pin, 1);
 
 	// Process received data into ADC values
 	for (int i = 0; i < 4; i++) {
