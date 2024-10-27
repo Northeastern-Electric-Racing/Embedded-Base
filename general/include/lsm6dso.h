@@ -44,14 +44,20 @@
 #define LSM6DSO_REG_ACCEL_Z_AXIS_L 0x2C /* Accelerometer Z axis lower bits */
 #define LSM6DSO_REG_ACCEL_Z_AXIS_H 0x2D /* Accelerometer Z axis upper bits */
 
+/* Function Pointers*/
+typedef int (*I2C_Read)(uint8_t *data, uint8_t reg, uint8_t length);
+typedef int (*I2C_Write)(uint8_t *data, uint8_t reg, uint8_t length);
+
 /**
  * @brief Enumeration of axes of data available from the LSM6DSO IMU
  *
  */
 enum lsm6dso_axes {
+
 	LSM6DSO_X_AXIS = 0,
 	LSM6DSO_Y_AXIS = 1,
 	LSM6DSO_Z_AXIS = 2
+
 };
 
 /**
@@ -59,8 +65,6 @@ enum lsm6dso_axes {
  *
  */
 typedef struct {
-	I2C_HandleTypeDef *i2c_handle;
-
 	uint8_t accel_config; // TODO: We should make these cfg packed unions with
 		// bitfield structs
 
@@ -70,16 +74,18 @@ typedef struct {
 
 	int16_t gyro_data[3];
 
+	I2C_Read read_reg;
+
+	I2C_Write write_reg;
+
 } lsm6dso_t;
 
 /**
  * @brief Initializes the LSM6DSO IMU
  *
- * @param imu
- * @param i2c_handle
- * @return HAL_StatusTypeDef
+ * @return 0 if OK, other if ERROR
  */
-HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle);
+int lsm6dso_init(lsm6dso_t *imu, I2C_Read read_func, I2C_Write write_func);
 
 /* IMU Setting Configuration */
 /**
@@ -89,38 +95,35 @@ HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle);
  * @param odr_sel
  * @param fs_sel
  * @param lp_f2_enable
- * @return HAL_StatusTypeDef
+ * @return 0 if OK, other if ERROR
  */
-HAL_StatusTypeDef lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel,
-					int8_t fs_sel, int8_t lp_f2_enable);
+
+int lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			  int8_t lp_f2_enable);
 
 /**
  * @brief Configures the accelerometer of the LSM6DSO IMU
  *
- * @param imu
  * @param odr_sel
  * @param fs_sel
  * @param fs_125
- * @return HAL_StatusTypeDef
+ * @return 0 if OK, other if ERROR
  */
-HAL_StatusTypeDef lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel,
-				       int8_t fs_sel, int8_t fs_125);
+
+int lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			 int8_t fs_125);
 
 /* Data Aquisition */
 /**
  * @brief Retrieves accelerometer data from the LSM6DSO IMU
- *
- * @param imu
- * @return HAL_StatusTypeDef
+ * @return 0 if OK, other if ERROR
  */
-HAL_StatusTypeDef lsm6dso_read_accel(lsm6dso_t *imu);
+int lsm6dso_read_accel(lsm6dso_t *imu);
 
 /**
  * @brief Retreives the gyroscope data from the LSM6DSO IMU
- *
- * @param imu
- * @return HAL_StatusTypeDef
+ * @return 0 if OK, other if ERROR
  */
-HAL_StatusTypeDef lsm6dso_read_gyro(lsm6dso_t *imu);
+int lsm6dso_read_gyro(lsm6dso_t *imu);
 
 #endif // LSM6DSO_H

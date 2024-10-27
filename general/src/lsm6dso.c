@@ -9,32 +9,31 @@
 #include "lsm6dso.h"
 
 #define REG_RESOLUTION 32768 /* Half the range of a 16 bit signed integer */
+
 #define ACCEL_RANGE \
 	4 /* The range of values in g's returned from accelerometer */
 #define GYRO_RANGE 1000 /* The range of values from the gyro in dps */
 
-static inline HAL_StatusTypeDef lsm6dso_read_reg(lsm6dso_t *imu, uint8_t *data,
-						 uint8_t reg)
+static inline int lsm6dso_read_reg(lsm6dso_t *imu, uint8_t *data, uint8_t reg)
 {
-	return HAL_I2C_Mem_Read(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
-				I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	return imu->read_reg(data, reg, 1);
 }
 
-static inline HAL_StatusTypeDef lsm6dso_read_mult_reg(lsm6dso_t *imu,
-						      uint8_t *data,
-						      uint8_t reg,
-						      uint8_t length)
+static inline int lsm6dso_read_mult_reg(lsm6dso_t *imu, uint8_t *data,
+					uint8_t reg, uint8_t length)
 {
-	return HAL_I2C_Mem_Read(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
-				I2C_MEMADD_SIZE_8BIT, data, length,
-				HAL_MAX_DELAY);
+	return imu->read_reg(data, reg, length);
 }
 
-static inline HAL_StatusTypeDef lsm6dso_write_reg(lsm6dso_t *imu, uint8_t reg,
-						  uint8_t *data)
+static inline int lsm6dso_write_reg(lsm6dso_t *imu, uint8_t *data, uint8_t reg)
 {
-	return HAL_I2C_Mem_Write(imu->i2c_handle, LSM6DSO_I2C_ADDRESS, reg,
-				 I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	return imu->write_reg(data, reg, 1);
+}
+
+static inline int lsm6dso_write_mult_reg(lsm6dso_t *imu, uint8_t *data,
+					 uint8_t reg, uint8_t length)
+{
+	return imu->write_reg(data, reg, length);
 }
 
 static int16_t accel_data_convert(int16_t raw_accel)
@@ -58,47 +57,45 @@ static int16_t gyro_data_convert(int16_t gyro_accel)
 	return (int16_t)(((int32_t)val * GYRO_RANGE * 100) / REG_RESOLUTION);
 }
 
-static HAL_StatusTypeDef lsm6dso_ping_imu(lsm6dso_t *imu)
+static int lsm6dso_ping_imu(lsm6dso_t *imu)
 {
 	uint8_t reg_data;
-	HAL_StatusTypeDef status;
+	int status;
 
 	status = lsm6dso_read_reg(imu, &reg_data, LSM6DSO_REG_DEVICE_ID);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	if (reg_data != 0x6C)
-		return HAL_ERROR;
+		return -1;
 
-	return HAL_OK;
+	return 0;
 }
 
-HAL_StatusTypeDef lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel,
-					int8_t fs_sel, int8_t lp_f2_enable)
+int lsm6dso_set_accel_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			  int8_t lp_f2_enable)
 {
 	uint8_t config =
 		(((odr_sel << 4) | (fs_sel << 2) | (lp_f2_enable << 1)) << 1);
 	imu->accel_config = config;
 
-	return lsm6dso_write_reg(imu, LSM6DSO_REG_ACCEL_CTRL,
-				 &imu->accel_config);
+	return lsm6dso_write_reg(imu, &imu->accel_config,
+				 LSM6DSO_REG_ACCEL_CTRL);
 }
 
-HAL_StatusTypeDef lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel,
-				       int8_t fs_sel, int8_t fs_125)
+int lsm6dso_set_gyro_cfg(lsm6dso_t *imu, int8_t odr_sel, int8_t fs_sel,
+			 int8_t fs_125)
 {
 	uint8_t config =
 		(((odr_sel << 4) | (fs_sel << 2) | (fs_125 << 1)) << 1);
 	imu->gyro_config = config;
 
-	return lsm6dso_write_reg(imu, LSM6DSO_REG_GYRO_CTRL, &imu->gyro_config);
+	return lsm6dso_write_reg(imu, &imu->gyro_config, LSM6DSO_REG_GYRO_CTRL);
 }
 
-HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle)
+int lsm6dso_init(lsm6dso_t *imu, I2C_Read read_func, I2C_Write write_func)
 {
-	HAL_StatusTypeDef status;
-
-	imu->i2c_handle = i2c_handle;
+	int status;
 
 	imu->accel_data[LSM6DSO_X_AXIS] = 0;
 	imu->accel_data[LSM6DSO_Y_AXIS] = 0;
@@ -108,48 +105,51 @@ HAL_StatusTypeDef lsm6dso_init(lsm6dso_t *imu, I2C_HandleTypeDef *i2c_handle)
 	imu->gyro_data[LSM6DSO_Y_AXIS] = 0;
 	imu->gyro_data[LSM6DSO_Z_AXIS] = 0;
 
+	imu->read_reg = read_func;
+	imu->write_reg = write_func;
+
 	/* Quick check to make sure I2C is working */
 	status = lsm6dso_ping_imu(imu);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	/*
-          Configure IMU to default params
-          Refer to datasheet pages 56-57
-  */
+		Configure IMU to default params
+		Refer to datasheet pages 56-57
+	*/
 	status = lsm6dso_set_accel_cfg(imu, 0x08, 0x02, 0x01);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	status = lsm6dso_set_gyro_cfg(imu, 0x08, 0x02, 0x00);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
-	return HAL_OK;
+	return 0;
 }
 
-HAL_StatusTypeDef lsm6dso_read_accel(lsm6dso_t *imu)
+int lsm6dso_read_accel(lsm6dso_t *imu)
 {
 	union {
 		uint8_t buf[2];
 		int16_t data;
 	} accel_x_raw, accel_y_raw, accel_z_raw;
-	HAL_StatusTypeDef status;
+	int status;
 
 	/* Getting raw data from registers */
 	status = lsm6dso_read_mult_reg(imu, accel_x_raw.buf,
 				       LSM6DSO_REG_ACCEL_X_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	status = lsm6dso_read_mult_reg(imu, accel_y_raw.buf,
 				       LSM6DSO_REG_ACCEL_Y_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	status = lsm6dso_read_mult_reg(imu, accel_z_raw.buf,
 				       LSM6DSO_REG_ACCEL_Z_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	/* Setting imu struct values to converted measurements */
@@ -157,31 +157,31 @@ HAL_StatusTypeDef lsm6dso_read_accel(lsm6dso_t *imu)
 	imu->accel_data[LSM6DSO_Y_AXIS] = accel_data_convert(accel_y_raw.data);
 	imu->accel_data[LSM6DSO_Z_AXIS] = accel_data_convert(accel_z_raw.data);
 
-	return HAL_OK;
+	return 0;
 }
 
-HAL_StatusTypeDef lsm6dso_read_gyro(lsm6dso_t *imu)
+int lsm6dso_read_gyro(lsm6dso_t *imu)
 {
 	union {
 		uint8_t buf[2];
 		int16_t data;
 	} gyro_x_raw, gyro_y_raw, gyro_z_raw;
-	HAL_StatusTypeDef status;
+	int status;
 
 	/* Aquire raw data from registers */
 	status = lsm6dso_read_mult_reg(imu, gyro_x_raw.buf,
 				       LSM6DSO_REG_GYRO_X_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	status = lsm6dso_read_mult_reg(imu, gyro_y_raw.buf,
 				       LSM6DSO_REG_GYRO_Y_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	status = lsm6dso_read_mult_reg(imu, gyro_z_raw.buf,
 				       LSM6DSO_REG_GYRO_Z_AXIS_L, 2);
-	if (status != HAL_OK)
+	if (status != 0)
 		return status;
 
 	/* Setting imu struct values to converted measurements */
@@ -189,5 +189,5 @@ HAL_StatusTypeDef lsm6dso_read_gyro(lsm6dso_t *imu)
 	imu->gyro_data[LSM6DSO_Y_AXIS] = gyro_data_convert(gyro_y_raw.data);
 	imu->gyro_data[LSM6DSO_Z_AXIS] = gyro_data_convert(gyro_z_raw.data);
 
-	return HAL_OK;
+	return 0;
 }
