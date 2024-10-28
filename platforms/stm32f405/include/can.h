@@ -26,7 +26,7 @@ typedef struct {
 } can_msg_t;
 
 HAL_StatusTypeDef can_init(can_t *can);
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_t id3, uint32_t id4);
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t *id_list);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg);
 
