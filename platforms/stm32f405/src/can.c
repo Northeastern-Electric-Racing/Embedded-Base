@@ -7,46 +7,7 @@
  * implement in `stm32xxxx_it.c`, which STM32CubeMX generates
  */
 
-HAL_StatusTypeDef can_init(can_t *can)
-{
-	// Set Up Filters
-	uint8_t err = HAL_OK;
-	uint32_t filters_to_add[4];
-
-	for (uint8_t i = 0; i < can->id_list_len - (can->id_list_len % 4); i++) {
-		if ((i + 1) % 4 == 0)
-			err = can_add_filter(can, 
-								filters_to_add[i-3], 
-								filters_to_add[i-2], 
-								filters_to_add[i-1], 
-								filters_to_add[i]);
-		
-		filters_to_add[i % 4] = can->id_list[i];
-	}
-
-	// Ugly Code
-	if (can->id_list_len % 4 == 3)
-		err = can_add_filter(can, 
-							can->id_list[can->id_list_len-3], 
-							can->id_list[can->id_list_len-2], 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1]);
-	else if (can->id_list_len % 4 == 2)
-		err = can_add_filter(can, 
-							can->id_list[can->id_list_len-2], 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1]);
-	else if (can->id_list_len % 4 == 1)
-		err = can_add_filter(can, 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1], 
-							can->id_list[can->id_list_len-1]);
-
-	if (err != HAL_OK)
-		return err;
-
+HAL_StatusTypeDef can_init(can_t *can) {
 	/* set up interrupt & activate CAN */
 	HAL_CAN_IRQHandler(can->hcan);
 
@@ -61,8 +22,12 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_t id3, uint32_t id4) 
-{
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t *id_list) {
+	static int filterBank = 0;
+
+	if (filterBank > 7)
+		return HAL_ERROR;
+
 	CAN_FilterTypeDef filter;
 
 	filter.FilterActivation     = ENABLE;
@@ -70,23 +35,19 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id1, uint32_t id2, uint32_
 	filter.FilterScale          = CAN_FILTERSCALE_16BIT;
 	filter.FilterMode           = CAN_FILTERMODE_IDLIST;
 	
-	filter.FilterIdLow          = id1 << 5u;
-	filter.FilterMaskIdLow      = id2 << 5u;
-	filter.FilterIdHigh         = id3 << 5u;
-	filter.FilterMaskIdHigh     = id4 << 5u;
+	filter.FilterIdLow          = id_list[0] << 5u;
+	filter.FilterMaskIdLow      = id_list[1] << 5u;
+	filter.FilterIdHigh         = id_list[2] << 5u;
+	filter.FilterMaskIdHigh     = id_list[3] << 5u;
 
-	filter.FilterBank      = 0;
-	
-	uint8_t err = 0;
-	err = HAL_CAN_ConfigFilter(can->hcan, &filter);
-	if (err != HAL_OK)
-		return err;
- 
-	return HAL_CAN_Start(can->hcan);
+	filter.FilterBank      		= filterBank;
+
+	filterBank++;
+
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 } 
 
-HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
-{
+HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg) {
 	CAN_TxHeaderTypeDef tx_header;
 	tx_header.StdId = msg->id;
 	tx_header.ExtId = 0;
@@ -105,8 +66,7 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg)
-{
+HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg) {
 	CAN_TxHeaderTypeDef tx_header;
 	tx_header.StdId = 0;
 	tx_header.ExtId = msg->id;
