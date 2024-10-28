@@ -8,3 +8,4 @@ typedef struct {
 } rl_can_msg_t;
 
 HAL_StatusTypeDef send_rl_can_msg(can_t *can, rl_can_msg_t *rl_can_msg);
+HAL_StatusTypeDef rl_can_msg_init(rl_can_msg_t *rl_can_msg);
