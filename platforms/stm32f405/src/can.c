@@ -11,7 +11,7 @@ HAL_StatusTypeDef can_init(can_t *can) {
 	/* set up interrupt & activate CAN */
 	HAL_CAN_IRQHandler(can->hcan);
 
-	err = HAL_CAN_ActivateNotification(can->hcan,
+	int8_t err = HAL_CAN_ActivateNotification(can->hcan,
 					   CAN_IT_RX_FIFO0_MSG_PENDING);
 	if (err != HAL_OK)
 		return err;
