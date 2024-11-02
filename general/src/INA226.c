@@ -10,9 +10,8 @@ void ina226_init(ina226_t *ina, WritePtr write, ReadPtr read, uint16_t dev_addr)
 {
 	ina->write = write;
 	ina->read = read;
-	ina->dev_addr = dev_addr << 1u; // pretty sure it needs to be shifted
-	ina->current_lsb =
-		0; // temporary value before ina226_calibrate (not sure if i need this?)
+	ina->dev_addr = dev_addr << 1u;
+	ina->current_lsb = 0;
 }
 
 int ina226_read_reg(ina226_t *ina, uint8_t reg, uint16_t *data)
@@ -31,10 +30,7 @@ int ina226_calibrate(ina226_t *ina, float r_shunt, float max_current)
 	float current_lsb = max_current / 32768;
 	float cal = 0.00512 / (current_lsb * r_shunt);
 	uint16_t cal_reg = (uint16_t)floorf(cal);
-	ina->current_lsb =
-		0.00512 /
-		(cal_reg *
-		 r_shunt); // need to store as an int but not sure how since different current_lsb values might need different scaling factors
+	ina->current_lsb = 0.00512 / (cal_reg * r_shunt);
 
 	return ina226_write_reg(ina, INA226_CALIBRATION, &cal_reg);
 }
@@ -106,7 +102,6 @@ int ina226_read_bus_voltage(ina226_t *ina, float *data)
 int ina226_configure(ina226_t *ina, uint8_t mode, uint8_t vshct, uint8_t vbusct,
 		     uint8_t avg)
 {
-	// (probably need to check if params <= 7 but im not sure)
 	uint16_t configuration;
 	configuration = (avg << 9) | (vbusct << 6) | (vshct << 3) | mode;
 	return ina226_write_reg(ina, INA226_CONFIGURATION, &configuration);
@@ -119,7 +114,7 @@ int ina226_reset(ina226_t ina)
 	return ina226_write_reg(ina, INA226_CONFIGURATION, &reset);
 }
 
-// Reads manufacturer id register (kinda pointless)
+// Reads manufacturer id register
 int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data)
 {
 	uint16_t manufacturer_id;
@@ -135,7 +130,7 @@ int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data)
 	return status;
 }
 
-// Reads die id (also kinda pointless)
+// Reads die id
 int ina226_read_die_id(ina226_t ina, uint16_t *data)
 {
 	uint16_t die_id;
@@ -149,7 +144,3 @@ int ina226_read_die_id(ina226_t ina, uint16_t *data)
 
 	return status;
 }
-
-// still need to do stuff w/ alert register and mask/enable register
-// might also want to have functions to set each individual setting in the configuration register
-// also not sure if the converted current, power, and voltage should be given as float
