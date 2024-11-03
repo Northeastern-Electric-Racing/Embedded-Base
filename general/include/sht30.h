@@ -28,7 +28,6 @@ typedef enum {
 /** Function Pointers */
 typedef int (*Write_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
 typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
-typedef void (*DelayFunc)(uint32_t ms);
 
 /*
  * Start measurement command with clock streching enabled and high
@@ -44,7 +43,6 @@ typedef void (*DelayFunc)(uint32_t ms);
 typedef struct {
 	Write_ptr write_reg;
 	Read_ptr read_reg;
-	DelayFunc delay;
 	uint16_t temp;
 	uint16_t humidity;
 	bool is_heater_enabled;
@@ -56,7 +54,7 @@ typedef struct {
  * @param sht30 - SHT30 driver
  * @return int - Status code
  */
-int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg, DelayFunc delay);
+int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg);
 
 /**
  * @brief Toggles the status of the internal heater

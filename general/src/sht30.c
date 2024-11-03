@@ -35,11 +35,10 @@ static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 	return (uint16_t)((uint16_t)msb << 8u) | lsb;
 }
 
-int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg, DelayFunc delay)
+int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg)
 {
 	sht30->write_reg = write_reg;
 	sht30->read_reg = read_reg;
-	sht30->delay = delay;
 
 	uint8_t status_reg_and_checksum[3];
 	if (sht30->read_reg(status_reg_and_checksum, SHT3X_COMMAND_READ_STATUS,
@@ -80,8 +79,6 @@ int sht30_get_temp_humid(sht30_t *sht30)
 	uint16_t temp, humidity;
 
 	sht30_write_reg(sht30, (SHT30_START_CMD_WCS));
-
-	sht30->delay(1);
 
 	if (sht30->read_reg(data.databuf, 0, sizeof(data.databuf)) != 0) {
 		return -1;
