@@ -9,59 +9,9 @@
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
-	/* set up filter */
-	uint16_t high_id = can->id_list[0];
-	uint16_t low_id = can->id_list[0];
-
-	for (uint8_t i = 0; i < can->id_list_len; i++) {
-		if (can->id_list[i] > high_id)
-			high_id = can->id_list[i];
-		if (can->id_list[i] < low_id)
-			low_id = can->id_list[i];
-	}
-
-	// uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
-
-	CAN_FilterTypeDef sFilterConfig;
-
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-
-	// sFilterConfig.FilterBank = 0;                       /* Filter bank number
-	// (0 to 27 for most STM32 series) */ sFilterConfig.FilterMode =
-	// CAN_FILTERMODE_IDLIST;   /* Identifier list mode */
-	// sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;  /* 32-bit identifier
-	// list */
-
-	// sFilterConfig.FilterIdHigh = (full_id & 0xFFFF0000U) >> 5;
-	// sFilterConfig.FilterIdLow = (full_id & 0xFFFFU) << 5;
-
-	// sFilterConfig.FilterMaskIdHigh = 0xFFFF << 5;       /* Set to all ones for
-	// ID range */ sFilterConfig.FilterMaskIdLow = 0xFFFF;             /* Set to
-	// all ones for ID range */
-
-	// sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;  /* FIFO to assign the
-	// filter to */ sFilterConfig.FilterActivation = ENABLE;            /* Enable
-	// the filter */
-
-	uint8_t err = 0;
-	err = HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
-	if (err != HAL_OK)
-		return err;
-
 	/* set up interrupt & activate CAN */
-	HAL_CAN_IRQHandler(can->hcan);
-
-	err = HAL_CAN_ActivateNotification(can->hcan,
-					   CAN_IT_RX_FIFO0_MSG_PENDING);
+	int8_t err = HAL_CAN_ActivateNotification(can->hcan,
+						  CAN_IT_RX_FIFO0_MSG_PENDING);
 	if (err != HAL_OK)
 		return err;
 	err = HAL_CAN_Start(can->hcan);
@@ -69,6 +19,32 @@ HAL_StatusTypeDef can_init(can_t *can)
 		return err;
 
 	return err;
+}
+
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
+{
+	static int filterBank = 0;
+
+	if (filterBank > 7)
+		return HAL_ERROR;
+
+	CAN_FilterTypeDef filter;
+
+	filter.FilterActivation = ENABLE;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterScale = CAN_FILTERSCALE_16BIT;
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+
+	filter.FilterIdLow = id_list[0] << 5u;
+	filter.FilterMaskIdLow = id_list[1] << 5u;
+	filter.FilterIdHigh = id_list[2] << 5u;
+	filter.FilterMaskIdHigh = id_list[3] << 5u;
+
+	filter.FilterBank = filterBank;
+
+	filterBank++;
+
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
