@@ -15,8 +15,6 @@
 
 typedef struct {
 	CAN_HandleTypeDef *hcan;
-	const uint32_t *id_list;
-	uint8_t id_list_len;
 } can_t;
 
 typedef struct {
