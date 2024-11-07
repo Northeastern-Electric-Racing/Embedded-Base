@@ -6,6 +6,8 @@
 
 #ifndef INA226_H
 #define INA226_H
+#include <stdint.h>
+#include <math.h>
 
 // REGISTERS
 #define INA226_CONFIGURATION 0x00
@@ -65,10 +67,12 @@ int ina226_configure(ina226_t *ina, uint8_t mode, uint8_t vshct, uint8_t vbusct,
 		     uint8_t avg);
 
 // Resets all registers to default values
-int ina226_reset(ina226_t ina);
+int ina226_reset(ina226_t *ina);
 
 // Reads manufacturer id register
-int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data);
+int ina226_read_manufacturer_id(ina226_t *ina, uint16_t *data);
 
 // Reads die id
-int ina226_read_die_id(ina226_t ina, uint16_t *data);
+int ina226_read_die_id(ina226_t *ina, uint16_t *data);
+
+#endif //INA226_H
