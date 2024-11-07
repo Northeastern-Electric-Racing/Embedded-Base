@@ -108,14 +108,14 @@ int ina226_configure(ina226_t *ina, uint8_t mode, uint8_t vshct, uint8_t vbusct,
 }
 
 // Resets all registers to default values
-int ina226_reset(ina226_t ina)
+int ina226_reset(ina226_t *ina)
 {
 	uint16_t reset = INA226_CONFIG_RESET_MASK;
 	return ina226_write_reg(ina, INA226_CONFIGURATION, &reset);
 }
 
 // Reads manufacturer id register
-int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data)
+int ina226_read_manufacturer_id(ina226_t *ina, uint16_t *data)
 {
 	uint16_t manufacturer_id;
 
@@ -131,7 +131,7 @@ int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data)
 }
 
 // Reads die id
-int ina226_read_die_id(ina226_t ina, uint16_t *data)
+int ina226_read_die_id(ina226_t *ina, uint16_t *data)
 {
 	uint16_t die_id;
 
