@@ -72,3 +72,5 @@ int ina226_read_manufacturer_id(ina226_t ina, uint16_t *data);
 
 // Reads die id
 int ina226_read_die_id(ina226_t ina, uint16_t *data);
+
+#endif //INA226_H
