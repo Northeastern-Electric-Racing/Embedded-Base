@@ -92,15 +92,259 @@
               ]
           },
           {
-              "name": "BMS/Status/Faults",
+            "name": "BMS/Status/F/Extra",
+            "unit": "",
+            "send": false,
+            "points": [
+                {
+                    "size": 13
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Open_Wire",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/CCL_Enforce",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Charger_Can",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Battery_Therm",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Charger_Safety",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/DCL_Enforce",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/External_Can",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Weak_Pack",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Low_Cell_Volts",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Charge_Reading",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Current_Sense",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/IC_Comm",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Thermal_Err",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Software",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Open_Wire",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Pack_Overheat",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Cell_Undervoltage",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+            "name": "BMS/Status/F/Cell_Overvoltage",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 1,
+            "sim_inc_min": 0,
+            "sim_inc_max": 1,
+            "points": [
+                {
+                    "size": 1
+                }
+            ]
+          },
+          {
+              "name": "BMS/Status/F/Cells_Not_Balancing",
               "unit": "",
               "sim_min": 0,
-              "sim_max": 131072,
-              "sim_inc_min": 4,
-              "sim_inc_max": 16,
+              "sim_max": 1,
+              "sim_inc_min": 0,
+              "sim_inc_max": 1,
               "points": [
                   {
-                      "size": 32
+                      "size": 1
                   }
               ]
           },
