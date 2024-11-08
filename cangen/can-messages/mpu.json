@@ -16,8 +16,7 @@
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/ModeIndex",
         "unit": "",
@@ -30,8 +29,7 @@
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/Speed",
         "unit": "mph",
@@ -45,8 +43,7 @@
             "signed": true
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/TSMS",
         "unit": "",
@@ -61,8 +58,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x500",
     "desc": "MPU Sense Acceleromter",
@@ -78,25 +74,21 @@
         "points": [
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
           }
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x506",
     "desc": "MPU Sense Gyro",
     "sim_freq": 250,
-
     "fields": [
       {
         "name": "MPU/Sense/Gyro",
@@ -108,20 +100,17 @@
         "points": [
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
           }
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x507",
     "desc": "MPU Sense Temp",
@@ -142,8 +131,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x502",
     "desc": "MPU Fault",
@@ -161,8 +149,7 @@
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fault/Severity",
         "unit": "",
@@ -177,8 +164,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x503",
     "desc": "MPU Sense Voltage",
@@ -200,8 +186,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x504",
     "desc": "MPU Accel Pedals",
@@ -219,8 +204,7 @@
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Pedals/Accelerator_2",
         "unit": "",
@@ -235,8 +219,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x505",
     "desc": "MPU Brake Pedals",
@@ -254,8 +237,7 @@
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Pedals/Brake_2",
         "unit": "",
@@ -270,8 +252,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x701",
     "desc": "MPU Debug",
@@ -289,8 +270,7 @@
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare1",
         "unit": "",
@@ -304,8 +284,7 @@
             "signed": true
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare2",
         "unit": "",
@@ -319,8 +298,7 @@
             "endianness": "little"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare3",
         "unit": "",
@@ -337,8 +315,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x123",
     "desc": "MPU Shutdown",
@@ -356,8 +333,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BMS",
         "unit": "",
@@ -370,8 +346,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Inertia",
         "unit": "",
@@ -384,8 +359,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Spare_GPIO_1",
         "unit": "",
@@ -398,8 +372,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/IMD",
         "unit": "",
@@ -412,8 +385,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BSPD",
         "unit": "",
@@ -426,8 +398,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BOTS",
         "unit": "",
@@ -440,8 +411,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/HVD_Interlock",
         "unit": "",
@@ -454,8 +424,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/HVC_Interlock",
         "unit": "",
@@ -468,8 +437,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Reserved",
         "unit": "",
@@ -481,8 +449,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x111",
     "desc": "MPU Fuses",
@@ -500,8 +467,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/LVBox",
         "unit": "",
@@ -514,8 +480,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/FanRadiator",
         "unit": "",
@@ -528,8 +493,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/MC",
         "unit": "",
@@ -542,8 +506,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/FanBattbox",
         "unit": "",
@@ -556,8 +519,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Pump",
         "unit": "",
@@ -570,8 +532,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Dashboard",
         "unit": "",
@@ -584,8 +545,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Brakelight",
         "unit": "",
@@ -598,8 +558,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/BRB",
         "unit": "",
@@ -612,8 +571,7 @@
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
@@ -621,6 +579,65 @@
         "points": [
           {
             "size": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x508",
+    "desc": "PDU Current",
+    "sim_freq": 1000,
+    "fields": [
+      {
+        "name": "PDU/Current/Motor_Controller_Current",
+        "unit": "A",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      },
+      {
+        "name": "PDU/Current/Battbox_Fans_Current",
+        "unit": "A",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      },
+      {
+        "name": "PDU/Current/Pumps_Current",
+        "unit": "A",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
+        "points": [
+          {
+            "size": 16
+          }
+        ]
+      },
+      {
+        "name": "PDU/Current/LV_Boards_Current",
+        "unit": "A",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
+        "points": [
+          {
+            "size": 16
           }
         ]
       }
