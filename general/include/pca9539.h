@@ -45,7 +45,7 @@ typedef int (*ReadPtr)(void *handler, uint16_t dev_addr, uint16_t mem_address,
 		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
 		       int delay);
 
-{
+typedef struct {
 	//int i2c_handler;
 	void *i2c_handler;
 	//I2C_HandleTypeDef *i2c_handle;
@@ -54,8 +54,7 @@ typedef int (*ReadPtr)(void *handler, uint16_t dev_addr, uint16_t mem_address,
 	ReadPtr read;
 
 	uint16_t dev_addr;
-}
-pca9539_t;
+} pca9539_t;
 
 void pca9539_init(pca9539_t *pca, void *i2c_handler, uint8_t dev_addr);
 
