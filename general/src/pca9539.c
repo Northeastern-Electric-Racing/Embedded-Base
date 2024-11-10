@@ -12,8 +12,8 @@ int pca_write_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 	uint16_t data_size = 1;
 	int delay = 0xFFFFFFFFU;
 
-	return pca->write(pca->i2c_handler, pca->dev_addr, address,
-			  mem_add_size, data, data_size, delay);
+	return pca->write(pca->dev_addr, address, mem_add_size, data, data_size,
+			  delay);
 }
 
 /*IGNORE THIS CODE - LEFT AS A REFERENCE
@@ -30,8 +30,8 @@ int pca_read_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 	uint16_t data_size = 1;
 	int delay = 0xFFFFFFFFU;
 
-	return pca->read(pca->i2c_handler, pca->dev_addr, address, mem_add_size,
-			 data, data_size, delay);
+	return pca->read(pca->dev_addr, address, mem_add_size, data, data_size,
+			 delay);
 }
 
 /* IGNORE THIS CODE - LEFT AS A REFERENCE
@@ -43,10 +43,10 @@ HAL_StatusTypeDef pca_read_reg(pca9539_t* pca, uint16_t address, uint8_t* data)
 }*/
 
 //Intializes the struct
-void pca9539_init(pca9539_t *pca, void *i2c_handler, WritePtr writeFunc,
-		  ReadPtr readFunc, uint8_t dev_addr)
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
+		  uint8_t dev_addr)
 {
-	pca->i2c_handler = i2c_handler;
+	//pca->i2c_handler = i2c_handler;
 	pca->dev_addr = dev_addr << 1u;
 
 	pca->write = writeFunc;

@@ -38,16 +38,16 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
 //return HAL_I2C_Mem_Write(pca->i2c_handle, pca->dev_addr, address,
 //I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 
-typedef int (*WritePtr)(void *handler, uint16_t dev_addr, uint16_t mem_address,
+typedef int (*WritePtr)(uint16_t dev_addr, uint16_t mem_address,
 			uint16_t mem_add_size, uint8_t *data, uint16_t size,
 			int delay);
-typedef int (*ReadPtr)(void *handler, uint16_t dev_addr, uint16_t mem_address,
+typedef int (*ReadPtr)(uint16_t dev_addr, uint16_t mem_address,
 		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
 		       int delay);
 
 typedef struct {
 	//int i2c_handler;
-	void *i2c_handler;
+	//void *i2c_handler;
 	//I2C_HandleTypeDef *i2c_handle;
 
 	WritePtr write;
@@ -56,8 +56,8 @@ typedef struct {
 	uint16_t dev_addr;
 } pca9539_t;
 
-void pca9539_init(pca9539_t *pca, void *i2c_handler, WritePtr writeFunc,
-		  ReadPtr readFunc, uint8_t dev_addr);
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
+		  uint8_t dev_addr);
 
 int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 
