@@ -56,7 +56,8 @@ typedef struct {
 	uint16_t dev_addr;
 } pca9539_t;
 
-void pca9539_init(pca9539_t *pca, void *i2c_handler, uint8_t dev_addr);
+void pca9539_init(pca9539_t *pca, void *i2c_handler, WritePtr writeFunc,
+		  ReadPtr readFunc, uint8_t dev_addr);
 
 int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 
