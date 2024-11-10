@@ -323,7 +323,7 @@
     "fields": [
       {
         "name": "MPU/Shutdown/CockpitBRB",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -336,7 +336,7 @@
       },
       {
         "name": "MPU/Shutdown/BMS",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -349,7 +349,7 @@
       },
       {
         "name": "MPU/Shutdown/Inertia",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -362,7 +362,7 @@
       },
       {
         "name": "MPU/Shutdown/Spare_GPIO_1",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -375,7 +375,7 @@
       },
       {
         "name": "MPU/Shutdown/IMD",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -388,7 +388,7 @@
       },
       {
         "name": "MPU/Shutdown/BSPD",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -401,7 +401,7 @@
       },
       {
         "name": "MPU/Shutdown/BOTS",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -414,7 +414,7 @@
       },
       {
         "name": "MPU/Shutdown/HVD_Interlock",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -427,7 +427,7 @@
       },
       {
         "name": "MPU/Shutdown/HVC_Interlock",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -457,7 +457,7 @@
     "fields": [
       {
         "name": "MPU/Fuses/Battbox",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -470,7 +470,7 @@
       },
       {
         "name": "MPU/Fuses/LVBox",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -483,7 +483,7 @@
       },
       {
         "name": "MPU/Fuses/FanRadiator",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -496,7 +496,7 @@
       },
       {
         "name": "MPU/Fuses/MC",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -509,7 +509,7 @@
       },
       {
         "name": "MPU/Fuses/FanBattbox",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -522,7 +522,7 @@
       },
       {
         "name": "MPU/Fuses/Pump",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -535,7 +535,7 @@
       },
       {
         "name": "MPU/Fuses/Dashboard",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -548,7 +548,7 @@
       },
       {
         "name": "MPU/Fuses/Brakelight",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
@@ -561,7 +561,7 @@
       },
       {
         "name": "MPU/Fuses/BRB",
-        "unit": "",
+        "unit": "bool",
         "sim_min": 0,
         "sim_max": 1,
         "sim_inc_min": 1,
