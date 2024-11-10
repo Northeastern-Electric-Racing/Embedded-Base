@@ -43,10 +43,10 @@ HAL_StatusTypeDef pca_read_reg(pca9539_t* pca, uint16_t address, uint8_t* data)
 }*/
 
 //Intializes the struct
-void pca9539_init(pca9539_t *pca, int *i2c_handler, WritePtr writeFunc,
+void pca9539_init(pca9539_t *pca, void *i2c_handler, WritePtr writeFunc,
 		  ReadPtr readFunc, uint8_t dev_addr)
 {
-	pca->i2c_handle = i2c_handler;
+	pca->i2c_handler = i2c_handler;
 	pca->dev_addr = dev_addr << 1u;
 
 	pca->write = writeFunc;
@@ -95,7 +95,7 @@ int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 	uint8_t data;
 	uint8_t data_new;
 
-	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &data);
+	int status = pca_read_reg(pca, reg_type, &data);
 	if (status) {
 		return status;
 	}
