@@ -26,21 +26,49 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
 /// POLARITY: Inversion state, 1=Inverted 0=Uninverted
 /// DIRECTION: Input/Output selection 1=Input 0=Output
 
-#define PCA_INPUT_0_REG 0x00
-#define PCA_INPUT_1_REG 0x01
-#define PCA_OUTPUT_0_REG 0x02
-#define PCA_OUTPUT_1_REG 0x03
-#define PCA_POLARITY_0_REG 0x04
-#define PCA_POLARITY_1_REG 0x05
+#define PCA_INPUT_0_REG	    0x00
+#define PCA_INPUT_1_REG	    0x01
+#define PCA_OUTPUT_0_REG    0x02
+#define PCA_OUTPUT_1_REG    0x03
+#define PCA_POLARITY_0_REG  0x04
+#define PCA_POLARITY_1_REG  0x05
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
-typedef struct
-{
-	I2C_HandleTypeDef *i2c_handle;
-	uint16_t dev_addr;
-} pca9539_t;
+//return HAL_I2C_Mem_Write(pca->i2c_handle, pca->dev_addr, address,
+//I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 
+typedef int (*WritePtr)(int handler, uint16_t dev_addr, uint16_t mem_address,
+			uint16_t mem_add_size, uint8_t *data, uint16_t size,
+			int delay);
+typedef int (*ReadPtr)(int handler, uint16_t dev_addr, uint16_t mem_address,
+		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
+		       int delay);
+
+{
+	int i2c_handler;
+	//I2C_HandleTypeDef *i2c_handle;
+
+	WritePtr write;
+	ReadPtr read;
+
+	uint16_t dev_addr;
+}
+pca9539_t;
+
+void pca9539_init(pca9539_t *pca, int i2c_handler, uint8_t dev_addr);
+
+int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
+
+int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		     uint8_t *buf);
+
+int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
+
+int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		      uint8_t buf);
+
+/*IGNORE THIS CODE - SERVES AS A REFERENCE
 /// Init PCA9539, a 16 bit I2C GPIO expander
 void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle, uint8_t dev_addr);
 
@@ -57,5 +85,5 @@ HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t bu
 /// @brief Write a specific pin on a bus, do not iterate over this, use write_pins instead
 HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 									uint8_t buf);
-
+*/
 #endif
