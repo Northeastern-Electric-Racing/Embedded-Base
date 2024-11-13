@@ -7,53 +7,108 @@
       {
         "name": "MPU/State/Mode",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 4,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.01
+            ],
+            [
+              1,
+              0.80
+            ],
+            [
+              2,
+              0.10
+            ],
+            [
+              3,
+              0.10
+            ],
+            [
+              4,
+              0.00
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/ModeIndex",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 6,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.20
+            ],
+            [
+              1,
+              0.20
+            ],
+            [
+              2,
+              0.40
+            ],
+            [
+              3,
+              0.10
+            ],
+            [
+              4,
+              0.10
+            ],
+            [
+              5,
+              0.10
+            ],
+            [
+              6,
+              0.10
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/Speed",
         "unit": "mph",
-        "sim_min": 0,
-        "sim_max": 88,
-        "sim_inc_min": 0,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 0,
+          "max": 88,
+          "inc_min": 0,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 8,
             "signed": true
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/State/TSMS",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.80
+            ],
+            [
+              1,
+              0.20
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
@@ -61,8 +116,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x500",
     "desc": "MPU Sense Acceleromter",
@@ -71,57 +125,54 @@
       {
         "name": "MPU/Sense/Accel",
         "unit": "g",
-        "sim_min": 0,
-        "sim_max": 2,
-        "sim_inc_min": 0.01,
-        "sim_inc_max": 0.25,
+        "sim": {
+          "min": 0,
+          "max": 2,
+          "inc_min": 0.01,
+          "inc_max": 0.25
+        },
         "points": [
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
           }
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x506",
     "desc": "MPU Sense Gyro",
     "sim_freq": 250,
-
     "fields": [
       {
         "name": "MPU/Sense/Gyro",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 7,
-        "sim_inc_min": 0.01,
-        "sim_inc_max": 0.5,
+        "sim": {
+          "min": 0,
+          "max": 7,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        },
         "points": [
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
-          }
-        ,
+          },
           {
             "size": 16
           }
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x507",
     "desc": "MPU Sense Temp",
@@ -130,10 +181,12 @@
       {
         "name": "MPU/Sense/Temp_IMU",
         "unit": "C",
-        "sim_min": 0,
-        "sim_max": 70,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 0,
+          "max": 70,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 16,
@@ -142,8 +195,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x502",
     "desc": "MPU Fault",
@@ -152,24 +204,115 @@
       {
         "name": "MPU/Fault/Code",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 2048,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.84
+            ],
+            [
+              1,
+              0.01
+            ],
+            [
+              2,
+              0.01
+            ],
+            [
+              4,
+              0.01
+            ],
+            [
+              8,
+              0.01
+            ],
+            [
+              16,
+              0.01
+            ],
+            [
+              32,
+              0.01
+            ],
+            [
+              64,
+              0.01
+            ],
+            [
+              128,
+              0.01
+            ],
+            [
+              256,
+              0.01
+            ],
+            [
+              512,
+              0.01
+            ],
+            [
+              1024,
+              0.01
+            ],
+            [
+              2048,
+              0.01
+            ],
+            [
+              3840,
+              0.01
+            ],
+            [
+              4096,
+              0.01
+            ],
+            [
+              8192,
+              0.01
+            ],
+            [
+              16384,
+              0.01
+            ]
+          ]
+        },
         "points": [
           {
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fault/Severity",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 5,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.75
+            ],
+            [
+              1,
+              0.05
+            ],
+            [
+              2,
+              0.05
+            ],
+            [
+              3,
+              0.05
+            ],
+            [
+              4,
+              0.05
+            ],
+            [
+              5,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
@@ -177,8 +320,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x503",
     "desc": "MPU Sense Voltage",
@@ -187,10 +329,12 @@
       {
         "name": "MPU/Sense/Voltage",
         "unit": "V",
-        "sim_min": 22.5,
-        "sim_max": 29,
-        "sim_inc_min": 0.02,
-        "sim_inc_max": 0.15,
+        "sim": {
+          "min": 22.5,
+          "max": 29,
+          "inc_min": 0.02,
+          "inc_max": 0.15
+        },
         "points": [
           {
             "size": 32,
@@ -200,8 +344,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x504",
     "desc": "MPU Accel Pedals",
@@ -210,24 +353,27 @@
       {
         "name": "MPU/Pedals/Accelerator_1",
         "unit": "",
-        "sim_min": 800,
-        "sim_max": 1900,
-        "sim_inc_min": 1,
-        "sim_inc_max": 24,
+        "sim": {
+          "min": 800,
+          "max": 1900,
+          "inc_min": 1,
+          "inc_max": 24
+        },
         "points": [
           {
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Pedals/Accelerator_2",
         "unit": "",
-        "sim_min": 1200,
-        "sim_max": 2300,
-        "sim_inc_min": 1,
-        "sim_inc_max": 24,
+        "sim": {
+          "min": 1200,
+          "max": 2300,
+          "inc_min": 1,
+          "inc_max": 24
+        },
         "points": [
           {
             "size": 32
@@ -235,8 +381,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x505",
     "desc": "MPU Brake Pedals",
@@ -245,24 +390,27 @@
       {
         "name": "MPU/Pedals/Brake_1",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 32
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Pedals/Brake_2",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 32
@@ -270,8 +418,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x701",
     "desc": "MPU Debug",
@@ -280,54 +427,59 @@
       {
         "name": "MPU/Debug/Spare0",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare1",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 8,
             "signed": true
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare2",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 16,
             "endianness": "little"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Debug/Spare3",
         "unit": "",
-        "sim_min": 580,
-        "sim_max": 990,
-        "sim_inc_min": 1,
-        "sim_inc_max": 10,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        },
         "points": [
           {
             "size": 32,
@@ -337,8 +489,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x123",
     "desc": "MPU Shutdown",
@@ -347,129 +498,192 @@
       {
         "name": "MPU/Shutdown/CockpitBRB",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BMS",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Inertia",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Spare_GPIO_1",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/IMD",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BSPD",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/BOTS",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/HVD_Interlock",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/HVC_Interlock",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Shutdown/Reserved",
         "unit": "",
@@ -481,8 +695,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x111",
     "desc": "MPU Fuses",
@@ -491,129 +704,192 @@
       {
         "name": "MPU/Fuses/Battbox",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/LVBox",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/FanRadiator",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/MC",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/FanBattbox",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Pump",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Dashboard",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Brakelight",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/BRB",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
