@@ -573,6 +573,19 @@
         ]
       },
       {
+        "name": "MPU/Fuses/Pump1",
+        "unit": "bool",
+        "sim_min": 0,
+        "sim_max": 1,
+        "sim_inc_min": 1,
+        "sim_inc_max": 1,
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
         "send": false,
