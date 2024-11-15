@@ -196,6 +196,10 @@
             "size": 32,
             "endianness": "little",
             "format": "divide10000"
+          },
+          {
+            "size": 8,
+            "endianness": "little"
           }
         ]
       }
