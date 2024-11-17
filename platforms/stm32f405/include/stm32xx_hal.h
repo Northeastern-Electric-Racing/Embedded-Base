@@ -13,7 +13,7 @@
 #include "stm32g4xx_hal.h"
 #endif
 
-#ifndef STM32F1
+#ifdef STM32F103xB
 #include "stm32f1xx_hal.h"
 #endif
 
