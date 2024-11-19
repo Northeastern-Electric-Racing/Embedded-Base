@@ -603,7 +603,7 @@
     "sim_freq": 1000,
     "fields": [
       {
-        "name": "MPU/Current/Motor_Controller_Current",
+        "name": "MPU/Current/Motor_Controller",
         "unit": "A",
         "sim_min": 0,
         "sim_max": 3,
@@ -618,7 +618,7 @@
         ]
       },
       {
-        "name": "MPU/Current/Battbox_Fans_Current",
+        "name": "MPU/Current/Battbox_Fans",
         "unit": "A",
         "sim_min": 0,
         "sim_max": 5,
@@ -633,7 +633,7 @@
         ]
       },
       {
-        "name": "MPU/Current/Pumps_Current",
+        "name": "MPU/Current/Pumps",
         "unit": "A",
         "sim_min": 0,
         "sim_max": 2,
@@ -648,7 +648,7 @@
         ]
       },
       {
-        "name": "MPU/Current/LV_Boards_Current",
+        "name": "MPU/Current/LV_Boards",
         "unit": "A",
         "sim_min": 0,
         "sim_max": 1.25,
