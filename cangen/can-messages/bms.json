@@ -481,20 +481,7 @@
         "send": false,
         "points": [
           {
-            "size": 13
-          }
-        ]
-      },
-      {
-        "name": "BMS/Faults/Open_Wire",
-        "unit": "",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 0,
-        "sim_inc_max": 1,
-        "points": [
-          {
-            "size": 1
+            "size": 14
           }
         ]
       },
