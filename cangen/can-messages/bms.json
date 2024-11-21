@@ -476,40 +476,7 @@
     "sim_freq": 700,
     "fields": [
       {
-        "name": "BMS/Faults/Critical",
-        "unit": "",
-        "sim_min": 0,
-        "sim_max": 131072,
-        "sim_inc_min": 4,
-        "sim_inc_max": 16,
-        "points": [
-          {
-            "size": 32
-          }
-        ]
-      },
-      {
-        "name": "BMS/Faults/Non_Critical",
-        "unit": "",
-        "sim_min": 0,
-        "sim_max": 131072,
-        "sim_inc_min": 4,
-        "sim_inc_max": 16,
-        "points": [
-          {
-            "size": 32
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "0x89",
-    "desc": "Fault Status",
-    "sim_freq": 700,
-    "fields": [
-      {
-        "name": "BMS/Status/F/Extra",
+        "name": "BMS/Faults/Extra",
         "unit": "",
         "send": false,
         "points": [
@@ -519,7 +486,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Open_Wire",
+        "name": "BMS/Faults/Open_Wire",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -532,7 +499,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/CCL_Enforce",
+        "name": "BMS/Faults/CCL_Enforce",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -545,7 +512,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Charger_Can",
+        "name": "BMS/Faults/Charger_Can",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -558,7 +525,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Battery_Therm",
+        "name": "BMS/Faults/Battery_Therm",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -571,7 +538,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Charger_Safety",
+        "name": "BMS/Faults/Charger_Safety",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -584,7 +551,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/DCL_Enforce",
+        "name": "BMS/Faults/DCL_Enforce",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -597,7 +564,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/External_Can",
+        "name": "BMS/Faults/External_Can",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -610,7 +577,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Weak_Pack",
+        "name": "BMS/Faults/Weak_Pack",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -623,7 +590,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Low_Cell_Volts",
+        "name": "BMS/Faults/Low_Cell_Volts",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -636,7 +603,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Charge_Reading",
+        "name": "BMS/Faults/Charge_Reading",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -649,7 +616,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Current_Sense",
+        "name": "BMS/Faults/Current_Sense",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -662,7 +629,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/IC_Comm",
+        "name": "BMS/Faults/IC_Comm",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -675,7 +642,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Thermal_Err",
+        "name": "BMS/Faults/Thermal_Err",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -688,7 +655,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Software",
+        "name": "BMS/Faults/Software",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -701,7 +668,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Open_Wire",
+        "name": "BMS/Faults/Open_Wire",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -714,7 +681,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Pack_Overheat",
+        "name": "BMS/Faults/Pack_Overheat",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -727,7 +694,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Cell_Undervoltage",
+        "name": "BMS/Faults/Cell_Undervoltage",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -740,7 +707,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Cell_Overvoltage",
+        "name": "BMS/Faults/Cell_Overvoltage",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
@@ -753,7 +720,7 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Cells_Not_Balancing",
+        "name": "BMS/Faults/Cells_Not_Balancing",
         "unit": "",
         "sim_min": 0,
         "sim_max": 1,
