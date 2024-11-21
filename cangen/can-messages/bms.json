@@ -92,19 +92,6 @@
               ]
           },
           {
-              "name": "BMS/Status/Faults",
-              "unit": "",
-              "sim_min": 0,
-              "sim_max": 131072,
-              "sim_inc_min": 4,
-              "sim_inc_max": 16,
-              "points": [
-                  {
-                      "size": 32
-                  }
-              ]
-          },
-          {
               "name": "BMS/Status/Temp_Average",
               "unit": "C",
               "sim_min": 10,
@@ -482,6 +469,39 @@
               ]
           }
       ]
+  },
+  {
+    "id": "0x89",
+    "desc": "Fault Status",
+    "sim_freq": 700,
+    "fields": [
+        {
+            "name": "BMS/Faults/Critical",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 131072,
+            "sim_inc_min": 4,
+            "sim_inc_max": 16,
+            "points": [
+                {
+                    "size": 32
+                }
+            ]
+        },
+        {
+            "name": "BMS/Faults/Non_Critical",
+            "unit": "",
+            "sim_min": 0,
+            "sim_max": 131072,
+            "sim_inc_min": 4,
+            "sim_inc_max": 16,
+            "points": [
+                {
+                    "size": 32
+                }
+            ]
+        }
+    ]
   },
   {
       "id": "0x702",
