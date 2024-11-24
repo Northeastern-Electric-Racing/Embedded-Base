@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM armmbed/mbed-os-env:latest
 
 # Set up container and time zones
 RUN apt-get update && \
