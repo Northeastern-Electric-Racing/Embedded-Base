@@ -1,4 +1,4 @@
-FROM armmbed/mbed-os-env:latest
+FROM ghcr.io/armmbed/mbed-os-env:master-2022.05.21t04.23.55
 
 # Set up container and time zones
 RUN apt-get update && \
