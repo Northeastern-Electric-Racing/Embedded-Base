@@ -16,8 +16,6 @@ RUN apt-get update && apt-get install -y \
     minicom \
     vim \
     clang-format \
-    tmux \
-    libncurses5 \
     linux-tools-generic \
     gcc-arm-linux-gnueabihf \
     g++-arm-linux-gnueabihf \
