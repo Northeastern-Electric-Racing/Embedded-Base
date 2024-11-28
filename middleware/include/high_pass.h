@@ -10,16 +10,24 @@ typedef struct {
 
 	float prev_output;
 
-} high_pass_st;
+} high_pass_t;
 
-void high_pass_init(float alpha, float scale, high_pass_st filter);
 /**
-@brief Initialization for high pass values
+ * @brief 
+ * 
+ * @param alpha 
+ * @param scale 
+ * @param filter 
  */
+void high_pass_init(float alpha, float scale, high_pass_t *filter);
 
-float high_pass(high_pass_st filter, float input);
 /**
-@brief Function for high pass filter
+ * @brief 
+ * 
+ * @param filter 
+ * @param input 
+ * @return float 
  */
+float high_pass(high_pass_t *filter, float input);
 
 #endif
