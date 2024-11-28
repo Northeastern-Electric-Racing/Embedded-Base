@@ -4,7 +4,6 @@
 
 #define REG_SIZE_BITS 8
 
-//Write Register returns the Write Function Pointer
 int pca_write_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 {
 	//Parameters in the HAL Function
@@ -16,7 +15,6 @@ int pca_write_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 			  delay);
 }
 
-//Read Register returns the Read Function Pointer
 int pca_read_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 {
 	uint16_t mem_add_size = 8;
@@ -27,7 +25,6 @@ int pca_read_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
 			 delay);
 }
 
-//Intializes the struct
 void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
 		  uint8_t dev_addr)
 {
@@ -37,7 +34,6 @@ void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
 	pca->read = readFunc;
 }
 
-//Read PCA9539 Register
 int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf)
 {
 	int status = pca_read_reg(pca, reg_type, buf);
@@ -48,7 +44,6 @@ int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf)
 	return status;
 }
 
-//Read PCA9539 Pin
 int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 		     uint8_t *buf)
 {
@@ -63,13 +58,11 @@ int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 	return status;
 }
 
-//Write PCA9539 Register
 int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf)
 {
 	return pca_write_reg(pca, reg_type, &buf);
 }
 
-//Write PCA9539 Pin
 int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 		      uint8_t buf)
 {

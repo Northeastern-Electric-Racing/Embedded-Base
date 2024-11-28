@@ -35,9 +35,18 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
+/**
+ * @brief Pointer to write function
+ * 
+ */
 typedef int (*WritePtr)(uint16_t dev_addr, uint16_t mem_address,
 			uint16_t mem_add_size, uint8_t *data, uint16_t size,
 			int delay);
+
+/**
+ * @brief Pointer to read function
+ * 
+ */
 typedef int (*ReadPtr)(uint16_t dev_addr, uint16_t mem_address,
 		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
 		       int delay);
@@ -49,32 +58,60 @@ typedef struct {
 	uint16_t dev_addr;
 } pca9539_t;
 
-void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
-		  uint8_t dev_addr);
 /**
  * @brief Initialize the PCA9539 Driver
+ * 
+ * @param pca 
+ * @param writeFunc 
+ * @param readFunc 
+ * @param dev_addr 
  */
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
+		  uint8_t dev_addr);
 
-int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 /**
  * @brief Read the register of the PCA9539
+ * 
+ * @param pca 
+ * @param reg_type 
+ * @param buf 
+ * @return int 
  */
+int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 
-int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
-		     uint8_t *buf);
 /**
  * @brief Read the pin state of the PCA9539
+ * 
+ * @param pca 
+ * @param reg_type 
+ * @param pin 
+ * @param buf 
+ * @return int 
  */
+int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		     uint8_t *buf);
 
-int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
 /**
- * @brief Write the register of the PCA9539
- */
 
-int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
-		      uint8_t buf);
+ * @brief Write the register of the PCA9539
+ * 
+ * @param pca 
+ * @param reg_type 
+ * @param buf 
+ * @return int 
+ */
+int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
+
 /**
  * @brief Write the pin of the PCA9539
+ * 
+ * @param pca 
+ * @param reg_type 
+ * @param pin 
+ * @param buf 
+ * @return int 
  */
+int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		      uint8_t buf);
 
 #endif
