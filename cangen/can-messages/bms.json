@@ -118,91 +118,390 @@
                 ]
             },
             {
-                "name": "BMS/Status/Faults",
+                "name": "BMS/Status/F/Extra",
+                "unit": "",
+                "send": false,
+                "points": [
+                    {
+                        "size": 14
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/CCL_Enforce",
                 "unit": "",
                 "sim": {
                     "options": [
                         [
                             0,
-                            0.91
+                            0.5
                         ],
                         [
                             1,
-                            0.005
-                        ],
-                        [
-                            4,
-                            0.005
-                        ],
-                        [
-                            2,
-                            0.005
-                        ],
-                        [
-                            8,
-                            0.005
-                        ],
-                        [
-                            16,
-                            0.005
-                        ],
-                        [
-                            32,
-                            0.005
-                        ],
-                        [
-                            64,
-                            0.005
-                        ],
-                        [
-                            128,
-                            0.005
-                        ],
-                        [
-                            256,
-                            0.005
-                        ],
-                        [
-                            512,
-                            0.005
-                        ],
-                        [
-                            1024,
-                            0.005
-                        ],
-                        [
-                            2048,
-                            0.005
-                        ],
-                        [
-                            4096,
-                            0.005
-                        ],
-                        [
-                            8192,
-                            0.005
-                        ],
-                        [
-                            16384,
-                            0.005
-                        ],
-                        [
-                            32768,
-                            0.005
-                        ],
-                        [
-                            65536,
-                            0.005
-                        ],
-                        [
-                            131072,
-                            0.005
+                            0.5
                         ]
                     ]
                 },
                 "points": [
                     {
-                        "size": 32
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Charger_Can",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Battery_Therm",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Charger_Safety",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/DCL_Enforce",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/External_Can",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Weak_Pack",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Low_Cell_Volts",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Charge_Reading",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Current_Sense",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/IC_Comm",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Thermal_Err",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Software",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Open_Wire",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Pack_Overheat",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Cell_Undervoltage",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Cell_Overvoltage",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Status/F/Cells_Not_Balancing",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 1
                     }
                 ]
             },

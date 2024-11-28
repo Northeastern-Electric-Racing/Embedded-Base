@@ -114,6 +114,22 @@
             "size": 8
           }
         ]
+      },
+      {
+        "name": "MPU/State/TorqueLimit",
+        "unit": "percentage",
+        "sim": {
+          "min": 0,
+          "max": 1,
+          "inc_min": 0.1,
+          "inc_max": 0.1
+        },
+        "points": [
+          {
+            "size": 8,
+            "format": "divide100"
+          }
+        ]
       }
     ]
   },
