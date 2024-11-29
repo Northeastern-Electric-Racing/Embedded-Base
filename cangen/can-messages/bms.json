@@ -7,10 +7,12 @@
             {
                 "name": "BMS/Pack/Voltage",
                 "unit": "V",
-                "sim_min": 400,
-                "sim_max": 505,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 400,
+                    "max": 505,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 16,
@@ -21,10 +23,12 @@
             {
                 "name": "BMS/Pack/Current",
                 "unit": "A",
-                "sim_min": 0,
-                "sim_max": 50,
-                "sim_inc_min": 0,
-                "sim_inc_max": 3,
+                "sim": {
+                    "min": 0,
+                    "max": 50,
+                    "inc_min": 0,
+                    "inc_max": 3
+                },
                 "send": false,
                 "points": [
                     {
@@ -35,10 +39,12 @@
             {
                 "name": "BMS/Pack/Amp-hours",
                 "unit": "Ah",
-                "sim_min": 0,
-                "sim_max": 100,
-                "sim_inc_min": 0,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 0,
+                    "max": 100,
+                    "inc_min": 0,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 16
@@ -48,10 +54,12 @@
             {
                 "name": "BMS/Pack/SOC",
                 "unit": "%",
-                "sim_min": 0,
-                "sim_max": 100,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 0,
+                    "max": 100,
+                    "inc_min": 0.01,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 8
@@ -61,10 +69,12 @@
             {
                 "name": "BMS/Pack/Health",
                 "unit": "%",
-                "sim_min": 0,
-                "sim_max": 100,
-                "sim_inc_min": 0,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 0,
+                    "max": 100,
+                    "inc_min": 0,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 8
@@ -81,11 +91,27 @@
             {
                 "name": "BMS/Status/State",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 4,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
-                "points": [
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.01
+                        ],
+                        [
+                            1,
+                            0.80
+                        ],
+                        [
+                            2,
+                            0.15
+                        ],
+                        [
+                            3,
+                            0.04
+                        ]
+                    ]
+                },
+              "points": [
                     {
                         "size": 8
                     }
@@ -97,30 +123,25 @@
                 "send": false,
                 "points": [
                     {
-                        "size": 13
-                    }
-                ]
-            },
-            {
-                "name": "BMS/Status/F/Open_Wire",
-                "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
-                "points": [
-                    {
-                        "size": 1
+                        "size": 14
                     }
                 ]
             },
             {
                 "name": "BMS/Status/F/CCL_Enforce",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -130,10 +151,18 @@
             {
                 "name": "BMS/Status/F/Charger_Can",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -143,10 +172,18 @@
             {
                 "name": "BMS/Status/F/Battery_Therm",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -156,10 +193,18 @@
             {
                 "name": "BMS/Status/F/Charger_Safety",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -169,10 +214,18 @@
             {
                 "name": "BMS/Status/F/DCL_Enforce",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -182,10 +235,18 @@
             {
                 "name": "BMS/Status/F/External_Can",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -195,10 +256,18 @@
             {
                 "name": "BMS/Status/F/Weak_Pack",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -208,10 +277,18 @@
             {
                 "name": "BMS/Status/F/Low_Cell_Volts",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -221,10 +298,18 @@
             {
                 "name": "BMS/Status/F/Charge_Reading",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -234,10 +319,18 @@
             {
                 "name": "BMS/Status/F/Current_Sense",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -247,10 +340,18 @@
             {
                 "name": "BMS/Status/F/IC_Comm",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -260,10 +361,18 @@
             {
                 "name": "BMS/Status/F/Thermal_Err",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -273,10 +382,18 @@
             {
                 "name": "BMS/Status/F/Software",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -286,11 +403,19 @@
             {
                 "name": "BMS/Status/F/Open_Wire",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
-                "points": [
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
+              "points": [
                     {
                         "size": 1
                     }
@@ -299,10 +424,18 @@
             {
                 "name": "BMS/Status/F/Pack_Overheat",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -312,10 +445,18 @@
             {
                 "name": "BMS/Status/F/Cell_Undervoltage",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -325,10 +466,18 @@
             {
                 "name": "BMS/Status/F/Cell_Overvoltage",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -338,10 +487,18 @@
             {
                 "name": "BMS/Status/F/Cells_Not_Balancing",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -351,10 +508,12 @@
             {
                 "name": "BMS/Status/Temp_Average",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.5,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.5
+                },
                 "points": [
                     {
                         "size": 8
@@ -364,10 +523,12 @@
             {
                 "name": "BMS/Status/Temp_Internal",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 1,
+                    "inc_max": 1
+                },
                 "points": [
                     {
                         "size": 8
@@ -377,10 +538,18 @@
             {
                 "name": "BMS/Status/Balancing",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 0,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.40
+                        ],
+                        [
+                            1,
+                            0.60
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 8
@@ -397,10 +566,12 @@
             {
                 "name": "BMS/Cells/Volts_High_Value",
                 "unit": "V",
-                "sim_min": 2.5,
-                "sim_max": 4.25,
-                "sim_inc_min": 0.001,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 2.5,
+                    "max": 4.25,
+                    "inc_min": 0.001,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 16,
@@ -411,10 +582,13 @@
             {
                 "name": "BMS/Cells/Volts_High_Chip",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 12,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 12,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -424,10 +598,13 @@
             {
                 "name": "BMS/Cells/Volts_High_Cell",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 120,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 120,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -437,10 +614,12 @@
             {
                 "name": "BMS/Cells/Volts_Low_Value",
                 "unit": "V",
-                "sim_min": 2.5,
-                "sim_max": 4.25,
-                "sim_inc_min": 0.001,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 2.5,
+                    "max": 4.25,
+                    "inc_min": 0.001,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 16,
@@ -451,10 +630,13 @@
             {
                 "name": "BMS/Cells/Volts_Low_Chip",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 12,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 12,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -464,10 +646,13 @@
             {
                 "name": "BMS/Cells/Volts_Low_Cell",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 120,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 120,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -477,10 +662,12 @@
             {
                 "name": "BMS/Cells/Volts_Avg_Value",
                 "unit": "V",
-                "sim_min": 2.5,
-                "sim_max": 4.25,
-                "sim_inc_min": 0.001,
-                "sim_inc_max": 0.1,
+                "sim": {
+                    "min": 2.5,
+                    "max": 4.25,
+                    "inc_min": 0.001,
+                    "inc_max": 0.1
+                },
                 "points": [
                     {
                         "size": 16,
@@ -498,10 +685,12 @@
             {
                 "name": "BMS/Cells/Temp_High_Value",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 16
@@ -511,10 +700,13 @@
             {
                 "name": "BMS/Cells/Temp_High_Cell",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 120,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 120,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -524,10 +716,13 @@
             {
                 "name": "BMS/Cells/Temp_High_Chip",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 12,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 12,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -537,10 +732,12 @@
             {
                 "name": "BMS/Cells/Temp_Low_Value",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 16
@@ -550,10 +747,13 @@
             {
                 "name": "BMS/Cells/Temp_Low_Cell",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 120,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 120,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -563,10 +763,13 @@
             {
                 "name": "BMS/Cells/Temp_Low_Chip",
                 "unit": "",
-                "sim_min": 1,
-                "sim_max": 12,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "min": 1,
+                    "max": 12,
+                    "inc_min": 1,
+                    "inc_max": 1,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 4
@@ -576,10 +779,12 @@
             {
                 "name": "BMS/Cells/Temp_Avg_Value",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 16
@@ -596,10 +801,12 @@
             {
                 "name": "BMS/Segment_Temp/1",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -610,10 +817,12 @@
             {
                 "name": "BMS/Segment_Temp/2",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -624,10 +833,12 @@
             {
                 "name": "BMS/Segment_Temp/3",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -638,10 +849,12 @@
             {
                 "name": "BMS/Segment_Temp/4",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -652,10 +865,12 @@
             {
                 "name": "BMS/Segment_Temp/5",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -666,10 +881,12 @@
             {
                 "name": "BMS/Segment_Temp/6",
                 "unit": "C",
-                "sim_min": 10,
-                "sim_max": 50,
-                "sim_inc_min": 0.01,
-                "sim_inc_max": 0.3,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                },
                 "points": [
                     {
                         "size": 8,
@@ -687,10 +904,12 @@
             {
                 "name": "BMS/Pack/DCL",
                 "unit": "",
-                "sim_min": 20,
-                "sim_max": 520,
-                "sim_inc_min": 0.1,
-                "sim_inc_max": 4,
+                "sim": {
+                    "min": 20,
+                    "max": 520,
+                    "inc_min": 0.1,
+                    "inc_max": 4
+                },
                 "points": [
                     {
                         "size": 16
@@ -700,10 +919,12 @@
             {
                 "name": "BMS/Pack/CCL",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 25,
-                "sim_inc_min": 0,
-                "sim_inc_max": 2,
+                "sim": {
+                    "min": 0,
+                    "max": 25,
+                    "inc_min": 0,
+                    "inc_max": 2
+                },
                 "points": [
                     {
                         "size": 16,
@@ -714,10 +935,12 @@
             {
                 "name": "BMS/Pack/Current",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 100,
-                "sim_inc_min": 0,
-                "sim_inc_max": 5,
+                "sim": {
+                    "min": 0,
+                    "max": 100,
+                    "inc_min": 0,
+                    "inc_max": 5
+                },
                 "points": [
                     {
                         "size": 16,
@@ -771,17 +994,25 @@
         ]
     },
     {
-        "id": "0x701",
+        "id": "0x6FF",
         "desc": "BMS Fault Timers",
         "sim_freq": 700,
         "fields": [
             {
                 "name": "BMS/Fault_Timer/Start_Stop",
                 "unit": "",
-                "sim_min": 0,
-                "sim_max": 1,
-                "sim_inc_min": 1,
-                "sim_inc_max": 1,
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                },
                 "points": [
                     {
                         "size": 1
@@ -801,6 +1032,13 @@
             {
                 "name": "BMS/Fault_Timer/Code",
                 "unit": "",
+                 "sim": {
+                    "min": 1,
+                    "max": 32,
+                    "inc_min": 1,
+                    "inc_max": 32,
+                    "round": true
+                },
                 "points": [
                     {
                         "size": 16
@@ -810,6 +1048,12 @@
             {
                 "name": "BMS/Fault_Timer/Value",
                 "unit": "",
+                "sim": {
+                   "min": -100,
+                   "max": 100,
+                   "inc_min": 0.05,
+                   "inc_max": 1
+                },
                 "points": [
                     {
                         "size": 16
