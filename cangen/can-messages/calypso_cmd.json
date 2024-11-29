@@ -8,10 +8,12 @@
       {
         "name": "Calypso/Bidir/State/FirstOff/A",
         "unit": "Z",
-        "sim_min": 1,
-        "sim_max": 100,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 32,
@@ -19,15 +21,16 @@
             "default": 18.443
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Calypso/Bidir/State/FirstOff/B",
         "unit": "G",
-        "sim_min": 1,
-        "sim_max": 100,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 8,
@@ -35,30 +38,32 @@
             "default": 35.4
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Calypso/Bidir/State/FirstOff/C",
         "unit": "G",
-        "sim_min": 1,
-        "sim_max": 100,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 8,
             "default": 19
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Calypso/Bidir/State/FirstOff/D",
         "unit": "G",
-        "sim_min": 1,
-        "sim_max": 100,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 16,
@@ -70,8 +75,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0xFFFFF",
     "desc": "Example Enc Msg Ext",
@@ -82,10 +86,12 @@
       {
         "name": "Calypso/Bidir/State/SecondOff/A",
         "unit": "GG",
-        "sim_min": 1,
-        "sim_max": 100,
-        "sim_inc_min": 1,
-        "sim_inc_max": 2,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 32,
@@ -94,8 +100,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x7FF",
     "desc": "Calypso bidir unknown key",
@@ -104,10 +109,12 @@
       {
         "name": "Calypso/Bidir/Unknown",
         "unit": "pts",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 0,
-        "sim_inc_max": 1,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        },
         "points": [
           {
             "size": 8
