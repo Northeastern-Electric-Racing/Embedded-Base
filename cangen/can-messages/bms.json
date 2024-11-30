@@ -111,7 +111,7 @@
                         ]
                     ]
                 },
-              "points": [
+                "points": [
                     {
                         "size": 8
                     }
@@ -415,7 +415,7 @@
                         ]
                     ]
                 },
-              "points": [
+                "points": [
                     {
                         "size": 1
                     }
@@ -1032,16 +1032,16 @@
             {
                 "name": "BMS/Fault_Timer/Code",
                 "unit": "",
-                 "sim": {
-                    "min": 1,
-                    "max": 32,
-                    "inc_min": 1,
-                    "inc_max": 32,
+                "sim": {
+                    "min": 0,
+                    "max": 31,
+                    "inc_min": 0,
+                    "inc_max": 31,
                     "round": true
                 },
                 "points": [
                     {
-                        "size": 16
+                        "size": 8
                     }
                 ]
             },
@@ -1049,10 +1049,10 @@
                 "name": "BMS/Fault_Timer/Value",
                 "unit": "",
                 "sim": {
-                   "min": -100,
-                   "max": 100,
-                   "inc_min": 0.05,
-                   "inc_max": 1
+                    "min": -100,
+                    "max": 100,
+                    "inc_min": 0.05,
+                    "inc_max": 1
                 },
                 "points": [
                     {
