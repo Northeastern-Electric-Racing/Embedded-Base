@@ -8,6 +8,16 @@
 #define CONTAINER_OF(ptr, type, member) \
 	((type *)((char *)(ptr) - offsetof(type, member)))
 
+/*
+ * Gets a bit of a binary number at desired location
+*/
+#define GET_BIT(num, bit) ((num >> bit) & 1)
+
+/*
+ * Sets a bit of a binary number at desired location
+*/
+#define SET_BIT(num, bit) (num |= (1UL << bit))
+
 #endif /* C_UTILS */
 
 void endian_swap(void *ptr, int size);
