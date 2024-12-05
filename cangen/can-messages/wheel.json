@@ -7,24 +7,34 @@
       {
         "name": "WHEEL/Buttons/1",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 8,
-        "sim_inc_min": 1,
-        "sim_inc_max": 8,
-        "points": [
-          {
-            "size": 8
-          }
-        ]
-      }
-      ,
-      {
-        "name": "WHEEL/Buttons/2",
-        "unit": "",
-        "sim_min": 0,
-        "sim_max": 2,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.25
+            ],
+            [
+              1,
+              0.15
+            ],
+            [
+              2,
+              0.15
+            ],
+            [
+              3,
+              0.15
+            ],
+            [
+              4,
+              0.15
+            ],
+            [
+              5,
+              0.15
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
