@@ -13,20 +13,20 @@ typedef struct {
 } high_pass_t;
 
 /**
- * @brief 
+ * @brief Initiailzing the high pass filter with filter coefficient & desired scale
  * 
- * @param alpha 
- * @param scale 
- * @param filter 
+ * @param alpha filter coefficient controlling freq response
+ * @param scale desired scaling for filter
+ * @param filter pointer to a new high pass struct
  */
 void high_pass_init(float alpha, float scale, high_pass_t *filter);
 
 /**
- * @brief 
+ * @brief Function applying filter to a new sample, returning the filtered output
  * 
- * @param filter 
- * @param input 
- * @return float 
+ * @param filter passing pointer to initialized high pass struct
+ * @param input new sample to be filtered
+ * @return float Filtered & Scaled output value based on prev values
  */
 float high_pass(high_pass_t *filter, float input);
 
