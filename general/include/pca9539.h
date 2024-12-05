@@ -61,10 +61,10 @@ typedef struct {
 /**
  * @brief Initialize the PCA9539 Driver
  * 
- * @param pca 
- * @param writeFunc 
- * @param readFunc 
- * @param dev_addr 
+ * @param pca pointer to a new driver struct
+ * @param writeFunc function pointer to HAL specific write func
+ * @param readFunc function pointer to HAL specific read func
+ * @param dev_addr i2c device address
  */
 void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
 		  uint8_t dev_addr);
@@ -72,21 +72,21 @@ void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
 /**
  * @brief Read the register of the PCA9539
  * 
- * @param pca 
- * @param reg_type 
- * @param buf 
- * @return int 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being read
+ * @param buf pointer to buffer storing reg data
+ * @return int Error code return
  */
 int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 
 /**
  * @brief Read the pin state of the PCA9539
  * 
- * @param pca 
- * @param reg_type 
- * @param pin 
- * @param buf 
- * @return int 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being read
+ * @param pin pin num to read
+ * @param buf pointer storing buffer state
+ * @return int Error code return
  */
 int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 		     uint8_t *buf);
@@ -95,21 +95,21 @@ int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 
  * @brief Write the register of the PCA9539
  * 
- * @param pca 
- * @param reg_type 
- * @param buf 
- * @return int 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being written to 
+ * @param buf pointer with value to write to reg
+ * @return int Error code return
  */
 int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
 
 /**
  * @brief Write the pin of the PCA9539
  * 
- * @param pca 
- * @param reg_type 
- * @param pin 
- * @param buf 
- * @return int 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being written to
+ * @param pin pin to modify
+ * @param buf pointer with value to write to reg
+ * @return int Error code return
  */
 int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
 		      uint8_t buf);
