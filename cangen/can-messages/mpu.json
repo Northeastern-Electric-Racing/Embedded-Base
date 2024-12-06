@@ -373,6 +373,22 @@
             "format": "divide10000"
           }
         ]
+      },
+      {
+        "name": "MPU/Sense/SOC",
+        "unit": "%",
+        "sim": {
+          "min": 5,
+          "max": 99,
+          "inc_min": 0.1,
+          "inc_max": 0.5
+        },
+        "points": [
+          {
+            "size": 32,
+            "endianness": "little"
+          }
+        ]
       }
     ]
   },
