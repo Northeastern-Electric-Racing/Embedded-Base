@@ -5,8 +5,7 @@
 #include <stdint.h>
 
 /*
-PCA 9539 16 bit GPIO expander.  Datasheet:
-https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
+PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 */
 
 /// Possible I2C addresses, see comment below
@@ -36,31 +35,83 @@ https://www.ti.com/lit/ds/symlink/pca9539.pdf?ts=1716785085909
 #define PCA_DIRECTION_0_REG 0x06
 #define PCA_DIRECTION_1_REG 0x07
 
+/**
+ * @brief Pointer to write function
+ * 
+ */
+typedef int (*WritePtr)(uint16_t dev_addr, uint16_t mem_address,
+			uint16_t mem_add_size, uint8_t *data, uint16_t size,
+			int delay);
+
+/**
+ * @brief Pointer to read function
+ * 
+ */
+typedef int (*ReadPtr)(uint16_t dev_addr, uint16_t mem_address,
+		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
+		       int delay);
+
 typedef struct {
-	I2C_HandleTypeDef *i2c_handle;
+	WritePtr write;
+	ReadPtr read;
+
 	uint16_t dev_addr;
 } pca9539_t;
 
-/// Init PCA9539, a 16 bit I2C GPIO expander
-void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle,
+/**
+ * @brief Initialize the PCA9539 Driver
+ * 
+ * @param pca pointer to a new driver struct
+ * @param writeFunc function pointer to HAL specific write func
+ * @param readFunc function pointer to HAL specific read func
+ * @param dev_addr i2c device address
+ */
+void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
 		  uint8_t dev_addr);
 
-/// @brief Read all pins on a bus, for example using reg_type input to get
-/// incoming logic level
-HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-				   uint8_t *buf);
-/// @brief Read a specific pin on a bus, do not iterate over this, use read_pins
-/// instead
-HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
-				   uint8_t pin, uint8_t *buf);
+/**
+ * @brief Read the register of the PCA9539
+ * 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being read
+ * @param buf pointer to buffer storing reg data
+ * @return int Error code return
+ */
+int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf);
 
-/// @brief Write all pins on a bus, for example using reg_type OUTPUT to set
-/// logic level or DIRECTION to set as output
-HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type,
-				    uint8_t buf);
-/// @brief Write a specific pin on a bus, do not iterate over this, use
-/// write_pins instead
-HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type,
-				    uint8_t pin, uint8_t buf);
+/**
+ * @brief Read the pin state of the PCA9539
+ * 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being read
+ * @param pin pin num to read
+ * @param buf pointer storing buffer state
+ * @return int Error code return
+ */
+int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		     uint8_t *buf);
+
+/**
+
+ * @brief Write the register of the PCA9539
+ * 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being written to 
+ * @param buf pointer with value to write to reg
+ * @return int Error code return
+ */
+int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf);
+
+/**
+ * @brief Write the pin of the PCA9539
+ * 
+ * @param pca pointer to driver struct with read & write funcs
+ * @param reg_type type of register being written to
+ * @param pin pin to modify
+ * @param buf pointer with value to write to reg
+ * @return int Error code return
+ */
+int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		      uint8_t buf);
 
 #endif

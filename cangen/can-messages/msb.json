@@ -52,13 +52,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -80,13 +83,16 @@
         "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -237,13 +243,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -265,13 +274,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -422,13 +434,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -450,13 +465,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -607,13 +625,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -635,13 +656,16 @@
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
