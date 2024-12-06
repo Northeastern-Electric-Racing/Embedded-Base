@@ -109,6 +109,7 @@ Within the `points` member of a NetField object, there is a list of Point object
 - `endianness` (optional), string representing the byte endianness of the bits being read, either `"big"` or `"little"` (`"big"` by default)
 - `format` (optional, not recommended), string representing the final type of the data (`"f32"` by default)
 - `default_value` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
+- `ieee754_f32` (optional), boolean indicating if the bits in the Point should be interpreted as an IEEE754 32-bit float (`false` by default)
 
 #### Sim
 Within the `sim` member of a NetField object, there is a single sim object.  This object is one of two types, either `sweep` or `enum`.  However these types are implied, not written in the JSON, just use them correctly!
