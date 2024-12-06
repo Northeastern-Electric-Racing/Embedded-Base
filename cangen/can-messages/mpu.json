@@ -385,7 +385,7 @@
         },
         "points": [
           {
-            "size": 32,
+            "size": 8,
             "endianness": "little"
           }
         ]
