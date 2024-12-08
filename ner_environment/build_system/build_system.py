@@ -59,7 +59,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
 @app.command(help="Configure autoformatter settings")
 def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable clang-format"),
-          enable: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
+          enablrune: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
           run: bool = typer.Option(False, "--run", "-r", help="Run clang-format")):
     
     if disable:
@@ -113,7 +113,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
     if platform.system() == "Linux" and is_wsl() == 0:
         gdb_uri = "localhost"
 
-    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "arm-none-eabi-gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
+    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
 
     subprocess.run(send_command)
 
@@ -168,7 +168,8 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
 # ==============================================================================
 
 @app.command(help="Open UART terminal of conneced device")
-def serial(ls: bool = typer.Option(False, "--list", help="Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)"),
+def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device to connect or disconnect (e.g., /dev/ttyACM0,/dev/ttyUSB0,/dev/ttyUSB1,COM1)
+                                                            Mandatory on MacOS, may be optional on otherwise. On Mac, find this by running `ls /dev/tty.usb*' '''),
            device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to")):
 
     if ls:
