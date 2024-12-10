@@ -987,8 +987,7 @@
                 "unit": "",
                 "points": [
                     {
-                        "size": 32,
-                        "ieee754_f32": true
+                        "size": 32
                     }
                 ]
             }
