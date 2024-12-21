@@ -7,8 +7,6 @@ on:
 jobs:
   run-build:
     runs-on: ubuntu-latest
-    container:
-        image: ghcr.io/northeastern-electric-racing/embedded-base:main
     steps:
       - name: Clone Calypso
         uses: actions/checkout@v4

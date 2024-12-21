@@ -1007,7 +1007,7 @@
   {
     "id": "0x699",
     "desc": "Cerberus Version Hash",
-    "sim_freq": 1000,
+    "sim_freq": 999,
     "fields": [
       {
         "name": "MPU/Version/ShortHash",
