@@ -1013,7 +1013,7 @@
         "name": "MPU/Version/ShortHash",
         "unit": "hash",
         "sim": {
-          "min": 0000,
+          "min": 0,
           "max": 4294967295,
           "inc_min": 1,
           "inc_max": 1,
@@ -1024,7 +1024,7 @@
         "name": "MPU/Version/AuthorHash",
         "unit": "hash",
         "sim": {
-          "min": 0000,
+          "min": 0,
           "max": 4294967295,
           "inc_min": 1,
           "inc_max": 1,
