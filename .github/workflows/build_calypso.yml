@@ -19,4 +19,4 @@ jobs:
           path: "./Embedded-Base"
 
       - name: Build Calypso
-        run: cargo build --debug --locked
+        run: cargo build --locked
