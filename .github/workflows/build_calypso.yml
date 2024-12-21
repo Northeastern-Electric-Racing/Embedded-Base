@@ -1,0 +1,22 @@
+name: Check CAN, build Calypso
+on:
+  push:
+    paths:
+        - 'cangen/**'
+
+jobs:
+  run-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Calypso
+        uses: actions/checkout@v4
+        with:
+          repository: Northeastern-Electric-Racing/Calypso
+
+      - name: Clone Embedded-base
+        uses: actions/checkout@v4
+        with:
+          path: "./Embedded-Base"
+
+      - name: Build Calypso
+        run: cargo build --locked
