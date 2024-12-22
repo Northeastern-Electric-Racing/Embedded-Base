@@ -922,12 +922,108 @@
         ]
       },
       {
+        "name": "MPU/Fuses/Pump1",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
         "send": false,
         "points": [
           {
             "size": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x508",
+    "desc": "PDU Current",
+    "sim_freq": 1000,
+    "fields": [
+      {
+        "name": "MPU/Current/Motor_Controller",
+        "unit": "A",
+        "sim": {
+           "min": 0,
+           "max": 3,
+           "inc_min": 0.01,
+           "inc_max": 3
+        },
+        "points": [
+          {
+            "size": 16,
+            "endianness": "little",
+            "format": "divide1000"
+          }
+        ]
+      },
+      {
+        "name": "MPU/Current/Battbox_Fans",
+        "unit": "A",
+        "sim": {
+           "min": 0,
+           "max": 5,
+           "inc_min": 0.01,
+           "inc_max": 5
+        },
+        "points": [
+          {
+            "size": 16,
+            "endianness": "little",
+            "format": "divide1000"
+          }
+        ]
+      },
+      {
+        "name": "MPU/Current/Pumps",
+        "unit": "A",
+        "sim": {
+           "min": 0,
+           "max": 2,
+           "inc_min": 0.01,
+           "inc_max": 2
+        },
+        "points": [
+          {
+            "size": 16,
+            "endianness": "little",
+            "format": "divide1000"
+          }
+        ]
+      },
+      {
+        "name": "MPU/Current/LV_Boards",
+        "unit": "A",
+        "sim": {
+           "min": 0,
+           "max": 1.25,
+           "inc_min": 0.01,
+           "inc_max": 1.25
+        },
+        "points": [
+          {
+            "size": 16,
+            "endianness": "little",
+            "format": "divide1000"
           }
         ]
       }
