@@ -302,7 +302,7 @@ def flash():
 # serial
 # ==============================================================================
 @lp_app.command(help="View serial output from the device")
-def flash():
+def serial():
     subprocess.run(['platformio', 'device', 'monitor'])
     
 
