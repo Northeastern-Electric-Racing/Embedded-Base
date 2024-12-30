@@ -1,33 +1,22 @@
 # Embedded-Base
-Embedded-Base is a collection of drivers & middleware designed for use across various systems.
+Embedded-Base is a collection of drivers, middlewares, and communication definitions designed for use across various systems.  
 
-This repository houses custom drivers and middleware that can be utilized in multiple projects.
+Most firmware projects define Embedded-Base as a submodule.
 
-To use this repository in any project, it should be set up as a submodule.
+## Getting Started With NER Firmware
 
-## Getting Started
+All you need is on confluence [here](https://nerdocs.atlassian.net/wiki/spaces/NER/pages/1343533/Firmware+Onboarding+Embedded+Software#Development-Environment-Setup).
 
-#### 1. Clone Embbeded-Base:
-   ~~~
-   git clone https://github.com/Northeastern-Electric-Racing/Embedded-Base.git
-   ~~~
+### Notable items in this repository
 
-#### 2. Initialize submodule
-   Within the application directory, run the following command to initialize the submodule:
-   ~~~
-   git submodule update --init
-   ~~~
-
-## Development Guidelines
-
-When developing in the parent directory, it's recommended to frequently run the following command to update all submodules in case changes have been made:
-~~~
-git submodule update --remote
-~~~
-
-
-**When making changes to a driver located within Embedded-Base, always make those changes directly within the Embedded-Base repository. Avoid making changes to a submodule from the parent directory.** Although it's technically possible, doing so can lead to disorganization, which we want to avoid.
-
-This approach ensures that changes to Embedded-Base are tracked properly and can be easily integrated into your projects using it as a submodule.
+- `cangen`: All JSON definitions of in-car CAN data as well as documentation and parsing utilities.
+- `dev`: The manual version of the NER build system, compatible up circuit boards in competition 22A
+- `ner_environment`: The NER developer environment compatible with all boards from 22A onwards and cross platform support.
+- `general`: Cross-platform C source files for all peripheral drivers used by NER.
+- `middleware`: Cross-platform C source files common utilities used across various platforms.
+- `platforms`: C source files specific to STM HAL versions.
+- `clang-format`:  The organization wide clang-format definition.
+- `ftdi_flash.cfg`: An openocd script to assist in FTDI flashing.
+- `openocd.cfg`: A openocd stub to load GDB onto a target.
 
 

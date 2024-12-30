@@ -13,6 +13,7 @@
 #
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
+import shutil
 import typer
 from rich import print
 import platform
@@ -31,8 +32,11 @@ from .miniterm import main as miniterm
 # ==============================================================================
     
 app = typer.Typer(help="Northeastern Electric Racing Firmware Build System",
-                  epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/611516420/NER+Build+System",
+                  epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/524451844/2024+Firmware+Onboarding+Master",
                   add_completion=False)
+
+lp_app = typer.Typer(help="Install configure, and run launchpad environment items")
+app.add_typer(lp_app, name="lp")
 
 def unsupported_option_cb(value:bool):
     if value:
@@ -59,7 +63,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
 @app.command(help="Configure autoformatter settings")
 def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable clang-format"),
-          enablrune: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
+          enable: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
           run: bool = typer.Option(False, "--run", "-r", help="Run clang-format")):
     
     if disable:
@@ -239,7 +243,74 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
     
     elif disconnect:
         disconnect_usbip()
- 
+
+# ==============================================================================
+# ---- Launchpad Section
+# ==============================================================================
+
+
+# ==============================================================================
+# init
+# ==============================================================================
+@lp_app.command(help="Initialize launchpad, run before any commands")
+def install():
+    """Install PlatformIO package."""
+    try:
+        # Install the platformio package
+        subprocess.check_call(['pip', 'install', 'platformio'])
+
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install PlatformIO: {e}", file=sys.stderr)
+        sys.exit(1)
+
+# ==============================================================================
+# uninstall
+# ==============================================================================
+@lp_app.command(help="Remove launchpad")
+def uninstall():
+    """Uninstall PlatformIO package."""
+    try:
+        # Install the platformio package
+        subprocess.check_call(['pip', 'uninstall', '-y', 'platformio'])
+
+        platformio_dir = os.path.expanduser('~/.platformio')
+        if os.path.isdir(platformio_dir):
+            shutil.rmtree(platformio_dir)
+            print("PlatformIO directory removed.")
+        else:
+            print("PlatformIO directory does not exist.")
+
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to uninstall PlatformIO: {e}", file=sys.stderr)
+        sys.exit(1)
+
+# ==============================================================================
+# build
+# ==============================================================================
+@lp_app.command(help="Build your launchpad project")
+def build():
+    subprocess.run(['platformio', 'run'])
+
+# ==============================================================================
+# flash
+# ==============================================================================
+@lp_app.command(help="Flash your launchpad project to a board")
+def flash():
+    subprocess.run(['platformio', 'run', '--target', 'upload'])
+
+# ==============================================================================
+# serial
+# ==============================================================================
+@lp_app.command(help="View serial output from the device")
+def serial():
+    subprocess.run(['platformio', 'device', 'monitor'])
+    
+
+# ==============================================================================
+# ---- End Launchpad Section
+# ==============================================================================
+
+
 # ==============================================================================
 # Helper functions - not direct commands
 # ==============================================================================
