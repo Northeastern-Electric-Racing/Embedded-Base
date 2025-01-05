@@ -43,22 +43,25 @@
     "fields": [
       {
         "name": "MSB/FL/Accel",
-        "unit": "g",
+        "unit": "mg",
         "sim": {
-          "min": 0,
-          "max": 2,
-          "inc_min": 0.01,
-          "inc_max": 0.25
+          "min": -2000,
+          "max": 2000,
+          "inc_min": 0.1,
+          "inc_max": 2.5
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -71,22 +74,25 @@
     "fields": [
       {
         "name": "MSB/FL/Gyro",
+        "unit": "mdps",
         "sim": {
-          "min": 0,
-          "max": 15,
-          "inc_min": 0.1,
-          "inc_max": 0.5
+          "min": -500000,
+          "max": 500000,
+          "inc_min": 10,
+          "inc_max": 1000
         },
-        "unit": "",
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -228,22 +234,25 @@
     "fields": [
       {
         "name": "MSB/FR/Accel",
-        "unit": "g",
+        "unit": "mg",
         "sim": {
-          "min": 0,
-          "max": 2,
-          "inc_min": 0.01,
-          "inc_max": 0.25
+          "min": -2000,
+          "max": 2000,
+          "inc_min": 0.1,
+          "inc_max": 2.5
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -256,22 +265,25 @@
     "fields": [
       {
         "name": "MSB/FR/Gyro",
-        "unit": "",
+        "unit": "mdps",
         "sim": {
-          "min": 0,
-          "max": 15,
-          "inc_min": 0.1,
-          "inc_max": 0.5
+          "min": -500000,
+          "max": 500000,
+          "inc_min": 10,
+          "inc_max": 1000
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -413,22 +425,25 @@
     "fields": [
       {
         "name": "MSB/BL/Accel",
-        "unit": "g",
+        "unit": "mg",
         "sim": {
-          "min": 0,
-          "max": 2,
-          "inc_min": 0.01,
-          "inc_max": 0.25
+          "min": -2000,
+          "max": 2000,
+          "inc_min": 0.1,
+          "inc_max": 2.5
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -441,22 +456,25 @@
     "fields": [
       {
         "name": "MSB/BL/Gyro",
-        "unit": "",
+        "unit": "mdps",
         "sim": {
-          "min": 0,
-          "max": 15,
-          "inc_min": 0.1,
-          "inc_max": 0.5
+          "min": -500000,
+          "max": 500000,
+          "inc_min": 10,
+          "inc_max": 1000
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -598,22 +616,25 @@
     "fields": [
       {
         "name": "MSB/BR/Accel",
-        "unit": "g",
+        "unit": "mg",
         "sim": {
-          "min": 0,
-          "max": 2,
-          "inc_min": 0.01,
-          "inc_max": 0.25
+          "min": -2000,
+          "max": 2000,
+          "inc_min": 0.1,
+          "inc_max": 2.5
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -626,22 +647,25 @@
     "fields": [
       {
         "name": "MSB/BR/Gyro",
-        "unit": "",
+        "unit": "mdps",
         "sim": {
-          "min": 0,
-          "max": 15,
-          "inc_min": 0.1,
-          "inc_max": 0.5
+          "min": -500000,
+          "max": 500000,
+          "inc_min": 10,
+          "inc_max": 1000
         },
         "points": [
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           },
           {
-            "size": 16
+            "size": 16,
+            "signed": true
           }
         ]
       }
