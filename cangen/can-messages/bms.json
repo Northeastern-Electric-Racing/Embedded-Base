@@ -1009,23 +1009,17 @@
                         ],
                         [
                             1,
-                            0.5
+                            0.25
+                        ],
+                        [
+                            2,
+                            0.25
                         ]
                     ]
                 },
                 "points": [
                     {
                         "size": 1
-                    }
-                ]
-            },
-            {
-                "name": "BMS/Fault_Timer/Extra",
-                "unit": "",
-                "send": false,
-                "points": [
-                    {
-                        "size": 7
                     }
                 ]
             },
