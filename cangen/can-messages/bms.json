@@ -994,6 +994,69 @@
         ]
     },
     {
+        "id": "0x6FF",
+        "desc": "BMS Fault Timers",
+        "sim_freq": 700,
+        "fields": [
+            {
+                "name": "BMS/Fault_Timer/Start_Stop",
+                "unit": "",
+                "sim": {
+                    "options": [
+                        [
+                            0,
+                            0.5
+                        ],
+                        [
+                            1,
+                            0.25
+                        ],
+                        [
+                            2,
+                            0.25
+                        ]
+                    ]
+                },
+                "points": [
+                    {
+                        "size": 8
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Fault_Timer/Code",
+                "unit": "",
+                "sim": {
+                    "min": 0,
+                    "max": 31,
+                    "inc_min": 0,
+                    "inc_max": 31,
+                    "round": true
+                },
+                "points": [
+                    {
+                        "size": 8
+                    }
+                ]
+            },
+            {
+                "name": "BMS/Fault_Timer/Value",
+                "unit": "",
+                "sim": {
+                    "min": -100,
+                    "max": 100,
+                    "inc_min": 0.05,
+                    "inc_max": 1
+                },
+                "points": [
+                    {
+                        "size": 16
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "id": "0x69A",
         "desc": "Shepherd Version Tag",
         "sim_freq": 1000,
