@@ -19,7 +19,6 @@
 #define NER_SET_BIT(num, bit) \
 	bit < (sizeof(num) * 8) ? (num |= (1UL << bit)) : num
 
-
 void endian_swap(void *ptr, int size);
 
 /// @brief Reverses the bit order of a byte
