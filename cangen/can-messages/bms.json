@@ -956,19 +956,390 @@
         ]
       },
       {
-        "name": "BMS/Faults/Non_Critical",
+        "name": "BMS/Faults/Extra",
+        "unit": "",
+        "send": false,
+        "points": [
+          {
+            "size": 14
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/CCL_Enforce",
         "unit": "",
         "sim": {
           "options": [
             [
               0,
-              1
+              0.5
+            ],
+            [
+              1,
+              0.5
             ]
           ]
         },
         "points": [
           {
-            "size": 32
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Can",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Battery_Therm",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Safety",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/DCL_Enforce",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/External_Can",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Weak_Pack",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Low_Cell_Volts",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charge_Reading",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Current_Sense",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/IC_Comm",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Thermal_Err",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Software",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Open_Wire",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Pack_Overheat",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Undervoltage",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Overvoltage",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cells_Not_Balancing",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
           }
         ]
       }
