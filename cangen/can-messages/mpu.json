@@ -1012,7 +1012,6 @@
       {
         "name": "MPU/Version/ShortHash",
         "unit": "hash",
-        "endianness": "little",
         "sim": {
           "min": 0,
           "max": 4294967295,
