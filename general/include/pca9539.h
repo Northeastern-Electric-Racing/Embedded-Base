@@ -39,17 +39,15 @@ PCA 9539 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/ds/symlink/pca
  * @brief Pointer to write function
  * 
  */
-typedef int (*WritePtr)(uint16_t dev_addr, uint16_t mem_address,
-			uint16_t mem_add_size, uint8_t *data, uint16_t size,
-			int delay);
+typedef uint8_t (*WritePtr)(uint16_t dev_addr, uint8_t reg, uint8_t *data,
+			    uint8_t size);
 
 /**
  * @brief Pointer to read function
  * 
  */
-typedef int (*ReadPtr)(uint16_t dev_addr, uint16_t mem_address,
-		       uint16_t mem_add_size, uint8_t *data, uint16_t size,
-		       int delay);
+typedef uint8_t (*ReadPtr)(uint16_t dev_addr, uint8_t reg, uint8_t *data,
+			   uint8_t size);
 
 typedef struct {
 	WritePtr write;
