@@ -4,28 +4,17 @@
 
 #define REG_SIZE_BITS 8
 
-int pca_write_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
+static int pca_write_reg(pca9539_t *pca, uint8_t address, uint8_t *data)
 {
-	//Parameters in the HAL Function
-	uint16_t mem_add_size = 8;
-	uint16_t data_size = 1;
-	int delay = 0xFFFFFFFFU;
-
-	return pca->write(pca->dev_addr, address, mem_add_size, data, data_size,
-			  delay);
+	return pca->write(pca->dev_addr, address, data, 1);
 }
 
-int pca_read_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
+static int pca_read_reg(pca9539_t *pca, uint8_t address, uint8_t *data)
 {
-	uint16_t mem_add_size = 8;
-	uint16_t data_size = 1;
-	int delay = 0xFFFFFFFFU;
-
-	return pca->read(pca->dev_addr, address, mem_add_size, data, data_size,
-			 delay);
+	return pca->read(pca->dev_addr, address, data, 1);
 }
 
-void pca9539_init(pca9539_t *pca, WritePtr writeFunc, ReadPtr readFunc,
+void pca9539_init(pca9539_t *pca, PCA_Write writeFunc, PCA_Read readFunc,
 		  uint8_t dev_addr)
 {
 	pca->dev_addr = dev_addr << 1u;
