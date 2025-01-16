@@ -1021,6 +1021,7 @@
          },
          "points": [
           {
+            "endianness": "little",
             "size": 32
           }
         ]
@@ -1037,6 +1038,7 @@
          },
          "points": [
           {
+            "endianness": "little",
             "size": 32
           }
         ]
