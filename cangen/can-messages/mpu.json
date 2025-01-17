@@ -1044,5 +1044,29 @@
         ]
       }
     ]
+  },
+  {
+    "id": "0xAAA",
+    "desc": "Cerberus Fan BattBox State",
+    "key": "SecondOff",
+    "is_ext": true,
+    "sim_freq": 750,
+    "fields": [
+      {
+        "name": "MPU/State/FanBattBox",
+        "unit": "bool",
+        "sim": {
+          "min": 1,
+          "max": 1,
+          "inc_min": 1,
+          "inc_max": 1
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+    ]
   }
 ]
