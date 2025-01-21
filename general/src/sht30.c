@@ -1,7 +1,7 @@
 #include "sht30.h"
 #include <stdbool.h>
 #include <stdio.h>
-
+//ner flash --ftdi for msb
 static int sht30_write_reg(sht30_t *sht30, uint16_t command)
 {
 	uint8_t command_buffer[2] = { (command & 0xff00u) >> 8u,
@@ -17,13 +17,13 @@ static int sht30_write_reg(sht30_t *sht30, uint16_t command)
 static uint8_t calculate_crc(const uint8_t *data, size_t length)
 {
 	uint8_t crc = 0xff;
-	for (size_t i = 0; i < length; i++) {
+	for (size_t i = 0; i < length; i++) {															
 		crc ^= data[i];
 		for (size_t j = 0; j < 8; j++) {
-			if ((crc & 0x80u) != 0) {
-				crc = (uint8_t)((uint8_t)(crc << 1u) ^ 0x31u);
+			if ((crc & 0x80) != 0) {
+				crc = (uint8_t)((uint8_t)(crc << 1) ^ 0x91);
 			} else {
-				crc <<= 1u;
+				crc <<= 1;
 			}
 		}
 	}
@@ -32,7 +32,7 @@ static uint8_t calculate_crc(const uint8_t *data, size_t length)
 
 static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 {
-	return (uint16_t)((uint16_t)msb << 8u) | lsb;
+	return (uint16_t)((uint16_t)msb << 8) | lsb;
 }
 
 int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg)
@@ -43,7 +43,7 @@ int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg)
 	uint8_t status_reg_and_checksum[3];
 	if (sht30->read_reg(status_reg_and_checksum, SHT3X_COMMAND_READ_STATUS,
 			     sizeof(status_reg_and_checksum)) != 0) {
-		return -1;	
+		return -1;		
 	}
 
 	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
@@ -76,7 +76,7 @@ int sht30_get_temp_humid(sht30_t *sht30)
 		uint8_t databuf[6];
 	} data;
 
-	uint16_t temp, humidity;
+	uint8_t temp, humidity;
 
 	sht30_write_reg(sht30, (SHT30_START_CMD_WCS));
 
@@ -90,17 +90,18 @@ int sht30_get_temp_humid(sht30_t *sht30)
 		return -1;
 	}
 
-	float val = -45.0f + 175.0f * (float)temp / 65535.0f;
+	float tempVal = -45.0f + 175.0f * (((float)temp) / 65535.0f);
 
-	sht30->temp = (uint16_t)val;
+	sht30->temp = tempVal;
 
 	humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
 	if (data.raw_data.humidity_crc != calculate_crc(data.databuf + 3, 2)) {
 		return -1;
 	}
 
-	humidity = (uint16_t)(100.0f * (float)humidity / 65535.0f);
-	sht30->humidity = humidity;
+	float humVal = (100.0f * ((float)humidity / 65535.0f));
+
+	sht30->humidity = humVal;
 
 	return 0;
 }

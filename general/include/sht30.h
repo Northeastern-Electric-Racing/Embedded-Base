@@ -27,7 +27,7 @@ typedef enum {
 
 /** Function Pointers */
 typedef int (*Write_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
-typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
+typedef int (*Read_ptr)(unit8_t *data, uint8_t reg, uint8_t length);
 
 /*
  * Start measurement command with clock streching enabled and high
@@ -43,8 +43,8 @@ typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
 typedef struct {
 	Write_ptr write_reg;
 	Read_ptr read_reg;
-	uint16_t temp;
-	uint16_t humidity;
+	float temp;
+	float humidity;
 	bool is_heater_enabled;
 } sht30_t;
 
