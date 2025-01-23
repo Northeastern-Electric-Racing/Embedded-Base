@@ -122,5 +122,28 @@
         ]
       }
     ]
+  },
+  {
+    "id": "0x4A1",
+    "desc": "Cerberus Fan Batt Box State",
+    "is_ext": true,
+    "sim_freq": 750,
+    "fields": [
+      {
+        "name": "MPU/State/FanBattBox",
+        "unit": "bool",
+        "sim": {
+          "min": 8,
+          "max": 8,
+          "inc_min": 8,
+          "inc_max": 8
+        },
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
   }
 ]
