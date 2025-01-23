@@ -1048,7 +1048,6 @@
   {
     "id": "0xFAB",
     "desc": "Cerberus Fan Batt Box State",
-    "key": "SecondOff",
     "is_ext": true,
     "sim_freq": 750,
     "fields": [
