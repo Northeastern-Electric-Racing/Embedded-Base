@@ -1046,7 +1046,7 @@
     ]
   },
   {
-    "id": "0xFAN",
+    "id": "0xFAB",
     "desc": "Cerberus Fan Batt Box State",
     "key": "SecondOff",
     "is_ext": true,
