@@ -1,11 +1,11 @@
 [
   {
     "id": "0x680",
-    "desc": "Wheel State",
+    "desc": "Wheel Buttons",
     "sim_freq": 8,
     "fields": [
       {
-        "name": "WHEEL/Buttons/1",
+        "name": "Wheel/Buttons/id",
         "unit": "",
         "sim": {
           "options": [
