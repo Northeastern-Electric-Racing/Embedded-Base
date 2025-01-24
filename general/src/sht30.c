@@ -4,8 +4,8 @@
 //ner flash --ftdi for msb
 static int sht30_write_reg(sht30_t *sht30, uint16_t command)
 {
-	uint8_t command_buffer[2] = { (command & 0xff00u) >> 8u,
-				      command & 0xffu };
+	uint8_t command_buffer[2] = { (uint8_t)(command & 0xff00) >> 8,
+				      (uint8_t)(command & 0xff) };
 
 	return sht30->write_reg(command_buffer, 0, sizeof(command_buffer));
 }
