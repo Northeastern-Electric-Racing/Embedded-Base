@@ -1560,5 +1560,84 @@
         ]
       }
     ]
+  },
+  {
+    "id": "0x6FA",
+    "desc": "Alpha General Cell Message Debug",
+    "sim_freq": 6,
+    "fields": [
+      {
+        "name": "BMS/PerCell/Alpha/0/Temperature",
+        "unit": "C",
+        "points": [
+          {
+            "size": 10
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/0/Voltage",
+        "unit": "C",
+        "points": [
+          {
+            "size": 13
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/Voltage",
+        "unit": "C",
+        "points": [
+          {
+            "size": 13
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/Chip",
+        "unit": "index",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/0/CellA",
+        "unit": "index",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/CellB",
+        "unit": "index",
+        "points": [
+          {
+            "size": 4
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/DischargingA",
+        "unit": "index",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/DischargingB",
+        "unit": "index",
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      }
+    ]
   }
 ]
