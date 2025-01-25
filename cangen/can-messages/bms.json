@@ -1637,6 +1637,16 @@
             "size": 1
           }
         ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/1/Extra",
+        "unit": "index",
+        "send": false,
+        "points": [
+          {
+            "size": 6
+          }
+        ]
       }
     ]
   }
