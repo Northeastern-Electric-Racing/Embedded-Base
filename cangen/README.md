@@ -17,6 +17,7 @@ Ex. If there are 5 messages of size one (booleans), add a 3 bit filler before ad
 8. Unsent messages should only contain the size parameter
 9. Make the topic of an EncodableCANMsg be `"Calypso/Bidir/State/{key}/{field_name}"`
 10. The description field must be only letters and spaces, upper or lowercase
+11. Sim enum frrquencies must add up to 1 or they will not be respected.
 
 Message guide:
 1. Use previous examples for most things
@@ -84,6 +85,10 @@ Occassionally you may want Calypso to also send a message on the CAN network. Us
 - `is_ext`, boolean representing whether the CAN ID is extended or standard (`false` by default)
 It is recommended that the decoding of the message be done to the topic `"Calypso/Bidir/State/{key}/{field_name}"`. Note decoding works exactly the same with these messages, so serves as an accurate representation of what Calypso is current sending out to the car.
 
+Also, you should allow for simulation of the data point whenever possible.
+  - `sim_freq`, integer frequency of which this message is usually emitted, in ms
+
+
 
 #### NetField
 
@@ -93,6 +98,7 @@ Within the `fields` member of a Message object, there is a list of NetField obje
 - `points`, a list of Point objects to be used for this MQTT message
 - `send` (optional), boolean representing whether this message should be send over the network (`true` by default)
 - `topic_append` (optional), boolean representing whether to append the topic name with the value of the first CANPoint in `points` (`false` by default)
+- `sim` (optional) a sim object to define simulation parameters
 
 
 #### Point
@@ -101,8 +107,23 @@ Within the `points` member of a NetField object, there is a list of Point object
 - `size`, an integer representing the size to be read in bits
 - `signed` (optional), boolean representing whether or not the number is signed in two's complement form (`false` by default) 
 - `endianness` (optional), string representing the byte endianness of the bits being read, either `"big"` or `"little"` (`"big"` by default)
-- `format` (optional, not recommended), string representing the final type of the data (`"f32"` by default)
-- `default` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
+- `format` (optional), string representing the format of the bits (e.g. `divide100`) (blank by default)
+- `default_value` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
+- `ieee754_f32` (optional), boolean indicating if the bits in the Point should be interpreted as an IEEE754 32-bit float. **Be sure to endian swap the float before sending!!** (`false` by default)
+
+#### Sim
+Within the `sim` member of a NetField object, there is a single sim object.  This object is one of two types, either `sweep` or `enum`.  However these types are implied, not written in the JSON, just use them correctly!
+
+`sweep`: sweep a certain range of values
+- `min`, float, the minium value to emit
+- `max`, float, the maximum value to emit
+- `inc_min`, float, the minimum increment
+- `inc_max`, float, the maximum increment
+- `round`, bool, whether to round values to a whole number (more precise rounding is not supported)
+
+or  
+`enum`: choose from a certain list of values
+- `options`, list[[`value`, `freq`]...], a list containing lists of length two.  Each inner list's first item is the value to be emitted, and the second item is the probability the item should be emitted.  **These probabilities must add to 1, or they won't be obeyed.**
 
 
 ### Directory Structure

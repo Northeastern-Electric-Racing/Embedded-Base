@@ -19,8 +19,7 @@ def list_usb_devices():
             print(f"Failed to list USB devices on Windows: {e}", file=sys.stderr)
             sys.exit(1)
 
-    elif os_name == 'Linux' or os_name == 'Darwin':  # Darwin is macOS
-        # List USB devices on Unix-like systems
+    elif os_name == 'Linux':
         try:
             result = subprocess.run(['ls /dev/tty*'], shell=True, capture_output=True, text=True)
 

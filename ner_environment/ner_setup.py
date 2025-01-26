@@ -77,6 +77,14 @@ def install_precommit(venv_python):
         print(f"Failed to install pre-commit: {e}", file=sys.stderr)
         sys.exit(1)
 
+def install_launchpad(venv_python):
+    print("Installing launchpad (platformio)...")
+    try:
+        run_command([venv_python, '-m', 'pip', 'install', 'platformio'])
+    except Exception as e:
+        print(f"Failed to install platformio: {e}", file=sys.stderr)
+        sys.exit(1)
+
 def install_openocd():
     os_type = platform.system()
     try:
@@ -142,21 +150,26 @@ def main():
         
         answer = input("Would you like to install all python packages in the venv? (yes/no)")
         if 'y' in answer:
-        # Use the venv's Python
+            # Use the venv's Python
             venv_python = os.path.join(venv_path, 'bin', 'python')
 
             # Step 4: run setup.py (installs requirements and entry points)
             run_setup(venv_python)
 
             # Step 5: Run pre-commit install
-            install_precommit(venv_python)
+            # disabled bc buggy as all hell
+            #install_precommit(venv_python)
+        answer = input("Would you like to install launchpad? (yes/no)")
+        if 'y' in answer:
+            # Step 5: Install launchpad
+            install_launchpad(venv_python)
 
     answer = input("Would you like to install openOCD? (do this manually if on a weird linux distro!) (yes/no)")
     if 'y' in answer:
-        # Step 5: Install probe-rs
+        # Step 6: Install openocd
         install_openocd()
 
-    # Step 6: Install usbip if on Linux
+    # Step 7: Install usbip if on Linux
     if os_type == "Linux" and is_wsl() == 0:
         answer = input("Would you like to install usbip? (yes/no)")
         if 'y' in answer:

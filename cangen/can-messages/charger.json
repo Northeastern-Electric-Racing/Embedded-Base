@@ -7,47 +7,56 @@
       {
         "name": "BMS/Charging/Voltage",
         "unit": "V",
-        "sim_min": 400,
-        "sim_max": 505,
-        "sim_inc_min": 0.01,
-        "sim_inc_max": 0.3,
+        "sim": {
+          "min": 400,
+          "max": 505,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        },
         "points": [
           {
             "size": 16,
             "format": "divide10"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "BMS/Charging/Current",
         "unit": "A",
-        "sim_min": 0,
-        "sim_max": 12,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "min": 0,
+          "max": 12,
+          "inc_min": 1,
+          "inc_max": 1
+        },
         "points": [
           {
             "size": 16,
             "format": "divide10"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "BMS/Charging/Control",
         "unit": "",
-        "sim_min": 0,
-        "sim_max": 255,
-        "sim_inc_min": 255,
-        "sim_inc_max": 255,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              255,
+              0.1
+            ]
+          ]
+        },
         "points": [
           {
             "size": 8
           }
         ]
-      }
-      ,
+      },
       {
         "name": "BMS/Charging/UnimplementedData",
         "unit": "",
@@ -59,8 +68,7 @@
         ]
       }
     ]
-  }
-  ,
+  },
   {
     "id": "0x18FF50E5",
     "desc": "Charger Box Status",
@@ -69,25 +77,28 @@
       {
         "name": "Charger/Box/Voltage",
         "unit": "V",
-        "sim_min": 400,
-        "sim_max": 505,
-        "sim_inc_min": 0.01,
-        "sim_inc_max": 0.3,
+        "sim": {
+          "min": 400,
+          "max": 505,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        },
         "points": [
           {
             "size": 16,
             "format": "divide10"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/Current",
         "unit": "A",
-        "sim_min": 0,
-        "sim_max": 12,
-        "sim_inc_min": 0.1,
-        "sim_inc_max": 1,
+        "sim": {
+          "min": 0,
+          "max": 12,
+          "inc_min": 0.1,
+          "inc_max": 1
+        },
         "points": [
           {
             "size": 16,
@@ -95,85 +106,119 @@
             "format": "divide10"
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/F_CommTimeout",
         "unit": "bool",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/F_WrongBatConnection",
         "unit": "bool",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/F_VoltageWrong",
         "unit": "bool",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/F_OverTemp",
         "unit": "bool",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/F_HardwareFailure",
         "unit": "bool",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 1,
-        "sim_inc_max": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
         "points": [
           {
             "size": 1
           }
         ]
-      }
-      ,
+      },
       {
         "name": "Charger/Box/UnimplementedData",
         "unit": "",
         "send": false,
         "points": [
           {
-            "size": 24
+            "size": 27
           }
         ]
       }
