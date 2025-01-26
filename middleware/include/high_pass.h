@@ -9,6 +9,7 @@ typedef struct {
 	float scale;
 
 	float prev_output;
+	float prev_input;
 
 } high_pass_t;
 
