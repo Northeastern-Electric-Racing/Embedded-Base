@@ -126,7 +126,7 @@
   {
     "id": "0x4A1",
     "desc": "Cerberus Fan Batt Box State",
-    "key": "FanSpeed",
+    "key": "FanBattBoxStatus",
     "sim_freq": 750,
     "fields": [
       {
