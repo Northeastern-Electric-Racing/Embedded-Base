@@ -147,7 +147,7 @@
         "points": [
           {
             "size": 16,
-            "default": 1,
+            "default": 0,
             "endianness": "little"
           }
         ]
