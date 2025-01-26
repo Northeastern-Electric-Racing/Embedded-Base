@@ -122,5 +122,35 @@
         ]
       }
     ]
+  },
+  {
+    "id": "0x4A1",
+    "desc": "Cerberus Fan Batt Box State",
+    "key": "FanBattBoxStatus",
+    "sim_freq": 750,
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/FanBattBoxStatus/A",
+        "unit": "bool",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8,
+            "default": 0
+          }
+        ]
+      }
+    ]
   }
 ]
