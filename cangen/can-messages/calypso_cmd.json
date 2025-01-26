@@ -146,7 +146,7 @@
         },
         "points": [
           {
-            "size": 8,
+            "size": 16,
             "default": 1,
             "endianness": "little"
           }
