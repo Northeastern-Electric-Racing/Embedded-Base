@@ -130,7 +130,7 @@
     "sim_freq": 750,
     "fields": [
       {
-        "name": "MPU/State/FanBattBox",
+        "name": "Calypso/Bidir/State/FanBattBox/A",
         "unit": "bool",
         "sim": {
           "options": [
