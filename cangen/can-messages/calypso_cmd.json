@@ -130,7 +130,7 @@
     "sim_freq": 750,
     "fields": [
       {
-        "name": "Calypso/Bidir/State/FanBattBox/A",
+        "name": "Calypso/Bidir/State/FanBattBoxStatus/A",
         "unit": "bool",
         "sim": {
           "options": [
@@ -146,9 +146,8 @@
         },
         "points": [
           {
-            "size": 16,
-            "default": 0,
-            "endianness": "little"
+            "size": 8,
+            "default": 0
           }
         ]
       }
