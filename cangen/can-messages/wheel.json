@@ -2,11 +2,9 @@
   {
     "id": "0x680",
     "desc": "Wheel State",
-    "sim_freq": 8,
-    "fields": [
+    "points": [
       {
-        "name": "WHEEL/Buttons/1",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
@@ -34,13 +32,18 @@
               0.15
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "WHEEL/Buttons/1",
+        "unit": "",
+        "values": [
+          1
         ]
       }
-    ]
+    ],
+    "sim_freq": 8
   }
 ]

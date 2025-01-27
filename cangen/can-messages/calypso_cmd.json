@@ -2,125 +2,137 @@
   {
     "id": "0x450",
     "desc": "Example Enc Msg",
-    "key": "FirstOff",
-    "sim_freq": 750,
-    "fields": [
+    "points": [
       {
-        "name": "Calypso/Bidir/State/FirstOff/A",
-        "unit": "Z",
+        "size": 32,
+        "format": "divide10000",
+        "default": 18.443,
         "sim": {
           "min": 1,
           "max": 100,
           "inc_min": 1,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 32,
-            "format": "divide10000",
-            "default": 18.443
-          }
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "default": 35.4,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        }
+      },
+      {
+        "size": 8,
+        "default": 19,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "endianness": "little",
+        "format": "divide100",
+        "default": -21.8,
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/FirstOff/A",
+        "unit": "Z",
+        "values": [
+          1
         ]
       },
       {
         "name": "Calypso/Bidir/State/FirstOff/B",
         "unit": "G",
-        "sim": {
-          "min": 1,
-          "max": 100,
-          "inc_min": 1,
-          "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true,
-            "default": 35.4
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "Calypso/Bidir/State/FirstOff/C",
         "unit": "G",
-        "sim": {
-          "min": 1,
-          "max": 100,
-          "inc_min": 1,
-          "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 8,
-            "default": 19
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "Calypso/Bidir/State/FirstOff/D",
         "unit": "G",
-        "sim": {
-          "min": 1,
-          "max": 100,
-          "inc_min": 1,
-          "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 16,
-            "signed": true,
-            "endianness": "little",
-            "format": "divide100",
-            "default": -21.8
-          }
+        "values": [
+          4
         ]
       }
-    ]
+    ],
+    "key": "FirstOff",
+    "sim_freq": 750
   },
   {
     "id": "0xFFFFF",
     "desc": "Example Enc Msg Ext",
-    "key": "SecondOff",
-    "is_ext": true,
-    "sim_freq": 750,
+    "points": [
+      {
+        "size": 32,
+        "endianness": "little",
+        "sim": {
+          "min": 1,
+          "max": 100,
+          "inc_min": 1,
+          "inc_max": 2
+        }
+      }
+    ],
     "fields": [
       {
         "name": "Calypso/Bidir/State/SecondOff/A",
         "unit": "GG",
-        "sim": {
-          "min": 1,
-          "max": 100,
-          "inc_min": 1,
-          "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 32,
-            "endianness": "little"
-          }
+        "values": [
+          1
         ]
       }
-    ]
+    ],
+    "key": "SecondOff",
+    "is_ext": true,
+    "sim_freq": 750
   },
   {
     "id": "0x7FF",
     "desc": "Calypso bidir unknown key",
-    "sim_freq": 750,
-    "fields": [
+    "points": [
       {
-        "name": "Calypso/Bidir/Unknown",
-        "unit": "pts",
+        "size": 8,
         "sim": {
           "min": 1,
           "max": 100,
           "inc_min": 1,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/Unknown",
+        "unit": "pts",
+        "values": [
+          1
         ]
       }
-    ]
+    ],
+    "sim_freq": 750
   }
 ]
