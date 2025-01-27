@@ -1,93 +1,95 @@
-{
-    "id": "0x1337",
-    "desc": "Experimental Segment Temperatures",
-    "sim_freq": 700,
-    "points": [
-      {
-        "size": 16,
-        "format": "divide10",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      },
-      {
-        "size": 8,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      },
-      {
-        "size": 8,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      },
-      {
-        "size": 8,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      },
-      {
-        "size": 16,
-        "format": "divide10",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      },
-      {
-        "size": 8,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
-      }
-    ],
-    "fields": [
-      {
-        "name": "BMS/Pack/PerCell/Cell-{3}/Volts",
-        "unit": "V",
-        "values": [
-          1
+[
+    {
+        "id": "0x1337",
+        "desc": "Experimental Segment Temperatures",
+        "sim_freq": 700,
+        "points": [
+            {
+                "size": 16,
+                "format": "divide10",
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            },
+            {
+                "size": 16,
+                "format": "divide10",
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 10,
+                    "max": 50,
+                    "inc_min": 0.01,
+                    "inc_max": 0.3
+                }
+            }
+        ],
+        "fields": [
+            {
+                "name": "BMS/Pack/PerCell/Cell-{3}/Volts",
+                "unit": "V",
+                "values": [
+                    1
+                ]
+            },
+            {
+                "name": "BMS/Pack/PerCell/Cell-{3}/Power",
+                "unit": "Ah",
+                "values": [
+                    2
+                ]
+            },
+            {
+                "name": "BMS/Pack/PerCell/Cell-{4}/Volts",
+                "unit": "V",
+                "values": [
+                    5
+                ]
+            },
+            {
+                "name": "BMS/Pack/PerCell/Cell-{4}/Power",
+                "unit": "Ah",
+                "values": [
+                    6
+                ]
+            }
         ]
-      },
-      {
-        "name": "BMS/Pack/PerCell/Cell-{3}/Power",
-        "unit": "Ah",
-        "values": [
-          2
-        ]
-      },
-      {
-        "name": "BMS/Pack/PerCell/Cell-{4}/Volts",
-        "unit": "V",
-        "values": [
-          5
-        ]
-      },
-      {
-        "name": "BMS/Pack/PerCell/Cell-{4}/Power",
-        "unit": "Ah",
-        "values": [
-          6
-        ]
-      }
-    ]
-}
+    }
+]
