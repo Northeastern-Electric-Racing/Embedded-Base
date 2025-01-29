@@ -117,7 +117,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
     if platform.system() == "Linux" and is_wsl() == 0:
         gdb_uri = "localhost"
 
-    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "gdb", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
+    send_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "gdb-multiarch", f"/home/app/build/{elf_file}", "-ex", f"target extended-remote {gdb_uri}:3333"]
 
     subprocess.run(send_command)
 

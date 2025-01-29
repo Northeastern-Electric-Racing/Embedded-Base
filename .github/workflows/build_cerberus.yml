@@ -3,23 +3,20 @@ on: [push]
 jobs:
   run-build:
     runs-on: ubuntu-latest
-    container:
-        image: ghcr.io/northeastern-electric-racing/embedded-base:docker-compose
     timeout-minutes: 10
     steps:
-      - name: Clone Cerberus
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          repository: Northeastern-Electric-Racing/Cerberus
-
+            repository: Northeastern-Electric-Racing/Cerberus
+            fetch-depth: 0
       - name: Clone Embedded-base
         uses: actions/checkout@v3
         with:
           path: "./Drivers/Embedded-Base"
-
       - name: Execute Make
         run: |
-            if ! make; then
+            if ! docker compose run --rm ner-gcc-arm make -j `nproc`; then
             echo "The application has failed to build."
             exit 1  # This will cause the workflow to fail
             fi
