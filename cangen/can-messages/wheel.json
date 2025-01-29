@@ -5,7 +5,7 @@
     "sim_freq": 8,
     "fields": [
       {
-        "name": "Wheel/Buttons/id",
+        "name": "Wheel/Buttons/button_id",
         "unit": "",
         "sim": {
           "options": [
@@ -31,6 +31,46 @@
             ],
             [
               5,
+              0.15
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x681",
+    "desc": "Wheel Torque Dial",
+    "sim_freq": 8,
+    "fields": [
+      {
+        "name": "Wheel/Dial/switch_id",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.25
+            ],
+            [
+              1,
+              0.15
+            ],
+            [
+              2,
+              0.15
+            ],
+            [
+              3,
+              0.15
+            ],
+            [
+              4,
               0.15
             ]
           ]
