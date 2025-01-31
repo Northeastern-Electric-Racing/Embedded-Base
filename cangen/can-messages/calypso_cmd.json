@@ -152,5 +152,35 @@
         ]
       }
     ]
+  },
+  {
+    "id": "0x4A0",
+    "desc": "Cerberus Pump 0 State",
+    "key": "Pump0Status",
+    "sim_freq": 750,
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/Pump0Status/A",
+        "unit": "bool",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8,
+            "default": 0
+          }
+        ]
+      }
+    ]
   }
 ]
