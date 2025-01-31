@@ -243,10 +243,10 @@
       },
       {
         "name": "MSB/FR/Humidity",
-        "unit": "deg",
+        "unit": "",
         "sim": {
           "min": 0,
-          "max": 360,
+          "max": 80,
           "inc_min": 0.01,
           "inc_max": 25
         },
@@ -407,6 +407,37 @@
         "points": [
           {
             "size": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x629",
+    "desc": "Front Right MSB Orientation",
+    "sim_freq": 500,
+    "fields": [
+      {
+        "name": "MSB/FR/Orientation",
+        "unit": "Deg",
+        "sim": {
+          "min": -180,
+          "max": 180,
+          "inc_min": 1,
+          "inc_max": 30
+        },
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
           }
         ]
       }
@@ -604,6 +635,37 @@
     ]
   },
   {
+    "id": "0x649",
+    "desc": "Back Left MSB Orientation",
+    "sim_freq": 500,
+    "fields": [
+      {
+        "name": "MSB/BL/Orientation",
+        "unit": "Deg",
+        "sim": {
+          "min": -180,
+          "max": 180,
+          "inc_min": 1,
+          "inc_max": 30
+        },
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "0x662",
     "desc": "Back Right MSB Env",
     "sim_freq": 500,
@@ -789,6 +851,37 @@
         "points": [
           {
             "size": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x669",
+    "desc": "Back Right MSB Orientation",
+    "sim_freq": 500,
+    "fields": [
+      {
+        "name": "MSB/BR/Orientation",
+        "unit": "Deg",
+        "sim": {
+          "min": -180,
+          "max": 180,
+          "inc_min": 1,
+          "inc_max": 30
+        },
+        "points": [
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
+          },
+          {
+            "size": 16,
+            "signed": true
           }
         ]
       }
