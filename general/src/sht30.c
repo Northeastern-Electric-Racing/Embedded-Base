@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 //ner flash --ftdi for msb
-static int sht30_write_reg(sht30_t *sht30, uint16_t command)
+static int sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
 {
 	uint8_t command_buffer[2] = { (uint8_t)(command & 0xff00) >> 8,
 				      (uint8_t)(command & 0xff) };
@@ -62,9 +62,9 @@ int sht30_toggle_heater(sht30_t *sht30, bool enable)
 	} else {
 		return sht30_write_reg(sht30, SHT3X_COMMAND_HEATER_DISABLE);
 	}
-}
+}sht30_t
 
-int sht30_get_temp_humid(sht30_t *sht30)
+static int sht30_get_temp_humid(sht30_t *sht30)
 {
 	union {
 		struct __attribute__((packed)) {
@@ -104,4 +104,4 @@ int sht30_get_temp_humid(sht30_t *sht30)
 	sht30->humidity = humVal;
 
 	return 0;
-}
+};

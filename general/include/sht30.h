@@ -71,6 +71,6 @@ int sht30_toggle_heater(sht30_t *sht30, bool enable);
  * @param sht30 - SHT30 driver
  * @return int - Status code
  */
-int sht30_get_temp_humid(sht30_t *sht30);
+static int sht30_get_temp_humid(sht30_t *sht30);
 
 #endif
