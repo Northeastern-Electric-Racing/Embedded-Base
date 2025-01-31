@@ -180,6 +180,28 @@
             "default": 0
           }
         ]
+      }, 
+      {
+        "name": "Calypso/Bidir/State/PumpStatus/B",
+        "unit": "bool",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8,
+            "default": 0
+          }
+        ]
       }
     ]
   }
