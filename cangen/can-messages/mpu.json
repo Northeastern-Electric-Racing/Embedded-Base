@@ -130,20 +130,6 @@
             "format": "divide100"
           }
         ]
-      },
-      {
-        "name": "MPU/State/TorqueLimit",
-        "unit": "percentage",
-        "sim_min": 0,
-        "sim_max": 1,
-        "sim_inc_min": 0.1,
-        "sim_inc_max": 0.1,
-        "points": [
-          {
-            "size": 8,
-            "format": "divide100"
-          }
-        ]
       }
     ]
   },
@@ -1082,7 +1068,7 @@
           }
         ]
       }
-     ]
+    ]
   },
   {
     "id": "0x698",
@@ -1098,7 +1084,7 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-      },
+        },
         "points": [
           {
             "size": 8
@@ -1169,8 +1155,8 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-         },
-         "points": [
+        },
+        "points": [
           {
             "endianness": "little",
             "size": 32
@@ -1186,8 +1172,8 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-         },
-         "points": [
+        },
+        "points": [
           {
             "endianness": "little",
             "size": 32
