@@ -155,12 +155,12 @@
   },
   {
     "id": "0x4A0",
-    "desc": "Cerberus Pump Zero State",
-    "key": "Pump0Status",
+    "desc": "Cerberus Pump State",
+    "key": "PumpStatus",
     "sim_freq": 750,
     "fields": [
       {
-        "name": "Calypso/Bidir/State/Pump0Status/A",
+        "name": "Calypso/Bidir/State/PumpStatus/A",
         "unit": "bool",
         "sim": {
           "options": [
