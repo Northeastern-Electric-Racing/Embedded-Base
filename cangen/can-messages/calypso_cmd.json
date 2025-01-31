@@ -155,7 +155,7 @@
   },
   {
     "id": "0x4A0",
-    "desc": "Cerberus Pump 0 State",
+    "desc": "Cerberus Pump Zero State",
     "key": "Pump0Status",
     "sim_freq": 750,
     "fields": [
