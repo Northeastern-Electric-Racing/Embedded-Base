@@ -15,7 +15,7 @@
             ],
             [
               1,
-              0.80
+              0.78
             ],
             [
               2,
@@ -27,7 +27,7 @@
             ],
             [
               4,
-              0.00
+              0.01
             ]
           ]
         },
@@ -52,7 +52,7 @@
             ],
             [
               2,
-              0.40
+              0.20
             ],
             [
               3,
@@ -370,6 +370,21 @@
             "size": 32,
             "endianness": "little",
             "format": "divide10000"
+          }
+        ]
+      },
+      {
+        "name": "MPU/Sense/SOC",
+        "unit": "%",
+        "sim": {
+          "min": 5,
+          "max": 99,
+          "inc_min": 0.1,
+          "inc_max": 0.5
+        },
+        "points": [
+          {
+            "size": 8
           }
         ]
       }
@@ -1064,6 +1079,118 @@
             "size": 32,
             "endianness": "little",
             "format": "divide10000"
+          }
+        ]
+      }
+     ]
+  },
+  {
+    "id": "0x698",
+    "desc": "Cerberus Version Tag",
+    "sim_freq": 1000,
+    "fields": [
+      {
+        "name": "MPU/Version/Tag",
+        "unit": "major.minor.patch",
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+      },
+        "points": [
+          {
+            "size": 8
+          },
+          {
+            "size": 8
+          },
+          {
+            "size": 8
+          }
+        ]
+      },
+      {
+        "name": "MPU/Version/Dirty",
+        "unit": "bool",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      },
+      {
+        "name": "MPU/Version/LocalCommit",
+        "unit": "bool",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x699",
+    "desc": "Cerberus Version Hash",
+    "sim_freq": 1000,
+    "fields": [
+      {
+        "name": "MPU/Version/ShortHash",
+        "unit": "hash",
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+         },
+         "points": [
+          {
+            "endianness": "little",
+            "size": 32
+          }
+        ]
+      },
+      {
+        "name": "MPU/Version/AuthorHash",
+        "unit": "hash",
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+         },
+         "points": [
+          {
+            "endianness": "little",
+            "size": 32
           }
         ]
       }

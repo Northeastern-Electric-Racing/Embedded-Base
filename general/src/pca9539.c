@@ -4,31 +4,28 @@
 
 #define REG_SIZE_BITS 8
 
-HAL_StatusTypeDef pca_write_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
+static int pca_write_reg(pca9539_t *pca, uint8_t address, uint8_t *data)
 {
-	// ensure shifting left one, HAL adds the write bit
-	return HAL_I2C_Mem_Write(pca->i2c_handle, pca->dev_addr, address,
-				 I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	return pca->write(pca->dev_addr, address, data, 1);
 }
 
-HAL_StatusTypeDef pca_read_reg(pca9539_t *pca, uint16_t address, uint8_t *data)
+static int pca_read_reg(pca9539_t *pca, uint8_t address, uint8_t *data)
 {
-	return HAL_I2C_Mem_Read(pca->i2c_handle, pca->dev_addr, address,
-				I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	return pca->read(pca->dev_addr, address, data, 1);
 }
 
-void pca9539_init(pca9539_t *pca, I2C_HandleTypeDef *i2c_handle,
+void pca9539_init(pca9539_t *pca, PCA_Write writeFunc, PCA_Read readFunc,
 		  uint8_t dev_addr)
 {
-	pca->i2c_handle = i2c_handle;
-	pca->dev_addr = dev_addr
-			<< 1u; /* shifted one to the left cuz STM says so */
+	pca->dev_addr = dev_addr << 1u;
+
+	pca->write = writeFunc;
+	pca->read = readFunc;
 }
 
-HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
-				   uint8_t *buf)
+int pca9539_read_reg(pca9539_t *pca, uint8_t reg_type, uint8_t *buf)
 {
-	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, buf);
+	int status = pca_read_reg(pca, reg_type, buf);
 	if (status) {
 		return status;
 	}
@@ -36,11 +33,11 @@ HAL_StatusTypeDef pca9539_read_reg(pca9539_t *pca, uint8_t reg_type,
 	return status;
 }
 
-HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
-				   uint8_t pin, uint8_t *buf)
+int pca9539_read_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		     uint8_t *buf)
 {
 	uint8_t data;
-	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &data);
+	int status = pca_read_reg(pca, reg_type, &data);
 	if (status) {
 		return status;
 	}
@@ -50,19 +47,18 @@ HAL_StatusTypeDef pca9539_read_pin(pca9539_t *pca, uint8_t reg_type,
 	return status;
 }
 
-HAL_StatusTypeDef pca9539_write_reg(pca9539_t *pca, uint8_t reg_type,
-				    uint8_t buf)
+int pca9539_write_reg(pca9539_t *pca, uint8_t reg_type, uint8_t buf)
 {
 	return pca_write_reg(pca, reg_type, &buf);
 }
 
-HAL_StatusTypeDef pca9539_write_pin(pca9539_t *pca, uint8_t reg_type,
-				    uint8_t pin, uint8_t buf)
+int pca9539_write_pin(pca9539_t *pca, uint8_t reg_type, uint8_t pin,
+		      uint8_t buf)
 {
 	uint8_t data;
 	uint8_t data_new;
 
-	HAL_StatusTypeDef status = pca_read_reg(pca, reg_type, &data);
+	int status = pca_read_reg(pca, reg_type, &data);
 	if (status) {
 		return status;
 	}
