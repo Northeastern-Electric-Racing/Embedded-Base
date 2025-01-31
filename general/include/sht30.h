@@ -1,7 +1,6 @@
 #ifndef sht30_h
 #define sht30_h
 
-#include "stm32xx_hal.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -26,6 +25,10 @@ typedef enum {
 	SHT3X_COMMAND_MEASURE_LOWREP_10HZ = 0x272a
 } sht3x_command_t;
 
+/** Function Pointers */
+typedef int (*Write_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
+typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
+
 /*
  * Start measurement command with clock streching enabled and high
  * repeatability. This is responsible for retrieving the temp and humidity in
@@ -38,10 +41,10 @@ typedef enum {
 #define SHT30_START_CMD_NCS 0x2400
 
 typedef struct {
-	I2C_HandleTypeDef *i2c_handle;
-	uint16_t status_reg;
-	uint16_t temp;
-	uint16_t humidity;
+	Write_ptr write_reg;
+	Read_ptr read_reg;
+	float temp;
+	float humidity;
 	bool is_heater_enabled;
 } sht30_t;
 
@@ -49,25 +52,25 @@ typedef struct {
  * @brief Initializes an SHT30 Driver
  *
  * @param sht30 - SHT30 driver
- * @return HAL_StatusTypeDef
+ * @return int - Status code
  */
-HAL_StatusTypeDef sht30_init(sht30_t *sht30);
+int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg);
 
 /**
  * @brief Toggles the status of the internal heater
  *
  * @param sht30 - SHT30 driver
  * @param enable - true to enable, false to disable
- * @return HAL_StatusTypeDef
+ * @return int - Status code
  */
-HAL_StatusTypeDef sht30_toggle_heater(sht30_t *sht30, bool enable);
+int sht30_toggle_heater(sht30_t *sht30, bool enable);
 
 /**
  * @brief Retrieves the temperature and humidity
  *
  * @param sht30 - SHT30 driver
- * @return HAL_StatusTypeDef
+ * @return int - Status code
  */
-HAL_StatusTypeDef sht30_get_temp_humid(sht30_t *sht30);
+int sht30_get_temp_humid(sht30_t *sht30);
 
 #endif
