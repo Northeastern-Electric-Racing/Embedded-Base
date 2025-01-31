@@ -526,7 +526,7 @@
     "sim_freq": 1000,
     "fields": [
       {
-        "name": "MPU/Shutdown/CockpitBRB",
+        "name": "MPU/Shutdown/HVD_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -547,7 +547,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/BMS",
+        "name": "MPU/Shutdown/HVC_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -568,7 +568,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/Inertia",
+        "name": "MPU/Shutdown/BOTS_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -589,7 +589,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/Spare_GPIO_1",
+        "name": "MPU/Shutdown/CKPT_BRB",
         "unit": "",
         "sim": {
           "options": [
@@ -610,7 +610,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/IMD",
+        "name": "MPU/Shutdown/BMS_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -631,7 +631,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/BSPD",
+        "name": "MPU/Shutdown/INERTIA_SW_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -652,7 +652,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/BOTS",
+        "name": "MPU/Shutdown/SPARE_GPIO0",
         "unit": "",
         "sim": {
           "options": [
@@ -673,7 +673,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/HVD_Interlock",
+        "name": "MPU/Shutdown/IMD_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -694,7 +694,7 @@
         ]
       },
       {
-        "name": "MPU/Shutdown/HVC_Interlock",
+        "name": "MPU/Shutdown/BSPD_GOOD",
         "unit": "",
         "sim": {
           "options": [
@@ -732,7 +732,7 @@
     "sim_freq": 1000,
     "fields": [
       {
-        "name": "MPU/Fuses/Battbox",
+        "name": "MPU/Fuses/PUMP_FUSE_STAT0",
         "unit": "",
         "sim": {
           "options": [
@@ -753,7 +753,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/LVBox",
+        "name": "MPU/Fuses/SD_TO_BRB_FUSE",
         "unit": "",
         "sim": {
           "options": [
@@ -774,7 +774,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/FanRadiator",
+        "name": "MPU/Fuses/LV_BOARDS_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -795,7 +795,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/MC",
+        "name": "MPU/Fuses/RADFAN_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -816,7 +816,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/FanBattbox",
+        "name": "MPU/Fuses/BATTBOX_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -837,7 +837,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/Pump",
+        "name": "MPU/Fuses/BUCK_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -858,7 +858,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/Dashboard",
+        "name": "MPU/Fuses/FANBATTBOX_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -879,7 +879,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/Brakelight",
+        "name": "MPU/Fuses/PUMP_FUSE_STAT1",
         "unit": "",
         "sim": {
           "options": [
@@ -900,7 +900,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/BRB",
+        "name": "MPU/Fuses/DASHBOARD_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
@@ -921,7 +921,7 @@
         ]
       },
       {
-        "name": "MPU/Fuses/Pump1",
+        "name": "MPU/Fuses/BRKLIGHT_FUSE_STAT",
         "unit": "",
         "sim": {
           "options": [
