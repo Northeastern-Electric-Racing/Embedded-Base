@@ -2,12 +2,28 @@
 #include <stdbool.h>
 #include <stdio.h>
 //ner flash --ftdi for msb
-static int sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
+
+union Data {
+	struct __attribute__((packed)) {
+		uint16_t temp; // The packed attribute does not correctly arrange the bytes
+		uint8_t temp_crc;
+		uint16_t humidity; // The packed attribute does not correctly arrange the bytes
+		uint8_t humidity_crc;
+	} raw_data;
+	uint8_t databuf[6];
+} data;
+
+Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
 {
 	uint8_t command_buffer[2] = { (uint8_t)(command & 0xff00) >> 8,
 				      (uint8_t)(command & 0xff) };
 
 	return sht30->write_reg(command_buffer, 0, sizeof(command_buffer));
+}
+
+Read_ptr sht30_read_reg(sht30_t *sht30)
+{
+	return sht30->read_reg(data.databuf, 0, sizeof(data.databuf));
 }
 
 /**
@@ -41,7 +57,7 @@ int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg)
 	sht30->read_reg = read_reg;
 
 	uint8_t status_reg_and_checksum[3];
-	if (sht30->read_reg(status_reg_and_checksum, SHT3X_COMMAND_READ_STATUS,
+	if (sht30->read_reg(status_reg_and_checksum, (uint8_t)SHT3X_COMMAND_READ_STATUS,
 			     sizeof(status_reg_and_checksum)) != 0) {
 		return -1;		
 	}
@@ -62,25 +78,15 @@ int sht30_toggle_heater(sht30_t *sht30, bool enable)
 	} else {
 		return sht30_write_reg(sht30, SHT3X_COMMAND_HEATER_DISABLE);
 	}
-}sht30_t
+}
 
-static int sht30_get_temp_humid(sht30_t *sht30)
+int sht30_get_temp_humid(sht30_t *sht30)
 {
-	union {
-		struct __attribute__((packed)) {
-			uint16_t temp; // The packed attribute does not correctly arrange the bytes
-			uint8_t temp_crc;
-			uint16_t humidity; // The packed attribute does not correctly arrange the bytes
-			uint8_t humidity_crc;
-		} raw_data;
-		uint8_t databuf[6];
-	} data;
-
 	uint8_t temp, humidity;
 
 	sht30_write_reg(sht30, (SHT30_START_CMD_WCS));
 
-	if (sht30->read_reg(data.databuf, 0, sizeof(data.databuf)) != 0) {
+	if (sht30_read_reg(sht30) != 0) {
 		return -1;
 	}
 

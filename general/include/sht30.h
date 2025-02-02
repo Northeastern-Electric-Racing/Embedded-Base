@@ -49,6 +49,24 @@ typedef struct {
 } sht30_t;
 
 /**
+ * @brief Writes to the sht30 using a command
+ * 
+ * @param sht30 - SHT30 driver
+ * @param command - sht3x_command_t command
+ * @return int 
+ */
+Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command);
+
+/**
+ * @brief Reads the sht30
+ * 
+ * @param sht30 - SHT30 driver
+ * @param data - union data
+ * @return int 
+ */
+Read_ptr sht30_read_reg(sht30_t *sht30);
+
+/**
  * @brief Initializes an SHT30 Driver
  *
  * @param sht30 - SHT30 driver
@@ -71,6 +89,6 @@ int sht30_toggle_heater(sht30_t *sht30, bool enable);
  * @param sht30 - SHT30 driver
  * @return int - Status code
  */
-static int sht30_get_temp_humid(sht30_t *sht30);
+int sht30_get_temp_humid(sht30_t *sht30);
 
 #endif
