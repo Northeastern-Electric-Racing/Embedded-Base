@@ -1,37 +1,48 @@
 [
   {
     "id": "0x680",
-    "desc": "Wheel State",
-    "sim_freq": 8,
+    "desc": "Wheel Buttons",
     "fields": [
       {
-        "name": "WHEEL/Buttons/1",
+        "name": "Wheel/Buttons/button_id",
+        "unit": "",
+        "points": [
+          {
+            "size": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x681",
+    "desc": "Wheel Torque Dial",
+    "sim_freq": 500,
+    "fields": [
+      {
+        "name": "Wheel/Dial/switch_id",
         "unit": "",
         "sim": {
           "options": [
             [
               0,
-              0.25
+              0.20
             ],
             [
               1,
-              0.15
+              0.20
             ],
             [
               2,
-              0.15
+              0.20
             ],
             [
               3,
-              0.15
+              0.20
             ],
             [
               4,
-              0.15
-            ],
-            [
-              5,
-              0.15
+              0.20
             ]
           ]
         },
