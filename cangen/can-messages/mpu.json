@@ -218,83 +218,369 @@
     "sim_freq": 250,
     "fields": [
       {
-        "name": "MPU/Fault/Code",
+        "name": "MPU/Fault/FAULTS_CLEAR",
         "unit": "",
         "sim": {
           "options": [
             [
               0,
-              0.84
+              0.5
             ],
             [
               1,
-              0.01
-            ],
-            [
-              2,
-              0.01
-            ],
-            [
-              4,
-              0.01
-            ],
-            [
-              8,
-              0.01
-            ],
-            [
-              16,
-              0.01
-            ],
-            [
-              32,
-              0.01
-            ],
-            [
-              64,
-              0.01
-            ],
-            [
-              128,
-              0.01
-            ],
-            [
-              256,
-              0.01
-            ],
-            [
-              512,
-              0.01
-            ],
-            [
-              1024,
-              0.01
-            ],
-            [
-              2048,
-              0.01
-            ],
-            [
-              3840,
-              0.01
-            ],
-            [
-              4096,
-              0.01
-            ],
-            [
-              8192,
-              0.01
-            ],
-            [
-              16384,
-              0.01
+              0.5
             ]
           ]
         },
         "points": [
           {
-            "size": 32
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/ONBOARD_TEMP",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/ONBOARD_PEDAL",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/IMU",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/CAN_DISPATCH",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/CAN_ROUTING",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/FUSE_MONITOR",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/SHUTDOWN_MONITOR",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/DTI_ROUTING",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/STEERINGIO_ROUTING",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/STATE_RECEIVED",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/INVALID_TRANSITION",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/BMS_CAN_MONITOR",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/BUTTONS_MONITOR",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/BSPD_PREFAULT",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/LV_MONITOR",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/RTDS",
+        "unit": "",
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        },
+        "points": [
+          {
+            "size": 1
+          }
+        ]
+      },
+      {
+        "name": "MPU/Fault/Extra",
+        "unit": "",
+        "send": false,
+        "points": [
+          {
+            "size": 15
           }
         ]
       },
@@ -947,7 +1233,7 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-      },
+        },
         "points": [
           {
             "size": 8
@@ -1018,8 +1304,8 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-         },
-         "points": [
+        },
+        "points": [
           {
             "endianness": "little",
             "size": 32
@@ -1035,8 +1321,8 @@
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-         },
-         "points": [
+        },
+        "points": [
           {
             "endianness": "little",
             "size": 32
