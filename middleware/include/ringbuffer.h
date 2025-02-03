@@ -20,7 +20,7 @@ typedef struct ringbuf_t ringbuf_t;
  * @param buffer Pointer to stack allocated buffer.
  * @param size The number of elements in the ringbuffer.
  */
-void ringbuffer_init(struct ringbuf_t *rb, void **buffer, size_t size);
+void rb_init(struct ringbuf_t *rb, void **buffer, size_t size);
 
 /**
  * @brief Get the last element to be inserted in the ringbuffer.
@@ -28,7 +28,15 @@ void ringbuffer_init(struct ringbuf_t *rb, void **buffer, size_t size);
  * @param rb Pointer to ringbuffer.
  * @param ptr Pointer to read data to.
  */
-void *ringbuffer_get_head(const struct ringbuf_t *rb);
+void *rb_get_head(const struct ringbuf_t *rb);
+
+/**
+ * @brief Pop the head off of the RB.
+ * 
+ * @param rb Pointer to ringbuffer.
+ * @return void* Data at the head of the RB.
+ */
+void *rb_dequeue(struct ringbuf_t *rb);
 
 /**
  * @brief Get the element at the tail of the ringbuffer.
@@ -36,7 +44,7 @@ void *ringbuffer_get_head(const struct ringbuf_t *rb);
  * @param rb Pointer to ringbuffer.
  * @param ptr Pointer to read data to.
  */
-void *ringbuffer_get_tail(const struct ringbuf_t *rb);
+void *rb_get_tail(const struct ringbuf_t *rb);
 
 /**
  * @brief Get the last N elements from the head of the ringbuffer.
@@ -45,14 +53,17 @@ void *ringbuffer_get_tail(const struct ringbuf_t *rb);
  * @param buf Buffer that data will be written to.
  * @param n Number of elements, starting at the head, to read into the buffer.
  */
-void ringbuffer_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n);
+void rb_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n);
 
 /**
- * @brief Insert an element at the head of the ringbuffer.
+ * @brief Insert an element at the head of the ringbuffer. Overwrites data at
+ * the tail if the RB is full.
  * 
  * @param rb Pointer to ringbuffer.
  * @param data The data to insert at the head of the ringbuffer.
  */
-void ringbuffer_insert(const struct ringbuf_t *rb, void *data);
+void rb_insert(const struct ringbuf_t *rb, void *data);
+
+
 
 #endif

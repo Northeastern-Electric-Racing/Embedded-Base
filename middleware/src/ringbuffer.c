@@ -34,21 +34,36 @@ static void *get_nth_element(const struct ringbuf_t *rb, size_t n)
 	return rb->buf[(rb->head_idx - n) % rb->size];
 }
 
-void ringbuffer_init(struct ringbuf_t *rb, void **buffer, size_t size)
+void rb_init(struct ringbuf_t *rb, void **buffer, size_t size)
 {
 	rb->buf = buffer;
 	rb->size = size;
 	rb->head_idx = 0;
 }
 
-void *ringbuffer_get_head(const struct ringbuf_t *rb)
+void *rb_get_head(const struct ringbuf_t *rb)
 {
 	assert(rb);
+	assert(rb->curr_elements);
 
 	return rb->buf[rb->head_idx];
 }
 
-void *ringbuffer_get_tail(const struct ringbuf_t *rb)
+void *rb_dequeue(struct ringbuf_t *rb)
+{
+	void *ptr = rb_get_head(rb);
+
+	if (rb->head_idx == 0 && rb->curr_elements == 1) {
+		rb->head_idx = 0;
+	} else {
+		rb->head_idx -= 1;
+		rb->curr_elements -= 1;
+	}
+
+	return ptr;
+}
+
+void *rb_get_tail(const struct ringbuf_t *rb)
 {
 	assert(rb);
 
@@ -67,7 +82,7 @@ void *ringbuffer_get_tail(const struct ringbuf_t *rb)
 	return ptr;
 }
 
-void ringbuffer_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n)
+void rb_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n)
 {
 	assert(rb);
 	assert(buf);
@@ -77,7 +92,7 @@ void ringbuffer_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n)
 	}
 }
 
-void ringbuffer_insert(const struct ringbuf_t *rb, void *data)
+void rb_insert(const struct ringbuf_t *rb, void *data)
 {
 	assert(rb);
 	assert(data);
