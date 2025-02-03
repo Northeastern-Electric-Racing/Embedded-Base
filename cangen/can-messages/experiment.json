@@ -6,6 +6,7 @@
         "points": [
             {
                 "size": 8,
+                "signed": true,
                 "sim": {
                     "min": -50,
                     "max": 50,
@@ -15,6 +16,10 @@
             },
             {
                 "size": 16,
+                "endianness": "little",
+                "format": "divide100",
+                "signed": true,
+                "default": -20.0,
                 "sim": {
                     "min": -100,
                     "max": 300,
