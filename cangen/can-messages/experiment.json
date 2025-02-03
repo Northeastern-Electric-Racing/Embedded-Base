@@ -5,89 +5,207 @@
         "sim_freq": 700,
         "points": [
             {
-                "size": 16,
-                "format": "divide10",
-                "sim": {
-                    "min": 10,
-                    "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
-                }
-            },
-            {
                 "size": 8,
                 "sim": {
-                    "min": 10,
+                    "min": -50,
                     "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
-                }
-            },
-            {
-                "size": 8,
-                "sim": {
-                    "min": 10,
-                    "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
-                }
-            },
-            {
-                "size": 8,
-                "sim": {
-                    "min": 10,
-                    "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
+                    "inc_min": 0.5,
+                    "inc_max": 1.5
                 }
             },
             {
                 "size": 16,
-                "format": "divide10",
                 "sim": {
-                    "min": 10,
-                    "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
+                    "min": -100,
+                    "max": 300,
+                    "inc_min": 1,
+                    "inc_max": 5
                 }
             },
             {
                 "size": 8,
                 "sim": {
-                    "min": 10,
-                    "max": 50,
-                    "inc_min": 0.01,
-                    "inc_max": 0.3
+                    "min": 1,
+                    "max": 15,
+                    "inc_min": 1,
+                    "inc_max": 5
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 1,
+                    "max": 15,
+                    "inc_min": 1,
+                    "inc_max": 5
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 1,
+                    "max": 15,
+                    "inc_min": 1,
+                    "inc_max": 5
+                }
+            },
+            {
+                "size": 8,
+                "sim": {
+                    "min": 1,
+                    "max": 15,
+                    "inc_min": 1,
+                    "inc_max": 5
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
+                }
+            },
+            {
+                "size": 1,
+                "sim": {
+                    "options": [
+                        [
+                          0,
+                          0.5
+                        ],
+                        [
+                            1,
+                            0.5
+                        ]
+                    ]
                 }
             }
         ],
         "fields": [
             {
-                "name": "BMS/Pack/PerCell/Cell-{3}/Volts",
+                "name": "BMS/Pack/PerCell/Cell-{6}/Attr/{3}",
                 "unit": "V",
                 "values": [
-                    1
+                    7, 8, 9, 10
                 ]
             },
             {
-                "name": "BMS/Pack/PerCell/Cell-{3}/Power",
+                "name": "BMS/Pack/PerCell/Cell-{6}/Attr/{3}",
                 "unit": "Ah",
                 "values": [
                     2
                 ]
             },
             {
-                "name": "BMS/Pack/PerCell/Cell-{4}/Volts",
+                "name": "BMS/Pack/PerCell/Cell-{5}/Attr/{4}",
                 "unit": "V",
                 "values": [
-                    5
+                    11, 12, 13, 14
                 ]
             },
             {
-                "name": "BMS/Pack/PerCell/Cell-{4}/Power",
+                "name": "BMS/Pack/PerCell/Cell-{5}/Attr/{4}",
                 "unit": "Ah",
                 "values": [
-                    6
+                    1
                 ]
             }
         ]
