@@ -7,15 +7,42 @@
 
 typedef int (*write_ptr)(uint8_t addr, const uint8_t *data, uint8_t len);
 typedef int (*read_ptr)(uint8_t addr, uint8_t *data, uint8_t len);
+
 typedef struct {
 	write_ptr write;
 	read_ptr read;
 } m24c32_t;
 
-int m24c32_write(m32c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
+/**
+ * @brief Write to the m24c32 EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the write head.
+ * @param data Buffer of bytes to write.
+ * @param len The amount of bytes to write.
+ * @return int Error code.
+ */
+int m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
 
-int m24c32_read(m32c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
+/**
+ * @brief Read from the m24c32 EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the read head.
+ * @param data Buffer where data will be written to.
+ * @param len The amount of bytes to read.
+ * @return int Error code.
+ */
+int m24c32_read(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
 
-int eeprom_delete(m32c32_t *device, uint16_t addr, uint16_t len);
+/**
+ * @brief Clear bytes in the EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the write head.
+ * @param len Number of bytes to clear.
+ * @return int Error code.
+ */
+int m24c32_clear(m24c32_t *device, uint16_t addr, uint16_t len);
 
 #endif // M24C32_H
