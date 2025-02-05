@@ -4,18 +4,24 @@
 #include <stdint.h>
 #include <stddef.h>
 
+
+struct partition_cfg {
+	uint32_t *id; /* The ID of the partition */
+	size_t size; /* The size of the partition in bytes */
+};
+
 typedef struct eeprom_directory eeprom_directory;
 
 /**
  * @brief Initiailze an EEPROM directory with partition IDs and sizes.
  * 
  * @param directory Pointer to EEPROM directory struct.
- * @param keys Array of IDs by which EEPROM partitions will be addressed.
- * @param sizes The size of each partition.
+ * @param partitions Array of partition names and sizes.
  * @param num_partitions The number of partitions to create.
+ * @return size_t The size of the partitions in Bytes.
  */
-void directory_init(struct eeprom_directory *directory, const char *IDs[],
-		    const size_t sizes[], size_t num_partitions);
+size_t directory_init(struct eeprom_directory *directory,
+		    const struct partition_cfg partitions[], size_t num_partitions);
 
 /**
  * @brief Get the address of the beginning of a partition.
