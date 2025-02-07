@@ -13,7 +13,7 @@ union Data {
 	uint8_t databuf[6];
 } data;
 
-Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
+inline Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
 {
 	uint8_t command_buffer[2] = { (uint8_t)(command & 0xff00) >> 8,
 				      (uint8_t)(command & 0xff) };
@@ -21,7 +21,7 @@ Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
 	return sht30->write_reg(command_buffer, 0, sizeof(command_buffer));
 }
 
-Read_ptr sht30_read_reg(sht30_t *sht30)
+inline Read_ptr sht30_read_reg(sht30_t *sht30)
 {
 	return sht30->read_reg(data.databuf, 0, sizeof(data.databuf));
 }
