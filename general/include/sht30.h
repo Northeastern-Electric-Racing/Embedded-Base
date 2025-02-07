@@ -55,7 +55,7 @@ typedef struct {
  * @param command - sht3x_command_t command
  * @return int 
  */
-static inline Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command);
+Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command);
 
 /**
  * @brief Reads the sht30
@@ -64,7 +64,7 @@ static inline Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
  * @param data - union data
  * @return int 
  */
-static inline Read_ptr sht30_read_reg(sht30_t *sht30);
+Read_ptr sht30_read_reg(sht30_t *sht30);
 
 /**
  * @brief Initializes an SHT30 Driver
