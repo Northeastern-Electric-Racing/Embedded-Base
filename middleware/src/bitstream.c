@@ -25,6 +25,7 @@ uint8_t bitstream_add(bitstream_t *bitstream, void *data, size_t input_length)
 		return 1; // If the bitstream does not have enough space, return 1.
 	}
 
+	/* Iterate over each bit in the input data and add it to the bitstream. */
 	for (int i = 0; i < input_length; i++) {
 		size_t input_byte_index = i / 8;
 		size_t input_bit_index = 7 - (i % 8);
@@ -34,13 +35,15 @@ uint8_t bitstream_add(bitstream_t *bitstream, void *data, size_t input_length)
 		size_t bitstream_byte_index = bitstream->current_bit / 8;
 		size_t bitstream_bit_index = 7 - (bitstream->current_bit % 8);
 
-		/* If the input bit is 1, set the corresponding bit in the bitstream to 1. Otherwise, set it to 0. */
+		/* If the input bit is 1, set the corresponding bitstream bit (Make it 1). Otherwise, clear the bit (Make it 0). */
 		if (input_bit) {
-			bitstream->data[bitstream_byte_index] |=
-				1 << bitstream_bit_index;
+			NER_SET_BIT(
+				bitstream->data[bitstream_byte_index],
+				bitstream_bit_index); // Set the bit (Make it 1).
 		} else {
-			bitstream->data[bitstream_byte_index] &=
-				~(1 << bitstream_bit_index);
+			NER_CLEAR_BIT(
+				bitstream->data[bitstream_byte_index],
+				bitstream_bit_index); // Clear the bit (Make it 0).
 		}
 
 		bitstream->current_bit++; // Increment the current bit index.
