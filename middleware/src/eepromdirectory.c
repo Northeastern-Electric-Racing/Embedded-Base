@@ -1,106 +1,82 @@
 #include "eepromdirectory.h"
-#include "general/include/m24c32.h"
 
-/*   user defined data type for taking in
-  1. id of each fault
-  2. size of the fault
- */
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
-/* function definition for entering parameters of the fault coniditon
-passing the array of struct to the function */
-void eeprom_init(struct eeprom_partition partition_list[], int array_size)
+#define BASE_ADDR 0
+
+struct partition {
+	const struct partition_cfg cfg;
+	size_t start_address; /* Address of the beginning of the partition */
+	size_t head_address; /* The current read/write head address */
+};
+
+struct eeprom_directory {
+	struct partition *partitions;
+	size_t num_partitions;
+};
+
+void directory_init(struct eeprom_directory *directory,
+		    const struct partition_cfg partitions[],
+		    size_t num_partitions)
 {
-	eeprom_data[0].address = 0;
-	eeprom_data[0].size = partition_list[0].size;
-	eeprom_data[0].id = partition_list[0].id;
+	assert(directory);
+	assert(partitions);
+	assert(num_partitions);
 
-	for (int i = 1; i < array_size; i++) {
-		eeprom_data[i].id = partition_list[i].id;
-		eeprom_data[i].size;
+	/* Accumulator that gives the address of the start of the partition */
+	size_t addr_acc = BASE_ADDR;
 
-		// calculating the address through the logic defined in shepherd
-		eeprom_data[i].address =
-			eeprom_data[i - 1].size + eeprom - data[i - 1].address;
+	directory->partitions =
+		malloc(sizeof(struct partition) * num_partitions);
+
+	for (int i = 0; i < num_partitions; i++) {
+		directory->partitions[i].cfg.id = partitions[i].id;
+		directory->partitions[i].cfg.size = partitions[i].size;
+
+		directory->partitions[i].start_address = addr_acc;
+		directory->partitions[i].head_address =
+			directory->partitions[i].start_address;
+
+		addr_acc += directory->partitions[i].size + 1;
 	}
+
+	return addr_acc - 1;
 }
 
-uint16_t eepromGetAddress(char *key)
+signed long eeprom_get_base_address(const struct eeprom_directory *directory,
+				    const char *key)
 {
-	/* find the index of the key in the eeprom_data array */
-	int i = 0;
-	while (eeprom_data[i].id != NULL) {
-		if (eeprom_data[i].id == key) {
-			return eeprom_data[i].address;
+	for (int i = 0; i < directory->num_partitions; i++) {
+		if (strcmp(directory->partitions[i].id, key) == 0) {
+			return directory->partitions[i].start_address;
 		}
-
-		i++;
 	}
+
 	return -1;
 }
 
-uint16_t eeprom_get_index(char *key)
+signed long eeprom_get_head_address(const struct eeprom_directory *directory,
+				    const char *key)
 {
-	/* find the index of the key in the eeprom_data array */
-	int i = 0;
-	while (eeprom_data[i].id != NULL) {
-		if (eeprom_data[i].id == key) {
-			return i;
+	for (int i = 0; i < directory->num_partitions; i++) {
+		if (strcmp(directory->partitions[i].id, key) == 0) {
+			return directory->partitions[i].head_address;
 		}
-
-		i++;
 	}
+
 	return -1;
 }
 
-char *eeprom_get_key(int index)
+signed long eeprom_get_size(const struct eeprom_directory *directory,
+			    const char *key)
 {
-	/* find the key at the index in the eeprom_data array */
-	int i = 0;
-	while (eeprom_data[i].id != NULL) {
-		if (eeprom_data[i].address == index) {
-			return eeprom_data[i].id;
+	for (int i = 0; i < directory->num_partitions; i++) {
+		if (strcmp(directory->partitions[i].id, key) == 0) {
+			return directory->partitions[i].head_address;
 		}
-
-		i++;
 	}
-	return NULL;
-}
 
-bool eeprom_read_data_key(char *key, void *data, uint16_t size)
-{
-	if (!data) {
-		return false;
-	}
-	/* read data from eeprom given key and size */
-	int address = eepromGetAddress(key);
-	eeprom_read(address, data, size);
-}
-
-bool eeprom_read_data_index(uint16_t address, void *data, uint16_t size)
-{
-	if (!data) {
-		return false;
-	}
-	/* read data from eeprom given index */
-	eeprom_read(address, data, size);
-	// EEPROM.get(index, data); // TODO will need update with new eeprom driver
-}
-
-bool eeprom_write_data_key(char *key, void *data, uint16_t size)
-{
-	if (!data) {
-		return false;
-	}
-	/* write data to eeprom given key, offset, and size of data */
-	int address = eepromGetAddress(key);
-	eeprom_write(address, data, size);
-}
-
-bool eeprom_write_data_index(uint16_t address, void *data, uint16_t size)
-{
-	if (!data) {
-		return false;
-	}
-	/* write data to eeprom given page, offset, and size of data */
-	eeprom_write(address, data, size);
+	return -1;
 }
