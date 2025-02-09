@@ -2,11 +2,9 @@
   {
     "id": "0x501",
     "desc": "MPU Status",
-    "sim_freq": 250,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/State/Mode",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
@@ -19,207 +17,251 @@
             ],
             [
               2,
-              0.10
+              0.1
             ],
             [
               3,
-              0.10
+              0.1
             ],
             [
               4,
               0.01
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/State/ModeIndex",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
               0,
-              0.20
+              0.2
             ],
             [
               1,
-              0.20
+              0.2
             ],
             [
               2,
-              0.20
+              0.2
             ],
             [
               3,
-              0.10
+              0.1
             ],
             [
               4,
-              0.10
+              0.1
             ],
             [
               5,
-              0.10
+              0.1
             ],
             [
               6,
-              0.10
+              0.1
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/State/Speed",
-        "unit": "mph",
+        "size": 8,
+        "signed": true,
         "sim": {
           "min": 0,
           "max": 88,
           "inc_min": 0,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/State/TSMS",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
               0,
-              0.80
+              0.8
             ],
             [
               1,
-              0.20
+              0.2
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/State/TorqueLimit",
-        "unit": "percentage",
+        "size": 8,
+        "format": "divide100",
         "sim": {
           "min": 0,
           "max": 1,
           "inc_min": 0.1,
           "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 8,
-            "format": "divide100"
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/State/Mode",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "MPU/State/ModeIndex",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "MPU/State/Speed",
+        "unit": "mph",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "MPU/State/TSMS",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "MPU/State/TorqueLimit",
+        "unit": "percentage",
+        "values": [
+          5
         ]
       }
-    ]
+    ],
+    "sim_freq": 250
   },
   {
     "id": "0x500",
     "desc": "MPU Sense Acceleromter",
-    "sim_freq": 250,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Sense/Accel",
-        "unit": "g",
+        "size": 16,
         "sim": {
           "min": 0,
           "max": 2,
           "inc_min": 0.01,
           "inc_max": 0.25
-        },
-        "points": [
-          {
-            "size": 16
-          },
-          {
-            "size": 16
-          },
-          {
-            "size": 16
-          }
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 0,
+          "max": 2,
+          "inc_min": 0.01,
+          "inc_max": 0.25
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 0,
+          "max": 2,
+          "inc_min": 0.01,
+          "inc_max": 0.25
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Sense/Accel",
+        "unit": "g",
+        "values": [
+          1,
+          2,
+          3
         ]
       }
-    ]
+    ],
+    "sim_freq": 250
   },
   {
     "id": "0x506",
     "desc": "MPU Sense Gyro",
-    "sim_freq": 250,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Sense/Gyro",
-        "unit": "",
+        "size": 16,
         "sim": {
           "min": 0,
           "max": 7,
           "inc_min": 0.01,
           "inc_max": 0.5
-        },
-        "points": [
-          {
-            "size": 16
-          },
-          {
-            "size": 16
-          },
-          {
-            "size": 16
-          }
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 0,
+          "max": 7,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 0,
+          "max": 7,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Sense/Gyro",
+        "unit": "",
+        "values": [
+          1,
+          2,
+          3
         ]
       }
-    ]
+    ],
+    "sim_freq": 250
   },
   {
     "id": "0x507",
     "desc": "MPU Sense Temp",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Sense/Temp_IMU",
-        "unit": "C",
+        "size": 16,
+        "signed": true,
         "sim": {
           "min": 0,
           "max": 70,
           "inc_min": 1,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 16,
-            "signed": true
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Sense/Temp_IMU",
+        "unit": "C",
+        "values": [
+          1
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x502",
     "desc": "MPU Fault",
-    "sim_freq": 250,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Fault/FAULTS_CLEAR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -231,16 +273,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/ONBOARD_TEMP",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -252,16 +288,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/ONBOARD_PEDAL",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -273,16 +303,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/IMU",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -294,16 +318,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/CAN_DISPATCH",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -315,16 +333,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/CAN_ROUTING",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -336,16 +348,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/FUSE_MONITOR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -357,16 +363,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/SHUTDOWN_MONITOR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -378,16 +378,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/DTI_ROUTING",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -399,16 +393,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/STEERINGIO_ROUTING",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -420,16 +408,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/STATE_RECEIVED",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -441,16 +423,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/INVALID_TRANSITION",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -462,16 +438,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/BMS_CAN_MONITOR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -483,16 +453,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/BUTTONS_MONITOR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -504,16 +468,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/BSPD_PREFAULT",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -525,16 +483,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/LV_MONITOR",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -546,16 +498,10 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/RTDS",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -567,26 +513,14 @@
               0.5
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Fault/Extra",
-        "unit": "",
-        "send": false,
-        "points": [
-          {
-            "size": 15
-          }
-        ]
+        "size": 15,
+        "parse": false
       },
       {
-        "name": "MPU/Fault/Severity",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
@@ -614,207 +548,354 @@
               0.05
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Fault/FAULTS_CLEAR",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "MPU/Fault/ONBOARD_TEMP",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "MPU/Fault/ONBOARD_PEDAL",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "MPU/Fault/IMU",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "MPU/Fault/CAN_DISPATCH",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "MPU/Fault/CAN_ROUTING",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "MPU/Fault/FUSE_MONITOR",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "MPU/Fault/SHUTDOWN_MONITOR",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "MPU/Fault/DTI_ROUTING",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "MPU/Fault/STEERINGIO_ROUTING",
+        "unit": "",
+        "values": [
+          10
+        ]
+      },
+      {
+        "name": "MPU/Fault/STATE_RECEIVED",
+        "unit": "",
+        "values": [
+          11
+        ]
+      },
+      {
+        "name": "MPU/Fault/INVALID_TRANSITION",
+        "unit": "",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "MPU/Fault/BMS_CAN_MONITOR",
+        "unit": "",
+        "values": [
+          13
+        ]
+      },
+      {
+        "name": "MPU/Fault/BUTTONS_MONITOR",
+        "unit": "",
+        "values": [
+          14
+        ]
+      },
+      {
+        "name": "MPU/Fault/BSPD_PREFAULT",
+        "unit": "",
+        "values": [
+          15
+        ]
+      },
+      {
+        "name": "MPU/Fault/LV_MONITOR",
+        "unit": "",
+        "values": [
+          16
+        ]
+      },
+      {
+        "name": "MPU/Fault/RTDS",
+        "unit": "",
+        "values": [
+          17
+        ]
+      },
+      {
+        "name": "MPU/Fault/Extra",
+        "unit": "",
+        "values": [
+          18
+        ]
+      },
+      {
+        "name": "MPU/Fault/Severity",
+        "unit": "",
+        "values": [
+          19
         ]
       }
-    ]
+    ],
+    "sim_freq": 250
   },
   {
     "id": "0x503",
     "desc": "MPU Sense Voltage",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Sense/Voltage",
-        "unit": "V",
+        "size": 32,
+        "endianness": "little",
+        "format": "divide10000",
         "sim": {
           "min": 22.5,
           "max": 29,
           "inc_min": 0.02,
           "inc_max": 0.15
-        },
-        "points": [
-          {
-            "size": 32,
-            "endianness": "little",
-            "format": "divide10000"
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Sense/SOC",
-        "unit": "%",
+        "size": 8,
         "sim": {
           "min": 5,
           "max": 99,
           "inc_min": 0.1,
           "inc_max": 0.5
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Sense/Voltage",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "MPU/Sense/SOC",
+        "unit": "%",
+        "values": [
+          2
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x504",
     "desc": "MPU Accel Pedals",
-    "sim_freq": 100,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Pedals/Accelerator_1",
-        "unit": "",
+        "size": 32,
         "sim": {
           "min": 800,
           "max": 1900,
           "inc_min": 1,
           "inc_max": 24
-        },
-        "points": [
-          {
-            "size": 32
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Pedals/Accelerator_2",
-        "unit": "",
+        "size": 32,
         "sim": {
           "min": 1200,
           "max": 2300,
           "inc_min": 1,
           "inc_max": 24
-        },
-        "points": [
-          {
-            "size": 32
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Pedals/Accelerator_1",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "MPU/Pedals/Accelerator_2",
+        "unit": "",
+        "values": [
+          2
         ]
       }
-    ]
+    ],
+    "sim_freq": 100
   },
   {
     "id": "0x505",
     "desc": "MPU Brake Pedals",
-    "sim_freq": 100,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Pedals/Brake_1",
-        "unit": "",
+        "size": 32,
         "sim": {
           "min": 580,
           "max": 990,
           "inc_min": 1,
           "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 32
-          }
+        }
+      },
+      {
+        "size": 32,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Pedals/Brake_1",
+        "unit": "",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Pedals/Brake_2",
         "unit": "",
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 32
-          }
+        "values": [
+          2
         ]
       }
-    ]
+    ],
+    "sim_freq": 100
   },
   {
     "id": "0x701",
     "desc": "MPU Debug",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Debug/Spare0",
-        "unit": "",
+        "size": 8,
         "sim": {
           "min": 580,
           "max": 990,
           "inc_min": 1,
           "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      },
+      {
+        "size": 32,
+        "signed": true,
+        "endianness": "little",
+        "sim": {
+          "min": 580,
+          "max": 990,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Debug/Spare0",
+        "unit": "",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Debug/Spare1",
         "unit": "",
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "MPU/Debug/Spare2",
         "unit": "",
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 16,
-            "endianness": "little"
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "MPU/Debug/Spare3",
         "unit": "",
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        },
-        "points": [
-          {
-            "size": 32,
-            "signed": true,
-            "endianness": "little"
-          }
+        "values": [
+          4
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x123",
     "desc": "MPU Shutdown",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Shutdown/HVD_GOOD",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -826,201 +907,213 @@
               0.05
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 7,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Shutdown/HVD_GOOD",
+        "unit": "",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Shutdown/HVC_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "MPU/Shutdown/BOTS_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "MPU/Shutdown/CKPT_BRB",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "MPU/Shutdown/BMS_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "MPU/Shutdown/INERTIA_SW_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          6
         ]
       },
       {
         "name": "MPU/Shutdown/SPARE_GPIO0",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          7
         ]
       },
       {
         "name": "MPU/Shutdown/IMD_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          8
         ]
       },
       {
         "name": "MPU/Shutdown/BSPD_GOOD",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          9
         ]
       },
       {
         "name": "MPU/Shutdown/Reserved",
         "unit": "",
-        "send": false,
-        "points": [
-          {
-            "size": 7
-          }
+        "values": [
+          10
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x111",
     "desc": "MPU Fuses",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Fuses/PUMP_FUSE_STAT0",
-        "unit": "",
+        "size": 1,
         "sim": {
           "options": [
             [
@@ -1032,440 +1125,490 @@
               0.05
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 6,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Fuses/PUMP_FUSE_STAT0",
+        "unit": "",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Fuses/SD_TO_BRB_FUSE",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "MPU/Fuses/LV_BOARDS_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "MPU/Fuses/RADFAN_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "MPU/Fuses/BATTBOX_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "MPU/Fuses/BUCK_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          6
         ]
       },
       {
         "name": "MPU/Fuses/FANBATTBOX_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          7
         ]
       },
       {
         "name": "MPU/Fuses/PUMP_FUSE_STAT1",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          8
         ]
       },
       {
         "name": "MPU/Fuses/DASHBOARD_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          9
         ]
       },
       {
         "name": "MPU/Fuses/BRKLIGHT_FUSE_STAT",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          10
         ]
       },
       {
         "name": "MPU/Fuses/Reserved",
         "unit": "",
-        "send": false,
-        "points": [
-          {
-            "size": 6
-          }
+        "values": [
+          11
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x508",
     "desc": "PDU Current",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Current/Motor_Controller",
-        "unit": "A",
+        "size": 16,
+        "endianness": "little",
+        "format": "divide1000",
         "sim": {
           "min": 0,
           "max": 3,
           "inc_min": 0.01,
           "inc_max": 3
-        },
-        "points": [
-          {
-            "size": 16,
-            "endianness": "little",
-            "format": "divide1000"
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Current/Battbox_Fans",
-        "unit": "A",
+        "size": 16,
+        "endianness": "little",
+        "format": "divide1000",
         "sim": {
           "min": 0,
           "max": 5,
           "inc_min": 0.01,
           "inc_max": 5
-        },
-        "points": [
-          {
-            "size": 16,
-            "endianness": "little",
-            "format": "divide1000"
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Current/Pumps",
-        "unit": "A",
+        "size": 16,
+        "endianness": "little",
+        "format": "divide1000",
         "sim": {
           "min": 0,
           "max": 2,
           "inc_min": 0.01,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 16,
-            "endianness": "little",
-            "format": "divide1000"
-          }
-        ]
+        }
       },
       {
-        "name": "MPU/Current/LV_Boards",
-        "unit": "A",
+        "size": 16,
+        "endianness": "little",
+        "format": "divide1000",
         "sim": {
           "min": 0,
           "max": 1.25,
           "inc_min": 0.01,
           "inc_max": 1.25
-        },
-        "points": [
-          {
-            "size": 16,
-            "endianness": "little",
-            "format": "divide1000"
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Current/Motor_Controller",
+        "unit": "A",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "MPU/Current/Battbox_Fans",
+        "unit": "A",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "MPU/Current/Pumps",
+        "unit": "A",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "MPU/Current/LV_Boards",
+        "unit": "A",
+        "values": [
+          4
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x509",
     "desc": "Pump Sensors Voltage",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Pump_Sensors/Sensor0",
-        "unit": "V",
+        "size": 32,
+        "endianness": "little",
+        "format": "divide10000",
         "sim": {
           "min": 0,
           "max": 3.3,
           "inc_min": 0.01,
           "inc_max": 1
-        },
-        "points": [
-          {
-            "size": 32,
-            "endianness": "little",
-            "format": "divide10000"
-          }
+        }
+      },
+      {
+        "size": 32,
+        "endianness": "little",
+        "format": "divide10000",
+        "sim": {
+          "min": 0,
+          "max": 3.3,
+          "inc_min": 0.01,
+          "inc_max": 1
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Pump_Sensors/Sensor0",
+        "unit": "V",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Pump_Sensors/Sensor1",
         "unit": "V",
-        "sim": {
-          "min": 0,
-          "max": 3.3,
-          "inc_min": 0.01,
-          "inc_max": 1
-        },
-        "points": [
-          {
-            "size": 32,
-            "endianness": "little",
-            "format": "divide10000"
-          }
+        "values": [
+          2
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x698",
     "desc": "Cerberus Version Tag",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Version/Tag",
-        "unit": "major.minor.patch",
+        "size": 8,
         "sim": {
           "min": 0,
           "max": 3,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-        },
-        "points": [
-          {
-            "size": 8
-          },
-          {
-            "size": 8
-          },
-          {
-            "size": 8
-          }
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Version/Tag",
+        "unit": "major.minor.patch",
+        "values": [
+          1,
+          2,
+          3
         ]
       },
       {
         "name": "MPU/Version/Dirty",
         "unit": "bool",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "MPU/Version/LocalCommit",
         "unit": "bool",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          5
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x699",
     "desc": "Cerberus Version Hash",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "MPU/Version/ShortHash",
-        "unit": "hash",
+        "size": 32,
+        "endianness": "little",
         "sim": {
           "min": 0,
           "max": 4294967295,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-        },
-        "points": [
-          {
-            "endianness": "little",
-            "size": 32
-          }
+        }
+      },
+      {
+        "size": 32,
+        "endianness": "little",
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "MPU/Version/ShortHash",
+        "unit": "hash",
+        "values": [
+          1
         ]
       },
       {
         "name": "MPU/Version/AuthorHash",
         "unit": "hash",
-        "sim": {
-          "min": 0,
-          "max": 4294967295,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "endianness": "little",
-            "size": 32
-          }
+        "values": [
+          2
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   }
 ]
