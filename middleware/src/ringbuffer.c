@@ -23,7 +23,7 @@ static void *get_nth_element(const struct ringbuf_t *rb, size_t n)
 	return (uint8_t *)rb->buf + (index * rb->element_size);
 }
 
-void rb_init(struct ringbuf_t *rb, void **buffer, size_t size,
+void rb_init(struct ringbuf_t *rb, void *buffer, size_t size,
 	     size_t element_size)
 {
 	rb->buf = buffer;
