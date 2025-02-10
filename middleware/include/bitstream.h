@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include "c_utils.h"
 
 typedef struct {
@@ -46,18 +47,6 @@ uint8_t *bitstream_get_head(bitstream_t *bitstream);
  */
 int bitstream_read(bitstream_t *bitstream, size_t start_index, size_t end_index,
 		   void *output, size_t output_length);
-
-/**
- * @brief Modifies a range of bits currently in a bitstream. The minimum index is 0, and the maximum index is bitstream->last_bit.
- * @param {bitstream_t*} The bitstream to modify.
- * @param {size_t} The index of the first bit in the range you want to modify. (Inclusive)
- * @param {size_t} The index of the last bit in the range you want to modify. (Inclusive)
- * @param {void*} The input buffer containing the new bits.
- * @param {size_t} The size of the input buffer in bits (uint8_t is 8 bits, uint16_t is 16 bits, etc.).
- * @return Returns 1 if failed, and 0 if successful.
- */
-int bitstream_modify(bitstream_t *bitstream, size_t start_index,
-		     size_t end_index, void *input_buffer, size_t input_length);
 
 /** 
  * @brief Frees the bitstream's data array, and resets the bitstream's length and last_bit.

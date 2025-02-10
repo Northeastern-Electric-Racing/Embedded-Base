@@ -24,35 +24,27 @@ int bitstream_init(bitstream_t *bitstream, size_t length)
 int bitstream_add(bitstream_t *bitstream, void *data, size_t input_length)
 {
 	uint8_t *input_data = (uint8_t *)data;
-	if (bitstream->last_bit + input_length > bitstream->length) {
-		return 1; // If the bitstream does not have enough space, return 1.
-	}
-
-	/* Iterate over each bit in the input data and add it to the bitstream. */
+	input_data[input_length / 8] <<=
+		8 -
+		(input_length %
+		 8); // Shift the last byte to the left to remove the unused bits.
 	for (int i = 0; i < input_length; i++) {
-		size_t input_byte_index = i / 8;
-		size_t input_bit_index = 7 - (i % 8);
 		uint8_t input_bit = NER_GET_BIT(
-			input_data[input_byte_index],
-			input_bit_index); // Extract the bit from the input data.
+			input_data[i / 8],
+			7 - (i % 8)); // Extract the bit from the input data.
 
-		size_t bitstream_byte_index = bitstream->last_bit / 8;
-		size_t bitstream_bit_index = 7 - (bitstream->last_bit % 8);
-
-		/* If the input bit is 1, set the corresponding bitstream bit (Make it 1). Otherwise, clear the corresponding bitstream bit (Make it 0). */
 		if (input_bit) {
-			NER_SET_BIT(
-				bitstream->data[bitstream_byte_index],
-				bitstream_bit_index); // Set the bit (Make it 1).
+			NER_SET_BIT(bitstream->data[bitstream->last_bit / 8],
+				    7 - (bitstream->last_bit %
+					 8)); // Set the bit in the bitstream.
 		} else {
 			NER_CLEAR_BIT(
-				bitstream->data[bitstream_byte_index],
-				bitstream_bit_index); // Clear the bit (Make it 0).
+				bitstream->data[bitstream->last_bit / 8],
+				7 - (bitstream->last_bit %
+				     8)); // Clear the bit in the bitstream.
 		}
-
 		bitstream->last_bit++; // Increment the index of the last bit.
 	}
-
 	return 0;
 }
 
@@ -76,91 +68,29 @@ int bitstream_destroy(bitstream_t *bitstream)
 }
 
 int bitstream_read(bitstream_t *bitstream, size_t start_index, size_t end_index,
-		   void *output_buffer, size_t output_length)
+		   void *input_buffer, size_t input_length)
 {
-	size_t range_length = end_index - start_index + 1;
-	uint8_t *output = (uint8_t *)output_buffer;
-
-	/* Handle Erros */
-	if (range_length > output_length) {
-		return 1; // If the output buffer is not large enough to hold the requested bits, return 1.
-	}
-
-	if (start_index > end_index) {
-		return 1; // If the start bit is invalid, return 1.
-	}
-
-	if (end_index > bitstream->last_bit) {
-		return 1; // If the end bit is invalid, return 1.
-	}
-
-	/* Iterate over each bit in the bitstream and copy it to the output data. */
-	for (int i = 0; i < range_length; i++) {
-		size_t current_bit = start_index + i;
-		size_t bitstream_byte_index = current_bit / 8;
-		size_t bitstream_bit_index = 7 - (current_bit % 8);
-		uint8_t bitstream_bit = NER_GET_BIT(
-			bitstream->data[bitstream_byte_index],
-			bitstream_bit_index); // Extract the bit from the bitstream.
-
-		size_t output_byte_index = i / 8;
-		size_t output_bit_index = 7 - (i % 8);
-
-		if (bitstream_bit) {
-			NER_SET_BIT(
-				output[output_byte_index],
-				output_bit_index); // Set the bit in the output data.
-		} else {
-			NER_CLEAR_BIT(
-				output[output_byte_index],
-				output_bit_index); // Clear the bit in the output data.
-		}
-	}
-
-	return 0;
-}
-
-int bitstream_modify(bitstream_t *bitstream, size_t start_index,
-		     size_t end_index, void *input_buffer, size_t input_length)
-{
-	size_t range_length = end_index - start_index + 1;
 	uint8_t *input = (uint8_t *)input_buffer;
+	size_t input_bit_index = 0;
+	for (size_t i = start_index; i <= end_index; i++) {
+		/* Extract bit from bitstream */
+		uint8_t byte_index = i / 8;
+		uint8_t bit_position = 7 - (i % 8);
+		uint8_t bit =
+			NER_GET_BIT(bitstream->data[byte_index], bit_position);
 
-	/* Handle Erros */
-	if (range_length > input_length) {
-		return 1; // If the range is larger than the input buffer (meaning there is not enough information to modify all requested bits), return 1.
-	}
-
-	if (start_index > end_index) {
-		return 1; // If the start bit is invalid, return 1.
-	}
-
-	if (end_index > bitstream->last_bit) {
-		return 1; // If the end bit is invalid, return 1.
-	}
-
-	/* Iterate over each bit in the input and copy it to the bitstream. */
-	for (int i = 0; i < range_length; i++) {
-		size_t input_byte_index = i / 8;
-		size_t input_bit_index = 7 - (i % 8);
-		uint8_t input_bit = NER_GET_BIT(
-			input[input_byte_index],
-			input_bit_index); // Extract the bit from the input data.
-
-		size_t current_bit = start_index + i;
-		size_t bitstream_byte_index = current_bit / 8;
-		size_t bitstream_bit_index = 7 - (current_bit % 8);
-
-		if (input_bit) {
-			NER_SET_BIT(
-				bitstream->data[bitstream_byte_index],
-				bitstream_bit_index); // Set the bit in the bitstream.
+		if (bit) {
+			NER_SET_BIT(input[input_bit_index / 8],
+				    7 - (input_bit_index % 8));
 		} else {
-			NER_CLEAR_BIT(
-				bitstream->data[bitstream_byte_index],
-				bitstream_bit_index); // Clear the bit in the bitstream.
+			NER_CLEAR_BIT(input[input_bit_index / 8],
+				      7 - (input_bit_index % 8));
 		}
+		input_bit_index++;
 	}
-
+	input[input_bit_index / 8] >>=
+		8 -
+		(input_bit_index %
+		 8); // Shift the last byte to the right to remove the unused bits.
 	return 0;
 }
