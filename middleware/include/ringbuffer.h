@@ -12,11 +12,11 @@
 #include <stddef.h>
 
 typedef struct ringbuf_t {
-  void **buf;
-  size_t size; /* Maximum number of elements that can be in the ringbuffer */
-  size_t head_idx;
-  size_t curr_elements; /* Number of elements in the RB */
-  size_t element_size;
+	void **buf;
+	size_t size; /* Maximum number of elements that can be in the ringbuffer */
+	size_t head_idx;
+	size_t curr_elements; /* Number of elements in the RB */
+	size_t element_size;
 } ringbuf_t;
 
 /**
@@ -28,7 +28,7 @@ typedef struct ringbuf_t {
  * @param element_size The size of each element in bytes.
  */
 void rb_init(struct ringbuf_t *rb, void *buffer, size_t size,
-             size_t element_size);
+	     size_t element_size);
 
 /**
  * @brief Get the last element to be inserted in the ringbuffer.
