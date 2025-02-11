@@ -5,17 +5,44 @@
 #include <stdint.h>
 #include <string.h>
 
-#define M24C32_I2C_ADDR	 0x50
-#define M24C32_PAGE_SIZE 32
+typedef int (*write_ptr)(uint8_t addr, const uint8_t *data, uint8_t len);
+typedef int (*read_ptr)(uint8_t addr, uint8_t *data, uint8_t len);
 
-extern I2C_HandleTypeDef *i2c_handle;
+typedef struct {
+	write_ptr write;
+	read_ptr read;
+} m24c32_t;
 
-HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data,
-			       uint16_t size);
+/**
+ * @brief Write to the m24c32 EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the write head.
+ * @param data Buffer of bytes to write.
+ * @param len The amount of bytes to write.
+ * @return int Error code.
+ */
+int m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
 
-HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data,
-			      uint16_t size);
+/**
+ * @brief Read from the m24c32 EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the read head.
+ * @param data Buffer where data will be written to.
+ * @param len The amount of bytes to read.
+ * @return int Error code.
+ */
+int m24c32_read(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len);
 
-HAL_StatusTypeDef eeprom_delete(uint16_t mem_address, uint16_t size);
+/**
+ * @brief Clear bytes in the EEPROM.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the write head.
+ * @param len Number of bytes to clear.
+ * @return int Error code.
+ */
+int m24c32_clear(m24c32_t *device, uint16_t addr, uint16_t len);
 
 #endif // M24C32_H
