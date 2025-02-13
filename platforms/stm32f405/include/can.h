@@ -34,7 +34,7 @@ HAL_StatusTypeDef can_init(can_t *can);
  * elements.
  * @return HAL_StatusTypeDef Error code.
  */
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t *id_list);
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4]);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg);
