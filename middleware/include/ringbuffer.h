@@ -39,14 +39,6 @@ void rb_init(struct ringbuf_t *rb, void *buffer, size_t size,
 void *rb_get_head(const struct ringbuf_t *rb);
 
 /**
- * @brief Pop the head off of the RB.
- *
- * @param rb Pointer to ringbuffer.
- * @return void* Data at the head of the RB.
- */
-void *rb_dequeue(struct ringbuf_t *rb);
-
-/**
  * @brief Get the element at the tail of the ringbuffer.
  *
  * @param rb Pointer to ringbuffer.

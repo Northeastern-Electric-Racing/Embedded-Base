@@ -43,23 +43,6 @@ void *rb_get_head(const struct ringbuf_t *rb)
 	return (uint8_t *)rb->buf + (last_entry_idx * rb->element_size);
 }
 
-void *rb_dequeue(struct ringbuf_t *rb)
-{
-	assert(rb);
-
-	if (rb->curr_elements == 0) {
-		return NULL;
-	}
-
-	size_t tail_idx =
-		(rb->head_idx + rb->size - rb->curr_elements) % rb->size;
-	void *ptr = (uint8_t *)rb->buf + (tail_idx * rb->element_size);
-
-	rb->curr_elements--;
-
-	return ptr;
-}
-
 void *rb_get_tail(const struct ringbuf_t *rb)
 {
 	assert(rb);
