@@ -13,17 +13,17 @@ union Data {
 	uint8_t databuf[6];
 } data;
 
-Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
+static int sht30_write_reg(sht30_t *sht30, sht3x_command_t command)
 {
 	uint8_t command_buffer[2] = { (uint8_t)(command & 0xff00) >> 8,
 				      (uint8_t)(command & 0xff) };
 
-	return sht30->write_reg(command_buffer, 0, sizeof(command_buffer));
+	return sht30->write_reg(command_buffer, sht30->dev_address, 0, sizeof(command_buffer));
 }
 
-Read_ptr sht30_read_reg(sht30_t *sht30)
+static int sht30_read_reg(sht30_t *sht30, uint8_t *data)
 {
-	return sht30->read_reg(data.databuf, 0, sizeof(data.databuf));
+	return sht30->read_reg(data, sht30->dev_address, 0, sizeof(data));
 }
 
 /**
@@ -51,13 +51,14 @@ static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 	return (uint16_t)((uint16_t)msb << 8) | lsb;
 }
 
-int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg)
+int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg, uint8_t dev_address)
 {
 	sht30->write_reg = write_reg;
 	sht30->read_reg = read_reg;
+	sht30->dev_address = dev_address << 1u;
 
 	uint8_t status_reg_and_checksum[3];
-	if (sht30->read_reg(status_reg_and_checksum, (uint8_t)SHT3X_COMMAND_READ_STATUS,
+	if (sht30->read_reg(status_reg_and_checksum, sht30->dev_address, (uint8_t)SHT3X_COMMAND_READ_STATUS,
 			     sizeof(status_reg_and_checksum)) != 0) {
 		return -1;		
 	}
@@ -86,7 +87,9 @@ int sht30_get_temp_humid(sht30_t *sht30)
 
 	sht30_write_reg(sht30, (SHT30_START_CMD_WCS));
 
-	if (sht30_read_reg(sht30) != 0) {
+	uint8_t *test;
+
+	if (sht30_read_reg(sht30, test) != 0) {
 		return -1;
 	}
 

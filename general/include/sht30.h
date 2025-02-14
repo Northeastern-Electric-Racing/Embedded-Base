@@ -26,8 +26,8 @@ typedef enum {
 } sht3x_command_t;
 
 /** Function Pointers */
-typedef int (*Write_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
-typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t length);
+typedef int (*Write_ptr)(uint8_t *data, uint8_t dev_address, uint8_t reg, uint8_t length);
+typedef int (*Read_ptr)(uint8_t *data, uint8_t dev_address, uint8_t reg, uint8_t length);
 
 /*
  * Start measurement command with clock streching enabled and high
@@ -46,25 +46,8 @@ typedef struct {
 	float temp;
 	float humidity;
 	bool is_heater_enabled;
+	uint8_t dev_address;
 } sht30_t;
-
-/**
- * @brief Writes to the sht30 using a command
- * 
- * @param sht30 - SHT30 driver
- * @param command - sht3x_command_t command
- * @return int 
- */
-Write_ptr sht30_write_reg(sht30_t *sht30, sht3x_command_t command);
-
-/**
- * @brief Reads the sht30
- * 
- * @param sht30 - SHT30 driver
- * @param data - union data
- * @return int 
- */
-Read_ptr sht30_read_reg(sht30_t *sht30);
 
 /**
  * @brief Initializes an SHT30 Driver
@@ -72,7 +55,7 @@ Read_ptr sht30_read_reg(sht30_t *sht30);
  * @param sht30 - SHT30 driver
  * @return int - Status code
  */
-int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg);
+int sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg, uint8_t dev_address);
 
 /**
  * @brief Toggles the status of the internal heater
