@@ -1479,7 +1479,7 @@
     "sim_freq": 700
   },
   {
-    "id": "0x6FF",
+    "id": "0x6F9",
     "desc": "BMS Fault Timers",
     "points": [
       {
@@ -2830,7 +2830,7 @@
     "sim_freq": 200
   },
   {
-    "id": "0x6FF",
+    "id": "0x6FD",
     "desc": "Alpha Chip B Debug",
     "points": [
       {
