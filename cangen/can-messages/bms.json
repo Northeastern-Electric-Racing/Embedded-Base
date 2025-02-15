@@ -118,280 +118,6 @@
         }
       },
       {
-        "size": 14,
-        "parse": false
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
         "size": 8,
         "sim": {
           "min": 10,
@@ -434,157 +160,24 @@
         ]
       },
       {
-        "name": "BMS/Status/F/Extra",
-        "unit": "",
-        "values": [
-          2
-        ]
-      },
-      {
-        "name": "BMS/Status/F/CCL_Enforce",
-        "unit": "",
-        "values": [
-          3
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Charger_Can",
-        "unit": "",
-        "values": [
-          4
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Battery_Therm",
-        "unit": "",
-        "values": [
-          5
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Charger_Safety",
-        "unit": "",
-        "values": [
-          6
-        ]
-      },
-      {
-        "name": "BMS/Status/F/DCL_Enforce",
-        "unit": "",
-        "values": [
-          7
-        ]
-      },
-      {
-        "name": "BMS/Status/F/External_Can",
-        "unit": "",
-        "values": [
-          8
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Weak_Pack",
-        "unit": "",
-        "values": [
-          9
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Low_Cell_Volts",
-        "unit": "",
-        "values": [
-          10
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Charge_Reading",
-        "unit": "",
-        "values": [
-          11
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Current_Sense",
-        "unit": "",
-        "values": [
-          12
-        ]
-      },
-      {
-        "name": "BMS/Status/F/IC_Comm",
-        "unit": "",
-        "values": [
-          13
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Thermal_Err",
-        "unit": "",
-        "values": [
-          14
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Software",
-        "unit": "",
-        "values": [
-          15
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Open_Wire",
-        "unit": "",
-        "values": [
-          16
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Pack_Overheat",
-        "unit": "",
-        "values": [
-          17
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Cell_Undervoltage",
-        "unit": "",
-        "values": [
-          18
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Cell_Overvoltage",
-        "unit": "",
-        "values": [
-          19
-        ]
-      },
-      {
-        "name": "BMS/Status/F/Cells_Not_Balancing",
-        "unit": "",
-        "values": [
-          20
-        ]
-      },
-      {
         "name": "BMS/Status/Temp_Average",
         "unit": "C",
         "values": [
-          21
+          2
         ]
       },
       {
         "name": "BMS/Status/Temp_Internal",
         "unit": "C",
         "values": [
-          22
+          3
         ]
       },
       {
         "name": "BMS/Status/Balancing",
         "unit": "",
         "values": [
-          23
+          4
         ]
       }
     ],
@@ -1014,6 +607,829 @@
     "sim_freq": 700
   },
   {
+    "id": "0x89",
+    "desc": "Fault Status",
+    "points": [
+      {
+        "size": 14,
+        "parse": false
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 14,
+        "parse": false
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Faults/Extra",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Faults/CCL_Enforce",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Can",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/Faults/Battery_Therm",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Safety",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/Faults/DCL_Enforce",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "BMS/Faults/External_Can",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "BMS/Faults/Weak_Pack",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "BMS/Faults/Low_Cell_Volts",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charge_Reading",
+        "unit": "",
+        "values": [
+          10
+        ]
+      },
+      {
+        "name": "BMS/Faults/Current_Sense",
+        "unit": "",
+        "values": [
+          11
+        ]
+      },
+      {
+        "name": "BMS/Faults/IC_Comm",
+        "unit": "",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "BMS/Faults/Thermal_Err",
+        "unit": "",
+        "values": [
+          13
+        ]
+      },
+      {
+        "name": "BMS/Faults/Software",
+        "unit": "",
+        "values": [
+          14
+        ]
+      },
+      {
+        "name": "BMS/Faults/Open_Wire",
+        "unit": "",
+        "values": [
+          15
+        ]
+      },
+      {
+        "name": "BMS/Faults/Pack_Overheat",
+        "unit": "",
+        "values": [
+          16
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Undervoltage",
+        "unit": "",
+        "values": [
+          17
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Overvoltage",
+        "unit": "",
+        "values": [
+          18
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cells_Not_Balancing",
+        "unit": "",
+        "values": [
+          19
+        ]
+      },
+      {
+        "name": "BMS/Faults/Extra",
+        "unit": "",
+        "values": [
+          20
+        ]
+      },
+      {
+        "name": "BMS/Faults/CCL_Enforce",
+        "unit": "",
+        "values": [
+          21
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Can",
+        "unit": "",
+        "values": [
+          22
+        ]
+      },
+      {
+        "name": "BMS/Faults/Battery_Therm",
+        "unit": "",
+        "values": [
+          23
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charger_Safety",
+        "unit": "",
+        "values": [
+          24
+        ]
+      },
+      {
+        "name": "BMS/Faults/DCL_Enforce",
+        "unit": "",
+        "values": [
+          25
+        ]
+      },
+      {
+        "name": "BMS/Faults/External_Can",
+        "unit": "",
+        "values": [
+          26
+        ]
+      },
+      {
+        "name": "BMS/Faults/Weak_Pack",
+        "unit": "",
+        "values": [
+          27
+        ]
+      },
+      {
+        "name": "BMS/Faults/Low_Cell_Volts",
+        "unit": "",
+        "values": [
+          28
+        ]
+      },
+      {
+        "name": "BMS/Faults/Charge_Reading",
+        "unit": "",
+        "values": [
+          29
+        ]
+      },
+      {
+        "name": "BMS/Faults/Current_Sense",
+        "unit": "",
+        "values": [
+          30
+        ]
+      },
+      {
+        "name": "BMS/Faults/IC_Comm",
+        "unit": "",
+        "values": [
+          31
+        ]
+      },
+      {
+        "name": "BMS/Faults/Thermal_Err",
+        "unit": "",
+        "values": [
+          32
+        ]
+      },
+      {
+        "name": "BMS/Faults/Software",
+        "unit": "",
+        "values": [
+          33
+        ]
+      },
+      {
+        "name": "BMS/Faults/Open_Wire",
+        "unit": "",
+        "values": [
+          34
+        ]
+      },
+      {
+        "name": "BMS/Faults/Pack_Overheat",
+        "unit": "",
+        "values": [
+          35
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Undervoltage",
+        "unit": "",
+        "values": [
+          36
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cell_Overvoltage",
+        "unit": "",
+        "values": [
+          37
+        ]
+      },
+      {
+        "name": "BMS/Faults/Cells_Not_Balancing",
+        "unit": "",
+        "values": [
+          38
+        ]
+      }
+    ],
+    "sim_freq": 700
+  },
+  {
     "id": "0x702",
     "desc": "BMS Debug",
     "points": [
@@ -1061,6 +1477,209 @@
       }
     ],
     "sim_freq": 700
+  },
+  {
+    "id": "0x6F9",
+    "desc": "BMS Fault Timers",
+    "points": [
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.25
+            ],
+            [
+              2,
+              0.25
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 31,
+          "inc_min": 0,
+          "inc_max": 31,
+          "round": true
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": -100,
+          "max": 100,
+          "inc_min": 0.05,
+          "inc_max": 1
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Fault_Timer/Start_Stop",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Fault_Timer/Code",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Fault_Timer/Value",
+        "unit": "",
+        "values": [
+          3
+        ]
+      }
+    ],
+    "sim_freq": 700
+  },
+  {
+    "id": "0x69A",
+    "desc": "Shepherd Version Tag",
+    "points": [
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Version/Tag",
+        "unit": "major.minor.patch",
+        "values": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "name": "BMS/Version/Dirty",
+        "unit": "bool",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/Version/LocalCommit",
+        "unit": "bool",
+        "values": [
+          5
+        ]
+      }
+    ],
+    "sim_freq": 1000
+  },
+  {
+    "id": "0x69B",
+    "desc": "Shepherd Version Hash",
+    "points": [
+      {
+        "size": 32,
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 32,
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Version/ShortHash",
+        "unit": "hash",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Version/AuthorHash",
+        "unit": "hash",
+        "values": [
+          2
+        ]
+      }
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x6FA",
@@ -1118,7 +1737,7 @@
       },
       {
         "size": 4,
-         "sim": {
+        "sim": {
           "min": 0,
           "max": 13,
           "inc_min": 1,
@@ -1157,7 +1776,7 @@
         }
       },
       {
-        "size":6,
+        "size": 6,
         "parse": false
       }
     ],
@@ -1246,7 +1865,7 @@
       },
       {
         "size": 4,
-         "sim": {
+        "sim": {
           "min": 0,
           "max": 10,
           "inc_min": 1,
@@ -1256,7 +1875,7 @@
       },
       {
         "size": 4,
-         "sim": {
+        "sim": {
           "min": 0,
           "max": 10,
           "inc_min": 1,
@@ -1379,7 +1998,7 @@
       },
       {
         "size": 4,
-         "sim": {
+        "sim": {
           "min": 0,
           "max": 4,
           "inc_min": 1,
@@ -1447,7 +2066,7 @@
           5
         ]
       },
-       {
+      {
         "name": "BMS/PerCell/Alpha/{4}/DieTemp",
         "unit": "C",
         "values": [
