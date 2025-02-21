@@ -28,6 +28,11 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 				(1 << (7 - ((bitstream->total_bits + i) % 8)));
 		}
 	}
+
+	if (bitstream->overflow) {
+		return 1; // Overflow occurred
+	}
+
 	bitstream->total_bits += num_bits;
 	return 0; // Success
 }
