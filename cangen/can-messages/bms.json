@@ -2053,28 +2053,28 @@
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/Burning/10",
+        "name": "BMS/PerCell/Beta/{4}/Burning/10",
         "unit": "",
         "values": [
           3
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/SegTemp",
+        "name": "BMS/PerCell/Beta/{4}/SegTemp",
         "unit": "C",
         "values": [
           5
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/DieTemp",
+        "name": "BMS/PerCell/Beta/{4}/DieTemp",
         "unit": "C",
         "values": [
           6
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/VPV",
+        "name": "BMS/PerCell/Beta/{4}/VPV",
         "unit": "V",
         "values": [
           7
@@ -2168,21 +2168,21 @@
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/Vdigital",
+        "name": "BMS/PerCell/Beta/{4}/Vdigital",
         "unit": "V",
         "values": [
           3
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/Vres",
+        "name": "BMS/PerCell/AlBetapha/{4}/Vres",
         "unit": "",
         "values": [
           5
         ]
       },
       {
-        "name": "BMS/PerCell/Alpha/{4}/VMV",
+        "name": "BMS/PerCell/Beta/{4}/VMV",
         "unit": "",
         "values": [
           6
