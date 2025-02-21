@@ -2018,7 +2018,7 @@
       },
       {
         "size": 13,
-        "format": "divide1000",
+        "format": "divide100",
         "sim": {
           "min": 20,
           "max": 80,
@@ -2028,7 +2028,7 @@
       },
       {
         "size": 13,
-        "format": "divide1000",
+        "format": "divide100",
         "sim": {
           "min": 45,
           "max": 52.5,
@@ -2175,7 +2175,7 @@
         ]
       },
       {
-        "name": "BMS/PerCell/AlBetapha/{4}/Vres",
+        "name": "BMS/PerCell/Beta/{4}/Vres",
         "unit": "",
         "values": [
           5
