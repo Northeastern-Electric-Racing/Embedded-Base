@@ -4,11 +4,13 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct {
 	uint8_t *data; // The bitstream data, stored as bytes
 	size_t bytes; // The number of bytes in the bitstream
 	size_t total_bits; // Total number of bits in the bitstream
+	bool overflow; // False by default. If bitstream_add() is called for a value larger than its allotted bits, overflow will be set to true.
 } bitstream_t;
 
 /**

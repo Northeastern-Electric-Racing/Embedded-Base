@@ -5,6 +5,7 @@ void bitstream_init(bitstream_t *bitstream, uint8_t *data, size_t bytes)
 	bitstream->data = data;
 	bitstream->total_bits = 0;
 	bitstream->bytes = bytes;
+	bitstream->overflow = false;
 	memset(bitstream->data, 0, bytes); // Zero out the buffer
 }
 
@@ -12,6 +13,13 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 {
 	if (bitstream->total_bits + num_bits > (bitstream->bytes * 8)) {
 		return -1; // Error: not enough space in the bitstream
+	}
+
+	if (value >= pow(2, num_bits)) {
+		bitstream->overflow =
+			true; // Error: value is too large for the number of bits, so set overflow to true.
+		value = pow(2, num_bits) -
+			1; // Cap value to the maximum value that can be stored in the number of bits.
 	}
 
 	for (int i = 0; i < num_bits; ++i) {
