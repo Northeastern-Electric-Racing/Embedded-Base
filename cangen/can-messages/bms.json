@@ -1696,14 +1696,14 @@
       {
         "name": "BMS/PerCell/OverflowID",
         "unit": "can_id",
-        "value": [
+        "values": [
           1
         ]
       },
       {
         "name": "BMS/PerCell/OverflowCount",
         "unit": "",
-        "value": [
+        "values": [
           2
         ]
       }
