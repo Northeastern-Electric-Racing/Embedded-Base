@@ -1682,6 +1682,34 @@
     "sim_freq": 1000
   },
   {
+    "id": "0x6F1",
+    "desc": "Overflow Notification for PerCell",
+    "points": [
+      {
+        "size": 32
+      },
+      {
+        "size": 16
+      }
+    ],
+    "fields":[
+      {
+        "name": "BMS/PerCell/OverflowID",
+        "unit": "can_id",
+        "value": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/OverflowCount",
+        "unit": "",
+        "value": [
+          2
+        ]
+      }
+    ]
+  },
+  {
     "id": "0x6FA",
     "desc": "Alpha Cell Data Debug",
     "points": [
