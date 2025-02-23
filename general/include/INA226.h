@@ -29,8 +29,8 @@
 #define INA226_CONFIG_MODE_MASK	   0x0007 // Bits 0-2
 
 // Function Pointers
-typedef int (*WritePtr)(uint16_t dev_addr, uint8_t reg, uint16_t *data);
-typedef int (*ReadPtr)(uint16_t dev_addr, uint8_t reg, uint16_t *data);
+typedef int (*WritePtr)(uint16_t dev_addr, uint16_t reg, uint16_t *data);
+typedef int (*ReadPtr)(uint16_t dev_addr, uint16_t reg, uint16_t *data);
 
 typedef struct {
 	uint16_t dev_addr;
@@ -42,9 +42,9 @@ typedef struct {
 void ina226_init(ina226_t *ina, WritePtr write, ReadPtr read,
 		 uint16_t dev_addr);
 
-int ina226_read_reg(ina226_t *ina, uint8_t reg, uint16_t *data);
+int ina226_read_reg(ina226_t *ina, uint16_t reg, uint16_t *data);
 
-int ina226_write_reg(ina226_t *ina, uint8_t reg, uint16_t *data);
+int ina226_write_reg(ina226_t *ina, uint16_t reg, uint16_t *data);
 
 // Writes calibration register. r_shunt in ohms, max_current in amps
 int ina226_calibrate(ina226_t *ina, float r_shunt, float max_current);
