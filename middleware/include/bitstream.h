@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 typedef struct {
 	uint8_t *data; // The bitstream data, stored as bytes
@@ -26,7 +27,7 @@ void bitstream_init(bitstream_t *bitstream, uint8_t *data, size_t bytes);
  * @param *bitstream The bitstream to add data to.
  * @param value The data to add to the bitstream.
  * @param num_bits The length of the data in bits.
- * @return Returns 1 if failed, and 0 if successful.
+ * @return Returns 0 if successful, -1 if there is insufficient space in the bitstream, and 1 if overflow occurs.
  */
 int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits);
 
