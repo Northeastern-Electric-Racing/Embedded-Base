@@ -54,29 +54,10 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
 	CAN_TxHeaderTypeDef tx_header;
-	tx_header.StdId = msg->id;
-	tx_header.ExtId = 0;
-	tx_header.IDE = CAN_ID_STD;
-	tx_header.RTR = CAN_RTR_DATA;
-	tx_header.DLC = msg->len;
-	tx_header.TransmitGlobalTime = DISABLE;
-
-	uint32_t tx_mailbox;
-	if (HAL_CAN_GetTxMailboxesFreeLevel(can->hcan) == 0)
-		return HAL_BUSY;
-
-	if (HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox))
-		return HAL_ERROR;
-
-	return HAL_OK;
-}
-
-HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg)
-{
-	CAN_TxHeaderTypeDef tx_header;
-	tx_header.StdId = 0;
-	tx_header.ExtId = msg->id;
-	tx_header.IDE = CAN_ID_EXT;
+	(msg->is_extended) ? (tx_header.IDE = CAN_ID_EXT) :
+			     (tx_header.IDE = CAN_ID_STD);
+	tx_header.StdId = (msg->is_extended) ? 0 : msg->id.standard_id;
+	tx_header.ExtId = (msg->is_extended) ? msg->id.extended_id : 0;
 	tx_header.RTR = CAN_RTR_DATA;
 	tx_header.DLC = msg->len;
 	tx_header.TransmitGlobalTime = DISABLE;
