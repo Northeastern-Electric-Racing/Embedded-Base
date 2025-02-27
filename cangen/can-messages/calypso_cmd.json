@@ -223,5 +223,61 @@
     ],
     "key": "PumpStatus",
     "sim_freq": 750
+  },
+  {
+    "id": "0x499",
+    "desc": "Cerberus Radiator Fan State",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/RadFanStatus/A",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/State/RadFanStatus/B",
+        "unit": "bool",
+        "values": [
+          2
+        ]
+      }
+    ],
+    "key": "RadFanStatus",
+    "sim_freq": 750
   }
 ]
