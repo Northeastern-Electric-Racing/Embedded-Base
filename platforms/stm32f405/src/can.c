@@ -21,7 +21,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t id_list[4])
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 {
 	/* Address of filter bank to store filter */
 	static int filterBank = 0;

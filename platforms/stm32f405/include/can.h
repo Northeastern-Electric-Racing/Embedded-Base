@@ -39,7 +39,7 @@ HAL_StatusTypeDef can_init(can_t *can);
  * elements.
  * @return HAL_StatusTypeDef Error code.
  */
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t id_list[4]);
+HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4]);
 
 /**
  * @brief Add CANIDs to the CAN whitelist filter. Up to 8 additions of 2
