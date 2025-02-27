@@ -21,7 +21,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t id_list[4])
 {
 	/* Address of filter bank to store filter */
 	static int filterBank = 0;
@@ -43,6 +43,34 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 	filter.FilterMaskIdLow = id_list[1] << 5u;
 	filter.FilterIdHigh = id_list[2] << 5u;
 	filter.FilterMaskIdHigh = id_list[3] << 5u;
+
+	filter.FilterBank = filterBank;
+
+	filterBank++;
+
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
+}
+
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
+{
+	/* Address of filter bank to store filter */
+	static int filterBank = 0;
+
+	if (filterBank > 7)
+		return HAL_ERROR;
+
+	CAN_FilterTypeDef filter;
+
+	filter.FilterActivation = ENABLE;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterScale = CAN_FILTERSCALE_32BIT;
+
+	/* This filter type makes the filter a whitelist */
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+
+	/* Add the two IDs. They are shifted left by 3 because extended CAN IDs are 29 bits. */
+	filter.FilterIdHigh = (id_list[0] & 0x1FFFFFFF) << 3;
+	filter.FilterIdLow = (id_list[1] & 0x1FFFFFFF) << 3;
 
 	filter.FilterBank = filterBank;
 
