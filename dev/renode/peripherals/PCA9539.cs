@@ -54,35 +54,35 @@ namespace Antmicro.Renode.Peripherals.I2C
                 },
                 {
                     (long)Registers.OutputPort0,
-                    new ByteRegister(this)
+                    new ByteRegister(this, 0xFF)
                         .WithValueField(0, 8, name: $"OUPUT0", writeCallback: (_, val) => WriteCallback((byte) val))
                 },
                 {
                     (long)Registers.OutputPort1,
-                    new ByteRegister(this)
+                    new ByteRegister(this, 0xFF)
                         .WithValueField(0, 8, name: $"OUPUT1", writeCallback: (_, val) => WriteCallback((byte) val, 8))
                 },
                 {
                     (long)Registers.PolarityInversionPort0,
-                    new ByteRegister(this).WithValueField(0, 8, name: $"POLARITY0", writeCallback: (_, val) =>
+                    new ByteRegister(this, 0xFF).WithValueField(0, 8, name: $"POLARITY0", writeCallback: (_, val) =>
                         {
                             BitHelper.ReplaceBits(ref polarityInversion, width: 8, source: (uint)val);
                         })
                 },
                 {
                     (long)Registers.PolarityInversionPort1,
-                    new ByteRegister(this).WithValueField(0, 8, name: $"POLARITY1", writeCallback: (_, val) =>
+                    new ByteRegister(this, 0xFF).WithValueField(0, 8, name: $"POLARITY1", writeCallback: (_, val) =>
                         {
                             BitHelper.ReplaceBits(ref polarityInversion, width: 8, source: (uint)val, destinationPosition: 8);
                         })
                 },
                 {
                     (long)Registers.ConfigurationPort0,
-                    new ByteRegister(this).WithValueField(0, 8, name: $"CONFIGURATION0", writeCallback: (_, val) => ConfigurationCallback((byte) val))
+                    new ByteRegister(this, 0xFF).WithValueField(0, 8, name: $"CONFIGURATION0", writeCallback: (_, val) => ConfigurationCallback((byte) val))
                 },
                 {
                     (long)Registers.ConfigurationPort1,
-                    new ByteRegister(this).WithValueField(0, 8, name: $"CONFIGURATION1", writeCallback: (_, val) => ConfigurationCallback((byte) val, 8))
+                    new ByteRegister(this, 0xFFa).WithValueField(0, 8, name: $"CONFIGURATION1", writeCallback: (_, val) => ConfigurationCallback((byte) val, 8))
                 }
             };
 
