@@ -84,8 +84,8 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	CAN_TxHeaderTypeDef tx_header;
 	(msg->is_extended) ? (tx_header.IDE = CAN_ID_EXT) :
 			     (tx_header.IDE = CAN_ID_STD);
-	tx_header.StdId = (msg->is_extended) ? 0 : msg->id.standard_id;
-	tx_header.ExtId = (msg->is_extended) ? msg->id.extended_id : 0;
+	tx_header.StdId = (msg->is_extended) ? 0 : msg->id;
+	tx_header.ExtId = (msg->is_extended) ? msg->id : 0;
 	tx_header.RTR = CAN_RTR_DATA;
 	tx_header.DLC = msg->len;
 	tx_header.TransmitGlobalTime = DISABLE;

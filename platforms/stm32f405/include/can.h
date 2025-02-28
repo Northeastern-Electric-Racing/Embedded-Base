@@ -19,10 +19,7 @@ typedef struct {
 } can_t;
 
 typedef struct {
-	union {
-		uint16_t standard_id;
-		uint32_t extended_id;
-	} id;
+	uint32_t id;
 	bool is_extended;
 	uint8_t data[8];
 	uint8_t len;
