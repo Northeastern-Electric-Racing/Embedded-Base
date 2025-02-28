@@ -467,42 +467,42 @@
         "name": "MPU/Fault/ONBOARD_TEMP",
         "unit": "",
         "values": [
-          5
+          6
         ]
       },
       {
         "name": "MPU/Fault/IMU",
         "unit": "",
         "values": [
-          6
+          7
         ]
       },
       {
         "name": "MPU/Fault/SHUTDOWN_MONITOR",
         "unit": "",
         "values": [
-          7
+          8
         ]
       },
       {
         "name": "MPU/Fault/LV_MONITOR",
         "unit": "",
         "values": [
-          8
+          9
         ]
       },
       {
         "name": "MPU/Fault/BSPD_PREFAULT",
         "unit": "",
         "values": [
-          9
+          10
         ]
       },
       {
         "name": "MPU/Fault/RTDS",
         "unit": "",
         "values": [
-          10
+          11
         ]
       }
     ],
