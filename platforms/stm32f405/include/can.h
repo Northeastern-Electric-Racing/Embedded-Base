@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct {
 	uint32_t id;
-	bool is_extended;
+	bool id_is_extended;
 	uint8_t data[8];
 	uint8_t len;
 } can_msg_t;
