@@ -18,6 +18,14 @@ typedef struct {
 	CAN_HandleTypeDef *hcan;
 } can_t;
 
+/**
+ * @brief thing
+ * 
+ * @param id The message's CAN ID. (uint32_t)
+ * @param id_is_extended Denotes whether a standard or extended CAN ID is being used. Defaults to false, so ignore if not using an extended ID. (bool)
+ * @param data The message's data. The maximum is 8 bytes. (uint8_t array)
+ * @param len The length of the data in bytes. (uint8_t)
+ */
 typedef struct {
 	uint32_t id;
 	bool id_is_extended;
