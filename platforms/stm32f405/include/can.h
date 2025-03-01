@@ -19,7 +19,7 @@ typedef struct {
 } can_t;
 
 /**
- * @brief thing
+ * @brief Struct containing all relavent information for a CAN message.
  * 
  * @param id The message's CAN ID. (uint32_t)
  * @param id_is_extended Denotes whether a standard or extended CAN ID is being used. Defaults to false, so ignore if not using an extended ID. (bool)
