@@ -82,10 +82,20 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
 	CAN_TxHeaderTypeDef tx_header;
-	(msg->id_is_extended) ? (tx_header.IDE = CAN_ID_EXT) :
-				(tx_header.IDE = CAN_ID_STD);
-	tx_header.StdId = (msg->id_is_extended) ? 0 : msg->id;
-	tx_header.ExtId = (msg->id_is_extended) ? msg->id : 0;
+
+	if(msg->id == 0) {
+		return -1; // 0 is not a valid CAN ID. It is reserved so standard and extended CAN IDs can be distinguished.
+	}
+
+	if(msg->id_is_extended) {
+		tx_header.IDE = CAN_ID_EXT; // Extended CAN ID
+		tx_header.ExtId = msg->id;
+	}
+	else {
+		tx_header.IDE = CAN_ID_STD; // Standard CAN ID
+		tx_header.StdId = msg->id;
+	}
+
 	tx_header.RTR = CAN_RTR_DATA;
 	tx_header.DLC = msg->len;
 	tx_header.TransmitGlobalTime = DISABLE;
