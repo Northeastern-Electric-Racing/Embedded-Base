@@ -2,95 +2,100 @@
   {
     "id": "0x80",
     "desc": "accumulator status",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Pack/Voltage",
-        "unit": "V",
+        "size": 16,
+        "format": "divide10",
         "sim": {
           "min": 400,
           "max": 505,
           "inc_min": 0.01,
           "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 16,
-            "format": "divide10"
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Pack/Current",
-        "unit": "A",
+        "size": 16,
         "sim": {
           "min": 0,
           "max": 50,
           "inc_min": 0,
           "inc_max": 3
         },
-        "send": false,
-        "points": [
-          {
-            "size": 16
-          }
-        ]
+        "parse": false
       },
       {
-        "name": "BMS/Pack/Amp-hours",
-        "unit": "Ah",
+        "size": 16,
         "sim": {
           "min": 0,
           "max": 100,
           "inc_min": 0,
           "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 16
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Pack/SOC",
-        "unit": "%",
+        "size": 8,
         "sim": {
           "min": 0,
           "max": 100,
           "inc_min": 0.01,
           "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Pack/Health",
-        "unit": "%",
+        "size": 8,
         "sim": {
           "min": 0,
           "max": 100,
           "inc_min": 0,
           "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Pack/Voltage",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Pack/Current",
+        "unit": "A",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Pack/Amp-hours",
+        "unit": "Ah",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/Pack/SOC",
+        "unit": "%",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/Pack/Health",
+        "unit": "%",
+        "values": [
+          5
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x81",
     "desc": "BMS Status",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Status/State",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
@@ -99,7 +104,7 @@
             ],
             [
               1,
-              0.80
+              0.8
             ],
             [
               2,
@@ -110,1292 +115,1375 @@
               0.04
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Status/Temp_Average",
-        "unit": "C",
+        "size": 8,
         "sim": {
           "min": 10,
           "max": 50,
           "inc_min": 0.01,
           "inc_max": 0.5
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Status/Temp_Internal",
-        "unit": "C",
+        "size": 8,
         "sim": {
           "min": 10,
           "max": 50,
           "inc_min": 1,
           "inc_max": 1
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.4
+            ],
+            [
+              1,
+              0.6
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Status/State",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Status/Temp_Average",
+        "unit": "C",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Status/Temp_Internal",
+        "unit": "C",
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Status/Balancing",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.40
-            ],
-            [
-              1,
-              0.60
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          4
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x83",
     "desc": "Cell Data",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Cells/Volts_High_Value",
-        "unit": "V",
+        "size": 16,
+        "format": "divide10000",
         "sim": {
           "min": 2.5,
           "max": 4.25,
           "inc_min": 0.001,
           "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 16,
-            "format": "divide10000"
-          }
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 12,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 120,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 16,
+        "format": "divide10000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.001,
+          "inc_max": 0.1
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 12,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 120,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 16,
+        "format": "divide10000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.001,
+          "inc_max": 0.1
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Cells/Volts_High_Value",
+        "unit": "V",
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Cells/Volts_High_Chip",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 12,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "BMS/Cells/Volts_High_Cell",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 120,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Cells/Volts_Low_Value",
         "unit": "V",
-        "sim": {
-          "min": 2.5,
-          "max": 4.25,
-          "inc_min": 0.001,
-          "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 16,
-            "format": "divide10000"
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "BMS/Cells/Volts_Low_Chip",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 12,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "BMS/Cells/Volts_Low_Cell",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 120,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          6
         ]
       },
       {
         "name": "BMS/Cells/Volts_Avg_Value",
         "unit": "V",
-        "sim": {
-          "min": 2.5,
-          "max": 4.25,
-          "inc_min": 0.001,
-          "inc_max": 0.1
-        },
-        "points": [
-          {
-            "size": 16,
-            "format": "divide10000"
-          }
+        "values": [
+          7
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x84",
     "desc": "Cell Temperatures",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Cells/Temp_High_Value",
-        "unit": "C",
+        "size": 16,
         "sim": {
           "min": 10,
           "max": 50,
           "inc_min": 0.01,
           "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 16
-          }
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 120,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 12,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 120,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 1,
+          "max": 12,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 16,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Cells/Temp_High_Value",
+        "unit": "C",
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Cells/Temp_High_Cell",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 120,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "BMS/Cells/Temp_High_Chip",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 12,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Cells/Temp_Low_Value",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 16
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "BMS/Cells/Temp_Low_Cell",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 120,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "BMS/Cells/Temp_Low_Chip",
         "unit": "",
-        "sim": {
-          "min": 1,
-          "max": 12,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 4
-          }
+        "values": [
+          6
         ]
       },
       {
         "name": "BMS/Cells/Temp_Avg_Value",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 16
-          }
+        "values": [
+          7
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x85",
     "desc": "Segment Temperatures",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Segment_Temp/1",
-        "unit": "C",
+        "size": 8,
+        "signed": true,
         "sim": {
           "min": 10,
           "max": 50,
           "inc_min": 0.01,
           "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": 10,
+          "max": 50,
+          "inc_min": 0.01,
+          "inc_max": 0.3
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Segment_Temp/1",
+        "unit": "C",
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Segment_Temp/2",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "BMS/Segment_Temp/3",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Segment_Temp/4",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "BMS/Segment_Temp/5",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "BMS/Segment_Temp/6",
         "unit": "C",
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        },
-        "points": [
-          {
-            "size": 8,
-            "signed": true
-          }
+        "values": [
+          6
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x86",
     "desc": "Current Limits",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Pack/DCL",
-        "unit": "",
+        "size": 16,
         "sim": {
           "min": 20,
           "max": 520,
           "inc_min": 0.1,
           "inc_max": 4
-        },
-        "points": [
-          {
-            "size": 16
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Pack/CCL",
-        "unit": "",
+        "size": 16,
+        "signed": true,
         "sim": {
           "min": 0,
           "max": 25,
           "inc_min": 0,
           "inc_max": 2
-        },
-        "points": [
-          {
-            "size": 16,
-            "signed": true
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Pack/Current",
-        "unit": "",
+        "size": 16,
+        "signed": true,
         "sim": {
           "min": 0,
           "max": 100,
           "inc_min": 0,
           "inc_max": 5
-        },
-        "points": [
-          {
-            "size": 16,
-            "signed": true
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Pack/DCL",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Pack/CCL",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Pack/Current",
+        "unit": "",
+        "values": [
+          3
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x89",
     "desc": "Fault Status",
-    "sim_freq": 700,
+    "points": [
+      {
+        "size": 14,
+        "parse": false
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 14,
+        "parse": false
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      }
+    ],
     "fields": [
       {
         "name": "BMS/Faults/Extra",
         "unit": "",
-        "send": false,
-        "points": [
-          {
-            "size": 14
-          }
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Faults/CCL_Enforce",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "BMS/Faults/Charger_Can",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Faults/Battery_Therm",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "BMS/Faults/Charger_Safety",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          5
         ]
       },
       {
         "name": "BMS/Faults/DCL_Enforce",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          6
         ]
       },
       {
         "name": "BMS/Faults/External_Can",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          7
         ]
       },
       {
         "name": "BMS/Faults/Weak_Pack",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          8
         ]
       },
       {
         "name": "BMS/Faults/Low_Cell_Volts",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          9
         ]
       },
       {
         "name": "BMS/Faults/Charge_Reading",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          10
         ]
       },
       {
         "name": "BMS/Faults/Current_Sense",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          11
         ]
       },
       {
         "name": "BMS/Faults/IC_Comm",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          12
         ]
       },
       {
         "name": "BMS/Faults/Thermal_Err",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          13
         ]
       },
       {
         "name": "BMS/Faults/Software",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          14
         ]
       },
       {
         "name": "BMS/Faults/Open_Wire",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          15
         ]
       },
       {
         "name": "BMS/Faults/Pack_Overheat",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          16
         ]
       },
       {
         "name": "BMS/Faults/Cell_Undervoltage",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          17
         ]
       },
       {
         "name": "BMS/Faults/Cell_Overvoltage",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          18
         ]
       },
       {
         "name": "BMS/Faults/Cells_Not_Balancing",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          19
         ]
       },
       {
         "name": "BMS/Faults/Extra",
         "unit": "",
-        "send": false,
-        "points": [
-          {
-            "size": 14
-          }
+        "values": [
+          20
         ]
       },
       {
         "name": "BMS/Faults/CCL_Enforce",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          21
         ]
       },
       {
         "name": "BMS/Faults/Charger_Can",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          22
         ]
       },
       {
         "name": "BMS/Faults/Battery_Therm",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          23
         ]
       },
       {
         "name": "BMS/Faults/Charger_Safety",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          24
         ]
       },
       {
         "name": "BMS/Faults/DCL_Enforce",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          25
         ]
       },
       {
         "name": "BMS/Faults/External_Can",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          26
         ]
       },
       {
         "name": "BMS/Faults/Weak_Pack",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          27
         ]
       },
       {
         "name": "BMS/Faults/Low_Cell_Volts",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          28
         ]
       },
       {
         "name": "BMS/Faults/Charge_Reading",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          29
         ]
       },
       {
         "name": "BMS/Faults/Current_Sense",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          30
         ]
       },
       {
         "name": "BMS/Faults/IC_Comm",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          31
         ]
       },
       {
         "name": "BMS/Faults/Thermal_Err",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          32
         ]
       },
       {
         "name": "BMS/Faults/Software",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          33
         ]
       },
       {
         "name": "BMS/Faults/Open_Wire",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          34
         ]
       },
       {
         "name": "BMS/Faults/Pack_Overheat",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          35
         ]
       },
       {
         "name": "BMS/Faults/Cell_Undervoltage",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          36
         ]
       },
       {
         "name": "BMS/Faults/Cell_Overvoltage",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          37
         ]
       },
       {
         "name": "BMS/Faults/Cells_Not_Balancing",
         "unit": "",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 1
-          }
+        "values": [
+          38
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x702",
     "desc": "BMS Debug",
-    "sim_freq": 700,
+    "points": [
+      {
+        "size": 8
+      },
+      {
+        "size": 8
+      },
+      {
+        "size": 16
+      },
+      {
+        "size": 32
+      }
+    ],
     "fields": [
       {
         "name": "BMS/Debug/Spare0",
         "unit": "",
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Debug/Spare1",
         "unit": "",
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          2
         ]
       },
       {
         "name": "BMS/Debug/Spare2",
         "unit": "",
-        "points": [
-          {
-            "size": 16
-          }
+        "values": [
+          3
         ]
       },
       {
         "name": "BMS/Debug/Spare3",
         "unit": "",
-        "points": [
-          {
-            "size": 32
-          }
+        "values": [
+          4
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
-    "id": "0x6FF",
+    "id": "0x6F9",
     "desc": "BMS Fault Timers",
-    "sim_freq": 700,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Fault_Timer/Start_Stop",
-        "unit": "",
+        "size": 8,
         "sim": {
           "options": [
             [
@@ -1411,154 +1499,1497 @@
               0.25
             ]
           ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Fault_Timer/Code",
-        "unit": "",
+        "size": 8,
         "sim": {
           "min": 0,
           "max": 31,
           "inc_min": 0,
           "inc_max": 31,
           "round": true
-        },
-        "points": [
-          {
-            "size": 8
-          }
-        ]
+        }
       },
       {
-        "name": "BMS/Fault_Timer/Value",
-        "unit": "",
+        "size": 16,
         "sim": {
           "min": -100,
           "max": 100,
           "inc_min": 0.05,
           "inc_max": 1
-        },
-        "points": [
-          {
-            "size": 16
-          }
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Fault_Timer/Start_Stop",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Fault_Timer/Code",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Fault_Timer/Value",
+        "unit": "",
+        "values": [
+          3
         ]
       }
-    ]
+    ],
+    "sim_freq": 700
   },
   {
     "id": "0x69A",
     "desc": "Shepherd Version Tag",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Version/Tag",
-        "unit": "major.minor.patch",
+        "size": 8,
         "sim": {
           "min": 0,
           "max": 3,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-        },
-        "points": [
-          {
-            "size": 8
-          },
-          {
-            "size": 8
-          },
-          {
-            "size": 8
-          }
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "min": 0,
+          "max": 3,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Version/Tag",
+        "unit": "major.minor.patch",
+        "values": [
+          1,
+          2,
+          3
         ]
       },
       {
         "name": "BMS/Version/Dirty",
         "unit": "bool",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          4
         ]
       },
       {
         "name": "BMS/Version/LocalCommit",
         "unit": "bool",
-        "sim": {
-          "options": [
-            [
-              0,
-              0.95
-            ],
-            [
-              1,
-              0.05
-            ]
-          ]
-        },
-        "points": [
-          {
-            "size": 8
-          }
+        "values": [
+          5
         ]
       }
-    ]
+    ],
+    "sim_freq": 1000
   },
   {
     "id": "0x69B",
     "desc": "Shepherd Version Hash",
-    "sim_freq": 1000,
-    "fields": [
+    "points": [
       {
-        "name": "BMS/Version/ShortHash",
-        "unit": "hash",
+        "size": 32,
         "sim": {
           "min": 0,
           "max": 4294967295,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
-        },
-        "points": [
-          {
-            "size": 32
-          }
+        }
+      },
+      {
+        "size": 32,
+        "sim": {
+          "min": 0,
+          "max": 4294967295,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Version/ShortHash",
+        "unit": "hash",
+        "values": [
+          1
         ]
       },
       {
         "name": "BMS/Version/AuthorHash",
         "unit": "hash",
-        "sim": {
-          "min": 0,
-          "max": 4294967295,
-          "inc_min": 1,
-          "inc_max": 1,
-          "round": true
-        },
-        "points": [
-          {
-            "size": 32
-          }
+        "values": [
+          2
+        ]
+      }
+    ],
+    "sim_freq": 1000
+  },
+  {
+    "id": "0x6F1",
+    "desc": "Overflow Notification for PerCell",
+    "points": [
+      {
+        "size": 32
+      },
+      {
+        "size": 16
+      }
+    ],
+    "fields":[
+      {
+        "name": "BMS/PerCell/OverflowID",
+        "unit": "can_id",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/OverflowCount",
+        "unit": "",
+        "values": [
+          2
         ]
       }
     ]
+  },
+  {
+    "id": "0x6FA",
+    "desc": "Alpha Cell Data Debug",
+    "points": [
+      {
+        "size": 10,
+        "format": "divide10",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.01,
+          "inc_max": 0.2
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.01,
+          "inc_max": 0.2
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 13,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 13,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 6,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Alpha/{4}/Therms/{5}",
+        "unit": "C",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/Volts/{5}",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/Volts/{6}",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/Burning/{5}",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/Burning/{6}",
+        "unit": "",
+        "values": [
+          8
+        ]
+      }
+    ],
+    "sim_freq": 35
+  },
+  {
+    "id": "0x6FB",
+    "desc": "Beta Cell Data Debug",
+    "points": [
+      {
+        "size": 10,
+        "format": "divide10",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.01,
+          "inc_max": 0.2
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.01,
+          "inc_max": 0.2
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 10,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 10,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 6,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Beta/{4}/Therms/{5}",
+        "unit": "C",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Volts/{5}",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Volts/{6}",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Burning/{5}",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Burning/{6}",
+        "unit": "",
+        "values": [
+          8
+        ]
+      }
+    ],
+    "sim_freq": 25
+  },
+  {
+    "id": "0x6FD",
+    "desc": "Beta Chip A Debug",
+    "points": [
+      {
+        "size": 10,
+        "format": "divide10",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.5,
+          "max": 4.25,
+          "inc_min": 0.01,
+          "inc_max": 0.2
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 10,
+        "format": "divide10",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide100",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide100",
+        "sim": {
+          "min": 45,
+          "max": 52.5,
+          "inc_min": 0.5,
+          "inc_max": 2
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Beta/{4}/Therms/10",
+        "unit": "C",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Volts/10",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Burning/10",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/SegTemp",
+        "unit": "C",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/DieTemp",
+        "unit": "C",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/VPV",
+        "unit": "V",
+        "values": [
+          7
+        ]
+      }
+    ],
+    "sim_freq": 200
+  },
+  {
+    "id": "0x6FE",
+    "desc": "Beta Chip B Debug",
+    "points": [
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.998,
+          "max": 3.002,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 10,
+        "format": "divide100",
+        "sim": {
+          "min": 4.75,
+          "max": 5.25,
+          "inc_min": 0.1,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 10,
+        "format": "divide100",
+        "sim": {
+          "min": 2.75,
+          "max": 3.25,
+          "inc_min": 0.1,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.998,
+          "max": 3.002,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": -0.05,
+          "max": 0.05,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 1,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Beta/{4}/Vref2",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Vanalog",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Vdigital",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Vres",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/VMV",
+        "unit": "",
+        "values": [
+          6
+        ]
+      }
+    ],
+    "sim_freq": 200
+  },
+  {
+    "id": "0x6F0",
+    "desc": "Beta Chip C Debug",
+    "points": [
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 7,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VA_OV",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VA_UV",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VD_OV",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VD_UV",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VDE",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/VDEL",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/SPI",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/SLEEP",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/THSD",
+        "unit": "",
+        "values": [
+          10
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/TMOD_CHCK",
+        "unit": "",
+        "values": [
+          11
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/OSC_CHCK",
+        "unit": "",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/OTP1",
+        "unit": "",
+        "values": [
+          13
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{1}/Faults/OTP2",
+        "unit": "",
+        "values": [
+          14
+        ]
+      }
+    ],
+    "sim_freq": 200
+  },
+  {
+    "id": "0x6FC",
+    "desc": "Alpha Chip A Debug",
+    "points": [
+      {
+        "size": 10,
+        "format": "divide10",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide100",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide100",
+        "sim": {
+          "min": 45,
+          "max": 52.5,
+          "inc_min": 0.5,
+          "inc_max": 2
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": -0.05,
+          "max": 0.05,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Alpha/{2}/SegTemp",
+        "unit": "C",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/DieTemp",
+        "unit": "C",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/VPV",
+        "unit": "V",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/VMV",
+        "unit": "V",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VA_OV",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VA_UV",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VD_OV",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VD_UV",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VDE",
+        "unit": "",
+        "values": [
+          10
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/VDEL",
+        "unit": "",
+        "values": [
+          11
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/SPI",
+        "unit": "",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/SLEEP",
+        "unit": "",
+        "values": [
+          13
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/THSD",
+        "unit": "",
+        "values": [
+          14
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/TMOD_CHCK",
+        "unit": "",
+        "values": [
+          15
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/OSC_CHCK",
+        "unit": "",
+        "values": [
+          16
+        ]
+      }
+    ],
+    "sim_freq": 200
+  },
+  {
+    "id": "0x6FF",
+    "desc": "Alpha Chip B Debug",
+    "points": [
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.998,
+          "max": 3.002,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 4,
+        "sim": {
+          "min": 0,
+          "max": 4,
+          "inc_min": 1,
+          "inc_max": 1,
+          "round": true
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.998,
+          "max": 3.002,
+          "inc_min": 0.001,
+          "inc_max": 0.005
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 4.75,
+          "max": 5.25,
+          "inc_min": 0.01,
+          "inc_max": 0.05
+        }
+      },
+      {
+        "size": 13,
+        "format": "divide1000",
+        "sim": {
+          "min": 2.75,
+          "max": 3.25,
+          "inc_min": 0.01,
+          "inc_max": 0.05
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 6,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Vres",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Vref2",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Vanalog",
+        "unit": "V",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Vdigital",
+        "unit": "V",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/OTP1",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{2}/Faults/OTP2",
+        "unit": "",
+        "values": [
+          7
+        ]
+      }
+    ],
+    "sim_freq": 200
   }
 ]
