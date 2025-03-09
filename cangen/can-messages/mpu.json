@@ -321,7 +321,7 @@
         }
       },
       {
-        "size": 4,
+        "size": 12,
         "parse": false
       },
       {
@@ -431,6 +431,36 @@
       },
       {
         "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 5,
         "parse": false
       }
     ],
@@ -478,31 +508,52 @@
         ]
       },
       {
-        "name": "MPU/Fault/SHUTDOWN_MONITOR",
+        "name": "MPU/Fault/FUSE_MONITOR",
         "unit": "",
         "values": [
           8
         ]
       },
       {
-        "name": "MPU/Fault/LV_MONITOR",
+        "name": "MPU/Fault/SHUTDOWN_MONITOR",
         "unit": "",
         "values": [
           9
         ]
       },
       {
-        "name": "MPU/Fault/BSPD_PREFAULT",
+        "name": "MPU/Fault/LV_MONITOR",
         "unit": "",
         "values": [
           10
         ]
       },
       {
-        "name": "MPU/Fault/RTDS",
+        "name": "MPU/Fault/BSPD_PREFAULT",
         "unit": "",
         "values": [
           11
+        ]
+      },
+      {
+        "name": "MPU/Fault/RTDS",
+        "unit": "",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "MPU/Fault/PUMP_SENSORS",
+        "unit": "",
+        "values": [
+          13
+        ]
+      },
+      {
+        "name": "MPU/Fault/PDU_CURRENT",
+        "unit": "",
+        "values": [
+          14
         ]
       }
     ],
