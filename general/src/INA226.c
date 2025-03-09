@@ -10,16 +10,16 @@ void ina226_init(ina226_t *ina, WritePtr write, ReadPtr read, uint16_t dev_addr)
 {
 	ina->write = write;
 	ina->read = read;
-	ina->dev_addr = dev_addr << 1u;
+	ina->dev_addr = dev_addr;
 	ina->current_lsb = 0;
 }
 
-int ina226_read_reg(ina226_t *ina, uint8_t reg, uint16_t *data)
+int ina226_read_reg(ina226_t *ina, uint16_t reg, uint16_t *data)
 {
 	return ina->read(ina->dev_addr, reg, data);
 }
 
-int ina226_write_reg(ina226_t *ina, uint8_t reg, uint16_t *data)
+int ina226_write_reg(ina226_t *ina, uint16_t reg, uint16_t *data)
 {
 	return ina->write(ina->dev_addr, reg, data);
 }

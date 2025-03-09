@@ -1,89 +1,88 @@
+/**
+ * @file
+ * @brief A ringbuffer implementation on the stack.
+ *
+ * @copyright Copyright Northeastern Electric Racing 2025. All rights reserved.
+ *
+ */
+
 #include "ringbuffer.h"
-#include <stdlib.h>
+
+#include <assert.h>
+#include <stdint.h>
 #include <string.h>
 
-ringbuffer_t *ringbuffer_create(size_t capacity, size_t element_size)
+static void *get_nth_element(const struct ringbuf_t *rb, size_t n)
 {
-	ringbuffer_t *rb = (ringbuffer_t *)malloc(sizeof(ringbuffer_t));
-	if (!rb) {
-		// Handle memory allocation failure
-		return NULL;
-	}
+	assert(rb);
+	assert(n < rb->curr_elements);
 
-	rb->buffer = calloc(capacity, element_size);
-	if (!rb->buffer) {
-		free(rb);
-		return NULL;
-	}
+	size_t index =
+		(rb->head_idx + rb->size - rb->curr_elements + n) % rb->size;
 
-	rb->capacity = capacity;
+	return (uint8_t *)rb->buf + (index * rb->element_size);
+}
+
+void rb_init(struct ringbuf_t *rb, void *buffer, size_t size,
+	     size_t element_size)
+{
+	rb->buf = buffer;
+	rb->size = size;
 	rb->element_size = element_size;
-
-	return rb;
+	rb->head_idx = 0;
+	rb->curr_elements = 0;
 }
 
-void ringbuffer_destroy(ringbuffer_t *rb)
+void *rb_get_head(const struct ringbuf_t *rb)
 {
-	// Free each dynamically allocated element
-	for (size_t i = 0; i < rb->count; i++) {
-		if (rb->buffer[(rb->front + i) % rb->capacity] != NULL)
-			free(rb->buffer[(rb->front + i) % rb->capacity]);
+	assert(rb);
+	assert(rb->curr_elements > 0);
+
+	size_t last_entry_idx = (rb->head_idx + rb->size - 1) % rb->size;
+
+	return (uint8_t *)rb->buf + (last_entry_idx * rb->element_size);
+}
+
+void *rb_get_tail(const struct ringbuf_t *rb)
+{
+	assert(rb);
+	assert(rb->curr_elements > 0);
+
+	size_t tail_idx =
+		(rb->head_idx + rb->size - rb->curr_elements) % rb->size;
+	return (uint8_t *)rb->buf + (tail_idx * rb->element_size);
+}
+
+void rb_get_last_n(const struct ringbuf_t *rb, void *buf, size_t n)
+{
+	assert(rb);
+	assert(buf);
+
+	if (n > rb->curr_elements) {
+		n = rb->curr_elements;
 	}
 
-	// Free the buffer of pointers
-	free(rb->buffer);
+	size_t start_idx = rb->curr_elements - n;
 
-	// Free the ringbuffer_t structure
-	free(rb);
-}
-
-int ringbuffer_is_empty(ringbuffer_t *rb)
-{
-	return rb->count == 0;
-}
-
-int ringbuffer_is_full(ringbuffer_t *rb)
-{
-	return rb->count == rb->capacity;
-}
-
-int ringbuffer_enqueue(ringbuffer_t *rb, void *data)
-{
-	if (ringbuffer_is_full(rb)) {
-		// Buffer is full, cannot enqueue
-		return -1;
+	for (size_t i = 0; i < n; i++) {
+		void *src = get_nth_element(rb, start_idx + i);
+		void *dest = (uint8_t *)buf + (i * rb->element_size);
+		memcpy(dest, src, rb->element_size);
 	}
-
-	// Allocate memory for the new element
-	rb->buffer[rb->rear] = malloc(rb->element_size);
-	if (rb->buffer[rb->rear] == NULL) {
-		// Handle memory allocation failure
-		return -1;
-	}
-
-	// Copy the data to the newly allocated memory
-	memcpy(rb->buffer[rb->rear], data, rb->element_size);
-
-	rb->rear = (rb->rear + 1) % rb->capacity;
-	rb->count++;
-
-	return 0; // Successful enqueue
 }
 
-void ringbuffer_dequeue(ringbuffer_t *rb, void *data)
+void rb_insert(struct ringbuf_t *rb, void *data)
 {
-	if (ringbuffer_is_empty(rb)) {
-		// Buffer is empty, cannot dequeue
-		data = NULL;
-		return;
+	assert(rb);
+	assert(data);
+
+	void *dest = (uint8_t *)rb->buf + (rb->head_idx * rb->element_size);
+
+	memcpy(dest, data, rb->element_size);
+
+	rb->head_idx = (rb->head_idx + 1) % rb->size;
+
+	if (rb->curr_elements < rb->size) {
+		rb->curr_elements++;
 	}
-
-	// Copy the data from the buffer
-	memcpy(data, rb->buffer[rb->front], rb->element_size);
-
-	// Free the memory of the dequeued element
-	free(rb->buffer[rb->front]);
-
-	rb->front = (rb->front + 1) % rb->capacity;
-	rb->count--;
 }

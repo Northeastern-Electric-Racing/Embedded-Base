@@ -23,6 +23,7 @@ HAL_StatusTypeDef can_init(can_t *can)
 
 HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 {
+	/* Address of filter bank to store filter */
 	static int filterBank = 0;
 
 	if (filterBank > 7)
@@ -33,8 +34,11 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 	filter.FilterActivation = ENABLE;
 	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
 	filter.FilterScale = CAN_FILTERSCALE_16BIT;
+
+	/* This filter type makes the filter a whitelist */
 	filter.FilterMode = CAN_FILTERMODE_IDLIST;
 
+	/* IDs are shifted left because they are CAN standard IDs */
 	filter.FilterIdLow = id_list[0] << 5u;
 	filter.FilterMaskIdLow = id_list[1] << 5u;
 	filter.FilterIdHigh = id_list[2] << 5u;
