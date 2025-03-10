@@ -7,7 +7,7 @@
  * 
  */
 
- #include "debounce.h"
+#include "debounce.h"
 
 void debounce(bool input, nertimer_t *timer, uint32_t period,
 	      void (*cb)(void *arg), void *arg)
