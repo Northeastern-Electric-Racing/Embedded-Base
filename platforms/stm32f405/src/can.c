@@ -83,9 +83,6 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
 	CAN_TxHeaderTypeDef tx_header;
 
-	if (msg->id == 0)
-		return -1; // 0 is not a valid CAN ID. It is reserved so standard and extended CAN IDs can be distinguished.
-
 	if (msg->id_is_extended) {
 		tx_header.IDE = CAN_ID_EXT; // Extended CAN ID
 		tx_header.ExtId = msg->id;
