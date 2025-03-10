@@ -51,32 +51,46 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
 
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
+{
+	/* Address of filter bank to store filter */
+	static int filterBank = 0;
+
+	if (filterBank > 7)
+		return HAL_ERROR;
+
+	CAN_FilterTypeDef filter;
+
+	filter.FilterActivation = ENABLE;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterScale = CAN_FILTERSCALE_32BIT;
+
+	/* This filter type makes the filter a whitelist */
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+
+	/* Add the two IDs. They are shifted left by 3 because extended CAN IDs are 29 bits. */
+	filter.FilterIdHigh = (id_list[0] & 0x1FFFFFFF) << 3;
+	filter.FilterIdLow = (id_list[1] & 0x1FFFFFFF) << 3;
+
+	filter.FilterBank = filterBank;
+
+	filterBank++;
+
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
+}
+
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
 	CAN_TxHeaderTypeDef tx_header;
-	tx_header.StdId = msg->id;
-	tx_header.ExtId = 0;
-	tx_header.IDE = CAN_ID_STD;
-	tx_header.RTR = CAN_RTR_DATA;
-	tx_header.DLC = msg->len;
-	tx_header.TransmitGlobalTime = DISABLE;
 
-	uint32_t tx_mailbox;
-	if (HAL_CAN_GetTxMailboxesFreeLevel(can->hcan) == 0)
-		return HAL_BUSY;
+	if (msg->id_is_extended) {
+		tx_header.IDE = CAN_ID_EXT; // Extended CAN ID
+		tx_header.ExtId = msg->id;
+	} else {
+		tx_header.IDE = CAN_ID_STD; // Standard CAN ID
+		tx_header.StdId = msg->id;
+	}
 
-	if (HAL_CAN_AddTxMessage(can->hcan, &tx_header, msg->data, &tx_mailbox))
-		return HAL_ERROR;
-
-	return HAL_OK;
-}
-
-HAL_StatusTypeDef can_send_extended_msg(can_t *can, can_msg_t *msg)
-{
-	CAN_TxHeaderTypeDef tx_header;
-	tx_header.StdId = 0;
-	tx_header.ExtId = msg->id;
-	tx_header.IDE = CAN_ID_EXT;
 	tx_header.RTR = CAN_RTR_DATA;
 	tx_header.DLC = msg->len;
 	tx_header.TransmitGlobalTime = DISABLE;
