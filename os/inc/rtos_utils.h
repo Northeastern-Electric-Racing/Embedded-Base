@@ -24,5 +24,5 @@
  * @return osStatus_t The error code of queueing the message.
  */
 osStatus_t queue_and_set_flag(osMessageQueueId_t queue, const void *msg_ptr,
-                  osThreadId_t thread_id, uint32_t flags);
+			      osThreadId_t thread_id, uint32_t flags);
 #endif
