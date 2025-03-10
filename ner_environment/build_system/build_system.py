@@ -83,13 +83,14 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 # ==============================================================================
 
 @app.command(help="Start a debug session")
-def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the device uses an FTDI chip"),
+def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default) Set this flag if the device uses an FTDI chip"),
+        no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
     command = ["openocd"]
     current_directory = os.getcwd()
 
-    if ftdi:
+    if not no_ftdi:
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
     else:
@@ -132,7 +133,8 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
 # ==============================================================================
 
 @app.command(help="Flash the firmware")
-def flash(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the device uses an FTDI chip"),
+def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default): Set this flag if the device uses an FTDI chip"),
+        no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
 
     command = []
@@ -146,7 +148,7 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="Set this flag if the 
 
     command = command + ["openocd"]
 
-    if ftdi:
+    if not no_ftdi:
         current_directory = os.getcwd()
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
