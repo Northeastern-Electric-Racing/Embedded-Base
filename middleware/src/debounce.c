@@ -9,8 +9,8 @@
 
  #include "debounce.h"
 
-void debounce(bool input, nertimer_t *timer, uint32_t period, 
-            void (*cb)(void *arg), void *arg)
+void debounce(bool input, nertimer_t *timer, uint32_t period,
+	      void (*cb)(void *arg), void *arg)
 {
     if (input && !is_timer_active(timer)) {
         start_timer(timer, period);

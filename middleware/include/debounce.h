@@ -23,6 +23,6 @@
  * @param cb Callback to be called if the input is successfully debounced.
  * @param arg Argument of the callback function.
  */
- void debounce(bool input, nertimer_t *timer, uint32_t period,
-    void (*cb)(void *arg), void *arg);
+void debounce(bool input, nertimer_t *timer, uint32_t period,
+          void (*cb)(void *arg), void *arg);
 #endif
