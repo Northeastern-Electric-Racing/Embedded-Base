@@ -1,4 +1,5 @@
 #include "m24c32.h"
+#include <stdlib.h>
 
 #define PAGE_SIZE 32 /* Bytes */
 
