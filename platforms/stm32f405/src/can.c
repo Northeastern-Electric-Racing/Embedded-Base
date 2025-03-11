@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 
+static int filterBank = 0;
+
 /*
  * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then
  * implement in `stm32xxxx_it.c`, which STM32CubeMX generates
@@ -53,9 +55,6 @@ HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
 
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
 {
-	/* Address of filter bank to store filter */
-	static int filterBank = 0;
-
 	if (filterBank > 7)
 		return HAL_ERROR;
 
