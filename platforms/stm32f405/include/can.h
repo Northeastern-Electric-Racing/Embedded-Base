@@ -36,26 +36,40 @@ typedef struct {
 HAL_StatusTypeDef can_init(can_t *can);
 
 /**
- * @brief Add CANIDs to the CAN whitelist filter. Up to 7 additions of 4
- * IDs can be done. Only supports CAN standard IDs.
+ * @brief Adds a single CAN ID to the filter bank.
  * 
- * @param can CAN datastruct.
- * @param id_list List of CAN IDs to whitelist. Must be an array of four
- * elements.
- * @return HAL_StatusTypeDef Error code.
+ * @param hcan The CAN handle. (CAN_HandleTypeDef)
+ * @param can_id The CAN ID to add to the filter bank. (uint32_t)
+ * @param is_extended Denotes whether a standard or extended CAN ID is being used. (bool)
+ * @return Error status
+ * 
  */
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4]);
+static HAL_StatusTypeDef can_add_filter(CAN_HandleTypeDef *hcan,
+					uint32_t can_id, bool is_extended);
 
 /**
- * @brief Add CANIDs to the CAN whitelist filter. Up to 8 additions of 2
- * IDs can be done. Only supports CAN extended IDs.
+ * @brief Adds a list of standard CAN IDs to the filter bank.
  * 
- * @param can CAN datastruct.
- * @param id_list List of CAN IDs to whitelist. Must be an array of two
- * elements.
- * @return HAL_StatusTypeDef Error code.
+ * @param hcan The CAN handle. (CAN_HandleTypeDef)
+ * @param can_id_list The list of CAN IDs. (uint32_t array)
+ * @param can_id_list_len The length of the list. (uint8_t)
+ * @return Error status
  */
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2]);
+HAL_StatusTypeDef can_add_filter_standard(CAN_HandleTypeDef *hcan,
+					  uint32_t *can_id_list,
+					  uint8_t can_id_list_len);
+
+/**
+ * @brief Adds a list of extended CAN IDs to the filter bank.
+ * 
+ * @param hcan The CAN handle. (CAN_HandleTypeDef)
+ * @param can_id_list The list of CAN IDs. (uint32_t array)
+ * @param can_id_list_len The length of the list. (uint8_t)
+ * @return Error status
+ */
+HAL_StatusTypeDef can_add_filter_extended(CAN_HandleTypeDef *hcan,
+					  uint32_t *can_id_list,
+					  uint8_t can_id_list_len);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 

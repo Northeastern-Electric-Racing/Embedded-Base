@@ -21,62 +21,67 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
+static HAL_StatusTypeDef can_add_filter(CAN_HandleTypeDef *hcan,
+					uint32_t can_id, bool is_extended)
 {
-	/* Address of filter bank to store filter */
-	static int filterBank = 0;
+	CAN_FilterTypeDef filter = { 0 };
 
-	if (filterBank > 7)
+	static uint8_t filter_bank = 0;
+	if (filter_bank >= 14) {
 		return HAL_ERROR;
+	}
 
-	CAN_FilterTypeDef filter;
-
-	filter.FilterActivation = ENABLE;
-	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
-	filter.FilterScale = CAN_FILTERSCALE_16BIT;
-
-	/* This filter type makes the filter a whitelist */
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
-
-	/* IDs are shifted left because they are CAN standard IDs */
-	filter.FilterIdLow = id_list[0] << 5u;
-	filter.FilterMaskIdLow = id_list[1] << 5u;
-	filter.FilterIdHigh = id_list[2] << 5u;
-	filter.FilterMaskIdHigh = id_list[3] << 5u;
-
-	filter.FilterBank = filterBank;
-
-	filterBank++;
-
-	return HAL_CAN_ConfigFilter(can->hcan, &filter);
-}
-
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
-{
-	/* Address of filter bank to store filter */
-	static int filterBank = 0;
-
-	if (filterBank > 7)
-		return HAL_ERROR;
-
-	CAN_FilterTypeDef filter;
-
-	filter.FilterActivation = ENABLE;
-	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterBank = filter_bank;
+	filter.FilterMode = CAN_FILTERMODE_IDMASK;
 	filter.FilterScale = CAN_FILTERSCALE_32BIT;
 
-	/* This filter type makes the filter a whitelist */
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	if (is_extended) {
+		filter.FilterIdHigh = (can_id >> 13) & 0xFFFF;
+		filter.FilterIdLow = (can_id << 3) & 0xFFF8;
+		filter.FilterIdLow |= (1 << 2);
+	} else {
+		filter.FilterIdHigh = (can_id << 5) & 0xFFFF;
+		filter.FilterIdLow = 0;
+	}
 
-	/* Add the two IDs. They are shifted left by 3 because extended CAN IDs are 29 bits. */
-	filter.FilterIdHigh = (id_list[0] & 0x1FFFFFFF) << 3;
-	filter.FilterIdLow = (id_list[1] & 0x1FFFFFFF) << 3;
+	filter.FilterMaskIdHigh = 0xFFFF;
+	filter.FilterMaskIdLow = 0xFFFF;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterActivation = ENABLE;
 
-	filter.FilterBank = filterBank;
+	HAL_StatusTypeDef status = HAL_CAN_ConfigFilter(hcan, &filter);
 
-	filterBank++;
+	if (status == HAL_OK) {
+		filter_bank++;
+	}
 
-	return HAL_CAN_ConfigFilter(can->hcan, &filter);
+	return status;
+}
+
+HAL_StatusTypeDef can_add_filter_standard(CAN_HandleTypeDef *hcan,
+					  uint32_t *can_id_list,
+					  uint8_t can_id_list_len)
+{
+	for (uint8_t i = 0; i < can_id_list_len; i++) {
+		if (can_add_filter(hcan, can_id_list[i], false) != HAL_OK) {
+			return HAL_ERROR;
+		}
+	}
+
+	return HAL_OK;
+}
+
+HAL_StatusTypeDef can_add_filter_extended(CAN_HandleTypeDef *hcan,
+					  uint32_t *can_id_list,
+					  uint8_t can_id_list_len)
+{
+	for (uint8_t i = 0; i < can_id_list_len; i++) {
+		if (can_add_filter(hcan, can_id_list[i], true) != HAL_OK) {
+			return HAL_ERROR;
+		}
+	}
+
+	return HAL_OK;
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
