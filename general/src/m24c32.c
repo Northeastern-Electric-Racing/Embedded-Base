@@ -18,21 +18,23 @@ static uint16_t clamp_to_page(uint16_t size)
 
 int m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len)
 {
-	int result;
+	if (!device || !device->write || !data) {
+		return -1;
+	}
+
+	int result = 0;
 
 	/* Always use a page write */
-	for (int bytes_written = 0; bytes_written < len;
+	for (size_t bytes_written = 0; bytes_written < len;
 	     bytes_written += PAGE_SIZE) {
-		uint16_t write_len = clamp_to_page(len);
+		uint16_t write_len = clamp_to_page(len - bytes_written);
 
-		result = device->write(addr, data, write_len);
+		result = device->write(addr + bytes_written,
+				       &data[bytes_written], write_len);
 
 		/* Let application handle errors */
 		if (result)
 			return result;
-
-		len -= bytes_written;
-		addr += PAGE_SIZE;
 	}
 
 	return result;
@@ -46,8 +48,19 @@ int m24c32_read(m24c32_t *device, uint16_t mem_address, uint8_t *data,
 
 int m24c32_clear(m24c32_t *device, uint16_t mem_address, uint16_t len)
 {
-	uint8_t data[len];
-	memset(data, 0, len);
+	if (!device || !device->write) {
+		return -1;
+	}
 
-	return device->write(mem_address, data, len);
+	uint8_t *data = (uint8_t *)calloc(len, sizeof(uint8_t));
+
+	if (!data) {
+		return -1;
+	}
+
+	int result = device->write(mem_address, data, len);
+
+	free(data);
+
+	return result;
 }
