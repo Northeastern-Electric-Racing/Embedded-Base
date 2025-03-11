@@ -59,24 +59,31 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
 	if (filterBank > 7)
 		return HAL_ERROR;
 
-	CAN_FilterTypeDef filter;
+	CAN_FilterTypeDef sFilterConfig;
 
-	filter.FilterActivation = ENABLE;
-	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
-	filter.FilterScale = CAN_FILTERSCALE_32BIT;
+#define REMOTE_FRAME \
+	0 /* If = 1 the frame should be a remote frame. If = 0 the frame will be either remote or data frame */
+#define EXTID \
+	1 /* If = 0 the frame should be a frame with standard ID. If = 1 the frame should be a frame with extended ID */
+#define ID	    0x18DAF1DA /* The ID value */
+#define MASK	    0x1FFFFFFF /* The mask value */
+#define FILTER_ID   ((ID << 3) | (REMOTE_FRAME << 1) | (EXTID << 2))
+#define FILTER_MASK ((MASK << 3) | (REMOTE_FRAME << 1) | (EXTID << 2))
 
-	/* This filter type makes the filter a whitelist */
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
-
-	/* Add the two IDs. They are shifted left by 3 because extended CAN IDs are 29 bits. */
-	filter.FilterIdHigh = (id_list[0] & 0x1FFFFFFF) << 3;
-	filter.FilterIdLow = (id_list[1] & 0x1FFFFFFF) << 3;
-
-	filter.FilterBank = filterBank;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	sFilterConfig.FilterIdHigh =
+		(FILTER_ID >> 16); // Filter ID MSB   (FxFR2[0:15])
+	sFilterConfig.FilterIdLow =
+		(FILTER_ID & 0xFFFF); // Filter ID LSB   (FxFR1[0:15])
+	sFilterConfig.FilterMaskIdHigh =
+		(FILTER_MASK >> 16); // Filter Mask MSB   (FxFR2[16:31])
+	sFilterConfig.FilterMaskIdLow =
+		(FILTER_MASK & 0xFFFF); // Filter Mask LSB   (FxFR1[16:31])
 
 	filterBank++;
 
-	return HAL_CAN_ConfigFilter(can->hcan, &filter);
+	return HAL_CAN_ConfigFilter(can->hcan, &sFilterConfig);
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
