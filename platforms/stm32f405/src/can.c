@@ -37,8 +37,7 @@ static HAL_StatusTypeDef can_add_filter(CAN_HandleTypeDef *hcan,
 
 	if (is_extended) {
 		filter.FilterIdHigh = (can_id >> 13) & 0xFFFF;
-		filter.FilterIdLow = (can_id << 3) & 0xFFF8;
-		filter.FilterIdLow |= (1 << 2);
+		filter.FilterIdLow = ((can_id << 3) & 0xFFF8) | (1 << 2);
 	} else {
 		filter.FilterIdHigh = (can_id << 5) & 0xFFFF;
 		filter.FilterIdLow = 0;
