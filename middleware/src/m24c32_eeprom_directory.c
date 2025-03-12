@@ -1,45 +1,65 @@
 #include "m24c32_eeprom_directory.h"
 
-int m24c32_directory_write(const eeprom_directory_t *directory,
-			   m24c32_t *eeprom, const char *id, uint8_t *data,
-			   size_t len, size_t offset)
+eeprom_status_t m24c32_directory_write(const eeprom_directory_t *directory,
+				       m24c32_t *eeprom, const char *id,
+				       uint8_t *data, uint16_t len,
+				       uint16_t offset)
 {
-	int32_t base = eeprom_get_base_address(directory, id);
-	if (base < 0) {
-		return -1; // Invalid ID
+	if ((directory == NULL) || (eeprom == NULL) || (id == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	int32_t size = eeprom_get_size(directory, id);
+	uint16_t base;
+	eeprom_status_t status = eeprom_get_base_address(directory, id, &base);
+
+	if (status != EEPROM_OK) {
+		return status; // Invalid ID
+	}
+
+	uint16_t size;
+	status = eeprom_get_size(directory, id, &size);
+	if (status != EEPROM_OK) {
+		return status;
+	}
 
 	if (offset >= size) {
-		return -2; // Invalid Offset
+		return EEPROM_ERROR_OUT_OF_BOUNDS; // Invalid Offset
 	}
 
 	if (offset + len > size) {
-		return -3; // Overwrting next partition
+		return EEPROM_ERROR_ALIGNMENT; // Overwrting next partition
 	}
 
 	return m24c32_write(eeprom, base + offset, data, len);
 }
 
-int m24c32_directory_read(const eeprom_directory_t *directory, m24c32_t *eeprom,
-			  const char *id, uint8_t *data, size_t len,
-			  size_t offset)
+eeprom_status_t m24c32_directory_read(const eeprom_directory_t *directory,
+				      m24c32_t *eeprom, const char *id,
+				      uint8_t *data, uint16_t len,
+				      uint16_t offset)
 {
-	int32_t base = eeprom_get_base_address(directory, id);
-
-	if (base < 0) {
-		return -1; // Invalid ID
+	if ((directory == NULL) || (eeprom == NULL) || (id == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	int32_t size = eeprom_get_size(directory, id);
+	uint16_t base;
+	eeprom_status_t status = eeprom_get_base_address(directory, id, &base);
+	if (status != EEPROM_OK) {
+		return status; // Invalid ID
+	}
+
+	uint16_t size;
+	status = eeprom_get_size(directory, id, &size);
+	if (status != EEPROM_OK) {
+		return status;
+	}
 
 	if (offset >= size) {
-		return -2; // Invalid Offset
+		return EEPROM_ERROR_OUT_OF_BOUNDS; // Invalid Offset
 	}
 
 	if (offset + len > size) {
-		return -3; // Reading beyond current partition
+		return EEPROM_ERROR_ALIGNMENT; // Reading beyond current partition
 	}
 
 	return m24c32_read(eeprom, base + offset, data, len);

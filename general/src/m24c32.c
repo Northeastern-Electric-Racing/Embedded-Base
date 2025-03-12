@@ -17,13 +17,14 @@ static uint16_t clamp_to_page(uint16_t size)
 		return PAGE_SIZE;
 }
 
-int m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len)
+eeprom_status_t m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data,
+			     uint16_t len)
 {
-	if (!device || !device->write || !data) {
-		return -1;
+	if ((device == NULL) || (device->write == NULL) || (data == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	int result = 0;
+	eeprom_status_t result = EEPROM_OK;
 
 	/* Always use a page write */
 	for (size_t bytes_written = 0; bytes_written < len;
@@ -34,32 +35,38 @@ int m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data, uint16_t len)
 				       &data[bytes_written], write_len);
 
 		/* Let application handle errors */
-		if (result)
+		if (result != EEPROM_OK) {
 			return result;
+		}
 	}
 
 	return result;
 }
 
-int m24c32_read(m24c32_t *device, uint16_t mem_address, uint8_t *data,
-		uint16_t len)
+eeprom_status_t m24c32_read(m24c32_t *device, uint16_t mem_address,
+			    uint8_t *data, uint16_t len)
 {
+	if ((device == NULL) || (device->read == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
+	}
+
 	return device->read(mem_address, data, len);
 }
 
-int m24c32_clear(m24c32_t *device, uint16_t mem_address, uint16_t len)
+eeprom_status_t m24c32_clear(m24c32_t *device, uint16_t mem_address,
+			     uint16_t len)
 {
-	if (!device || !device->write) {
-		return -1;
+	if ((device == NULL) || (device->write == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
 	uint8_t *data = (uint8_t *)calloc(len, sizeof(uint8_t));
 
-	if (!data) {
-		return -1;
+	if (data == NULL) {
+		return EEPROM_ERROR_ALLOCATION;
 	}
 
-	int result = device->write(mem_address, data, len);
+	eeprom_status_t result = device->write(mem_address, data, len);
 
 	free(data);
 

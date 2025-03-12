@@ -6,16 +6,20 @@
 
 #define BASE_ADDR 0
 
-size_t directory_init(eeprom_directory_t *directory,
-		      const struct partition_cfg partitions[],
-		      size_t num_partitions)
+eeprom_status_t directory_init(eeprom_directory_t *directory,
+			       const struct partition_cfg partitions[],
+			       size_t num_partitions)
 {
-	assert(directory);
-	assert(partitions);
-	assert(num_partitions);
+	if ((directory == NULL) || (partitions == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
+	}
 
 	directory->partitions =
 		malloc(sizeof(struct partition_cfg) * num_partitions);
+
+	if (directory->partitions == NULL) {
+		return EEPROM_ERROR_ALLOCATION;
+	}
 
 	/* Accumulator that gives the address of the start of the partition */
 	size_t addr_acc = BASE_ADDR;
@@ -29,49 +33,56 @@ size_t directory_init(eeprom_directory_t *directory,
 
 	directory->num_partitions = num_partitions;
 
-	return addr_acc;
+	return EEPROM_OK;
 }
 
-int32_t eeprom_get_base_address(const eeprom_directory_t *directory,
-				const char *key)
+eeprom_status_t eeprom_get_base_address(const eeprom_directory_t *directory,
+					const char *key, uint16_t *address)
 {
-	assert(directory);
-	assert(key);
+	if ((directory == NULL) || (key == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
+	}
 
 	for (int i = 0; i < directory->num_partitions; i++) {
 		if (strcmp(directory->partitions[i].id, key) == 0) {
-			return directory->partitions[i].address;
+			*address = directory->partitions[i].address;
+			return EEPROM_OK;
 		}
 	}
 
-	return -1;
+	return EEPROM_ERROR_NOT_FOUND;
 }
 
-int32_t eeprom_get_head_address(const eeprom_directory_t *directory,
-				const char *key)
+eeprom_status_t eeprom_get_head_address(const eeprom_directory_t *directory,
+					const char *key, uint16_t *address)
 {
-	assert(directory);
-	assert(key);
+	if ((directory == NULL) || (key == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
+	}
 
 	for (int i = 0; i < directory->num_partitions; i++) {
 		if (strcmp(directory->partitions[i].id, key) == 0) {
-			return directory->partitions[i].head_address;
+			*address = directory->partitions[i].head_address;
+			return EEPROM_OK;
 		}
 	}
 
-	return -1;
+	return EEPROM_ERROR_NOT_FOUND;
 }
 
-size_t eeprom_get_size(const eeprom_directory_t *directory, const char *key)
+eeprom_status_t eeprom_get_size(const eeprom_directory_t *directory,
+				const char *key, uint16_t *size)
 {
-	assert(directory);
-	assert(key);
+	if ((directory == NULL) || (key == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
+	}
 
 	for (int i = 0; i < directory->num_partitions; i++) {
 		if (strcmp(directory->partitions[i].id, key) == 0) {
-			return directory->partitions[i].size;
+			*size = directory->partitions[i].size;
+			return EEPROM_OK;
 		}
 	}
 
-	return 0;
+	return EEPROM_ERROR_NOT_FOUND;
 }

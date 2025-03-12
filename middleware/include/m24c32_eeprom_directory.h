@@ -1,5 +1,14 @@
 #pragma once
 
+/**
+ * @file m24c32_eeprom_directory.h
+ * @brief EEPROM Partitioned Read/Write Interface
+ * 
+ * This file provides an interface for reading and writing to specific partitions 
+ * within an EEPROM using a directory-based approach.
+ * 
+ */
+
 #include "m24c32.h"
 #include "eepromdirectory.h"
 
@@ -7,30 +16,32 @@
  * @brief Write to a section of the EEPROM. Writes that overflow the size of the partition
  * will wrap to the head of the partition.
  * 
- * @param eeprom Pointer to eeprom datastruct.
+ * @param directory Pointer to the EEPROM directory structure.
+ * @param eeprom Pointer to the EEPROM device structure.
  * @param id ID of eeprom partition to write to.
  * @param data Data to write.
  * @param len Length of data to write in Bytes.
  * @param offset Offset from partition base address in Bytes.
- * @return int Error code. -1 if id is not a valid partition ID, -2 if offset is invalid, -3 if attempting to write
- * into the next partition.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure.
  */
-int m24c32_directory_write(const eeprom_directory_t *directory,
-			   m24c32_t *eeprom, const char *id, uint8_t *data,
-			   size_t len, size_t offset);
+eeprom_status_t m24c32_directory_write(const eeprom_directory_t *directory,
+				       m24c32_t *eeprom, const char *id,
+				       uint8_t *data, uint16_t len,
+				       uint16_t offset);
 
 /**
  * @brief Read a section of the EEPROM. Reads that overflow the size of the partition
  * will wrap to the head of the partition.
  * 
- * @param eeprom Pointer to eeprom datastruct.
- * @param id ID of eeprom partition to write to.
+ * @param directory Pointer to the EEPROM directory structure.
+ * @param eeprom Pointer to the EEPROM device structure.
+ * @param id ID of eeprom partition to read from.
  * @param data Read output.
  * @param len Length of data to write in Bytes.
  * @param offset Offset from partition base address in Bytes.
- * @return int Error code. -1 if id is not a valid partition ID, -2 if offset is invalid, -3 if attempting to read
- * into the next partition.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure.
  */
-int m24c32_directory_read(const eeprom_directory_t *directory, m24c32_t *eeprom,
-			  const char *id, uint8_t *data, size_t len,
-			  size_t offset);
+eeprom_status_t m24c32_directory_read(const eeprom_directory_t *directory,
+				      m24c32_t *eeprom, const char *id,
+				      uint8_t *data, uint16_t len,
+				      uint16_t offset);
