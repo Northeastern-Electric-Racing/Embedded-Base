@@ -1710,6 +1710,34 @@
     ]
   },
   {
+    "id": "0x6F2",
+    "desc": "PEC Error Count Notification per Chip",
+    "points": [
+        {
+            "size": 8
+        },
+        {
+            "size": 16
+        }
+    ],
+    "fields": [
+        {
+            "name": "BMS/PerChip/PECErrorChip",
+            "unit": "chip_id",
+            "values": [
+                1
+            ]
+        },
+        {
+            "name": "BMS/PerChip/PECErrorCount",
+            "unit": "",
+            "values": [
+                2
+            ]
+        }
+    ]
+  },
+  {
     "id": "0x6FA",
     "desc": "Alpha Cell Data Debug",
     "points": [
