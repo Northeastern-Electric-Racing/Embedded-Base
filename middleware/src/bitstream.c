@@ -32,7 +32,7 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 
 	bitstream->total_bits += num_bits;
 
-	if (bitstream->overflow) {
+	if (overflow) {
 		bitstream->overflow = true;
 		return 1; // Overflow occurred
 	}
