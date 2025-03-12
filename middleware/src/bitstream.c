@@ -15,9 +15,8 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 		return -1; // Error: not enough space in the bitstream
 	}
 
-	bool overflow = false;
 	if (value >= pow(2, num_bits)) {
-		overflow =
+		bitstream->overflow =
 			true; // Error: value is too large for the number of bits, so set overflow to true.
 		value = pow(2, num_bits) -
 			1; // Cap value to the maximum value that can be stored in the number of bits.
@@ -30,13 +29,11 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 		}
 	}
 
-	bitstream->total_bits += num_bits;
-
-	if (overflow) {
-		bitstream->overflow = true;
+	if (bitstream->overflow) {
 		return 1; // Overflow occurred
 	}
 
+	bitstream->total_bits += num_bits;
 	return 0; // Success
 }
 
