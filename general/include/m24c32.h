@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
-typedef int (*write_ptr)(uint16_t addr, const uint8_t *data, uint16_t len);
+typedef int (*write_ptr)(uint16_t addr, uint8_t *data, uint16_t len);
 typedef int (*read_ptr)(uint16_t addr, uint8_t *data, uint16_t len);
 
 typedef struct {
