@@ -18,15 +18,15 @@ namespace Antmicro.Renode.Peripherals.I2C
 
         public byte[] Read(int count = 1)
         {
-            this.Log(LogLevel.Info, "READING FROM PCA: {0}", context);
+            this.Log(LogLevel.Debug, "READING FROM PCA: {0}", context);
             byte[] bytes = BitConverter.GetBytes((short)registers.Read((long)context));
-            this.Log(LogLevel.Info, "RETURNING: {0}", string.Join(", ", bytes));
+            this.Log(LogLevel.Debug, "RETURNING: {0}", string.Join(", ", bytes));
             return bytes;
         }
 
         public void Write(byte[] data)
         {
-            this.Log(LogLevel.Info, "WRITING TO PCA: {0}", string.Join(", ", data));
+            this.Log(LogLevel.Debug, "WRITING TO PCA: {0}", string.Join(", ", data));
             context = (Registers)data[0];
             if ((int)context < 0x2 || data.Length < 2) return; // Indicates that a read operation to input ports is next, but no changes are necessary
             registers.Write((long)context, data[1]);
@@ -82,7 +82,7 @@ namespace Antmicro.Renode.Peripherals.I2C
                 },
                 {
                     (long)Registers.ConfigurationPort1,
-                    new ByteRegister(this, 0xFFa).WithValueField(0, 8, name: $"CONFIGURATION1", writeCallback: (_, val) => ConfigurationCallback((byte) val, 8))
+                    new ByteRegister(this, 0xFF).WithValueField(0, 8, name: $"CONFIGURATION1", writeCallback: (_, val) => ConfigurationCallback((byte) val, 8))
                 }
             };
 
@@ -92,13 +92,13 @@ namespace Antmicro.Renode.Peripherals.I2C
         private void WriteCallback (byte value, int offset = 0) {
             BitHelper.ReplaceBits(ref outputFlipFlop, width: 8, source: (byte)value, destinationPosition: offset);
             this.SetPins();
-            this.Log(LogLevel.Info, "Writing {0}: {1} to {2}", offset, OutputFlipFlop, value);
+            this.Log(LogLevel.Debug, "Writing {0}: {1} to {2}", offset, OutputFlipFlop, value);
         }
 
         private void ConfigurationCallback(byte value, int offset = 0) {
             BitHelper.ReplaceBits(ref configuration, width: 8, source: (byte)value, destinationPosition: offset);
             this.SetPins();
-            this.Log(LogLevel.Info, "Configuring {0}: {1} to {2}", offset, Configuration, value);
+            this.Log(LogLevel.Debug, "Configuring {0}: {1} to {2}", offset, Configuration, value);
         }
 
         private void SetPins() {
@@ -113,14 +113,14 @@ namespace Antmicro.Renode.Peripherals.I2C
         }
         private void WritePin(int number, bool value)
         {
-            this.Log(LogLevel.Info, "Setting {0} to {1}", number, value);
+            this.Log(LogLevel.Debug, "Setting {0} to {1}", number, value);
             State[number] = value;
             Connections[number].Set(value);
         }
 
         public void FinishTransmission()
         {
-            this.Log(LogLevel.Debug, "Transmission Finished");
+            this.Log(LogLevel.Warning, "Transmission Finished");
         }
 
         public GPIO IRQ { get; private set; }
