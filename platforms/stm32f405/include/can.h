@@ -16,6 +16,7 @@
 
 typedef struct {
 	CAN_HandleTypeDef *hcan;
+	uint32_t filter_bank;
 } can_t;
 
 /**
@@ -44,8 +45,8 @@ HAL_StatusTypeDef can_init(can_t *can);
  * @return Error status
  * 
  */
-static HAL_StatusTypeDef can_add_filter(CAN_HandleTypeDef *hcan,
-					uint32_t can_id, bool is_extended);
+static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
+					bool is_extended);
 
 /**
  * @brief Adds a list of standard CAN IDs to the filter bank.
@@ -55,8 +56,7 @@ static HAL_StatusTypeDef can_add_filter(CAN_HandleTypeDef *hcan,
  * @param can_id_list_len The length of the list. (uint8_t)
  * @return Error status
  */
-HAL_StatusTypeDef can_add_filter_standard(CAN_HandleTypeDef *hcan,
-					  uint32_t *can_id_list,
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t *can_id_list,
 					  uint8_t can_id_list_len);
 
 /**
@@ -67,8 +67,7 @@ HAL_StatusTypeDef can_add_filter_standard(CAN_HandleTypeDef *hcan,
  * @param can_id_list_len The length of the list. (uint8_t)
  * @return Error status
  */
-HAL_StatusTypeDef can_add_filter_extended(CAN_HandleTypeDef *hcan,
-					  uint32_t *can_id_list,
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t *can_id_list,
 					  uint8_t can_id_list_len);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
