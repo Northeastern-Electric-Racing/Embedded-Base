@@ -30,6 +30,7 @@ static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
 	CAN_FilterTypeDef filter;
 
 	if (can->filter_bank >= 14) {
+		printf("Max filter banks reached\n");
 		return HAL_ERROR; // Max of 14 filter banks per CAN instance
 	}
 
@@ -57,11 +58,12 @@ static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
 	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
 
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t *can_id_list,
-					  uint8_t can_id_list_len)
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t can_id_list[])
 {
-	for (uint8_t i = 0; i < can_id_list_len; i++) {
+	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
+	for (uint8_t i = 0; i < size; i++) {
 		if (can_add_filter(can, can_id_list[i], false) != HAL_OK) {
+			printf("can_add_filter failed at index %d\n", i);
 			return HAL_ERROR;
 		}
 	}
@@ -69,11 +71,12 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t *can_id_list,
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t *can_id_list,
-					  uint8_t can_id_list_len)
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[])
 {
-	for (uint8_t i = 0; i < can_id_list_len; i++) {
+	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
+	for (uint8_t i = 0; i < size; i++) {
 		if (can_add_filter(can, can_id_list[i], true) != HAL_OK) {
+			printf("can_add_filter failed at index %d\n", i);
 			return HAL_ERROR;
 		}
 	}

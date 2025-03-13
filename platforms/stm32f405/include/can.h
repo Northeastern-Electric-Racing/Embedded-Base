@@ -56,8 +56,7 @@ static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
  * @param can_id_list_len The length of the list. (uint8_t)
  * @return Error status
  */
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t *can_id_list,
-					  uint8_t can_id_list_len);
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t can_id_list[]);
 
 /**
  * @brief Adds a list of extended CAN IDs to the filter bank.
@@ -67,8 +66,7 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t *can_id_list,
  * @param can_id_list_len The length of the list. (uint8_t)
  * @return Error status
  */
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t *can_id_list,
-					  uint8_t can_id_list_len);
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[]);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 
