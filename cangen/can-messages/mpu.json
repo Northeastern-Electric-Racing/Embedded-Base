@@ -466,28 +466,28 @@
     ],
     "fields": [
       {
-        "name": "MPU/Fault/ONBOARD_PEDAL",
+        "name": "MPU/Fault/Crit/ONBOARD_PEDAL",
         "unit": "",
         "values": [
           1
         ]
       },
       {
-        "name": "MPU/Fault/CAN_DISPATCH",
+        "name": "MPU/Fault/Crit/CAN_DISPATCH",
         "unit": "",
         "values": [
           2
         ]
       },
       {
-        "name": "MPU/Fault/CAN_ROUTING",
+        "name": "MPU/Fault/Crit/CAN_ROUTING",
         "unit": "",
         "values": [
           3
         ]
       },
       {
-        "name": "MPU/Fault/BMS_CAN_MONITOR",
+        "name": "MPU/Fault/Crit/BMS_CAN_MONITOR",
         "unit": "",
         "values": [
           4
