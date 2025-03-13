@@ -62,6 +62,11 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t can_id_list[])
 {
 	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
 	for (uint8_t i = 0; i < size; i++) {
+		if (can_id_list[i] > 0x7FF) {
+			printf("Invalid standard CAN ID at index %d in the CAN ID list. Cannot be larger than 11 bits.\n",
+			       i);
+			return HAL_ERROR;
+		}
 		if (can_add_filter(can, can_id_list[i], false) != HAL_OK) {
 			printf("can_add_filter failed at index %d\n", i);
 			return HAL_ERROR;
@@ -75,9 +80,18 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[])
 {
 	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
 	for (uint8_t i = 0; i < size; i++) {
+		if (can_id_list[i] > 0x1FFFFFFF) {
+			printf("Invalid extended CAN ID at index %d in the CAN ID list. Cannot be larger than 29 bits.\n",
+			       i);
+			return HAL_ERROR;
+		}
 		if (can_add_filter(can, can_id_list[i], true) != HAL_OK) {
 			printf("can_add_filter failed at index %d\n", i);
 			return HAL_ERROR;
+		}
+		if (can_id_list[i] <= 0x7FF) {
+			printf("Warning: A CAN ID smaller than 11 bits was added to the extended filter. This was successful, but make sure the id's 'id_is_extended' property is set to true.\n",
+			       i);
 		}
 	}
 
