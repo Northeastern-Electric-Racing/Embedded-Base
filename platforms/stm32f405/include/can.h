@@ -8,7 +8,6 @@
 #include "c_utils.h"
 #include "stm32xx_hal.h"
 #include <stdbool.h>
-#include <math.h>
 
 /*
  * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then
