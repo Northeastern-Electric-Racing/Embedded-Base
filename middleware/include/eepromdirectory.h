@@ -1,57 +1,83 @@
+/**
+ * @file eepromdirectory.h
+ * @brief EEPROM Directory Management
+ * 
+ * This file provides functions to initialize and manage an EEPROM directory with partitions.
+ * Functions return `eeprom_status_t` error codes, which are defined in `eeprom_status.h`.
+ * 
+ */
+
 #ifndef EEPROMDIRECTORY_H
 #define EEPROMDIRECTORY_H
 
+#include "eeprom_status.h"
+#include <stddef.h>
 #include <stdint.h>
 
-struct eeprom_partition {
-	char *id; /*  key  */
-	uint16_t size; /* bytes */
-	uint16_t address; /* start address */
+struct partition_cfg {
+	const char *id; /* The ID of the partition */
+	uint16_t size; /* The size of the partition in bytes */
+	uint16_t address;
+	uint16_t head_address;
 };
 
-struct eeprom_partition eeprom_data[NUM_EEPROM_ITEMS]{
-	/*  ____________KEY________________         _BYTES_   */
-
-};
-
-/**
- * @brief returns the starting address of the passed key
- *
- * @param key
- * @return int
- */
-int eeprom_get_index(char *key);
+typedef struct {
+	struct partition_cfg *partitions;
+	size_t num_partitions;
+} eeprom_directory_t;
 
 /**
- * @brief returns the key at the passed index
+ * @brief Initializes an EEPROM directory with partition IDs and sizes.
+ * 
+ * This function sets up partition configurations within the EEPROM memory.
+ * The total allocated address space is calculated based on the provided partitions.
  *
- *
+ * @param directory Pointer to the EEPROM directory structure.
+ * @param partitions Array of partition configurations, including IDs and sizes.
+ * @param num_partitions Number of partitions to create.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure. 
  */
-char *eeprom_get_key(int index);
+eeprom_status_t directory_init(eeprom_directory_t *directory,
+			       const struct partition_cfg partitions[],
+			       size_t num_partitions);
 
 /**
- * @brief fills passed data pointer with data from eeprom
+ * @brief Get the address of the beginning of a partition.
  *
- * @note user is responsible for passing data of correct size
- * @param key
- * @param data
+ * This function searches for a partition by its name and returns its starting address.
+ * 
+ * @param directory Pointer to the EEPROM directory structure.
+ * @param key Name of the partition.
+ * @param address Pointer to store the retrieved base address.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code if the partition is not found.
  */
-
-/* declaration of function taking in array of structures for filling in the
- * parameters of the fault conditions*/
-void eeprom_init(struct eeprom_partition partition_list[], int array_size);
-void eeprom_read_data_key(char *key, void *data);
-void eeprom_read_data_index(uint8_t index, void *data);
+eeprom_status_t eeprom_get_base_address(const eeprom_directory_t *directory,
+					const char *key, uint16_t *address);
 
 /**
- * @brief loads eeprom with data from passed pointer
+ * @brief Get the current read/write head of a partition.
  *
- * @note user is responsible for passing data of correct size
- * @param key
- * @param data
+ * This function provides the address of the next location available for writing within the partition.
+ * 
+ * @param directory Pointer to EEPROM directory struct.
+ * @param key Name of the partition.
+ * @param address Pointer to store the retrieved head address.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code if the partition is not found.
  */
-void eeprom_write_data_key(char *key, void *data);
+eeprom_status_t eeprom_get_head_address(const eeprom_directory_t *directory,
+					const char *key, uint16_t *address);
 
-void eeprom_write_data_index(uint8_t index, void *data);
+/**
+ * @brief Get the size of a partition
+ *
+ * This function returns the allocated size of a specific partition in bytes.
+ * 
+ * @param directory Pointer to EEPROM directory struct.
+ * @param key Name of a partition.
+ * @param size Pointer to store the partition size.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code if the partition is not found.	
+ */
+eeprom_status_t eeprom_get_size(const eeprom_directory_t *directory,
+				const char *key, uint16_t *size);
 
 #endif // EEPROMDIRECTORY_H
