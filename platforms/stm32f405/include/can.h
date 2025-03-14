@@ -37,8 +37,22 @@ typedef struct {
 
 HAL_StatusTypeDef can_init(can_t *can);
 
+/**
+ * @brief Adds a standard CAN ID filter to the CAN bus. A standard CAN ID filter can contain up to 4 IDs. IDs cannot be larger than 11 bits.
+ * 
+ * @param can The CAN bus to add the filter to. (can_t)
+ * @param can_id_list An array of 4 standard CAN IDs to filter. (uint16_t array)
+ * @return HAL_StatusTypeDef HAL_OK if successful, HAL_ERROR if not. (HAL_StatusTypeDef)
+ */
 HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4]);
 
+/**
+ * @brief Adds an extended CAN ID filter to the CAN bus. An extended CAN ID filter can contain up to 2 IDs. IDs cannot be larger than 29 bits.
+ * 
+ * @param can The CAN bus to add the filter to. (can_t)
+ * @param can_id_list An array of 2 extended CAN IDs to filter. (uint32_t array)
+ * @return HAL_StatusTypeDef HAL_OK if successful, HAL_ERROR if not. (HAL_StatusTypeDef)
+ */
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2]);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
