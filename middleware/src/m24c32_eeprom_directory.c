@@ -5,10 +5,6 @@ eeprom_status_t m24c32_directory_write(const eeprom_directory_t *directory,
 				       uint8_t *data, uint16_t len,
 				       uint16_t offset)
 {
-	if ((directory == NULL) || (eeprom == NULL) || (id == NULL)) {
-		return EEPROM_ERROR_NULL_POINTER;
-	}
-
 	uint16_t base;
 	eeprom_status_t status = eeprom_get_base_address(directory, id, &base);
 
@@ -38,10 +34,6 @@ eeprom_status_t m24c32_directory_read(const eeprom_directory_t *directory,
 				      uint8_t *data, uint16_t len,
 				      uint16_t offset)
 {
-	if ((directory == NULL) || (eeprom == NULL) || (id == NULL)) {
-		return EEPROM_ERROR_NULL_POINTER;
-	}
-
 	uint16_t base;
 	eeprom_status_t status = eeprom_get_base_address(directory, id, &base);
 	if (status != EEPROM_OK) {
