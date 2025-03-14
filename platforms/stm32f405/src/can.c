@@ -24,8 +24,49 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
-					bool is_extended)
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4])
+{
+	CAN_FilterTypeDef filter;
+
+	if (can->filter_bank >= 14) {
+		printf("Max filter banks reached\n");
+		return HAL_ERROR; // Max of 14 filter banks per CAN instance
+	}
+
+	/* Check for invalid IDs */
+	for (int i = 0; i < 4; i++) {
+		if (can_id_list[i] > 0x7FF) {
+			printf("CAN ID 0x%X is invalid as a standard ID. Standard IDs cannot be larger than 11 bits.\n");
+			return HAL_ERROR;
+		}
+	}
+
+	filter.FilterBank = can->filter_bank++;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	filter.FilterScale = CAN_FILTERSCALE_16BIT;
+
+	filter.FilterIdHigh = 0;
+	filter.FilterIdLow = 0;
+	filter.FilterMaskIdHigh = 0;
+	filter.FilterMaskIdLow = 0;
+
+	uint16_t id1 = (uint16_t)(can_id_list[0] << 5);
+	uint16_t id2 = (uint16_t)(can_id_list[1] << 5);
+	uint16_t id3 = (uint16_t)(can_id_list[2] << 5);
+	uint16_t id4 = (uint16_t)(can_id_list[3] << 5);
+
+	filter.FilterIdHigh = id1;
+	filter.FilterIdLow = id2;
+	filter.FilterMaskIdHigh = id3;
+	filter.FilterMaskIdLow = id4;
+
+	filter.FilterActivation = ENABLE;
+
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
+}
+
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2])
 {
 	CAN_FilterTypeDef filter;
 
@@ -39,63 +80,31 @@ static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
 	filter.FilterMode = CAN_FILTERMODE_IDLIST;
 	filter.FilterScale = CAN_FILTERSCALE_32BIT;
 
-	if (is_extended) {
-		/* Extended ID */
-		filter.FilterIdHigh = (can_id >> 13);
-		filter.FilterIdLow = ((can_id << 3) & 0xFFF8) | (1 << 2);
-	} else {
-		/* Standard ID */
-		filter.FilterIdHigh = (can_id << 5);
-		filter.FilterIdLow = 0x0000;
-	}
+	filter.FilterIdHigh = 0;
+	filter.FilterIdLow = 0;
+	filter.FilterMaskIdHigh = 0;
+	filter.FilterMaskIdLow = 0;
 
-	/* Unused in List Mode */
-	filter.FilterMaskIdHigh = 0x0000;
-	filter.FilterMaskIdLow = 0x0000;
+	uint32_t id1_high = (can_id_list[0] >> 13);
+	uint32_t id1_low = ((can_id_list[0] << 3) & 0xFFF8) | (1 << 2);
+	uint32_t id2_high = (can_id_list[1] >> 13);
+	uint32_t id2_low = ((can_id_list[1] << 3) & 0xFFF8) | (1 << 2);
+
+	filter.FilterIdHigh = id1_high;
+	filter.FilterIdLow = id1_low;
+	filter.FilterMaskIdHigh = id2_high;
+	filter.FilterMaskIdLow = id2_low;
 
 	filter.FilterActivation = ENABLE;
 
-	return HAL_CAN_ConfigFilter(can->hcan, &filter);
-}
-
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t can_id_list[])
-{
-	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
-	for (uint8_t i = 0; i < size; i++) {
-		if (can_id_list[i] > 0x7FF) {
-			printf("Invalid standard CAN ID at index %d in the CAN ID list. Cannot be larger than 11 bits.\n",
-			       i);
-			return HAL_ERROR;
-		}
-		if (can_add_filter(can, can_id_list[i], false) != HAL_OK) {
-			printf("can_add_filter failed at index %d\n", i);
-			return HAL_ERROR;
-		}
-	}
-
-	return HAL_OK;
-}
-
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[])
-{
-	int size = sizeof(can_id_list) / sizeof(can_id_list[0]);
-	for (uint8_t i = 0; i < size; i++) {
-		if (can_id_list[i] > 0x1FFFFFFF) {
-			printf("Invalid extended CAN ID at index %d in the CAN ID list. Cannot be larger than 29 bits.\n",
-			       i);
-			return HAL_ERROR;
-		}
-		if (can_add_filter(can, can_id_list[i], true) != HAL_OK) {
-			printf("can_add_filter failed at index %d\n", i);
-			return HAL_ERROR;
-		}
+	/* Check for warnings */
+	for (int i = 0; i < 2; i++) {
 		if (can_id_list[i] <= 0x7FF) {
-			printf("Warning: A CAN ID smaller than 11 bits was added to the extended filter. This was successful, but make sure the id's 'id_is_extended' property is set to true.\n",
-			       i);
+			printf("Warning: CAN ID 0x%X is not larger than 11 bits, but was added as an extended ID. This was successful, but make sure 'id_is_extended' is set to true to avoid errors.\n");
 		}
 	}
 
-	return HAL_OK;
+	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)

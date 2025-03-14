@@ -8,6 +8,7 @@
 #include "c_utils.h"
 #include "stm32xx_hal.h"
 #include <stdbool.h>
+#include <math.h>
 
 /*
  * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then
@@ -36,37 +37,9 @@ typedef struct {
 
 HAL_StatusTypeDef can_init(can_t *can);
 
-/**
- * @brief Adds a single CAN ID to the filter bank.
- * 
- * @param hcan The CAN handle. (CAN_HandleTypeDef)
- * @param can_id The CAN ID to add to the filter bank. (uint32_t)
- * @param is_extended Denotes whether a standard or extended CAN ID is being used. (bool)
- * @return Error status
- * 
- */
-static HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t can_id,
-					bool is_extended);
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4]);
 
-/**
- * @brief Adds a list of standard CAN IDs to the filter bank.
- * 
- * @param hcan The CAN handle. (CAN_HandleTypeDef)
- * @param can_id_list The list of CAN IDs. (uint32_t array)
- * @param can_id_list_len The length of the list. (uint8_t)
- * @return Error status
- */
-HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint32_t can_id_list[]);
-
-/**
- * @brief Adds a list of extended CAN IDs to the filter bank.
- * 
- * @param hcan The CAN handle. (CAN_HandleTypeDef)
- * @param can_id_list The list of CAN IDs. (uint32_t array)
- * @param can_id_list_len The length of the list. (uint8_t)
- * @return Error status
- */
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[]);
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2]);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 
