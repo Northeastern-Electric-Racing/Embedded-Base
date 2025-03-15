@@ -1434,7 +1434,7 @@
     "desc": "Pump Sensors Voltage",
     "points": [
       {
-        "size": 32,
+        "size": 16,
         "endianness": "little",
         "format": "divide10000",
         "sim": {
@@ -1445,30 +1445,64 @@
         }
       },
       {
-        "size": 32,
+        "size": 16,
         "endianness": "little",
         "format": "divide10000",
         "sim": {
           "min": 0,
           "max": 3.3,
           "inc_min": 0.01,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.1,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 20,
+          "max": 80,
+          "inc_min": 0.1,
           "inc_max": 1
         }
       }
     ],
     "fields": [
       {
-        "name": "MPU/Pump_Sensors/Sensor0",
+        "name": "MPU/Pump_Sensors/Sensor0_V",
         "unit": "V",
         "values": [
           1
         ]
       },
       {
-        "name": "MPU/Pump_Sensors/Sensor1",
+        "name": "MPU/Pump_Sensors/Sensor1_V",
         "unit": "V",
         "values": [
           2
+        ]
+      },
+      {
+        "name": "MPU/Pump_Sensors/Sensor0_T",
+        "unit": "C",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "MPU/Pump_Sensors/Sensor1_T",
+        "unit": "C",
+        "values": [
+          4
         ]
       }
     ],
