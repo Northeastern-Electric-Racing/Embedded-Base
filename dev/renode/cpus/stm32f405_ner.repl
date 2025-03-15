@@ -28,10 +28,10 @@ uart4: UART.STM32_UART @ sysbus <0x40004C00, +0x100>
 uart5: UART.STM32_UART @ sysbus <0x40005000, +0x100>
     -> nvic@53
 
-can1: CAN.STMCAN @ sysbus <0x40006400, +0x400>
+can1: CAN.STMCAN_NER @ sysbus <0x40006400, +0x400>
     [0-3] -> nvic@[19-22]
 
-can2: CAN.STMCAN @ sysbus <0x40006800, +0x400>
+can2: CAN.STMCAN_NER @ sysbus <0x40006800, +0x400>
     [0-3] -> nvic@[63-66]
     master: can1
 

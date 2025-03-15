@@ -125,7 +125,7 @@ namespace Antmicro.Renode.Peripherals.DMA
 
         public void OnGPIO(int number, bool value)
         {
-            this.Log(LogLevel.Debug, "OnGPIO: number {0} value {1}", number, value);
+            this.Log(LogLevel.Noisy, "OnGPIO: number {0} value {1}", number, value);
             if(number < 0 || number >= streams.Length)
             {
                 this.Log(LogLevel.Error, "Attempted to start non-existing DMA stream number: {0}. Maximum value is {1}", number, streams.Length);
@@ -139,7 +139,7 @@ namespace Antmicro.Renode.Peripherals.DMA
             {
                 // direction is private to streams
                 //this.Log(LogLevel.Debug, "DMA peripheral request on stream {0} {1} : direction {2}", number, value, streams[number].direction);
-                this.Log(LogLevel.Debug, "DMA peripheral request on stream {0} {1} : Enabled {2}", number, value, streams[number].Enabled);
+                this.Log(LogLevel.Noisy, "DMA peripheral request on stream {0} {1} : Enabled {2}", number, value, streams[number].Enabled);
                 if(streams[number].Enabled)
                 {
                     //streams[number].DoPeripheralTransfer();
@@ -149,7 +149,7 @@ namespace Antmicro.Renode.Peripherals.DMA
                 {
                     // Not really a WARNING since DMA transfer request
                     // is just ignored if DMA stream not enabled:
-                    this.Log(LogLevel.Debug, "DMA peripheral request on stream {0} ignored", number);
+                    this.Log(LogLevel.Noisy, "DMA peripheral request on stream {0} ignored", number);
                 }
             }
         }

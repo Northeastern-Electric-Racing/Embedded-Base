@@ -170,7 +170,7 @@ namespace Antmicro.Renode.Peripherals.Analog
           {
               this.LogUnhandledRead(offset);
           }
-          this.Log(LogLevel.Debug, "ReadWord: offset 0x{0:X} rval 0x{1:X}", offset, rval);
+          this.Log(LogLevel.Noisy, "ReadWord: offset 0x{0:X} rval 0x{1:X}", offset, rval);
           return rval;
       }
 
@@ -340,7 +340,7 @@ namespace Antmicro.Renode.Peripherals.Analog
             .WithValueField(0, 32,
                   valueProviderCallback: _ =>
                   {
-                      this.Log(LogLevel.Debug, "Reading ADC data {0}", adcData);
+                      this.Log(LogLevel.Noisy, "Reading ADC data {0}", adcData);
                       // Reading ADC_DR should clear EOC
                       endOfConversion.Value = false;
                       IRQ.Set(false);
@@ -351,7 +351,7 @@ namespace Antmicro.Renode.Peripherals.Analog
       private void EnableADC()
       {
           currentChannel = channels[regularSequence[currentChannelIdx].Value];
-          this.Log(LogLevel.Debug, "EnableADC: currentChannelIdx {0} channel {1}", currentChannelIdx, regularSequence[currentChannelIdx].Value);
+          this.Log(LogLevel.Noisy, "EnableADC: currentChannelIdx {0} channel {1}", currentChannelIdx, regularSequence[currentChannelIdx].Value);
           if (scanMode.Value && !samplingTimer.Enabled)
           {
               StartConversion(); // really a restart
@@ -395,7 +395,7 @@ namespace Antmicro.Renode.Peripherals.Analog
 
       private void OnConversionFinished()
       {
-	 this.Log(LogLevel.Debug, "OnConversionFinished: time={0} currentChannelIdx {1} regularSequenceLen {2} channel {3}",
+	 this.Log(LogLevel.Noisy, "OnConversionFinished: time={0} currentChannelIdx {1} regularSequenceLen {2} channel {3}",
 		  machine.ElapsedVirtualTime.TimeElapsed,
 		  currentChannelIdx, regularSequenceLen, regularSequence[currentChannelIdx].Value);
 
@@ -407,14 +407,14 @@ namespace Antmicro.Renode.Peripherals.Analog
 
          if (null == currentChannel)
          {
-             this.Log(LogLevel.Debug, "OnConversionFinished: early exit since currentChannel == null");
+             this.Log(LogLevel.Noisy, "OnConversionFinished: early exit since currentChannel == null");
              return;
          }
 
          // Set data register and trigger DMA request
          currentChannel.PrepareSample();
          adcData = currentChannel.GetSample();
-         this.Log(LogLevel.Debug, "OnConversionFinished: adcData=0x{0:X} dmaEnabled {1} dmaIssueRequest {2}", adcData, dmaEnabled.Value, dmaIssueRequest.Value);
+         this.Log(LogLevel.Noisy, "OnConversionFinished: adcData=0x{0:X} dmaEnabled {1} dmaIssueRequest {2}", adcData, dmaEnabled.Value, dmaIssueRequest.Value);
 
          if(dmaEnabled.Value && dmaIssueRequest.Value)
          {
@@ -424,17 +424,17 @@ namespace Antmicro.Renode.Peripherals.Analog
             DMARequest.Unset();
          }
 
-         this.Log(LogLevel.Debug, "OnConversionFinished: regularSequenceLen={0}", regularSequenceLen);
+         this.Log(LogLevel.Noisy, "OnConversionFinished: regularSequenceLen={0}", regularSequenceLen);
 
          var scanModeActive = scanMode.Value && currentChannelIdx <= regularSequenceLen - 1;
          var scanModeFinished = scanMode.Value && currentChannelIdx == regularSequenceLen - 1;
 
-         this.Log(LogLevel.Debug, "OnConversionFinished: scanModeActive={0} scanModeFinished={1}", scanModeActive, scanModeFinished);
+         this.Log(LogLevel.Noisy, "OnConversionFinished: scanModeActive={0} scanModeFinished={1}", scanModeActive, scanModeFinished);
 
          // Signal EOC if EOCS set with scan mode enabled and finished or we finished scanning regular group
          endOfConversion.Value = scanModeActive ? (endOfConversionSelect.Value || scanModeFinished) : true;
 
-         this.Log(LogLevel.Debug, "OnConversionFinished: endOfConversion.Value={0}", endOfConversion.Value);
+         this.Log(LogLevel.Noisy, "OnConversionFinished: endOfConversion.Value={0}", endOfConversion.Value);
 
          if(0 != regularSequenceLen)
          {
@@ -443,7 +443,7 @@ namespace Antmicro.Renode.Peripherals.Analog
              currentChannel = channels[regularSequence[currentChannelIdx].Value];
          }
          // currentChannel channelId is private so we cannot easily verify the correct channel
-         this.Log(LogLevel.Debug, "OnConversionFinished: currentChannelIdx={0} channel={1} continuousConversion {2}", currentChannelIdx,
+         this.Log(LogLevel.Noisy, "OnConversionFinished: currentChannelIdx={0} channel={1} continuousConversion {2}", currentChannelIdx,
 		  regularSequence[currentChannelIdx].Value,
 		  continuousConversion.Value);
 
@@ -456,7 +456,7 @@ namespace Antmicro.Renode.Peripherals.Analog
          // Trigger EOC interrupt
          if(endOfConversion.Value && eocInterruptEnable.Value)
          {
-            this.Log(LogLevel.Debug, "OnConversionFinished: Set IRQ");
+            this.Log(LogLevel.Noisy, "OnConversionFinished: Set IRQ");
             IRQ.Set(true);
          }
       }
