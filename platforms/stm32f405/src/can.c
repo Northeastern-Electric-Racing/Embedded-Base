@@ -51,15 +51,10 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4])
 	filter.FilterMaskIdHigh = 0;
 	filter.FilterMaskIdLow = 0;
 
-	uint16_t id1 = (uint16_t)(can_id_list[0] << 5);
-	uint16_t id2 = (uint16_t)(can_id_list[1] << 5);
-	uint16_t id3 = (uint16_t)(can_id_list[2] << 5);
-	uint16_t id4 = (uint16_t)(can_id_list[3] << 5);
-
-	filter.FilterIdHigh = id1;
-	filter.FilterIdLow = id2;
-	filter.FilterMaskIdHigh = id3;
-	filter.FilterMaskIdLow = id4;
+	filter.FilterIdHigh = (uint16_t)(can_id_list[0] << 5);
+	filter.FilterIdLow = (uint16_t)(can_id_list[1] << 5);
+	filter.FilterMaskIdHigh = (uint16_t)(can_id_list[2] << 5);
+	filter.FilterMaskIdLow = (uint16_t)(can_id_list[3] << 5);
 
 	filter.FilterActivation = ENABLE;
 
@@ -85,15 +80,10 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2])
 	filter.FilterMaskIdHigh = 0;
 	filter.FilterMaskIdLow = 0;
 
-	uint32_t id1_high = (can_id_list[0] >> 13);
-	uint32_t id1_low = ((can_id_list[0] << 3) & 0xFFF8) | (1 << 2);
-	uint32_t id2_high = (can_id_list[1] >> 13);
-	uint32_t id2_low = ((can_id_list[1] << 3) & 0xFFF8) | (1 << 2);
-
-	filter.FilterIdHigh = id1_high;
-	filter.FilterIdLow = id1_low;
-	filter.FilterMaskIdHigh = id2_high;
-	filter.FilterMaskIdLow = id2_low;
+	filter.FilterIdHigh = (can_id_list[0] >> 13);
+	filter.FilterIdLow = ((can_id_list[0] << 3) & 0xFFF8) | (1 << 2);
+	filter.FilterMaskIdHigh = (can_id_list[1] >> 13);
+	filter.FilterMaskIdLow = ((can_id_list[1] << 3) & 0xFFF8) | (1 << 2);
 
 	filter.FilterActivation = ENABLE;
 
