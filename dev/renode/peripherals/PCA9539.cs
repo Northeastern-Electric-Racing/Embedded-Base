@@ -7,6 +7,7 @@ using Antmicro.Renode.Logging;
 using Antmicro.Renode.Peripherals.GPIOPort;
 using System.Linq;
 
+//NER NOTE: I wrote this entire thing, polarity inversion is not supported rn
 namespace Antmicro.Renode.Peripherals.I2C
 {
     public class PCA9539 : BaseGPIOPort, II2CPeripheral

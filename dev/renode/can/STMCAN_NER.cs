@@ -1654,6 +1654,7 @@ namespace Antmicro.Renode.Peripherals.CAN
 
             public CANMessage(CANMessageFrame message)
             {
+                // NER CHANGES, Idk what renode was smoking, but the original code made no sense, message.Id just contains the StdId, and it was extracting the CAN_RIR with a mask just on the StdId which makes no sense
                 STID = message.Id;
                 EXID = 0;
                 IDE = (uint)(message.ExtendedFormat ? 1 : 0);

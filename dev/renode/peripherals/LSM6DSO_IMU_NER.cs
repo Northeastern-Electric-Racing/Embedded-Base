@@ -17,6 +17,7 @@ using Antmicro.Renode.Peripherals.SPI;
 using Antmicro.Renode.Utilities;
 using Antmicro.Renode.Utilities.RESD;
 
+//NER NOTE: Didnt change anything here other than scope of some variables from private to protected to be able to use in the I2C extension
 namespace Antmicro.Renode.Peripherals.Sensors
 {
     public class LSM6DSO_IMU_NER : BasicBytePeripheral, ISPIPeripheral, IProvidesRegisterCollection<ByteRegisterCollection>, ITemperatureSensor, IUnderstandRESD

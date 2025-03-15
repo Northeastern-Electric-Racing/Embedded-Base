@@ -82,6 +82,7 @@ namespace Antmicro.Renode.Peripherals.CAN
             byte[] frame;
             try
             {
+                // NER CHANGES: The endianess that the network encoding does doesnt seem to work, the Ids end up wrong by a number of bits, we manually adjust the id to make it right
                 frame = message.ToSocketCAN(true);
                 byte[] bts = BitConverter.GetBytes(message.Id);
                 this.Log(LogLevel.Debug, "STDID: {0}", message.Id >> 21);

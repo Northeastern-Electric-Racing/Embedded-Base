@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Antmicro.Renode.Core.Structure.Registers;
 using Antmicro.Renode.Logging;
 
+// NER NOTE: I wrote this entire thing.
 namespace Antmicro.Renode.Peripherals.I2C
 {
     public class INA226 : II2CPeripheral

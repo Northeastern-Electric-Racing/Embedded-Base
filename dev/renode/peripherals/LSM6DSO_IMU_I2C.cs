@@ -11,6 +11,7 @@ using Antmicro.Renode.Logging;
 using Antmicro.Renode.Peripherals.I2C;
 using Antmicro.Renode.Utilities;
 
+//NER NOTE, we needed to add support for the lsm being an I2C peripheral, so the I2C stuff I added here, Renode only has SPI support
 namespace Antmicro.Renode.Peripherals.Sensors
 {
     public class LSM6DSO_IMU_I2C : LSM6DSO_IMU_NER, II2CPeripheral

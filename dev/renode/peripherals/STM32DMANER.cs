@@ -20,6 +20,7 @@ using Antmicro.Renode.Core;
 using System.Collections.Generic;
 using System.Linq;
 
+//NER NOTE: This file was stolen from this random guy on the renode github explaining that renodes shit doesnt work. Dont think I changed anything from that
 namespace Antmicro.Renode.Peripherals.DMA
 {
     public sealed class STM32DMANER : IDoubleWordPeripheral, IKnownSize, IGPIOReceiver, INumberedGPIOOutput

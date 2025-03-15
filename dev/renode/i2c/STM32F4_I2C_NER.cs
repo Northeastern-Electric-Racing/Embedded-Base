@@ -20,6 +20,7 @@ using System.Linq;
 using Antmicro.Renode.Core.Structure.Registers;
 using Antmicro.Renode.Utilities;
 
+// NER NOTE: I didnt actually change anything here other than i think Nick adding debug statements, was using it for debugging but its nice to have access to it if some bugs come along
 namespace Antmicro.Renode.Peripherals.I2C
 {
     [AllowedTranslations(AllowedTranslation.WordToDoubleWord)]

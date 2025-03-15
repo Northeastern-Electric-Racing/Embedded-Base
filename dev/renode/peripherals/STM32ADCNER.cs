@@ -33,6 +33,7 @@ using Antmicro.Renode.Peripherals.Timers;
 //
 // RM0033 Rev9: All registers reset to 0 apart from ADC_HTR default 0x00000FFF
 
+//NER NOTE: This file was stolen from this random guy on the renode github explaining that renodes shit doesnt work. Dont think I changed anything from that
 namespace Antmicro.Renode.Peripherals.Analog
 {
    // STM32 ADC has many features and only a partial subset are implemented here
