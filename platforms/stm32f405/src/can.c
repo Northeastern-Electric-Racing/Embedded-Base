@@ -9,6 +9,9 @@
 
 HAL_StatusTypeDef can_init(can_t *can)
 {
+	/* Reset filter bank */
+	can->filter_bank = 0;
+
 	/* set up interrupt & activate CAN */
 	int8_t err = HAL_CAN_ActivateNotification(can->hcan,
 						  CAN_IT_RX_FIFO0_MSG_PENDING);
@@ -21,60 +24,75 @@ HAL_StatusTypeDef can_init(can_t *can)
 	return err;
 }
 
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4])
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4])
 {
-	/* Address of filter bank to store filter */
-	static int filterBank = 0;
-
-	if (filterBank > 7)
-		return HAL_ERROR;
-
 	CAN_FilterTypeDef filter;
 
-	filter.FilterActivation = ENABLE;
+	if (can->filter_bank >= 14) {
+		printf("Max filter banks reached\n");
+		return HAL_ERROR; // Max of 14 filter banks per CAN instance
+	}
+
+	/* Check for invalid IDs */
+	for (int i = 0; i < 4; i++) {
+		if (can_id_list[i] > 0x7FF) {
+			printf("CAN ID 0x%X is invalid as a standard ID. Standard IDs cannot be larger than 11 bits.\n");
+			return HAL_ERROR;
+		}
+	}
+
+	filter.FilterBank = can->filter_bank++;
 	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
 	filter.FilterScale = CAN_FILTERSCALE_16BIT;
 
-	/* This filter type makes the filter a whitelist */
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	filter.FilterIdHigh = 0;
+	filter.FilterIdLow = 0;
+	filter.FilterMaskIdHigh = 0;
+	filter.FilterMaskIdLow = 0;
 
-	/* IDs are shifted left because they are CAN standard IDs */
-	filter.FilterIdLow = id_list[0] << 5u;
-	filter.FilterMaskIdLow = id_list[1] << 5u;
-	filter.FilterIdHigh = id_list[2] << 5u;
-	filter.FilterMaskIdHigh = id_list[3] << 5u;
+	filter.FilterIdHigh = (uint16_t)(can_id_list[0] << 5);
+	filter.FilterIdLow = (uint16_t)(can_id_list[1] << 5);
+	filter.FilterMaskIdHigh = (uint16_t)(can_id_list[2] << 5);
+	filter.FilterMaskIdLow = (uint16_t)(can_id_list[3] << 5);
 
-	filter.FilterBank = filterBank;
-
-	filterBank++;
+	filter.FilterActivation = ENABLE;
 
 	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
 
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2])
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2])
 {
-	/* Address of filter bank to store filter */
-	static int filterBank = 0;
-
-	if (filterBank > 7)
-		return HAL_ERROR;
-
 	CAN_FilterTypeDef filter;
 
-	filter.FilterActivation = ENABLE;
+	if (can->filter_bank >= 14) {
+		printf("Max filter banks reached\n");
+		return HAL_ERROR; // Max of 14 filter banks per CAN instance
+	}
+
+	filter.FilterBank = can->filter_bank++;
 	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterMode = CAN_FILTERMODE_IDLIST;
 	filter.FilterScale = CAN_FILTERSCALE_32BIT;
 
-	/* This filter type makes the filter a whitelist */
-	filter.FilterMode = CAN_FILTERMODE_IDLIST;
+	filter.FilterIdHigh = 0;
+	filter.FilterIdLow = 0;
+	filter.FilterMaskIdHigh = 0;
+	filter.FilterMaskIdLow = 0;
 
-	/* Add the two IDs. They are shifted left by 3 because extended CAN IDs are 29 bits. */
-	filter.FilterIdHigh = (id_list[0] & 0x1FFFFFFF) << 3;
-	filter.FilterIdLow = (id_list[1] & 0x1FFFFFFF) << 3;
+	filter.FilterIdHigh = (can_id_list[0] >> 13);
+	filter.FilterIdLow = ((can_id_list[0] << 3) & 0xFFF8) | (1 << 2);
+	filter.FilterMaskIdHigh = (can_id_list[1] >> 13);
+	filter.FilterMaskIdLow = ((can_id_list[1] << 3) & 0xFFF8) | (1 << 2);
 
-	filter.FilterBank = filterBank;
+	filter.FilterActivation = ENABLE;
 
-	filterBank++;
+	/* Check for warnings */
+	for (int i = 0; i < 2; i++) {
+		if (can_id_list[i] <= 0x7FF) {
+			printf("Warning: CAN ID 0x%X is not larger than 11 bits, but was added as an extended ID. This was successful, but make sure 'id_is_extended' is set to true to avoid errors.\n");
+		}
+	}
 
 	return HAL_CAN_ConfigFilter(can->hcan, &filter);
 }
