@@ -1,4 +1,4 @@
-#include "eepromdirectory.h"
+#include "eeprom_directory.h"
 
 #include <assert.h>
 #include <stdlib.h>

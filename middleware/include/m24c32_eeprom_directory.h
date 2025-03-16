@@ -10,7 +10,7 @@
  */
 
 #include "m24c32.h"
-#include "eepromdirectory.h"
+#include "eeprom_directory.h"
 
 /**
  * @brief Write to a section of the EEPROM. Writes that overflow the size of the partition
