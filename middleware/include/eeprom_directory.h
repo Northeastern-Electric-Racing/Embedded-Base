@@ -7,8 +7,8 @@
  * 
  */
 
-#ifndef EEPROMDIRECTORY_H
-#define EEPROMDIRECTORY_H
+#ifndef EEPROM_DIRECTORY_H
+#define EEPROM_DIRECTORY_H
 
 #include "eeprom_status.h"
 #include <stddef.h>
@@ -80,4 +80,4 @@ eeprom_status_t eeprom_get_head_address(const eeprom_directory_t *directory,
 eeprom_status_t eeprom_get_size(const eeprom_directory_t *directory,
 				const char *key, uint16_t *size);
 
-#endif // EEPROMDIRECTORY_H
+#endif // EEPROM_DIRECTORY_H
