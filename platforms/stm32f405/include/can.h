@@ -16,6 +16,7 @@
 
 typedef struct {
 	CAN_HandleTypeDef *hcan;
+	uint32_t filter_bank;
 } can_t;
 
 /**
@@ -36,26 +37,22 @@ typedef struct {
 HAL_StatusTypeDef can_init(can_t *can);
 
 /**
- * @brief Add CANIDs to the CAN whitelist filter. Up to 7 additions of 4
- * IDs can be done. Only supports CAN standard IDs.
+ * @brief Adds a standard CAN ID filter to the CAN bus. A standard CAN ID filter can contain up to 4 IDs. IDs cannot be larger than 11 bits.
  * 
- * @param can CAN datastruct.
- * @param id_list List of CAN IDs to whitelist. Must be an array of four
- * elements.
- * @return HAL_StatusTypeDef Error code.
+ * @param can The CAN bus to add the filter to. (can_t)
+ * @param can_id_list An array of 4 standard CAN IDs to filter. (uint16_t array)
+ * @return HAL_StatusTypeDef HAL_OK if successful, HAL_ERROR if not. (HAL_StatusTypeDef)
  */
-HAL_StatusTypeDef can_add_filter(can_t *can, uint32_t id_list[4]);
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4]);
 
 /**
- * @brief Add CANIDs to the CAN whitelist filter. Up to 8 additions of 2
- * IDs can be done. Only supports CAN extended IDs.
+ * @brief Adds an extended CAN ID filter to the CAN bus. An extended CAN ID filter can contain up to 2 IDs. IDs cannot be larger than 29 bits.
  * 
- * @param can CAN datastruct.
- * @param id_list List of CAN IDs to whitelist. Must be an array of two
- * elements.
- * @return HAL_StatusTypeDef Error code.
+ * @param can The CAN bus to add the filter to. (can_t)
+ * @param can_id_list An array of 2 extended CAN IDs to filter. (uint32_t array)
+ * @return HAL_StatusTypeDef HAL_OK if successful, HAL_ERROR if not. (HAL_StatusTypeDef)
  */
-HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t id_list[2]);
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2]);
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 
