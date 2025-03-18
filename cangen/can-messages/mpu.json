@@ -734,10 +734,10 @@
   {
     "id": "0x504",
     "desc": "MPU Accel Pedals",
-    "format": "divide100",
     "points": [
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 50,
           "max": 150,
@@ -747,6 +747,7 @@
       },
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 150,
           "max": 300,
@@ -776,10 +777,10 @@
   {
     "id": "0x505",
     "desc": "MPU Brake Pedals",
-    "format": "divide100",
     "points": [
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 0,
           "max": 350,
@@ -789,6 +790,7 @@
       },
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 0,
           "max": 350,
