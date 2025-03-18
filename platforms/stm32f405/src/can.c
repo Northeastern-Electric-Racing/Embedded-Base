@@ -1,6 +1,7 @@
 #include "can.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 /*
  * NOTE: For implementing callbacks, generate NVIC for selected CAN bus, then
