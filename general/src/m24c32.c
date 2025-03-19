@@ -1,69 +1,74 @@
 #include "m24c32.h"
+#include <stdlib.h>
 
-uint16_t check_size(uint16_t size)
+#define PAGE_SIZE 32 /* Bytes */
+
+/**
+ * @brief Clamp a write length to the size of the m24c32 page size.
+ * 
+ * @param size The length of the buffer to write, in Bytes.
+ * @return uint16_t The amount of bytes to write in a write cycle.
+ */
+static uint16_t clamp_to_page(uint16_t size)
 {
-	if (size < M24C32_PAGE_SIZE)
+	if (size < PAGE_SIZE)
 		return size;
 	else
-		return M24C32_PAGE_SIZE;
+		return PAGE_SIZE;
 }
 
-HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data,
-			       uint16_t size)
+eeprom_status_t m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data,
+			     uint16_t len)
 {
-	HAL_StatusTypeDef status;
-
-	for (int bytes_written = 0; bytes_written < size; bytes_written += 32) {
-		uint16_t write_size = check_size(size - bytes_written);
-
-		status = HAL_I2C_Mem_Write(i2c_handle, M24C32_I2C_ADDR,
-					   mem_address + bytes_written, 2,
-					   &data[bytes_written], write_size,
-					   1000);
-		if (status)
-			return status;
+	if ((device == NULL) || (device->write == NULL) || (data == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	return HAL_OK;
+	eeprom_status_t result = EEPROM_OK;
+
+	/* Always use a page write */
+	for (size_t bytes_written = 0; bytes_written < len;
+	     bytes_written += PAGE_SIZE) {
+		uint16_t write_len = clamp_to_page(len - bytes_written);
+
+		result = device->write(addr + bytes_written,
+				       &data[bytes_written], write_len);
+
+		/* Let application handle errors */
+		if (result != EEPROM_OK) {
+			return result;
+		}
+	}
+
+	return result;
 }
 
-HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data,
-			      uint16_t size)
+eeprom_status_t m24c32_read(m24c32_t *device, uint16_t mem_address,
+			    uint8_t *data, uint16_t len)
 {
-	HAL_StatusTypeDef status;
-
-	for (int bytes_read = 0; bytes_read < size; bytes_read += 32) {
-		uint16_t read_size = check_size(size - bytes_read);
-
-		status = HAL_I2C_Mem_Read(i2c_handle, M24C32_I2C_ADDR,
-					  mem_address + bytes_read, 2,
-					  &data[bytes_read], read_size, 1000);
-		if (status)
-			return status;
+	if ((device == NULL) || (device->read == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	return HAL_OK;
+	return device->read(mem_address, data, len);
 }
 
-HAL_StatusTypeDef eeprom_delete(uint16_t mem_address, uint16_t size)
+eeprom_status_t m24c32_clear(m24c32_t *device, uint16_t mem_address,
+			     uint16_t len)
 {
-	HAL_StatusTypeDef status;
-
-	// Create a list of zeroes that will be written to the EEPROM
-	uint8_t data[size];
-	memset(data, 0, size);
-
-	for (int bytes_deleted = 0; bytes_deleted < size; bytes_deleted += 32) {
-		uint16_t delete_size = check_size(size - bytes_deleted);
-
-		// Write 0 to memory addresses
-		status = HAL_I2C_Mem_Write(i2c_handle, M24C32_I2C_ADDR,
-					   mem_address + bytes_deleted, 2,
-					   &data[bytes_deleted], delete_size,
-					   1000);
-		if (status)
-			return status;
+	if ((device == NULL) || (device->write == NULL)) {
+		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	return HAL_OK;
+	uint8_t *data = (uint8_t *)calloc(len, sizeof(uint8_t));
+
+	if (data == NULL) {
+		return EEPROM_ERROR_ALLOCATION;
+	}
+
+	eeprom_status_t result = device->write(mem_address, data, len);
+
+	free(data);
+
+	return result;
 }
