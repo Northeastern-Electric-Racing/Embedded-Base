@@ -1,9 +1,6 @@
-using System;
 using Antmicro.Renode.Peripherals.GPIOPort;
 using Antmicro.Renode.Core;
-using Antmicro.Renode.Peripherals.Bus;
 using Antmicro.Renode.Core.Structure.Registers;
-using Mono.CSharp;
 using Antmicro.Renode.Logging;
 
 namespace Antmicro.Renode.Peripherals.I2C
