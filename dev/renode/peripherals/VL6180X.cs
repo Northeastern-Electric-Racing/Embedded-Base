@@ -5,9 +5,9 @@ using Antmicro.Renode.Logging;
 
 namespace Antmicro.Renode.Peripherals.I2C
 {
-    public class VL6170X : BaseGPIOPort, II2CPeripheral, IProvidesRegisterCollection<ByteRegisterCollection>
+    public class VL6180X : BaseGPIOPort, II2CPeripheral, IProvidesRegisterCollection<ByteRegisterCollection>
     {
-        public VL6170X(IMachine machine) : base(machine, NumberGPIOs)
+        public VL6180X(IMachine machine) : base(machine, NumberGPIOs)
         {
             RegistersCollection = new ByteRegisterCollection(this);
             DefineRegisters();
