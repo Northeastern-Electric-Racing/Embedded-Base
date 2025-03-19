@@ -733,7 +733,7 @@
   },
   {
     "id": "0x504",
-    "desc": "MPU Accel Pedals",
+    "desc": "MPU Pedals",
     "points": [
       {
         "size": 16,
@@ -754,6 +754,26 @@
           "inc_min": 1,
           "inc_max": 10
         }
+      },
+      {
+        "size": 16,
+        "format": "divide100",
+        "sim": {
+          "min": 0,
+          "max": 330,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      },
+      {
+        "size": 16,
+        "format": "divide100",
+        "sim": {
+          "min": 0,
+          "max": 330,
+          "inc_min": 1,
+          "inc_max": 10
+        }
       }
     ],
     "fields": [
@@ -770,48 +790,19 @@
         "values": [
           2
         ]
-      }
-    ],
-    "sim_freq": 100
-  },
-  {
-    "id": "0x505",
-    "desc": "MPU Brake Pedals",
-    "points": [
-      {
-        "size": 16,
-        "format": "divide100",
-        "sim": {
-          "min": 0,
-          "max": 350,
-          "inc_min": 1,
-          "inc_max": 10
-        }
       },
-      {
-        "size": 16,
-        "format": "divide100",
-        "sim": {
-          "min": 0,
-          "max": 350,
-          "inc_min": 1,
-          "inc_max": 10
-        }
-      }
-    ],
-    "fields": [
       {
         "name": "MPU/Pedals/Brake_1",
         "unit": "volts",
         "values": [
-          1
+          3
         ]
       },
       {
         "name": "MPU/Pedals/Brake_2",
         "unit": "volts",
         "values": [
-          2
+          4
         ]
       }
     ],
