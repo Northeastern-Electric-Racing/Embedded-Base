@@ -218,7 +218,7 @@ namespace Antmicro.Renode.Peripherals.I2C
                     startBit.Value = false;
                     willReadOnSelectedSlave = (newValue & 1) == 1; //LSB is 1 for read and 0 for write
                     var address = (int)(newValue >> 1);
-                    this.NoisyLog("Selected Slave:\t{0:X}", address);
+                    this.DebugLog("Selected Slave:\t{0:X}", address);
                     if (ChildCollection.ContainsKey(address))
                     {
                         selectedSlave = ChildCollection[address];

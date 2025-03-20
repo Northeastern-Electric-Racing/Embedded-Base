@@ -176,7 +176,7 @@ namespace Antmicro.Renode.Peripherals.I2C
                 {
                     register
                     .WithValueField(0, 1, name: "Sysals Integration Period")
-                    .WithValueField(2, 7, FieldMode.Read, name: "Reserved");
+                    .WithValueField(1, 7, FieldMode.Read, name: "Reserved");
                 }
             });
 
@@ -234,7 +234,7 @@ namespace Antmicro.Renode.Peripherals.I2C
                 register.WithValueField(0, 8, FieldMode.Read, name: "Result History Buffer 5");
             });
 
-            Registers.ResultHistoryBuffer7.DefineMany(this, 2, (register, idx) =>
+            Registers.ResultHistoryBuffer6.DefineMany(this, 2, (register, idx) =>
             {
                 register.WithValueField(0, 8, FieldMode.Read, name: "Result History Buffer 6");
             });
@@ -317,18 +317,23 @@ namespace Antmicro.Renode.Peripherals.I2C
         public byte[] Read(int count = 1)
         {
             byte[] data = new byte[] { RegistersCollection.Read(address) };
-            this.DebugLog("Reading Data: {} from {}", string.Join(", ", data), address);
+            this.DebugLog("Reading Data: {0} from {1}", string.Join(", ", data), address);
             return data;
         }
 
         public void Write(byte[] data)
         {
-            this.DebugLog("Writing Data: {}", data);
+            this.DebugLog("Writing Data: {0}", string.Join(", ", data));
             byte addressMSB = data[0];
             byte addressLSB = data[1];
-            byte content = data[2];
+
             address = (short)((addressMSB << 8) | addressLSB);
-            RegistersCollection.Write(address, content);
+
+            if (data.Length > 2)
+            {
+                byte content = data[2];
+                RegistersCollection.Write(address, content);
+            }
         }
 
         private short address;

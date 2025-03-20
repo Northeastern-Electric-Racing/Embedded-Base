@@ -49,7 +49,7 @@ namespace Antmicro.Renode.Peripherals.Sensors
             }
 
             var result = RegistersCollection.Read(address);
-            this.InfoLog("Reading register {1} (0x{1:X}) from device: 0x{0:X}", result, (Registers)address);
+            this.DebugLog("Reading register {1} (0x{1:X}) from device: 0x{0:X}", result, (Registers)address);
             TryIncrementAddress();
 
             return new byte[] { result };
@@ -58,7 +58,7 @@ namespace Antmicro.Renode.Peripherals.Sensors
 
         public void Write(byte[] data)
         {
-            this.Log(LogLevel.Info, "Written {0} bytes: {1}", data.Length, Misc.PrettyPrintCollectionHex(data));
+            this.DebugLog("Written {0} bytes: {1}", data.Length, Misc.PrettyPrintCollectionHex(data));
             foreach (var b in data)
             {
                 WriteByte(b);

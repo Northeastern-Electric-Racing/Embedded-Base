@@ -50,13 +50,13 @@ HAL_StatusTypeDef sht30_init(sht30_t *sht30)
 			     SHT3X_COMMAND_READ_STATUS, 2,
 			     (uint8_t *)&status_reg_and_checksum,
 			     sizeof(status_reg_and_checksum), 30) != HAL_OK) {
-		return false;
+		return true;
 	}
 
 	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
 
 	if (calculated_crc != status_reg_and_checksum[2]) {
-		return false;
+		return true;
 	}
 
 	return status;
