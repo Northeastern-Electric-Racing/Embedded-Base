@@ -61,6 +61,7 @@
       },
       {
         "name": "BMS/Pack/Current",
+        "format": "divide10",
         "unit": "A",
         "values": [
           2
