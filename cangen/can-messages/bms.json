@@ -14,7 +14,7 @@
         }
       },
       {
-        "size": 32,
+        "size": 16,
         "signed": true,
         "format": "divide10",
         "sim": {
