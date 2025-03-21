@@ -14,7 +14,9 @@
         }
       },
       {
-        "size": 16,
+        "size": 32,
+        "signed": true,
+        "format": "divide10",
         "sim": {
           "min": 0,
           "max": 50,
@@ -61,7 +63,6 @@
       },
       {
         "name": "BMS/Pack/Current",
-        "format": "divide10",
         "unit": "A",
         "values": [
           2
