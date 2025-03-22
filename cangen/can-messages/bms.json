@@ -15,6 +15,8 @@
       },
       {
         "size": 16,
+        "signed": true,
+        "format": "divide10",
         "sim": {
           "min": 0,
           "max": 50,
@@ -542,65 +544,6 @@
         "unit": "C",
         "values": [
           6
-        ]
-      }
-    ],
-    "sim_freq": 700
-  },
-  {
-    "id": "0x86",
-    "desc": "Current Limits",
-    "points": [
-      {
-        "size": 16,
-        "sim": {
-          "min": 20,
-          "max": 520,
-          "inc_min": 0.1,
-          "inc_max": 4
-        }
-      },
-      {
-        "size": 16,
-        "signed": true,
-        "sim": {
-          "min": 0,
-          "max": 25,
-          "inc_min": 0,
-          "inc_max": 2
-        }
-      },
-      {
-        "size": 16,
-        "signed": true,
-        "sim": {
-          "min": 0,
-          "max": 100,
-          "inc_min": 0,
-          "inc_max": 5
-        }
-      }
-    ],
-    "fields": [
-      {
-        "name": "BMS/Pack/DCL",
-        "unit": "",
-        "values": [
-          1
-        ]
-      },
-      {
-        "name": "BMS/Pack/CCL",
-        "unit": "",
-        "values": [
-          2
-        ]
-      },
-      {
-        "name": "BMS/Pack/Current",
-        "unit": "",
-        "values": [
-          3
         ]
       }
     ],
