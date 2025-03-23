@@ -1,4 +1,4 @@
-[
+  [
   {
     "id": "0x501",
     "desc": "MPU Status",
@@ -564,7 +564,7 @@
     "desc": "MPU Sense Voltage",
     "points": [
       {
-        "size": 32,
+        "size": 16,
         "endianness": "little",
         "format": "divide10000",
         "sim": {
