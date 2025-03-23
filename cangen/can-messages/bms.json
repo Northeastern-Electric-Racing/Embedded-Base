@@ -1432,29 +1432,29 @@
   {
     "id": "0x90",
     "desc": "Segment Voltages",
+    "sim": {
+          "min": 2.5,
+          "max": 4.5
+        },
     "points": [
       {
-        "size": 8,
+        "size": 13,
         "signed": true
       },
       {
-        "size": 8,
+        "size": 13,
         "signed": true
       },
       {
-        "size": 8,
+        "size": 13,
         "signed": true
       },
       {
-        "size": 8,
+        "size": 13,
         "signed": true
       },
       {
-        "size": 8,
-        "signed": true
-      },
-      {
-        "size": 8,
+        "size": 13,
         "signed": true
       }
     ],
@@ -1492,13 +1492,6 @@
         "unit": "V",
         "values": [
           5
-        ]
-      },
-      {
-        "name": "BMS/Segment_Volt/6",
-        "unit": "V",
-        "values": [
-          6
         ]
       }
     ],
