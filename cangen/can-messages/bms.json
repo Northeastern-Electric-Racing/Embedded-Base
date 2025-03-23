@@ -1434,7 +1434,7 @@
     "desc": "Segment Voltages",
     "sim": {
           "min": 2.5,
-          "max": 4.5
+          "max": 4.2
         },
     "points": [
       {
