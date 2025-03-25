@@ -1785,7 +1785,7 @@
         "size": 4,
         "sim": {
           "min": 0,
-          "max": 13,
+          "max": 6,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
@@ -1923,7 +1923,7 @@
         "size": 4,
         "sim": {
           "min": 0,
-          "max": 10,
+          "max": 5,
           "inc_min": 1,
           "inc_max": 1,
           "round": true
