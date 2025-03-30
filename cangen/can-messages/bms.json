@@ -1770,7 +1770,12 @@
 			},
 			{
 				"size": 1,
-				"parse": false
+				"sim": {
+					"options": [
+						[0, 0.9],
+						[1, 0.1]
+					]
+				}
 			}
 		],
 		"fields": [
@@ -1798,6 +1803,11 @@
 				"name": "BMS/PerCell/Beta/{4}/VMV",
 				"unit": "",
 				"values": [6]
+			}
+      {
+				"name": "BMS/PerCell/Beta/{4}/CvS/10",
+				"unit": "",
+				"values": [7]
 			}
 		],
 		"sim_freq": 200
