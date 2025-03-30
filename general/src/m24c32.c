@@ -3,20 +3,6 @@
 
 #define PAGE_SIZE 32 /* Bytes */
 
-/**
- * @brief Clamp a write length to the size of the m24c32 page size.
- * 
- * @param size The length of the buffer to write, in Bytes.
- * @return uint16_t The amount of bytes to write in a write cycle.
- */
-static uint16_t clamp_to_page(uint16_t size)
-{
-	if (size < PAGE_SIZE)
-		return size;
-	else
-		return PAGE_SIZE;
-}
-
 eeprom_status_t m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data,
 			     uint16_t len)
 {
@@ -25,19 +11,21 @@ eeprom_status_t m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data,
 	}
 
 	eeprom_status_t result = EEPROM_OK;
+	size_t bytes_written = 0;
 
-	/* Always use a page write */
-	for (size_t bytes_written = 0; bytes_written < len;
-	     bytes_written += PAGE_SIZE) {
-		uint16_t write_len = clamp_to_page(len - bytes_written);
+	while (bytes_written < len) {
+		uint16_t remaining_in_page = PAGE_SIZE - (addr % PAGE_SIZE);
+		uint16_t write_len = (len - bytes_written < remaining_in_page) ?
+					     (len - bytes_written) :
+					     remaining_in_page;
 
-		result = device->write(addr + bytes_written,
-				       &data[bytes_written], write_len);
-
-		/* Let application handle errors */
+		result = device->write(addr, &data[bytes_written], write_len);
 		if (result != EEPROM_OK) {
 			return result;
 		}
+
+		addr += write_len;
+		bytes_written += write_len;
 	}
 
 	return result;

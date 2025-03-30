@@ -27,7 +27,8 @@ typedef struct {
 /**
  * @brief Write to the m24c32 EEPROM.
  * 
- * This function performs a paged write operation to the EEPROM.
+ * This function performs a paged write operation to the EEPROM, ensuring no writes cross page boundaries.
+ * It automatically splits data into multiple writes if necessary based on the EEPROM's page size.
  * 
  * @param device I2C read and write function pointers.
  * @param addr Memory address where data should be written.
