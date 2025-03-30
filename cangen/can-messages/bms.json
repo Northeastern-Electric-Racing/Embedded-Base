@@ -1803,8 +1803,8 @@
 				"name": "BMS/PerCell/Beta/{4}/VMV",
 				"unit": "",
 				"values": [6]
-			}
-      {
+			},
+			{
 				"name": "BMS/PerCell/Beta/{4}/CvS/10",
 				"unit": "",
 				"values": [7]
