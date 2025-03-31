@@ -1,21 +1,69 @@
+/**
+ * @file m24c32.h
+ * @brief EEPROM Read/Write Interface for M24C32
+ * 
+ * This file defines the interface for interacting with the M24C32 EEPROM.
+ * Functions return `eeprom_status_t` error codes, which are standardized in `eeprom_status.h`.
+ * 
+ */
+
 #ifndef M24C32_H
 #define M24C32_H
 
 #include "stm32xx_hal.h"
+#include "eeprom_status.h"
 #include <stdint.h>
 #include <string.h>
 
-#define M24C32_I2C_ADDR	 0x50
-#define M24C32_PAGE_SIZE 32
+typedef eeprom_status_t (*write_ptr)(uint16_t addr, uint8_t *data,
+				     uint16_t len);
+typedef eeprom_status_t (*read_ptr)(uint16_t addr, uint8_t *data, uint16_t len);
 
-extern I2C_HandleTypeDef *i2c_handle;
+typedef struct {
+	write_ptr write;
+	read_ptr read;
+} m24c32_t;
 
-HAL_StatusTypeDef eeprom_write(uint16_t mem_address, uint8_t *data,
-			       uint16_t size);
+/**
+ * @brief Write to the m24c32 EEPROM.
+ * 
+ * This function performs a paged write operation to the EEPROM, ensuring no writes cross page boundaries.
+ * It automatically splits data into multiple writes if necessary based on the EEPROM's page size.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address where data should be written.
+ * @param data Buffer of bytes to write.
+ * @param len The amount of bytes to write.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure.
+ */
+eeprom_status_t m24c32_write(m24c32_t *device, uint16_t addr, uint8_t *data,
+			     uint16_t len);
 
-HAL_StatusTypeDef eeprom_read(uint16_t mem_address, uint8_t *data,
-			      uint16_t size);
+/**
+ * @brief Read from the m24c32 EEPROM.
+ * 
+ * This function retrieves data starting from the specified address and stores it 
+ * in the provided buffer.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address from which data should be read.
+ * @param data Buffer where data will be written to.
+ * @param len The amount of bytes to read.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure.
+ */
+eeprom_status_t m24c32_read(m24c32_t *device, uint16_t addr, uint8_t *data,
+			    uint16_t len);
 
-HAL_StatusTypeDef eeprom_delete(uint16_t mem_address, uint16_t size);
+/**
+ * @brief Clear bytes in the EEPROM.
+ * 
+ * This function writes zeroes to the specified memory section to reset its contents.
+ * 
+ * @param device I2C read and write function pointers.
+ * @param addr Memory address of the write head.
+ * @param len Number of bytes to clear.
+ * @return eeprom_status_t Returns EEPROM_OK on success or an error code on failure.
+ */
+eeprom_status_t m24c32_clear(m24c32_t *device, uint16_t addr, uint16_t len);
 
 #endif // M24C32_H
