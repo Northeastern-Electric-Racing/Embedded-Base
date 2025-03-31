@@ -26,14 +26,14 @@ TCA9539QPWRQ1 16 bit GPIO expander.  Datasheet: https://www.ti.com/lit/gpn/tca95
 /// POLARITY: Inversion state, 1=Inverted 0=Uninverted
 /// DIRECTION: Input/Output selection 1=Input 0=Output
 
-#define TCA_INPUT_0_REG	    0x00 // (Input Port 0)
-#define TCA_INPUT_1_REG	    0x01 // (Input Port 1)
-#define TCA_OUTPUT_0_REG    0x02 // (Output Port 0)
-#define TCA_OUTPUT_1_REG    0x03 // (Output Port 1)
-#define TCA_POLARITY_0_REG  0x04 // (Polarity Inversion Port 0)
-#define TCA_POLARITY_1_REG  0x05 // (Polarity Inversion Port 1)
-#define TCA_DIRECTION_0_REG 0x06 // (Configuration Port 0)
-#define TCA_DIRECTION_1_REG 0x07 // (Configuration Port 1)
+#define TCA_INPUT_PORT_0	      0x00
+#define TCA_INPUT_PORT_1	      0x01
+#define TCA_OUTPUT_PORT_0	      0x02
+#define TCA_OUTPUT_PORT_1	      0x03
+#define TCA_POLARITY_INVERSION_PORT_0 0x04
+#define TCA_POLARITY_INVERSION_PORT_1 0x05
+#define TCA_CONFIGURATION_PORT_0      0x06
+#define TCA_CONFIGURATION_PORT_1      0x07
 
 /**
  * @brief Pointer to write function

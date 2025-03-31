@@ -37,7 +37,8 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_id_list[4])
 	/* Check for invalid IDs */
 	for (int i = 0; i < 4; i++) {
 		if (can_id_list[i] > 0x7FF) {
-			printf("CAN ID 0x%X is invalid as a standard ID. Standard IDs cannot be larger than 11 bits.\n");
+			printf("CAN ID 0x%X is invalid as a standard ID. Standard IDs cannot be larger than 11 bits.\n",
+			       can_id_list[i]);
 			return HAL_ERROR;
 		}
 	}
@@ -91,7 +92,8 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_id_list[2])
 	/* Check for warnings */
 	for (int i = 0; i < 2; i++) {
 		if (can_id_list[i] <= 0x7FF) {
-			printf("Warning: CAN ID 0x%X is not larger than 11 bits, but was added as an extended ID. This was successful, but make sure 'id_is_extended' is set to true to avoid errors.\n");
+			printf("Warning: CAN ID 0x%lX is not larger than 11 bits, but was added as an extended ID. This was successful, but make sure 'id_is_extended' is set to true to avoid errors.\n",
+			       can_id_list[i]);
 		}
 	}
 
