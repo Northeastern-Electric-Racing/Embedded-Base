@@ -1445,7 +1445,7 @@
 				"values": [9]
 			},
 			{
-				"name": "BMS/PerCell/Alpha/{4}/Cv S/{6}",
+				"name": "BMS/PerCell/Alpha/{4}/CvS/{6}",
 				"unit": "",
 				"values": [10]
 			}
