@@ -1,4 +1,4 @@
-[
+  [
   {
     "id": "0x501",
     "desc": "MPU Status",
@@ -321,368 +321,239 @@
         }
       },
       {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 1,
-        "sim": {
-          "options": [
-            [
-              0,
-              0.5
-            ],
-            [
-              1,
-              0.5
-            ]
-          ]
-        }
-      },
-      {
-        "size": 15,
+        "size": 12,
         "parse": false
       },
       {
-        "size": 8,
+        "size": 1,
         "sim": {
           "options": [
             [
               0,
-              0.75
+              0.5
             ],
             [
               1,
-              0.05
-            ],
-            [
-              2,
-              0.05
-            ],
-            [
-              3,
-              0.05
-            ],
-            [
-              4,
-              0.05
-            ],
-            [
-              5,
-              0.05
+              0.5
             ]
           ]
         }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ]
+          ]
+        }
+      },
+      {
+        "size": 7,
+        "parse": false
       }
     ],
     "fields": [
       {
-        "name": "MPU/Fault/FAULTS_CLEAR",
+        "name": "MPU/Fault/Critical/ONBOARD_PEDAL",
         "unit": "",
         "values": [
           1
         ]
       },
       {
-        "name": "MPU/Fault/ONBOARD_TEMP",
+        "name": "MPU/Fault/Critical/CAN_DISPATCH",
         "unit": "",
         "values": [
           2
         ]
       },
       {
-        "name": "MPU/Fault/ONBOARD_PEDAL",
+        "name": "MPU/Fault/Critical/CAN_ROUTING",
         "unit": "",
         "values": [
           3
         ]
       },
       {
-        "name": "MPU/Fault/IMU",
+        "name": "MPU/Fault/Critical/BMS_CAN_MONITOR",
         "unit": "",
         "values": [
           4
         ]
       },
       {
-        "name": "MPU/Fault/CAN_DISPATCH",
-        "unit": "",
-        "values": [
-          5
-        ]
-      },
-      {
-        "name": "MPU/Fault/CAN_ROUTING",
+        "name": "MPU/Fault/Non-Critical/rONBOARD_TEMP",
         "unit": "",
         "values": [
           6
         ]
       },
       {
-        "name": "MPU/Fault/FUSE_MONITOR",
+        "name": "MPU/Fault/Non-Critical/IMU",
         "unit": "",
         "values": [
           7
         ]
       },
       {
-        "name": "MPU/Fault/SHUTDOWN_MONITOR",
+        "name": "MPU/Fault/Non-Critical/FUSE_MONITOR",
         "unit": "",
         "values": [
           8
         ]
       },
       {
-        "name": "MPU/Fault/DTI_ROUTING",
+        "name": "MPU/Fault/Non-Critical/SHUTDOWN_MONITOR",
         "unit": "",
         "values": [
           9
         ]
       },
       {
-        "name": "MPU/Fault/STEERINGIO_ROUTING",
+        "name": "MPU/Fault/Non-Critical/LV_MONITOR",
         "unit": "",
         "values": [
           10
         ]
       },
       {
-        "name": "MPU/Fault/STATE_RECEIVED",
+        "name": "MPU/Fault/Non-Critical/BSPD_PREFAULT",
         "unit": "",
         "values": [
           11
         ]
       },
       {
-        "name": "MPU/Fault/INVALID_TRANSITION",
+        "name": "MPU/Fault/Non-Critical/RTDS",
         "unit": "",
         "values": [
           12
         ]
       },
       {
-        "name": "MPU/Fault/BMS_CAN_MONITOR",
+        "name": "MPU/Fault/Non-Critical/PUMP_SENSORS",
         "unit": "",
         "values": [
           13
         ]
       },
       {
-        "name": "MPU/Fault/BUTTONS_MONITOR",
+        "name": "MPU/Fault/Non-Critical/PDU_CURRENT",
         "unit": "",
         "values": [
           14
-        ]
-      },
-      {
-        "name": "MPU/Fault/BSPD_PREFAULT",
-        "unit": "",
-        "values": [
-          15
-        ]
-      },
-      {
-        "name": "MPU/Fault/LV_MONITOR",
-        "unit": "",
-        "values": [
-          16
-        ]
-      },
-      {
-        "name": "MPU/Fault/RTDS",
-        "unit": "",
-        "values": [
-          17
-        ]
-      },
-      {
-        "name": "MPU/Fault/Extra",
-        "unit": "",
-        "values": [
-          18
-        ]
-      },
-      {
-        "name": "MPU/Fault/Severity",
-        "unit": "",
-        "values": [
-          19
         ]
       }
     ],
@@ -693,9 +564,9 @@
     "desc": "MPU Sense Voltage",
     "points": [
       {
-        "size": 32,
+        "size": 16,
         "endianness": "little",
-        "format": "divide10000",
+        "format": "divide100",
         "sim": {
           "min": 22.5,
           "max": 29,
@@ -733,81 +604,76 @@
   },
   {
     "id": "0x504",
-    "desc": "MPU Accel Pedals",
+    "desc": "MPU Pedals",
     "points": [
       {
-        "size": 32,
+        "size": 16,
+        "format": "divide100",
         "sim": {
-          "min": 800,
-          "max": 1900,
+          "min": 50,
+          "max": 150,
           "inc_min": 1,
-          "inc_max": 24
+          "inc_max": 10
         }
       },
       {
-        "size": 32,
+        "size": 16,
+        "format": "divide100",
         "sim": {
-          "min": 1200,
-          "max": 2300,
+          "min": 150,
+          "max": 300,
           "inc_min": 1,
-          "inc_max": 24
+          "inc_max": 10
+        }
+      },
+      {
+        "size": 16,
+        "format": "divide100",
+        "sim": {
+          "min": 0,
+          "max": 330,
+          "inc_min": 1,
+          "inc_max": 10
+        }
+      },
+      {
+        "size": 16,
+        "format": "divide100",
+        "sim": {
+          "min": 0,
+          "max": 330,
+          "inc_min": 1,
+          "inc_max": 10
         }
       }
     ],
     "fields": [
       {
         "name": "MPU/Pedals/Accelerator_1",
-        "unit": "",
+        "unit": "volts",
         "values": [
           1
         ]
       },
       {
         "name": "MPU/Pedals/Accelerator_2",
-        "unit": "",
+        "unit": "volts",
         "values": [
           2
         ]
-      }
-    ],
-    "sim_freq": 100
-  },
-  {
-    "id": "0x505",
-    "desc": "MPU Brake Pedals",
-    "points": [
-      {
-        "size": 32,
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        }
       },
       {
-        "size": 32,
-        "sim": {
-          "min": 580,
-          "max": 990,
-          "inc_min": 1,
-          "inc_max": 10
-        }
-      }
-    ],
-    "fields": [
-      {
         "name": "MPU/Pedals/Brake_1",
-        "unit": "",
+        "unit": "volts",
         "values": [
-          1
+          3
         ]
       },
       {
         "name": "MPU/Pedals/Brake_2",
-        "unit": "",
+        "unit": "volts",
         "values": [
-          2
+          4
         ]
       }
     ],
