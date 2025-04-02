@@ -1379,7 +1379,37 @@
         }
       },
       {
-        "size": 6,
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 4,
         "parse": false
       }
     ],
@@ -1417,6 +1447,20 @@
         "unit": "",
         "values": [
           8
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/CvS/{5}",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Alpha/{4}/CvS/{6}",
+        "unit": "",
+        "values": [
+          10
         ]
       }
     ],
@@ -1517,7 +1561,37 @@
         }
       },
       {
-        "size": 6,
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 1,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
+      },
+      {
+        "size": 4,
         "parse": false
       }
     ],
@@ -1555,6 +1629,20 @@
         "unit": "",
         "values": [
           8
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/CvS/{5}",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/Burning/{6}",
+        "unit": "",
+        "values": [
+          10
         ]
       }
     ],
@@ -1752,7 +1840,18 @@
       },
       {
         "size": 1,
-        "parse": false
+        "sim": {
+          "options": [
+            [
+              0,
+              0.9
+            ],
+            [
+              1,
+              0.1
+            ]
+          ]
+        }
       }
     ],
     "fields": [
@@ -1789,6 +1888,13 @@
         "unit": "",
         "values": [
           6
+        ]
+      },
+      {
+        "name": "BMS/PerCell/Beta/{4}/CvS/10",
+        "unit": "",
+        "values": [
+          7
         ]
       }
     ],
