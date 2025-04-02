@@ -1111,126 +1111,126 @@
         ]
       },
       {
-        "name": "BMS/Faults/CCL_Enforce",
+        "name": "BMS/Faults/Critical/CCL_Enforce",
         "unit": "",
         "values": [
           2
         ]
       },
       {
-        "name": "BMS/Faults/Charger_Can",
+        "name": "BMS/Faults/Critical/Charger_Can",
         "unit": "",
         "values": [
           3
         ]
       },
       {
-        "name": "BMS/Faults/Battery_Therm",
+        "name": "BMS/Faults/Critical/Battery_Therm",
         "unit": "",
         "values": [
           4
         ]
       },
       {
-        "name": "BMS/Faults/Charger_Safety",
+        "name": "BMS/Faults/Critical/Charger_Safety",
         "unit": "",
         "values": [
           5
         ]
       },
       {
-        "name": "BMS/Faults/DCL_Enforce",
+        "name": "BMS/Faults/Critical/DCL_Enforce",
         "unit": "",
         "values": [
           6
         ]
       },
       {
-        "name": "BMS/Faults/External_Can",
+        "name": "BMS/Faults/Critical/External_Can",
         "unit": "",
         "values": [
           7
         ]
       },
       {
-        "name": "BMS/Faults/Weak_Pack",
+        "name": "BMS/Faults/Critical/Weak_Pack",
         "unit": "",
         "values": [
           8
         ]
       },
       {
-        "name": "BMS/Faults/Low_Cell_Volts",
+        "name": "BMS/Faults/Critical/Low_Cell_Volts",
         "unit": "",
         "values": [
           9
         ]
       },
       {
-        "name": "BMS/Faults/Charge_Reading",
+        "name": "BMS/Faults/Critical/Charge_Reading",
         "unit": "",
         "values": [
           10
         ]
       },
       {
-        "name": "BMS/Faults/Current_Sense",
+        "name": "BMS/Faults/Critical/Current_Sense",
         "unit": "",
         "values": [
           11
         ]
       },
       {
-        "name": "BMS/Faults/IC_Comm",
+        "name": "BMS/Faults/Critical/IC_Comm",
         "unit": "",
         "values": [
           12
         ]
       },
       {
-        "name": "BMS/Faults/Thermal_Err",
+        "name": "BMS/Faults/Critical/Thermal_Err",
         "unit": "",
         "values": [
           13
         ]
       },
       {
-        "name": "BMS/Faults/Software",
+        "name": "BMS/Faults/Critical/Software",
         "unit": "",
         "values": [
           14
         ]
       },
       {
-        "name": "BMS/Faults/Open_Wire",
+        "name": "BMS/Faults/Critical/Open_Wire",
         "unit": "",
         "values": [
           15
         ]
       },
       {
-        "name": "BMS/Faults/Pack_Overheat",
+        "name": "BMS/Faults/Critical/Pack_Overheat",
         "unit": "",
         "values": [
           16
         ]
       },
       {
-        "name": "BMS/Faults/Cell_Undervoltage",
+        "name": "BMS/Faults/Critical/Cell_Undervoltage",
         "unit": "",
         "values": [
           17
         ]
       },
       {
-        "name": "BMS/Faults/Cell_Overvoltage",
+        "name": "BMS/Faults/Critical/Cell_Overvoltage",
         "unit": "",
         "values": [
           18
         ]
       },
       {
-        "name": "BMS/Faults/Cells_Not_Balancing",
+        "name": "BMS/Faults/Critical/Cells_Not_Balancing",
         "unit": "",
         "values": [
           19
@@ -1244,126 +1244,126 @@
         ]
       },
       {
-        "name": "BMS/Faults/CCL_Enforce",
+        "name": "BMS/Faults/Non-Critical/CCL_Enforce",
         "unit": "",
         "values": [
           21
         ]
       },
       {
-        "name": "BMS/Faults/Charger_Can",
+        "name": "BMS/Faults/Non-Critical/Charger_Can",
         "unit": "",
         "values": [
           22
         ]
       },
       {
-        "name": "BMS/Faults/Battery_Therm",
+        "name": "BMS/Faults/Non-Critical/Battery_Therm",
         "unit": "",
         "values": [
           23
         ]
       },
       {
-        "name": "BMS/Faults/Charger_Safety",
+        "name": "BMS/Faults/Non-Critical/Charger_Safety",
         "unit": "",
         "values": [
           24
         ]
       },
       {
-        "name": "BMS/Faults/DCL_Enforce",
+        "name": "BMS/Faults/Non-Critical/DCL_Enforce",
         "unit": "",
         "values": [
           25
         ]
       },
       {
-        "name": "BMS/Faults/External_Can",
+        "name": "BMS/Faults/Non-Critical/External_Can",
         "unit": "",
         "values": [
           26
         ]
       },
       {
-        "name": "BMS/Faults/Weak_Pack",
+        "name": "BMS/Faults/Non-Critical/Weak_Pack",
         "unit": "",
         "values": [
           27
         ]
       },
       {
-        "name": "BMS/Faults/Low_Cell_Volts",
+        "name": "BMS/Faults/Non-Critical/Low_Cell_Volts",
         "unit": "",
         "values": [
           28
         ]
       },
       {
-        "name": "BMS/Faults/Charge_Reading",
+        "name": "BMS/Faults/Non-Critical/Charge_Reading",
         "unit": "",
         "values": [
           29
         ]
       },
       {
-        "name": "BMS/Faults/Current_Sense",
+        "name": "BMS/Faults/Non-Critical/Current_Sense",
         "unit": "",
         "values": [
           30
         ]
       },
       {
-        "name": "BMS/Faults/IC_Comm",
+        "name": "BMS/Faults/Non-Critical/IC_Comm",
         "unit": "",
         "values": [
           31
         ]
       },
       {
-        "name": "BMS/Faults/Thermal_Err",
+        "name": "BMS/Faults/Non-Critical/Thermal_Err",
         "unit": "",
         "values": [
           32
         ]
       },
       {
-        "name": "BMS/Faults/Software",
+        "name": "BMS/Faults/Non-Critical/Software",
         "unit": "",
         "values": [
           33
         ]
       },
       {
-        "name": "BMS/Faults/Open_Wire",
+        "name": "BMS/Faults/Non-Critical/Open_Wire",
         "unit": "",
         "values": [
           34
         ]
       },
       {
-        "name": "BMS/Faults/Pack_Overheat",
+        "name": "BMS/Faults/Non-Critical/Pack_Overheat",
         "unit": "",
         "values": [
           35
         ]
       },
       {
-        "name": "BMS/Faults/Cell_Undervoltage",
+        "name": "BMS/Faults/Non-Critical/Cell_Undervoltage",
         "unit": "",
         "values": [
           36
         ]
       },
       {
-        "name": "BMS/Faults/Cell_Overvoltage",
+        "name": "BMS/Faults/Non-Critical/Cell_Overvoltage",
         "unit": "",
         "values": [
           37
         ]
       },
       {
-        "name": "BMS/Faults/Cells_Not_Balancing",
+        "name": "BMS/Faults/Non-Critical/Cells_Not_Balancing",
         "unit": "",
         "values": [
           38
