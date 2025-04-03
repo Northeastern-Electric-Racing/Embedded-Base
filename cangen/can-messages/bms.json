@@ -1439,56 +1439,76 @@
     "points": [
       {
         "size": 12,
-        "signed": true
+        "signed": true,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2
+        }
       },
       {
         "size": 12,
-        "signed": true
+        "signed": true,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2
+        }
       },
       {
         "size": 12,
-        "signed": true
+        "signed": true,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2
+        }
       },
       {
         "size": 12,
-        "signed": true
+        "signed": true,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2
+        }
       },
       {
         "size": 12,
-        "signed": true
+        "signed": true,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2
+        }
       }
     ],
     "fields": [
       {
-        "name": "BMS/Segment_Volt/1",
+        "name": "BMS/Segment_Volt/0",
         "unit": "V",
         "values": [
           1
         ]
       },
       {
-        "name": "BMS/Segment_Volt/2",
+        "name": "BMS/Segment_Volt/1",
         "unit": "V",
         "values": [
           2
         ]
       },
       {
-        "name": "BMS/Segment_Volt/3",
+        "name": "BMS/Segment_Volt/2",
         "unit": "V",
         "values": [
           3
         ]
       },
       {
-        "name": "BMS/Segment_Volt/4",
+        "name": "BMS/Segment_Volt/3",
         "unit": "V",
         "values": [
           4
         ]
       },
       {
-        "name": "BMS/Segment_Volt/5",
+        "name": "BMS/Segment_Volt/4",
         "unit": "V",
         "values": [
           5
