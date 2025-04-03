@@ -1432,10 +1432,6 @@
   {
     "id": "0x90",
     "desc": "Segment Voltages",
-    "sim": {
-          "min": 2.5,
-          "max": 4.2
-        },
     "points": [
       {
         "size": 12,
