@@ -1521,6 +1521,7 @@
       },
       {
         "name": "BMS/Segment_Volt/Extra",
+        "unit":"",
         "values":[
           6
         ]
