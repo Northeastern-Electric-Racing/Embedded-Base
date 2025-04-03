@@ -1438,7 +1438,9 @@
         "signed": true,
         "sim": {
           "min": 2.5,
-          "max": 4.2
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
         }
       },
       {
@@ -1446,7 +1448,9 @@
         "signed": true,
         "sim": {
           "min": 2.5,
-          "max": 4.2
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
         }
       },
       {
@@ -1454,7 +1458,9 @@
         "signed": true,
         "sim": {
           "min": 2.5,
-          "max": 4.2
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
         }
       },
       {
@@ -1462,7 +1468,9 @@
         "signed": true,
         "sim": {
           "min": 2.5,
-          "max": 4.2
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
         }
       },
       {
@@ -1470,7 +1478,9 @@
         "signed": true,
         "sim": {
           "min": 2.5,
-          "max": 4.2
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
         }
       }
     ],
