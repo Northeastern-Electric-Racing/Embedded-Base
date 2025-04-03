@@ -1444,7 +1444,6 @@
       },
       {
         "size": 12,
-        "signed": true,
         "sim": {
           "min": 2.5,
           "max": 4.2,
