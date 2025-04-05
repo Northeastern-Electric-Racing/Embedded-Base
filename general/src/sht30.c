@@ -13,6 +13,7 @@ static int sht30_read_reg(sht30_t *sht30, uint8_t *data, uint8_t length)
 {
 	return sht30->read_reg(data, sht30->dev_address, length);
 }
+
 /**
  * @brief Calculates the CRC by using the polynomial x^8 + x^5 + x^4 + 1
  * @param data: the data to use to calculate the CRC
@@ -42,16 +43,18 @@ uint8_t sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg,
 	sht30->write_reg = write_reg;
 	sht30->read_reg = read_reg;
 	sht30->dev_address = dev_address << 1u;
-	// uint8_t status_reg_and_checksum[3];
-	// if (sht30->read_reg(status_reg_and_checksum, sht30->dev_address,
-	//          (uint16_t)SHT3X_COMMAND_READ_STATUS,
-	//          sizeof(status_reg_and_checksum)) != 0) {
-	//  return -1;
-	// }
-	// uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
-	// if (calculated_crc != status_reg_and_checksum[2]) {
-	//  return -1;
-	// }
+	/*
+	uint8_t status_reg_and_checksum[3];
+
+	sht30_write_reg(sht30, (uint16_t)SHT3X_COMMAND_READ_STATUS);
+	if (sht30_read_reg(sht30, status_reg_and_checksum, sizeof(status_reg_and_checksum))) {
+	  return 1;
+	}
+	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
+	if (calculated_crc != status_reg_and_checksum[2]) {
+	  return 1;	
+	}
+	*/
 	return 0;
 }
 int sht30_toggle_heater(sht30_t *sht30, bool enable)
@@ -66,7 +69,7 @@ uint8_t sht30_get_temp_humid(sht30_t *sht30)
 {
 	union Data {
 		struct __attribute__((packed)) {
-			uint16_t temp; // The packed attribute does not correctly arrange the bytes
+			uint16_t temp; // The packed at	tribute does not correctly arrange the bytes
 			uint8_t temp_crc;
 			uint16_t humidity; // The packed attribute does not correctly arrange the bytes
 			uint8_t humidity_crc;
@@ -74,21 +77,22 @@ uint8_t sht30_get_temp_humid(sht30_t *sht30)
 		uint8_t databuf[6];
 	} data;
 
-	sht30_write_reg(sht30, SHT30_START_CMD_WCS);
+	uint16_t temp = 0, humidity = 0;
 
+	sht30_write_reg(sht30, SHT30_START_CMD_WCS);
 	if (sht30_read_reg(sht30, data.databuf, sizeof(data.databuf))) {
 		return 1;
 	}
 
-	uint16_t temp = uint8_to_uint16(data.databuf[0], data.databuf[1]);
+	temp = uint8_to_uint16(data.databuf[0], data.databuf[1]);
 	if (data.raw_data.temp_crc != calculate_crc(data.databuf, 2)) {
-		return 1;
+		//return 1;
 	}
 	float tempVal = -45.0f + 175.0f * (((float)temp) / 65535.0f);
 	sht30->temp = tempVal;
-	uint16_t humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
+	humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
 	if (data.raw_data.humidity_crc != calculate_crc(data.databuf + 3, 2)) {
-		return 1;
+		//return 1;
 	}
 	float humVal = (100.0f * ((float)humidity / 65535.0f));
 	sht30->humidity = humVal;
