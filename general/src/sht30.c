@@ -1,17 +1,23 @@
 #include "sht30.h"
 #include <stdbool.h>
 #include <stdio.h>
+
 //ner flash --ftdi for msb
 static int sht30_write_reg(sht30_t *sht30, uint16_t command)
 {
 	uint8_t command_buffer[2] = { (command & 0xff00u) >> 8u,
-		command & 0xffu };
+				      command & 0xffu };
 	return sht30->write_reg(command_buffer, sht30->dev_address,
 				sizeof(command_buffer));
 }
-static int sht30_read_reg(sht30_t *sht30, uint8_t *data, uint8_t length)
+static int sht30_read_reg(sht30_t *sht30, uint16_t command, uint8_t *data,
+			  uint8_t length, bool blocking)
 {
-	return sht30->read_reg(data, sht30->dev_address, length);
+	if (blocking) {
+		return sht30->blocking_read_reg(data, command,
+						sht30->dev_address, length);
+	}
+	return sht30->read_reg(data, command, sht30->dev_address, length);
 }
 
 /**
@@ -38,23 +44,28 @@ static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 	return ((uint16_t)msb << 8) | ((uint16_t)lsb);
 }
 uint8_t sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg,
-		   uint8_t dev_address)
+		   Read_ptr blocking_read_reg, uint8_t dev_address)
 {
 	sht30->write_reg = write_reg;
 	sht30->read_reg = read_reg;
+	sht30->blocking_read_reg = blocking_read_reg;
 	sht30->dev_address = dev_address << 1u;
+
 	/*
 	uint8_t status_reg_and_checksum[3];
-
-	sht30_write_reg(sht30, (uint16_t)SHT3X_COMMAND_READ_STATUS);
-	if (sht30_read_reg(sht30, status_reg_and_checksum, sizeof(status_reg_and_checksum))) {
-	  return 1;
+	if (sht30_read_reg(sht30, (uint16_t)SHT3X_COMMAND_READ_STATUS,
+			   status_reg_and_checksum,
+			   sizeof(status_reg_and_checksum), false)) {
+		return 0;
 	}
+
 	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
+
 	if (calculated_crc != status_reg_and_checksum[2]) {
-	  return 1;	
+		return 0;
 	}
 	*/
+
 	return 0;
 }
 int sht30_toggle_heater(sht30_t *sht30, bool enable)
@@ -79,8 +90,8 @@ uint8_t sht30_get_temp_humid(sht30_t *sht30)
 
 	uint16_t temp = 0, humidity = 0;
 
-	sht30_write_reg(sht30, SHT30_START_CMD_WCS);
-	if (sht30_read_reg(sht30, data.databuf, sizeof(data.databuf))) {
+	if (sht30_read_reg(sht30, SHT30_START_CMD_WCS, data.databuf,
+			   sizeof(data.databuf), true)) {
 		return 1;
 	}
 

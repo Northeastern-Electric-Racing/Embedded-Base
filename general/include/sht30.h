@@ -22,7 +22,8 @@ typedef enum {
 } sht3x_command_t;
 /** Function Pointers */
 typedef int (*Write_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
-typedef int (*Read_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
+typedef int (*Read_ptr)(uint8_t *data, uint16_t command, uint8_t dev_address,
+			uint8_t length);
 /*
  * Start measurement command with clock streching enabled and high
  * repeatability. This is responsible for retrieving the temp and humidity in
@@ -35,6 +36,7 @@ typedef int (*Read_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
 typedef struct {
 	Write_ptr write_reg;
 	Read_ptr read_reg;
+	Read_ptr blocking_read_reg;
 	float temp;
 	float humidity;
 	bool is_heater_enabled;
@@ -47,7 +49,7 @@ typedef struct {
  * @return int - Status code
  */
 uint8_t sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg,
-		   uint8_t dev_address);
+		   Read_ptr blocking_read_reg, uint8_t dev_address);
 /**
  * @brief Toggles the status of the internal heater
  *
