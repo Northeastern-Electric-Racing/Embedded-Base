@@ -834,7 +834,7 @@
     ],
     "fields": [
       {
-        "name": "BMS/Faults/Extra",
+        "name": "BMS/Faults/Critical/Extra",
         "unit": "",
         "values": [
           1
