@@ -22,8 +22,7 @@ typedef enum {
 } sht3x_command_t;
 /** Function Pointers */
 typedef int (*Write_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
-typedef int (*Read_ptr)(uint8_t *data, uint8_t dev_address, uint16_t reg,
-			uint8_t length);
+typedef int (*Read_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
 /*
  * Start measurement command with clock streching enabled and high
  * repeatability. This is responsible for retrieving the temp and humidity in
