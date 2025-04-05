@@ -31,7 +31,7 @@ static uint8_t calculate_crc(const uint8_t *data, size_t length)
 		crc ^= data[i];
 		for (size_t j = 0; j < 8; j++) {
 			if ((crc & 0x80) != 0) {
-				crc = (uint8_t)((uint8_t)(crc << 1) ^ 0x91);
+				crc = (uint8_t)((uint8_t)(crc << 1) ^ 0x31);
 			} else {
 				crc <<= 1;
 			}
@@ -56,13 +56,13 @@ uint8_t sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg,
 	if (sht30_read_reg(sht30, (uint16_t)SHT3X_COMMAND_READ_STATUS,
 			   status_reg_and_checksum,
 			   sizeof(status_reg_and_checksum), false)) {
-		return 0;
+		return 1;
 	}
 
 	uint8_t calculated_crc = calculate_crc(status_reg_and_checksum, 2);
 
 	if (calculated_crc != status_reg_and_checksum[2]) {
-		return 0;
+		return 1;
 	}
 	*/
 
@@ -97,13 +97,13 @@ uint8_t sht30_get_temp_humid(sht30_t *sht30)
 
 	temp = uint8_to_uint16(data.databuf[0], data.databuf[1]);
 	if (data.raw_data.temp_crc != calculate_crc(data.databuf, 2)) {
-		//return 1;
+		return 1;
 	}
 	float tempVal = -45.0f + 175.0f * (((float)temp) / 65535.0f);
 	sht30->temp = tempVal;
 	humidity = uint8_to_uint16(data.databuf[3], data.databuf[4]);
 	if (data.raw_data.humidity_crc != calculate_crc(data.databuf + 3, 2)) {
-		//return 1;
+		return 1;
 	}
 	float humVal = (100.0f * ((float)humidity / 65535.0f));
 	sht30->humidity = humVal;
