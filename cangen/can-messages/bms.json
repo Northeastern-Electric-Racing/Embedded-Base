@@ -1739,7 +1739,7 @@
         ]
       },
       {
-        "name": "BMS/PerCell/Beta/{4}/Burning/{6}",
+        "name": "BMS/PerCell/Beta/{4}/CvS/{6}",
         "unit": "",
         "values": [
           10
