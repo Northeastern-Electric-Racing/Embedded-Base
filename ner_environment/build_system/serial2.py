@@ -59,7 +59,7 @@ def main(ls=False, device="", filter=None):
                 print("[bold blue]Displaying all messages.[/bold blue]")
             while True:
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
-                if not filter or line.startswith(filter):
+                if not filter or (filter in line):
                     print(line)
     except serial.SerialException as e:
         print(f"[bold red]Failed to open serial port {selected_device}: {e}[/bold red]", file=sys.stderr)
