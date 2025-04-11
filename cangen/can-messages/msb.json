@@ -5,6 +5,7 @@
     "points": [
       {
         "size": 16,
+        "format": "divide10",
         "sim": {
           "min": 0,
           "max": 80,
@@ -14,6 +15,7 @@
       },
       {
         "size": 16,
+        "format": "divide10",
         "sim": {
           "min": 20,
           "max": 80,
