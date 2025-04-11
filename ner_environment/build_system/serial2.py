@@ -66,3 +66,6 @@ def main(ls=False, device="", filter=None):
         sys.exit(1)
     except KeyboardInterrupt:
         print("\n[bold blue]Exiting...[/bold blue]")
+
+if __name__ == '__main__':
+    main()
