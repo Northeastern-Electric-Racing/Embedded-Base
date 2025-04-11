@@ -26,6 +26,7 @@ from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .serial2 import main as serial2_start
 
 # ==============================================================================
 # Typer application setup
@@ -182,6 +183,19 @@ def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device t
         miniterm(ls=True, device=device)
     else:
         miniterm(device=device)
+
+# ==============================================================================
+# Serial2 command
+# ==============================================================================
+
+@app.command(help="Open UART terminal of connected device 2")
+def serial2(
+            ls: bool = typer.Option(False, "--list", help="List available serial devices and exit."),
+            device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
+            filter: str = typer.Option(None, "--filter", help="Only shows specific messages. Ex. 'ner serial2 --filter EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
+    """Custom serial terminal."""
+    
+    serial2_start(ls=ls, device=device, filter=filter)
 
 # ==============================================================================
 # Update command
