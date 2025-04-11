@@ -491,16 +491,6 @@
           "inc_min": 0.01,
           "inc_max": 0.3
         }
-      },
-      {
-        "size": 8,
-        "signed": true,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
       }
     ],
     "fields": [
@@ -537,13 +527,6 @@
         "unit": "C",
         "values": [
           5
-        ]
-      },
-      {
-        "name": "BMS/Segment_Temp/6",
-        "unit": "C",
-        "values": [
-          6
         ]
       }
     ],
@@ -971,6 +954,106 @@
         "unit": "",
         "values": [
           20
+        ]
+      }
+    ],
+    "sim_freq": 700
+  },
+  {
+    "id": "0x90",
+    "desc": "Segment Voltages",
+    "points": [
+      {
+        "size": 12,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
+        }
+      },
+      {
+        "size": 12,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
+        }
+      },
+      {
+        "size": 12,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
+        }
+      },
+      {
+        "size": 12,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
+        }
+      },
+      {
+        "size": 12,
+        "sim": {
+          "min": 2.5,
+          "max": 4.2,
+          "inc_min":0.005,
+          "inc_max":1
+        }
+      },
+      {
+        "size": 4,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Segment_Volt/0",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Segment_Volt/1",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Segment_Volt/2",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/Segment_Volt/3",
+        "unit": "V",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/Segment_Volt/4",
+        "unit": "V",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/Segment_Volt/Extra",
+        "unit":"",
+        "values":[
+          6
         ]
       }
     ],
@@ -1639,7 +1722,7 @@
         ]
       },
       {
-        "name": "BMS/PerCell/Beta/{4}/Burning/{6}",
+        "name": "BMS/PerCell/Beta/{4}/CvS/{6}",
         "unit": "",
         "values": [
           10
