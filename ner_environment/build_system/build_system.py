@@ -26,7 +26,7 @@ from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
-from .serial2 import main as serial2
+from .serial2 import main as serial2_start
 
 # ==============================================================================
 # Typer application setup
@@ -195,7 +195,7 @@ def serial2(
             filter: str = typer.Option(None, "--filter", "-f", help="Only shows specific messages. Ex. 'ner serial2 -f EXAMPLE' will only show printfs that start with 'EXAMPLE'")):
     """Custom serial terminal."""
     
-    serial2(ls=ls, device=device, filter=filter)
+    serial2_start(ls=ls, device=device, filter=filter)
 
 
 # ==============================================================================
