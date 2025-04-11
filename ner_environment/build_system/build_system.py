@@ -192,7 +192,7 @@ def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device t
 def serial2(
             ls: bool = typer.Option(False, "--list", help="List available serial devices."),
             device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
-            filter: str = typer.Option(None, "--filter", "-f", help="Only shows specific messages. Ex. ' ner serial2 -f \"EXAMPLE\" ' will only show printfs that contain the substring 'EXAMPLE'. ")):
+            filter: str = typer.Option(None, "--filter", "-f", help="Only shows specific messages. Ex. 'ner serial2 -f EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
     """Custom serial terminal."""
     
     serial2_start(ls=ls, device=device, filter=filter)
