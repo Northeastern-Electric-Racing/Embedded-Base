@@ -491,16 +491,6 @@
           "inc_min": 0.01,
           "inc_max": 0.3
         }
-      },
-      {
-        "size": 8,
-        "signed": true,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
       }
     ],
     "fields": [
@@ -537,13 +527,6 @@
         "unit": "C",
         "values": [
           5
-        ]
-      },
-      {
-        "name": "BMS/Segment_Temp/6",
-        "unit": "C",
-        "values": [
-          6
         ]
       }
     ],
