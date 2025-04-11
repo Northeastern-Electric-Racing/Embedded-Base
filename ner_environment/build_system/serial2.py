@@ -3,6 +3,7 @@ import platform
 import serial
 import sys
 from rich import print
+from rich.panel import Panel
 import serial.tools.list_ports
 
 def list_usb_devices():
