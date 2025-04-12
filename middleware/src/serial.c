@@ -24,7 +24,7 @@ void serial_graph(const char *title, const char *data_label, const char *format,
 	printf("\r\n");
 
 	// Print the tag first
-	printf("gph/%s/%s/%u/", title, data_label, HAL_GetTick());
+	printf("gph/%s/%s/%lu/", title, data_label, HAL_GetTick());
 
 	// Now handle the rest of the format string
 	va_list args;
