@@ -5,7 +5,9 @@ import sys
 from rich import print
 from rich.panel import Panel
 import serial.tools.list_ports
+import tkinter as tk
 
+# USB DEVICE STUFF
 def list_usb_devices():
     """List available USB serial devices based on the operating system."""
     os_name = platform.system()
@@ -33,7 +35,31 @@ def list_usb_devices():
 
     return devices
 
-def main(ls=False, device="", filter=None):
+# MONITOR STUFF
+monitor = None
+monitor_labels = {}
+def update_monitor(line):
+    global monitor, monitor_labels
+    """Update monitor panel with new data."""
+    parts = line.split("/")
+    title = parts[1]
+    data_label = parts[2]
+    value = parts[3]
+
+    if monitor is None: # If the monitor window doesn't exist yet, create it
+        monitor = tk.Tk()
+        monitor.title(title)
+
+    if data_label not in monitor_labels: # If this data label hasn't been seen yet, create it
+        monitor_labels[data_label] = tk.Label(monitor, text=f"{data_label}: {value}", font=("Helvetica", 12))
+        monitor_labels[data_label].pack()
+    else: # (Otherwise, update the existing label)
+        monitor_labels[data_label].config(text=f"{data_label}: {value}")
+
+    monitor.update()
+
+
+def main(ls=False, device="", monitor=None, filter=None, showall=False):
     """Main function for serial communication."""
     if device == "":
         devices = list_usb_devices()
@@ -54,13 +80,17 @@ def main(ls=False, device="", filter=None):
     try:
         with serial.Serial(selected_device, 115200, timeout=1) as ser:
             print(f"[bold blue]Connected to {selected_device} at 115200 baud.[/bold blue]")
+            print(f"[bold blue]Displaying messages. Use CTRL+C to exit.[/bold blue]")
             if filter:
-                print(f"[bold blue]Filtering messages starting with:[/bold blue] [green]{filter}[/green]")
-            else:
-                print("[bold blue]Displaying all messages.[/bold blue]")
+                print(f"[bold blue]Filtering messages containing:[/bold blue] [green]{filter}[/green]")
             while True:
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
-                if not filter or (filter in line):
+                if not line: # Skip empty lines
+                    continue
+                if line.startswith("m/"): # Message has a special tag, so handle accordingly.
+                    if monitor and line.startswith(f"m/{monitor}/"): # Message contains monitor data, so update the monitor.
+                        update_monitor(line)
+                elif not filter or (filter in line): # If message isn't being filtered out, print it.
                     print(line)
     except serial.SerialException as e:
         print(f"[bold red]Failed to open serial port {selected_device}: {e}[/bold red]", file=sys.stderr)
