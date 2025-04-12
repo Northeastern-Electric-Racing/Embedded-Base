@@ -113,13 +113,15 @@ def update_graph(line, plt):
         # Update existing graph
         for label, (x, y) in ui_graph_series.items():
             if label not in ui_graph_lines:
-                ui_graph_lines[label], = ui_graph_axes.plot(x, y, label=label)
+                ui_graph_lines[label], = ui_graph_axes.plot(x, y, label=f"{label}: {y[-1]:.2f}")
                 ui_graph_axes.legend()
             else:
-                ui_graph_lines[label].set_data(x, y)
+                ui_graph_lines[label].set_data(x, y) # Update data
+                ui_graph_lines[label].set_label(f"{label}: {y[-1]:.2f}") # Update label with latest value
         # Rescale axes if necessary
         ui_graph_axes.relim()
         ui_graph_axes.autoscale_view()
+        ui_graph_axes.legend()
         ui_graph.canvas.draw()
         ui_graph.canvas.flush_events()
         
@@ -144,9 +146,12 @@ def main(ls=False, device="", monitor=None, graph=None, filter=None, showall=Fal
 
     print(f"[bold blue]Selected USB device:[/bold blue] [green]{selected_device}[/green]")
 
-    if(graph): # Import matplotlib if graphing is used
-        import matplotlib.pyplot as plt
-
+    if(graph): # Import matplotlib if graphing is used. If matplotlib isn't installed, tell the user to run "ner update".
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print("Error: You don't have matplotlib installed. Please run 'ner update' to install it.")
+            sys.exit(1)
 
     try:
         with serial.Serial(selected_device, 115200, timeout=1) as ser:
