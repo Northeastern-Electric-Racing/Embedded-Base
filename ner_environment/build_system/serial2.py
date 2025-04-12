@@ -6,6 +6,7 @@ from rich import print
 from rich.panel import Panel
 import serial.tools.list_ports
 import tkinter as tk
+from collections import defaultdict
 
 # USB DEVICE STUFF
 def list_usb_devices():
@@ -36,30 +37,96 @@ def list_usb_devices():
     return devices
 
 # MONITOR STUFF
-monitor = None
-monitor_labels = {}
+ui_monitor = None
+ui_monitor_labels = {}
 def update_monitor(line):
-    global monitor, monitor_labels
+    global ui_monitor, ui_monitor_labels
     """Update monitor panel with new data."""
-    parts = line.split("/")
+
+    parts = line.strip().split("/")
+    if len(parts) != 4: return # If there aren't exactly 4 parts, the line is malformed. So, skip it.
     title = parts[1]
     data_label = parts[2]
     value = parts[3]
 
-    if monitor is None: # If the monitor window doesn't exist yet, create it
-        monitor = tk.Tk()
-        monitor.title(title)
+    if ui_monitor is None: # If the monitor window doesn't exist yet, create it
+        ui_monitor = tk.Tk()
+        ui_monitor.title(title)
 
-    if data_label not in monitor_labels: # If this data label hasn't been seen yet, create it
-        monitor_labels[data_label] = tk.Label(monitor, text=f"{data_label}: {value}", font=("Helvetica", 12))
-        monitor_labels[data_label].pack()
+    if data_label not in ui_monitor_labels: # If this data label hasn't been seen yet, create it
+        ui_monitor_labels[data_label] = tk.Label(ui_monitor, text=f"{data_label}: {value}", font=("Helvetica", 12))
+        ui_monitor_labels[data_label].pack()
     else: # (Otherwise, update the existing label)
-        monitor_labels[data_label].config(text=f"{data_label}: {value}")
+        ui_monitor_labels[data_label].config(text=f"{data_label}: {value}")
 
-    monitor.update()
+    try:
+        if ui_monitor.winfo_exists(): # Check if the monitor window still exists.
+            ui_monitor.update() # If it does, update the monitor.
+    except tk.TclError:
+        ui_monitor = None # If it doesn't, someone is probably trying to exit the serial program. So, set the monitor to None.
+
+# GRAPH STUFF
+ui_graph = None
+ui_graph_axes = None
+ui_graph_lines = {}
+ui_graph_series = defaultdict(lambda: ([], []))  # {DataLabel: ([ticks], [values])}
+
+def update_graph(line, plt):
+    global ui_graph, ui_graph_axes, ui_graph_lines, ui_graph_series
+
+    # Parse the line
+    parts = line.strip().split("/")
+
+    # Check if the line is valid
+    if len(parts) != 5: return # If there aren't exactly 5 parts, the line is malformed. So, skip it.
+    try:
+        tick = float(parts[3])
+        value = float(parts[4])
+    except ValueError: return # If the conversion to float fails, the line is malformed. So, skip it.
+
+    title = parts[1]
+    data_label = parts[2]
+    tick = float(parts[3])  # Convert to float or int depending on your data
+    value = float(parts[4])
+
+    # Update series
+    ui_graph_series[data_label][0].append(tick)
+    ui_graph_series[data_label][1].append(value)
+
+    # Limit to 1000 points
+    if len(ui_graph_series[data_label][0]) > 1000:
+        ui_graph_series[data_label][0].pop(0)
+        ui_graph_series[data_label][1].pop(0)
+
+    # Create graph if it doesn't exist
+    if ui_graph is None:
+        ui_graph, ui_graph_axes = plt.subplots()
+        ui_graph_axes.set_title(title)
+        ui_graph_axes.set_xlabel("Tick")
+        ui_graph_axes.set_ylabel("Value")
+        for label, (x, y) in ui_graph_series.items():
+            ui_graph_lines[label], = ui_graph_axes.plot(x, y, label=label)
+        ui_graph_axes.legend()
+        plt.ion()  # Interactive mode on
+        plt.show()
+    else:
+        # Update existing graph
+        for label, (x, y) in ui_graph_series.items():
+            if label not in ui_graph_lines:
+                ui_graph_lines[label], = ui_graph_axes.plot(x, y, label=label)
+                ui_graph_axes.legend()
+            else:
+                ui_graph_lines[label].set_data(x, y)
+        # Rescale axes if necessary
+        ui_graph_axes.relim()
+        ui_graph_axes.autoscale_view()
+        ui_graph.canvas.draw()
+        ui_graph.canvas.flush_events()
+        
 
 
-def main(ls=False, device="", monitor=None, filter=None, showall=False):
+def main(ls=False, device="", monitor=None, graph=None, filter=None, showall=False):
+    global ui_monitor, ui_graph
     """Main function for serial communication."""
     if device == "":
         devices = list_usb_devices()
@@ -77,6 +144,10 @@ def main(ls=False, device="", monitor=None, filter=None, showall=False):
 
     print(f"[bold blue]Selected USB device:[/bold blue] [green]{selected_device}[/green]")
 
+    if(graph): # Import matplotlib if graphing is used
+        import matplotlib.pyplot as plt
+
+
     try:
         with serial.Serial(selected_device, 115200, timeout=1) as ser:
             print(f"[bold blue]Connected to {selected_device} at 115200 baud.[/bold blue]")
@@ -87,15 +158,21 @@ def main(ls=False, device="", monitor=None, filter=None, showall=False):
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 if not line: # Skip empty lines
                     continue
-                if line.startswith("m/"): # Message has a special tag, so handle accordingly.
-                    if monitor and line.startswith(f"m/{monitor}/"): # Message contains monitor data, so update the monitor.
+                if line.startswith("mtr/") or line.startswith("gph/"): # Message has a special tag, so handle accordingly.
+                    if monitor and line.startswith(f"mtr/{monitor}/"): # Message contains monitor data, so update the monitor.
                         update_monitor(line)
+                    elif graph and line.startswith(f"gph/{graph}/"):
+                        update_graph(line, plt)
                 elif not filter or (filter in line): # If message isn't being filtered out, print it.
                     print(line)
     except serial.SerialException as e:
         print(f"[bold red]Failed to open serial port {selected_device}: {e}[/bold red]", file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt:
+        if ui_monitor is not None:
+            ui_monitor.destroy()
+        if ui_graph is not None:
+            plt.close(ui_graph)
         print("\n[bold blue]Exiting...[/bold blue]")
 
 if __name__ == '__main__':

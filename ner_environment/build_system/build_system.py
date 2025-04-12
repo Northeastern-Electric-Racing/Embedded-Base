@@ -193,10 +193,11 @@ def serial2(
             ls: bool = typer.Option(False, "--list", help="List available serial devices and exit."),
             device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
             monitor: str = typer.Option(None, "--monitor", help="Opens a monitor window of the specified title."),
+            graph: str = typer.Option(None, "--graph", help="Opens a graph window of the specified title."),
             filter: str = typer.Option(None, "--filter", help="Only shows specific messages. Ex. 'ner serial2 --filter EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
     """Custom serial terminal."""
     
-    serial2_start(ls=ls, device=device, monitor=monitor, filter=filter)
+    serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
 
 # ==============================================================================
 # Update command
