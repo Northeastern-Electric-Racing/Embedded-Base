@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include "stm32f4xx_hal.h"
 
 /*
 * @brief Adds a new data point to a serial monitor window.
