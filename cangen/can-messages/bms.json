@@ -491,59 +491,42 @@
           "inc_min": 0.01,
           "inc_max": 0.3
         }
-      },
-      {
-        "size": 8,
-        "signed": true,
-        "sim": {
-          "min": 10,
-          "max": 50,
-          "inc_min": 0.01,
-          "inc_max": 0.3
-        }
       }
     ],
     "fields": [
       {
-        "name": "BMS/Segment_Temp/1",
+        "name": "BMS/Segment_Temp/0",
         "unit": "C",
         "values": [
           1
         ]
       },
       {
-        "name": "BMS/Segment_Temp/2",
+        "name": "BMS/Segment_Temp/1",
         "unit": "C",
         "values": [
           2
         ]
       },
       {
-        "name": "BMS/Segment_Temp/3",
+        "name": "BMS/Segment_Temp/2",
         "unit": "C",
         "values": [
           3
         ]
       },
       {
-        "name": "BMS/Segment_Temp/4",
+        "name": "BMS/Segment_Temp/3",
         "unit": "C",
         "values": [
           4
         ]
       },
       {
-        "name": "BMS/Segment_Temp/5",
+        "name": "BMS/Segment_Temp/4",
         "unit": "C",
         "values": [
           5
-        ]
-      },
-      {
-        "name": "BMS/Segment_Temp/6",
-        "unit": "C",
-        "values": [
-          6
         ]
       }
     ],
