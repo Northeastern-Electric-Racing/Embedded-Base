@@ -217,6 +217,10 @@ def update():
 @app.command(help="WSL-specific commands")
 def wsl(attach: bool = typer.Option(False, "--attach", "-a", help="Allows you to attach a USB device to WSL")):
 
+    if is_wsl() == 0:
+        print("[bold red] Error: This command is only available in WSL")
+        sys.exit(1)
+        
     if attach:
         wsl_run(attach=True)
     else:

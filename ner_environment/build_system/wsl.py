@@ -3,15 +3,6 @@ import sys
 from rich import print
 import subprocess
 
-# Checks if the script is running in a WSL
-def is_wsl():
-    try:
-        with open('/proc/version', 'r') as f:
-            version_info = f.read().lower()
-            return 'microsoft' in version_info or 'wsl' in version_info
-    except FileNotFoundError:
-        return False
-
 # Asks the user a yes/no question. If the answer is 'y', it continues. Otherwise, it exits the script.
 def yes_no(prompt, ideal_response="y", exit_msg="Exiting."):
     print(prompt)
@@ -103,11 +94,6 @@ def wsl_attach():
     return
 
 def main(attach):
-    # If the user isn't in WSL, give them a warning.
-    if not is_wsl():
-        print("[bold red]This script is intended to be run in WSL (Windows Subsystem for Linux). It doesn't seem like you're in WSL.")
-        yes_no("[green]Do you want to continue anyway? (y/n)")
-        
     # If the attach flag is set, run the wsl_attach command
     if attach:
         wsl_attach()
