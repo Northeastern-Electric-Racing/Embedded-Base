@@ -26,6 +26,7 @@ from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .wsl import main as wsl_run
 
 # ==============================================================================
 # Typer application setup
@@ -208,7 +209,20 @@ def update():
             sys.exit(1)
 
     run_command(command)
-    
+
+# ==============================================================================
+# WSL command
+# ==============================================================================
+
+@app.command(help="WSL-specific commands")
+def wsl(attach: bool = typer.Option(False, "--attach", "-a", help="Allows you to attach a USB device to WSL")):
+
+    if attach:
+        wsl_run(attach=True)
+    else:
+        print("[bold red] Error: No valid option specified. Run 'ner wsl --help' for more information.")
+        sys.exit(1)
+
 # ==============================================================================
 # USBIP command
 # ==============================================================================
