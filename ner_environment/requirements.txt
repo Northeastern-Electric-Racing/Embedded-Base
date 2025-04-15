@@ -3,3 +3,5 @@ pre-commit
 clang-format
 pyserial
 typer
+matplotlib
+rich
