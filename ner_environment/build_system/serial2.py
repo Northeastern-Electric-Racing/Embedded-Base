@@ -8,6 +8,13 @@ import serial.tools.list_ports
 import tkinter as tk
 from collections import defaultdict
 
+# Returns true if the script is running in WSL. Returns false otherwise.
+def is_wsl():
+    with open('/proc/version', 'r') as f:
+        if 'microsoft' in f.read().lower():
+            return True
+    return False
+
 # USB DEVICE STUFF
 def list_usb_devices():
     """List available USB serial devices based on the operating system."""
@@ -25,6 +32,13 @@ def list_usb_devices():
 
         if not devices:
             print(f"[bold red]No USB devices found on {os_name}.[/bold red]", file=sys.stderr)
+            if is_wsl():
+                print("\n[blue]If you're using WSL, you may need to attach attach the USB device in a Windows terminal.")
+                print("1. Open a Windows terminal [bold blue]with admin privalleges[/bold blue] and enter 'usbipd list'.")
+                print("2. Find the device you want to attach (probably named something like 'CMSIS-DAP v2 Interface' or 'USB Serial Device')")
+                print("3. Note the device's BUSID and run [bold green]'usbipd bind --busid=<BUSID>'[/bold green]. (If you've mounted the device before, skip this step.)")
+                print("4. Then, run [bold green]'usbipd attach --wsl=ubuntu --busid <BUSID>'.")
+                print("5. It should work now, so try running the command again.\n")
             sys.exit(1)
 
     except subprocess.CalledProcessError as e:
