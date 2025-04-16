@@ -58,38 +58,18 @@ def wsl_attach():
     print("[bold green]Please select a BUSID (ex. 1-1, 1-3, etc.) to attach.[/bold green]")
     busid = input("BUSID: ")
 
-    # Attempt to attach the device
-    print(f"[bold blue]Attempting to attach BUSID {busid}...[/bold blue]")
+    # Attach the device
+    print(f"[bold blue]Running Windows command: usbipd attach --wsl=ubuntu --busid {busid}[/bold blue]")
     output = powershell_command(f"usbipd attach --wsl=ubuntu --busid {busid}")
-    if "Device is not shared" in output:
-        print("[bold red]Failed to attach device. If this is your first time trying to attach the device, you may need to bind it.[/bold red]")
-        yes_no("[bold blue]Would you like to bind the device? (y/n):[/bold blue]", ideal_response="y", exit_msg="Exiting. (You need to bind the device to attach it.)")
-        powershell_command(f"usbipd bind --busid={busid}", admin=True)
-        output = powershell_command(f"usbipd attach --wsl=ubuntu --busid {busid}")
-        if "Device is not shared" in output:
-            # Error: Device needs to be attached
-            print("[bold red]Failed to bind device. You may need to try doing this manually.[/bold red]")
-            print("[bold green](The command is: usbipd bind --busid=<busid>. You would need to run it in a Windows terminal as an administrator.)[/bold green]")
-            print("Exiting...")
-            sys.exit(1)
-        else:
-            print("[bold green]Device bound and attached successfully![/bold green]")
-            print("[bold green]You can access the device in WSL now.[/bold green]")
-    elif "Device with busid" in output:
-        # Error: Device is already attached
-        print("[bold red]That device is already attached. Please try again with a different device.[/bold red]")
-        sys.exit(1)
-    elif "the device will be available" in output:
-        # Success
+    print(output)
+
+    if "usbipd bind" in output:
+        yes_no(f"[bold blue]Do you want to run usbipd bind --busid {busid}? (y/n)[/bold blue]", exit_msg="Exiting. (You need to bind for this command to work.)")
+        powershell_command(f"usbipd bind --busid {busid}", admin=True)
+        print("[bold blue]Bounded device. Please try running 'ner wsl --attach' (or 'ner wsl -a') again to attach it.[/bold blue]")
+
+    if "error" not in output:
         print("[bold green]Device attached successfully![/bold green]")
-        print("[bold green]You should be able to access the device in WSL now.[/bold green]")
-    else:
-        # Unknown error, so print the output message for debugging
-        print("[bold red]An unknown error occurred while trying to attach the device.[/bold red]")
-        print("(This probably means the usbipd output messages changed.)")
-        print("[bold green]Please try running the command again, or check the output for more information:[/bold green]")
-        print(output)
-        sys.exit(1)
 
     return
 
