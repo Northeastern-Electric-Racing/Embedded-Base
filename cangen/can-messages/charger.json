@@ -199,14 +199,14 @@
         "name": "Charger/Box/F_CommTimeout",
         "unit": "bool",
         "values": [
-          3
+          7
         ]
       },
       {
         "name": "Charger/Box/F_WrongBatConnection",
         "unit": "bool",
         "values": [
-          4
+          6
         ]
       },
       {
@@ -220,14 +220,14 @@
         "name": "Charger/Box/F_OverTemp",
         "unit": "bool",
         "values": [
-          6
+          4
         ]
       },
       {
         "name": "Charger/Box/F_HardwareFailure",
         "unit": "bool",
         "values": [
-          7
+          3
         ]
       },
       {
