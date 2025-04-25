@@ -305,7 +305,6 @@
       {
         "name": "BMS/Cells/Volts_Avg_Value",
         "unit": "V",
-        "format": "divide10000",
         "values": [
           7
         ]
