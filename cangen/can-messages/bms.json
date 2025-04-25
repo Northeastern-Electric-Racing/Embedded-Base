@@ -22,8 +22,7 @@
           "max": 50,
           "inc_min": 0,
           "inc_max": 3
-        },
-        "parse": false
+        }
       },
       {
         "size": 16,
@@ -319,6 +318,7 @@
     "points": [
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 10,
           "max": 50,
@@ -348,6 +348,7 @@
       },
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 10,
           "max": 50,
@@ -377,6 +378,7 @@
       },
       {
         "size": 16,
+        "format": "divide100",
         "sim": {
           "min": 10,
           "max": 50,
@@ -969,8 +971,8 @@
         "sim": {
           "min": 2.5,
           "max": 4.2,
-          "inc_min":0.005,
-          "inc_max":1
+          "inc_min": 0.005,
+          "inc_max": 1
         }
       },
       {
@@ -979,8 +981,8 @@
         "sim": {
           "min": 2.5,
           "max": 4.2,
-          "inc_min":0.005,
-          "inc_max":1
+          "inc_min": 0.005,
+          "inc_max": 1
         }
       },
       {
@@ -989,8 +991,8 @@
         "sim": {
           "min": 2.5,
           "max": 4.2,
-          "inc_min":0.005,
-          "inc_max":1
+          "inc_min": 0.005,
+          "inc_max": 1
         }
       },
       {
@@ -999,8 +1001,8 @@
         "sim": {
           "min": 2.5,
           "max": 4.2,
-          "inc_min":0.005,
-          "inc_max":1
+          "inc_min": 0.005,
+          "inc_max": 1
         }
       },
       {
@@ -1009,8 +1011,8 @@
         "sim": {
           "min": 2.5,
           "max": 4.2,
-          "inc_min":0.005,
-          "inc_max":1
+          "inc_min": 0.005,
+          "inc_max": 1
         }
       },
       {
@@ -1056,8 +1058,8 @@
       },
       {
         "name": "BMS/Segment_Volt/Extra",
-        "unit":"",
-        "values":[
+        "unit": "",
+        "values": [
           6
         ]
       }
@@ -1327,7 +1329,7 @@
         "size": 16
       }
     ],
-    "fields":[
+    "fields": [
       {
         "name": "BMS/PerCell/OverflowID",
         "unit": "can_id",
@@ -1348,28 +1350,28 @@
     "id": "0x6F2",
     "desc": "PEC Error Count Notification per Chip",
     "points": [
-        {
-            "size": 8
-        },
-        {
-            "size": 16
-        }
+      {
+        "size": 8
+      },
+      {
+        "size": 16
+      }
     ],
     "fields": [
-        {
-            "name": "BMS/PerChip/PECErrorChip",
-            "unit": "chip_id",
-            "values": [
-                1
-            ]
-        },
-        {
-            "name": "BMS/PerChip/PECErrorCount",
-            "unit": "",
-            "values": [
-                2
-            ]
-        }
+      {
+        "name": "BMS/PerChip/PECErrorChip",
+        "unit": "chip_id",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/PerChip/PECErrorCount",
+        "unit": "",
+        "values": [
+          2
+        ]
+      }
     ]
   },
   {
