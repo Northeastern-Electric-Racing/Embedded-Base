@@ -1160,6 +1160,719 @@
       "sim_freq": 1000
     },
     {
+      "id": "0x50A",
+      "desc": "MPU GPIO Expander Debug",
+      "points": [
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        }
+      ],
+      "fields": [
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/PUMP_CTRL_1",
+          "unit": "",
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/PUMP_CTRL_2",
+          "unit": "",
+          "values": [
+            2
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/BRKLIGHT_CTRL",
+          "unit": "",
+          "values": [
+            3
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/FANBATTBOX_CTRL",
+          "unit": "",
+          "values": [
+            4
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/RTDS_CTRL",
+          "unit": "",
+          "values": [
+            5
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/RADFAN_CTRL_1",
+          "unit": "",
+          "values": [
+            6
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/RADFAN_CTRL_2",
+          "unit": "",
+          "values": [
+            7
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/BATTBOX_FUSE_STAT",
+          "unit": "",
+          "values": [
+            8
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/LV_BOARDS_FUSE_STAT",
+          "unit": "",
+          "values": [
+            9
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/RADFAN_FUSE_STAT",
+          "unit": "",
+          "values": [
+            10
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/FANBATTBOX_FUSE_STAT",
+          "unit": "",
+          "values": [
+            11
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/DASHBOARD_FUSE_STAT",
+          "unit": "",
+          "values": [
+            12
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/BRKLIGHT_FUSE_STAT",
+          "unit": "",
+          "values": [
+            13
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/SD_TO_BRB_FUSE_STAT",
+          "unit": "",
+          "values": [
+            14
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/PUMP_FUSE_STAT1",
+          "unit": "",
+          "values": [
+            15
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/CTRL/PUMP_FUSE_STAT2",
+          "unit": "",
+          "values": [
+            16
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/CKPT_BRB_CLR",
+          "unit": "",
+          "values": [
+            17
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/BMS_GOOD",
+          "unit": "",
+          "values": [
+            18
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/INERTIA_SW_GOOD",
+          "unit": "",
+          "values": [
+            19
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SPARE_GPIO1",
+          "unit": "",
+          "values": [
+            20
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/IMD_GOOD",
+          "unit": "",
+          "values": [
+            21
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/BSPD_GOOD",
+          "unit": "",
+          "values": [
+            22
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SHUTDOWN_06",
+          "unit": "",
+          "values": [
+            23
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SHUTDOWN_07",
+          "unit": "",
+          "values": [
+            24
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SHUTDOWN_10",
+          "unit": "",
+          "values": [
+            25
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/MC_STAT",
+          "unit": "",
+          "values": [
+            26
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SPARE_IN",
+          "unit": "",
+          "values": [
+            27
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/SHUTDOWN_13",
+          "unit": "",
+          "values": [
+            28
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/TSMS_SENSE",
+          "unit": "",
+          "values": [
+            29
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/BOTS_GOOD",
+          "unit": "",
+          "values": [
+            30
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/HVD_INTLK_GOOD",
+          "unit": "",
+          "values": [
+            31
+          ]
+        },
+        {
+          "name": "MPU/GPIO_EXPANDER_DEBUG/SHUTDOWN/HVC_INTLK_GOOD",
+          "unit": "",
+          "values": [
+            32
+          ]
+        }
+      ],
+      "sim_freq": 1000
+    },
+    {
       "id": "0x508",
       "desc": "PDU Current",
       "points": [
