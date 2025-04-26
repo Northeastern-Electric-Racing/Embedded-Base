@@ -1081,11 +1081,33 @@
           }
         },
         {
-          "size": 7,
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 6,
           "parse": false
         }
       ],
       "fields": [
+        {
+          "name": "MPU/Fuses/BRKLIGHT_CTRL",
+          "unit": "",
+          "values": [
+            1
+          ]
+        },
         {
           "name": "MPU/Fuses/BATTBOX_FUSE_STAT",
           "unit": "",
