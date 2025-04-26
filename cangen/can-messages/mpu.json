@@ -879,63 +879,162 @@
               ]
             ]
           }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.95
+              ],
+              [
+                1,
+                0.05
+              ]
+            ]
+          }
+        },
+        {
+          "size": 3,
+          "parse": false
         }
       ],
       "fields": [
         {
-          "name": "MPU/Shutdown/BMS_GOOD",
+          "name": "MPU/Shutdown/CKPT_BRB_CLR",
           "unit": "",
           "values": [
             1
           ]
         },
         {
-          "name": "MPU/Shutdown/INERTIA_SW_GOOD",
+          "name": "MPU/Shutdown/BMS_GOOD",
           "unit": "",
           "values": [
             2
           ]
         },
         {
-          "name": "MPU/Shutdown/IMD_GOOD",
+          "name": "MPU/Shutdown/INERTIA_SW_GOOD",
           "unit": "",
           "values": [
             3
           ]
         },
         {
-          "name": "MPU/Shutdown/BSPD_GOOD",
+          "name": "MPU/Shutdown/SPARE_GPIO1",
           "unit": "",
           "values": [
             4
           ]
         },
         {
-          "name": "MPU/Shutdown/MC_STAT",
+          "name": "MPU/Shutdown/IMD_GOOD",
           "unit": "",
           "values": [
             5
           ]
         },
         {
-          "name": "MPU/Shutdown/BOTS_GOOD",
+          "name": "MPU/Shutdown/BSPD_GOOD",
           "unit": "",
           "values": [
             6
           ]
         },
         {
-          "name": "MPU/Shutdown/HVD_INTLK_GOOD",
+          "name": "MPU/Shutdown/SPARE_GPIO2",
           "unit": "",
           "values": [
             7
           ]
         },
         {
-          "name": "MPU/Shutdown/HVC_INTLK_GOOD",
+          "name": "MPU/Shutdown/MC_STAT",
           "unit": "",
           "values": [
             8
+          ]
+        },
+        {
+          "name": "MPU/Shutdown/SPARE_IN",
+          "unit": "",
+          "values": [
+            9
+          ]
+        },
+        {
+          "name": "MPU/Shutdown/TSMS_SENSE",
+          "unit": "",
+          "values": [
+            10
+          ]
+        },
+        {
+          "name": "MPU/Shutdown/BOTS_GOOD",
+          "unit": "",
+          "values": [
+            11
+          ]
+        },
+        {
+          "name": "MPU/Shutdown/HVD_INTLK_GOOD",
+          "unit": "",
+          "values": [
+            12
+          ]
+        },
+        {
+          "name": "MPU/Shutdown/HVC_INTLK_GOOD",
+          "unit": "",
+          "values": [
+            13
           ]
         }
       ],
