@@ -69,7 +69,8 @@ It is recommended that the decoding of the message be done to the topic `"Calyps
 Also, you should allow for simulation of the data point whenever possible.
   - `sim_freq`, integer frequency of which this message is usually emitted, in ms
 
-
+You may want to publish the fields of a message to additional MQTT clients. Add the following optional field to specify which additional client ports the fields should be published on.
+- `clients`, (optional) list of strings representing the ports of additional MQTT clients to publish to
 
 #### NetField
 
