@@ -177,7 +177,7 @@
   },
   {
     "id": "0x30D",
-    "desc": "Energy Meter Team Data 1",
+    "desc": "Energy Meter Team Data One",
     "points": [
       {
         "size": 32,
@@ -207,7 +207,7 @@
   },
   {
     "id": "0x30E",
-    "desc": "Energy Meter Team Data 2",
+    "desc": "Energy Meter Team Data Two",
     "points": [
       {
         "size": 32,
