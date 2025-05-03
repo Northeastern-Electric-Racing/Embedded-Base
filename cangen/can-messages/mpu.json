@@ -99,6 +99,21 @@
             "inc_min": 0.1,
             "inc_max": 0.1
           }
+        },
+        {
+          "size": 8,
+          "sim": {
+            "options": [
+              [
+                0,
+                0.8
+              ],
+              [
+                1,
+                0.2
+              ]
+            ]
+          }
         }
       ],
       "fields": [
@@ -135,6 +150,13 @@
           "unit": "percentage",
           "values": [
             5
+          ]
+        },
+        {
+          "name": "MPU/State/Direction",
+          "unit": "",
+          "values": [
+            6
           ]
         }
       ],
