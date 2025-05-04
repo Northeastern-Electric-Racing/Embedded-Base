@@ -30,13 +30,8 @@
  * @param byte Byte to extract the bit from
  * @param bit_index Index of the bit to extract
  * @return The extracted bit (either 1 or 0)
- * 
- * @note Indexes bits from the MSB of the byte.
- * @note For example, consider uint8_t byte = 0b10101010:
- * @note EXTRACT_BIT(byte, 0) would return 1, while EXTRACT_BIT(byte, 7) would return 0.
- * 
 */
-#define EXTRACT_BIT(byte, bit_index) ((byte >> (7 - bit_index)) & 0x01)
+#define EXTRACT_BIT(byte, bit_index) ((byte >> (bit_index)) & 0x01)
 
 void endian_swap(void *ptr, int size);
 
