@@ -113,6 +113,15 @@
               ]
             ]
           }
+        },
+        {
+          "size": 8,
+          "sim": {
+            "min": 0,
+            "max": 50,
+            "inc_min": 5,
+            "inc_max": 5
+          }
         }
       ],
       "fields": [
@@ -156,6 +165,13 @@
           "unit": "",
           "values": [
             6
+          ]
+        },
+        {
+          "name": "MPU/State/RegenLimit",
+          "unit": "A",
+          "values": [
+            7
           ]
         }
       ],
