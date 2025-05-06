@@ -1,48 +1,62 @@
-UNITY_SRC = /cmock_portable/vendor/unity
-PROJECT_DIR = ../../..
-EMBEDDED_BASE = ..
+UNITY_SRC = /cmock_portable/vendor/unity/src
+CMOCK_SRC = /cmock_portable/src
+PROJECT_DIR = /home/app
 
 PROJECT_CORE = $(PROJECT_DIR)/Core
 TEST_DIR = $(PROJECT_DIR)/Tests
 PROJECT_SRC = $(PROJECT_CORE)/Src
 TEST_BUILD = build
 TEST_BIN = $(TEST_BUILD)/test_runner.out
-# root test files must be called 	main_test.c
 TEST_SRC = $(TEST_DIR)/Src/test_main.c
 MOCKS = ./mocks
 
 CC = gcc
 
-C_INCLUDES = \
+CMOCK_INCLUDES = \
 	-I$(TEST_DIR)/Inc \
-	-I$(PROJECT_CORE)/Inc \
 	-I$(UNITY_SRC) \
-	-I$(EMBEDDED_BASE)/middleware/include \
-	-I$(EMBEDDED_BASE)/general/include \
-	-I$(EMBEDDED_BASE)/os/inc \
+	-I$(CMOCK_SRC) \
 	-I$(MOCKS)
 
-C_SOURCES := $(shell find $(PROJECT_SRC) $(EMBEDDED_BASE)/middleware/src  \
-$(EMBEDDED_BASE)/os/src $(EMBEDDED_BASE)/general/src $(TEST_DIR)/Src -type f)
+FOREIGN_INCLUDES = \
+	-I$(PROJECT_CORE)/Inc \
+	-I$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include \
+	-I$(PROJECT_DIR)/Drivers/Embedded-Base/general/include \
+	-I$(PROJECT_DIR)/Drivers/Embedded-Base/os/inc \
+	-I$(PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc \
+	-I$(PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy \
+	-I$(PROJECT_DIR)/Drivers/CMSIS/Device/ST/STM32F4xx/Include \
+	-I$(PROJECT_DIR)/Drivers/Embedded-Base/platforms/stm32f405/include \
+	-I$(PROJECT_DIR)/Middlewares/Third_Party/FreeRTOS/Source/include \
+	-I$(PROJECT_DIR)/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
+	-I$(PROJECT_DIR)/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
 
-OBJECTS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(notdir $(C_SOURCES)))
+C_INCLUDES = $(FOREIGN_INCLUDES) $(CMOCK_INCLUDES)
 CFLAGS = -Wall -Wextra -Wno-unused-variable $(C_INCLUDES)
 
-.PHONY: mock
+.PHONY: all mock clean build
+
+all: mock build
+
 mock:
-	@echo "Running the mocking script..."
-	@bash ../dev/scripts/mock.sh 
+	@echo "Generating mocks..."
+	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(FOREIGN_INCLUDES)
 
-all: $(TEST_BIN)
-	@echo "Running unit tests..."
-	@echo $(TEST_BIN)
-
-$(TEST_BIN): $(OBJECTS) $(TEST_SRC) $(UNITY_SRC)/unity.c | $(TEST_BUILD)
-	$(CC) $(CFLAGS) $^ -o $@
-
-$(TEST_BUILD)/%.o:
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $(firstword $(filter %/$(basename $(notdir $@)).c,$(C_SOURCES))) -o $@
+build:
+	@echo "Collecting sources after mock generation..."
+	$(eval C_SOURCES := $(shell find  \
+		$(TEST_DIR)/Src \
+		$(PROJECT_SRC) \
+		$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src  \
+		$(PROJECT_DIR)/Drivers/Embedded-Base/os/src \
+		$(PROJECT_DIR)/Drivers/Embedded-Base/general/src \
+		$(PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src \
+		$(PROJECT_DIR)/Middlewares/Third_Party/FreeRTOS/Source \
+		$(MOCKS) -name '*.c'))
+	$(eval OBJECTS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(notdir $(C_SOURCES))))
+	@mkdir -p $(TEST_BUILD)
+	$(CC) $(CFLAGS) $(C_SOURCES) $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c -o $(TEST_BIN)
+	@echo "Built $(TEST_BIN)"
 
 clean:
 	rm -rf $(TEST_BUILD)
