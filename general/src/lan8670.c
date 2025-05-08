@@ -1,7 +1,7 @@
 #include "lan8670.h"
 
 /**
- * @brief Helper function. Modifies a specific bit in a register of the LAN8670.
+ * @brief Modifies a specific bit in a register of the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param reg The register address to modify.
  * @param bit_mask The bit mask to modify.
@@ -23,6 +23,74 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask,
 	}
 
 	return lan->write(lan->device_address, reg, &data);
+}
+
+/**
+ * @brief Reads a register from the LAN8670's MMD interface.
+ * @param lan Pointer to the lan8670_t instance.
+ * @param mmd_addr The MMD device address (PMA/PMD, PCS, or MISC).
+ * @param register_offset The offset of the register within the MMD group.
+ * @param data Buffer to store the read data.
+ * @return 0 on success, or a non-zero error code.
+ */
+static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
+			     uint16_t register_offset, uint16_t *data)
+{
+	/* Set DEVAD field and FNCTN = 00 (Address) */
+	uint16_t mmd_ctrl =
+		mmd_addr &
+		0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
+	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+	if (status != 0)
+		return status;
+
+	/* Write register offset to MMDAD */
+	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
+	if (status != 0)
+		return status;
+
+	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
+	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
+	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+	if (status != 0)
+		return status;
+
+	/* Read data from MMDAD */
+	return lan->read(lan->device_address, REG_MMDAD, data);
+}
+
+/**
+ * @brief Writes to a register in the LAN8670's MMD interface.
+ * @param lan Pointer to the lan8670_t instance.
+ * @param mmd_addr The MMD device address (PMA/PMD, PCS, or MISC).
+ * @param register_offset The offset of the register within the MMD group.
+ * @param data The data to be written to the register.
+ * @return 0 on success, or a non-zero error code.
+ */
+static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
+			      uint16_t register_offset, uint16_t data)
+{
+	/* Set DEVAD field and FNCTN = 00 (Address) */
+	uint16_t mmd_ctrl =
+		mmd_addr &
+		0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
+	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+	if (status != 0)
+		return status;
+
+	/* Write register offset to MMDAD */
+	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
+	if (status != 0)
+		return status;
+
+	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
+	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
+	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+	if (status != 0)
+		return status;
+
+	/* Write data to MMDAD */
+	return lan->write(lan->device_address, REG_MMDAD, data);
 }
 
 /**
