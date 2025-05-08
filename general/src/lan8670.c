@@ -101,8 +101,7 @@
  * @param setting true to set the bit, false to clear it.
  * @return 0 on success, or a non-zero error code.
  */
-static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask,
-			       bool setting)
+static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask, bool setting)
 {
 	uint32_t data = 0;
 	int status = lan->read(lan->device_address, reg, &data);
@@ -125,26 +124,30 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask,
  * @param data Buffer to store the read data.
  * @return 0 on success, or a non-zero error code.
  */
-static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
-			     uint16_t register_offset, uint16_t *data)
+static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t *data)
 {
-	/* Set DEVAD field and FNCTN = 00 (Address) */
-	uint16_t mmd_ctrl = mmd_addr & 0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
+	/* Tell the MMDCTRL register what MMD device you intend to access (either PMA/PMD, PCS, or MISC). */
+	uint16_t mmd_ctrl = mmd_addr & 0x1F;
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) return status;
 
-	/* Write register offset to MMDAD */
+	/* Tell the MMDAD register what specific register you want to access (by writing the register offset) */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
 	if (status != 0) return status;
 
-	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
-	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
+	/* Set the MMD function to 'Data - No post increment' */
+	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); // Set FNCTN[1:0] to 01 (see page 70 of datasheet).
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) return status;
 
 	/* Read data from MMDAD */
 	return lan->read(lan->device_address, REG_MMDAD, data);
 }
+// EXAMPLE USAGE:
+// To read the '10BASE-T1S Test Mode Control' register, which is a PMA/PMD register, you would write:
+// uint16_t data;
+// read_mmd_register(lan, MMD_PMAPMD, MISC_PINCTRL, data);
+// (Note: All the register macros are defined at the top of this file.)
 
 /**
  * @brief Helper function. Writes to a register in the LAN8670's MMD interface.
@@ -154,31 +157,34 @@ static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
  * @param data The data to be written to the register.
  * @return 0 on success, or a non-zero error code.
  */
-static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
-			      uint16_t register_offset, uint16_t data)
+static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t data)
 {
-	/* Set DEVAD field and FNCTN = 00 (Address) */
+	/* Tell the MMDCTRL register what MMD device you intend to access (either PMA/PMD, PCS, or MISC). */
 	uint16_t mmd_ctrl = mmd_addr & 0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) return status;
 
-	/* Write register offset to MMDAD */
+	/* Tell the MMDAD register what specific register you want to access (by writing the register offset) */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
 	if (status != 0) return status;
 
-	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
-	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
+	/* Set the MMD function to 'Data - No post increment' */
+	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); // Set FNCTN[1:0] to 01 (see page 70 of datasheet).
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) return status;
 
 	/* Write data to MMDAD */
 	return lan->write(lan->device_address, REG_MMDAD, data);
 }
+// EXAMPLE USAGE:
+// To write the 'Pin Control Register' register, which is a Miscellaneous register, you would write:
+// uint16_t data;
+// write_mmd_register(lan, MMD_MISC, MISC_PINCTRL, data);
+// (Note: All the register macros are defined at the top of this file.)
 
 /**** API FUNCTIONS ****/
 
-void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read,
-		  WriteFunction write)
+void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read, WriteFunction write)
 {
 	lan->write = write;
 	lan->read = read;

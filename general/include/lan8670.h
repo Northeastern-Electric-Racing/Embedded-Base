@@ -12,7 +12,7 @@
 
 /* FUNCTION POINTERS */
 typedef int (*ReadFunction)(uint32_t device_address, uint32_t register_address, uint32_t *data); // Function pointer for reading data from the PHY. Analagous to HAL_ETH_ReadPHYRegister() in the STM32 HAL.
-typedef int (*WriteFunction)(uint32_t device_address, uint32_t register_address, uint32_t *data); // Function pointer for writing data to the PHY. Analagous to HAL_ETH_WritePHYRegister() in the STM32 HAL.
+typedef int (*WriteFunction)(uint32_t device_address, uint32_t register_address, uint32_t data); // Function pointer for writing data to the PHY. Analagous to HAL_ETH_WritePHYRegister() in the STM32 HAL.
 
 /* LAN8670 STRUCT */
 typedef struct {
