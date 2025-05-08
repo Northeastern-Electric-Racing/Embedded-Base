@@ -108,9 +108,13 @@ static void debug(lan8670_t *lan, const char *format, ...) {
     
     va_list args;
     va_start(args, format);
-    printf("[LAN8670] ");
+    printf("[LAN8670] "); // Every debug message starts with this tag
     vprintf(format, args);
     va_end(args);
+
+	// CONVENTION FOR DEBUG ERROR CODES:
+	// Just start the message with something like "ERROR xxxx: ".
+	// xxxx can be any 4-digit number, as long as it's not already used.
 }
 
 /**
@@ -126,7 +130,7 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask, bool 
 	uint32_t data = 0;
 	int status = lan->read(lan->device_address, reg, &data);
 	if (status != 0) {
-		debug("ERROR D1: modify_register_bit() failed when trying to read register %X with lan->read(). (Status: %d)\n",reg,status);
+		debug("ERROR 1510: modify_register_bit() failed when trying to read register %X with lan->read(). (Status: %d)\n",reg,status);
 		return status; // ERROR: Read failed.
 	}
 
@@ -138,7 +142,7 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask, bool 
 
 	status = lan->write(lan->device_address, reg, &data);
 	if (status != 0) {
-		debug("ERROR D2: modify_register_bit() failed when trying to write register %X with lan->write(). (Status: %d)\n",reg,status);
+		debug("ERROR 1511: modify_register_bit() failed when trying to write register %X with lan->write(). (Status: %d)\n",reg,status);
 		return status;
 	}
 }
@@ -151,20 +155,20 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask, bool 
  * @param data Buffer to store the read data.
  * @return 0 on success, or a non-zero error code.
  */
-static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t *data)
+static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t *data)
 {
 	/* Tell the MMDCTRL register what MMD device you intend to access (either PMA/PMD, PCS, or MISC). */
 	uint16_t mmd_ctrl = mmd_addr & 0x1F;
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) {
-		debug("ERROR D3: read_mmd_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1970: mmd_read_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
 	/* Tell the MMDAD register what specific register you want to access (by writing the register offset) */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
 	if (status != 0) {
-		debug("ERROR D4: read_mmd_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1971: mmd_read_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
@@ -172,21 +176,21 @@ static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
 	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); // Set FNCTN[1:0] to 01 (see page 70 of datasheet).
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) {
-		debug("ERROR D5: read_mmd_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1972: mmd_read_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
 	/* Read data from MMDAD */
 	status = lan->read(lan->device_address, REG_MMDAD, data);
 	if (status != 0) {
-		debug("ERROR D6: read_mmd_register() failed when trying to read REG_MMDAD with lan->read(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1973: mmd_read_register() failed when trying to read REG_MMDAD with lan->read(). This was done while trying to read register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 }
 // EXAMPLE USAGE:
 // To read the '10BASE-T1S Test Mode Control' register, which is a PMA/PMD register, you would write:
 // uint16_t data;
-// read_mmd_register(lan, MMD_PMAPMD, MISC_PINCTRL, data);
+// mmd_read_register(lan, MMD_PMAPMD, MISC_PINCTRL, data);
 // (Note: All the register macros are defined at the top of this file.)
 
 /**
@@ -197,20 +201,20 @@ static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
  * @param data The data to be written to the register.
  * @return 0 on success, or a non-zero error code.
  */
-static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t data)
+static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t data)
 {
 	/* Tell the MMDCTRL register what MMD device you intend to access (either PMA/PMD, PCS, or MISC). */
 	uint16_t mmd_ctrl = mmd_addr & 0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) {
-		debug("ERROR D7: write_mmd_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1444: mmd_write_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
 	/* Tell the MMDAD register what specific register you want to access (by writing the register offset) */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
 	if (status != 0) {
-		debug("ERROR D8: write_mmd_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1445: mmd_write_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
@@ -218,22 +222,57 @@ static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
 	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); // Set FNCTN[1:0] to 01 (see page 70 of datasheet).
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
 	if (status != 0) {
-		debug("ERROR D9: write_mmd_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1446: mmd_write_register() failed when trying to write REG_MMDCTRL with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 
 	/* Write data to MMDAD */
 	status = lan->write(lan->device_address, REG_MMDAD, data);
 	if (status != 0) {
-		debug("ERROR D10: write_mmd_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
+		debug("ERROR 1447: mmd_write_register() failed when trying to write REG_MMDAD with lan->write(). This was done while trying to write register %X of MMD device %X. (Status: %d).\n",register_offset,mmd_addr,status);
 		return status;
 	}
 }
 // EXAMPLE USAGE:
 // To write the 'Pin Control Register' register, which is a Miscellaneous register, you would write:
 // uint16_t data;
-// write_mmd_register(lan, MMD_MISC, MISC_PINCTRL, data);
+// mmd_write_register(lan, MMD_MISC, MISC_PINCTRL, data);
 // (Note: All the register macros are defined at the top of this file.)
+
+/**
+ * @brief Helper function (Just modify_register_bit() but for mmd registers). Modifies a specific bit in a register of the LAN8670's MMD interface.
+ * @param lan Pointer to the lan8670_t instance.
+ * @param mmd_addr The MMD device address (PMA/PMD, PCS, or MISC).
+ * @param register_offset The offset of the register within the MMD group.
+ * @param bit_mask The bit mask to modify.
+ * @param setting true to set the bit, false to clear it.
+ * @return 0 on success, or a non-zero error code.
+ */
+static int mmd_modify_register_bit(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t bit_mask, bool setting)
+{
+	uint16_t data = 0;
+	int status = mmd_read_register(lan, mmd_addr, register_offset, &data);
+	if (status != 0) {
+		debug("ERROR 1995: mmd_modify_register_bit() failed when trying to read register %X of MMD device %X. (Status: %d)\n",
+		register_offset, mmd_addr, status);
+		return status; // ERROR: Read failed.
+	}
+
+	if (setting) {
+		data |= bit_mask; // Set the bit specified by bit_mask
+	} else {
+		data &= ~bit_mask; // Clear the bit specified by bit_mask
+	}
+
+	status = mmd_write_register(lan, mmd_addr, register_offset, data);
+	if (status != 0) {
+		debug("ERROR 1996: mmd_modify_register_bit() failed when trying to write register %X of MMD device %X. (Status: %d)\n",
+		register_offset, mmd_addr, status);
+		return status; // ERROR: Write failed.
+	}
+
+return 0; // Success
+}
 
 /**** API FUNCTIONS ****/
 
@@ -249,7 +288,7 @@ int lan8670_reset(lan8670_t *lan)
 	uint32_t data = 0x8000; // Makes bit 15 = 1. This starts a software reset of the PHY.
 	int status = lan->write(lan->device_address, REG_BASIC_CONTROL, &data);
 	if(status != 0) {
-		debug("ERROR D11: lan8670_reset() failed while trying to write REG_BASIC_CONTROL with lan->write() (Status: %d).\n", status);
+		debug("ERROR 1453: lan8670_reset() failed while trying to write REG_BASIC_CONTROL with lan->write() (Status: %d).\n", status);
 		return status;
 	}
 }
@@ -279,7 +318,7 @@ int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 	uint32_t data = 0;
 	int status = lan->read(lan->device_address, REG_BASIC_STATUS, &data);
 	if (status != 0) {
-		debug("ERROR D12: lan8670_detect_jabber() failed when trying to read REG_BASIC_STATUS with lan->read() (Status: %d).\n",status);
+		debug("ERROR 2001: lan8670_detect_jabber() failed when trying to read REG_BASIC_STATUS with lan->read() (Status: %d).\n",status);
 		return status;
 	}
 	*jabber_status = (data & 0x02) != 0; // Check if bit 1 (jabber detection status) is set
@@ -289,11 +328,16 @@ int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 int lan8670_plca_reset(lan8670_t *lan)
 {
 	uint32_t data = 0x4000; // Makes bit 14 = 1. This starts a software reset of the PLCA reconciliation sublayer.
-	int status = write_mmd_register(lan, MMD_MISC, MISC_PLCA_CTRL0, data);
+	int status = mmd_write_register(lan, MMD_MISC, MISC_PLCA_CTRL0, data);
 	if(status != 0) {
-		debug("ERROR D13: lan8670_plca_reset() failed while calling write_mmd_register() (Status: %d).\n", status);
+		debug("ERROR 1492: lan8670_plca_reset() failed while calling mmd_write_register() (Status: %d).\n", status);
 		return status;
 	}
+}
+
+int lan8670_plca(lan8670_t *lan, bool setting)
+{
+	return modify_register_bit(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x8000, setting); // Set/clear bit 15.
 }
 
 // clang-format on
