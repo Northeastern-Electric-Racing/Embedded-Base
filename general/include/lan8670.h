@@ -91,4 +91,17 @@ int lan8670_collision_test(lan8670_t *lan, bool setting); // Enables or disables
  * @return 0 on success, or a non-zero error code from the read operation.
  */
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status); // Detects jabber condition on the LAN8670.
+
+/**
+ * @brief Enables or disables Physical Layer Collision Avoidence (PLCA).
+ * 
+ *  Note: When PLCA is enabled on a properly configured mixing segment, no collisions should occur
+ *  on the physical layer. It is therefore recommended to disable physical layer collision detection to
+ *  achieve a higher level of noise tolerance.
+ *   
+ * @param lan Pointer to the lan8670_t instance.
+ * @param setting true to enable PLCA, false to disable it.
+ * @return 0 on success, or a non-zero error code from the read/write operations.
+ */
+int lan8670_plca(lan8670_t *lan, bool setting);
 // clang-format on

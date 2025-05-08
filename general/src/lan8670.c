@@ -115,6 +115,7 @@ static void debug(lan8670_t *lan, const char *format, ...) {
 	// CONVENTION FOR DEBUG ERROR CODES:
 	// Just start the message with something like "ERROR xxxx: ".
 	// xxxx can be any 4-digit number, as long as it's not already used.
+	// Just make sure it's something you can easily ctrl+f to find.
 }
 
 /**
@@ -274,6 +275,7 @@ static int mmd_modify_register_bit(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
 return 0; // Success
 }
 
+
 /**** API FUNCTIONS ****/
 
 void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read, WriteFunction write)
@@ -337,7 +339,11 @@ int lan8670_plca_reset(lan8670_t *lan)
 
 int lan8670_plca(lan8670_t *lan, bool setting)
 {
-	return modify_register_bit(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x8000, setting); // Set/clear bit 15.
+	int status = mmd_modify_register_bit(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x8000, setting); // Set/clear bit 15.
+	if(status != 0) {
+		debug("ERROR 1776: lan8670_plca() failed while calling mmd_modify_register_bit() (Status: %d).\n", status);
+		return status;
+	}
 }
 
 // clang-format on
