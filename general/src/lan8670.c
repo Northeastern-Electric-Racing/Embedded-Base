@@ -92,7 +92,6 @@
     #define MISC_PLCA_STS    	0xCA03 // PLCA Status Register (Datasheet pg. 152)
     #define MISC_PLCA_TOTMR  	0xCA04 // PLCA Transmit Opportunity Timer Register (Datasheet pg. 153)
     #define MISC_PLCA_BURST  	0xCA05 // PLCA Burst Mode Register (Datasheet pg. 154)
-// clang-format on
 
 /**
  * @brief Helper function. Modifies a specific bit in a register of the LAN8670.
@@ -107,8 +106,7 @@ static int modify_register_bit(lan8670_t *lan, int reg, uint32_t bit_mask,
 {
 	uint32_t data = 0;
 	int status = lan->read(lan->device_address, reg, &data);
-	if (status != 0)
-		return status; // ERROR: Read failed.
+	if (status != 0) return status; // ERROR: Read failed.
 
 	if (setting) {
 		data |= bit_mask; // Set the bit specified by bit_mask
@@ -131,23 +129,18 @@ static int read_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
 			     uint16_t register_offset, uint16_t *data)
 {
 	/* Set DEVAD field and FNCTN = 00 (Address) */
-	uint16_t mmd_ctrl =
-		mmd_addr &
-		0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
+	uint16_t mmd_ctrl = mmd_addr & 0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Write register offset to MMDAD */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
 	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Read data from MMDAD */
 	return lan->read(lan->device_address, REG_MMDAD, data);
@@ -165,23 +158,18 @@ static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
 			      uint16_t register_offset, uint16_t data)
 {
 	/* Set DEVAD field and FNCTN = 00 (Address) */
-	uint16_t mmd_ctrl =
-		mmd_addr &
-		0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
+	uint16_t mmd_ctrl = mmd_addr & 0x1F; /* DEVAD in bits 4:0, FNCTN in bits 15:14 = 00 */
 	int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Write register offset to MMDAD */
 	status = lan->write(lan->device_address, REG_MMDAD, register_offset);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Set DEVAD and FNCTN = 01 (Data, no post increment) */
 	mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14); /* Set FNCTN = 01 */
 	status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
-	if (status != 0)
-		return status;
+	if (status != 0) return status;
 
 	/* Write data to MMDAD */
 	return lan->write(lan->device_address, REG_MMDAD, data);
@@ -199,42 +187,37 @@ void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read,
 
 int lan8670_reset(lan8670_t *lan)
 {
-	uint32_t data =
-		0x8000; // Makes bit 15 = 1. This starts a software reset of the PHY.
+	uint32_t data = 0x8000; // Makes bit 15 = 1. This starts a software reset of the PHY.
 	return lan->write(lan->device_address, REG_BASIC_CONTROL, &data);
 }
 
 int lan8670_loopback(lan8670_t *lan, bool setting)
 {
-	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x4000,
-				   setting); // Set/clear bit 14.
+	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x4000, setting); // Set/clear bit 14.
 }
 
 int lan8670_low_power_mode(lan8670_t *lan, bool setting)
 {
-	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x800,
-				   setting); // Set/clear bit 11.
+	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x800, setting); // Set/clear bit 11.
 }
 
 int lan8670_isolate(lan8670_t *lan, bool setting)
 {
-	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x400,
-				   setting); // Set/clear bit 10.
+	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x400, setting); // Set/clear bit 10.
 }
 
 int lan8670_collision_test(lan8670_t *lan, bool setting)
 {
-	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x80,
-				   setting); // Set/clear bit 7.
+	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x80, setting); // Set/clear bit 7.
 }
 
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 {
 	uint32_t data = 0;
 	int status = lan->read(lan->device_address, REG_BASIC_STATUS, &data);
-	if (status != 0)
-		return status; // ERROR: Read failed.
-	*jabber_status = (data & 0x02) !=
-			 0; // Check if bit 1 (jabber detection status) is set
+	if (status != 0) return status; // ERROR: Read failed.
+	*jabber_status = (data & 0x02) != 0; // Check if bit 1 (jabber detection status) is set
 	return 0;
 }
+
+// clang-format on
