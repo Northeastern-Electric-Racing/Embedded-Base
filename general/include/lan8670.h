@@ -19,6 +19,7 @@ typedef struct {
 	uint32_t device_address; // The address of the LAN8670 device.
 	ReadFunction read; // Function to read data from the PHY.
 	WriteFunction write; // Function to write data to the PHY.
+        bool debug; // Enables printfs for debugging. Defaults to false.
 } lan8670_t;
 
 /**
