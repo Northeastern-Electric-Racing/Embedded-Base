@@ -1,5 +1,5 @@
 #include "lan8670.h"
-
+/**** HELPER FUNCTIONS ****/
 /**
  * @brief Modifies a specific bit in a register of the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
@@ -93,13 +93,8 @@ static int write_mmd_register(lan8670_t *lan, uint16_t mmd_addr,
 	return lan->write(lan->device_address, REG_MMDAD, data);
 }
 
-/**
- * @brief Initializes a LAN8670 instance.
- * @param lan Pointer to the lan8670_t instance.
- * @param device_address The address of the LAN8670.
- * @param read Function pointer for reading data from the LAN8670.
- * @param write Function pointer for writing data to the LAN8670.
- */
+/**** API FUNCTIONS ****/
+
 void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read,
 		  WriteFunction write)
 {
@@ -108,11 +103,6 @@ void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read,
 	lan->device_address = device_address;
 }
 
-/**
- * @brief Performs a software reset of the LAN8670 Ethernet PHY.
- * @param lan Pointer to the lan8670_t instance.
- * @return 0 on success, or a non-zero error code.
- */
 int lan8670_reset(lan8670_t *lan)
 {
 	uint32_t data =
@@ -120,74 +110,30 @@ int lan8670_reset(lan8670_t *lan)
 	return lan->write(lan->device_address, REG_BASIC_CONTROL, &data);
 }
 
-/**
- * @brief Enables or disables loopback mode on the LAN8670.
- *
- *  When enabled, transmit data (TXD) pins from the
- *  MAC will be looped back onto the receive data (RXD) pins to the MAC. In this mode, no signal is
- *  transmitted onto the network media
- *
- * @param lan Pointer to the lan8670_t instance.
- * @param setting true to enable loopback mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
- */
 int lan8670_loopback(lan8670_t *lan, bool setting)
 {
 	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x4000,
 				   setting); // Set/clear bit 14.
 }
 
-/**
- * @brief Enables or disables the LAN8670's low power mode.
- *
- *  When enabled, the PMA will be powered down (meaning the device will not be able to 
- *  send or recieve messages). The remainder of the device will remain functional.
- *
- * @param lan Pointer to the lan8670_t instance.
- * @param setting true to enable low power mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
- */
 int lan8670_low_power_mode(lan8670_t *lan, bool setting)
 {
 	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x800,
 				   setting); // Set/clear bit 11.
 }
 
-/**
- * @brief Electrically isolates the LAN8670 from MII/RMII.
- * @param lan Pointer to the lan8670_t instance.
- * @param setting true to isolate the device, false for normal operation.
- * @return 0 on success, or a non-zero error code from the read/write operations.
- */
 int lan8670_isolate(lan8670_t *lan, bool setting)
 {
 	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x400,
 				   setting); // Set/clear bit 10.
 }
 
-/**
- * @brief Enables or disables the LAN8670's collision test mode.
- * 
- *  When enabled, asserting TXEN will cause the COL output to go high
- *  within 512 bit times. Negating TXEN will cause the COL output to go low within 4 bit times. 
- *  This mode should only be enabled when Loopback is enabled.
- *   
- * @param lan Pointer to the lan8670_t instance.
- * @param setting true to enable collision test mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
- */
 int lan8670_collision_test(lan8670_t *lan, bool setting)
 {
 	return modify_register_bit(lan, REG_BASIC_CONTROL, 0x80,
 				   setting); // Set/clear bit 7.
 }
 
-/**
- * @brief Detects jabber condition on the LAN8670.
- * @param lan Pointer to the lan8670_t instance.
- * @param jabber_status Pointer to a boolean variable to store the jabber status.
- * @return 0 on success, or a non-zero error code from the read operation.
- */
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 {
 	uint32_t data = 0;
