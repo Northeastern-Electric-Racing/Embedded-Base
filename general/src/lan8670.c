@@ -112,11 +112,6 @@ static void debug(lan8670_t *lan, const char *format, ...) {
     printf("[LAN8670] "); // Every debug message starts with this tag
     vprintf(format, args);
     va_end(args);
-
-	// CONVENTION FOR DEBUG ERROR CODES:
-	// Just start the message with something like "ERROR xxxx: ".
-	// xxxx can be any 4-digit number, as long as it's not already used.
-	// Just make sure it's something you can easily ctrl+f to find.
 }
 
 /**
@@ -132,11 +127,11 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
 {
     /* Validate bit range (If the first bit is greater than the last bit, the field is invalid.) */
     if (start > end) {
-        debug("ERROR 2002: read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
+        debug("ERROR 1000: read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
         return -1;
     }
     if (start < 0 || end > 31) {
-        debug("ERROR 2003: read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
+        debug("ERROR 1001: read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
         return -1;
     }
 
@@ -144,7 +139,7 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
     uint32_t data = 0;
     int status = lan->read(lan->device_address, reg, &data);
     if (status != 0) {
-        debug("ERROR 2004: read_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
+        debug("ERROR 1002: read_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
         return status;
     }
 
@@ -174,11 +169,11 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
 {
     /* Validate bit range (If the first bit is greater than the last bit, the field is invalid.) */
     if (start > end) {
-        debug("ERROR 2005: write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
+        debug("ERROR 2000: write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
         return -1;
     }
     if (start < 0 || end > 31) {
-        debug("ERROR 2006: write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
+        debug("ERROR 2001: write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
         return -1;
     }
 
@@ -186,7 +181,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     int field_width = end - start + 1;
     uint32_t max_value = (1U << field_width) - 1;
     if (value > max_value) {
-        debug("ERROR 2007: write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
+        debug("ERROR 2002: write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
               value, max_value, field_width);
         return -1;
     }
@@ -195,7 +190,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     uint32_t data = 0;
     int status = lan->read(lan->device_address, reg, &data);
     if (status != 0) {
-        debug("ERROR 2008: write_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
+        debug("ERROR 3000: write_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
         return status;
     }
 
@@ -206,7 +201,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     /* Write back the modified value */
     status = lan->write(lan->device_address, reg, data);
     if (status != 0) {
-        debug("ERROR 2009: write_register_field() failed to write register 0x%X (Status: %d)\n", reg, status);
+        debug("ERROR 3001: write_register_field() failed to write register 0x%X (Status: %d)\n", reg, status);
         return status;
     }
 
@@ -231,14 +226,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
     uint16_t mmd_ctrl = mmd_addr & 0x1F;
     int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
-        debug("ERROR 2024: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
+        debug("ERROR 4000: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
     status = lan->write(lan->device_address, REG_MMDAD, register_offset);
     if (status != 0) {
-        debug("ERROR 2025: mmd_read_register() failed when writing REG_MMDAD (Status: %d)\n", status);
+        debug("ERROR 4001: mmd_read_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
     }
 
@@ -246,14 +241,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
     mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14);
     status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
-        debug("ERROR 2026: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
+        debug("ERROR 4002: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Read data from MMDAD */
     status = lan->read(lan->device_address, REG_MMDAD, value);
     if (status != 0) {
-        debug("ERROR 2027: mmd_read_register() failed when reading REG_MMDAD (Status: %d)\n", status);
+        debug("ERROR 4003: mmd_read_register() failed when reading REG_MMDAD (Status: %d)\n", status);
         return status;
     }
 
@@ -278,14 +273,14 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
     uint16_t mmd_ctrl = mmd_addr & 0x1F;
     int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
-        debug("ERROR 2028: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
+        debug("ERROR 5000: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
     status = lan->write(lan->device_address, REG_MMDAD, register_offset);
     if (status != 0) {
-        debug("ERROR 2029: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
+        debug("ERROR 5001: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
     }
 
@@ -293,14 +288,14 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
     mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14);
     status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
-        debug("ERROR 2030: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
+        debug("ERROR 5002: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Write data to MMDAD */
     status = lan->write(lan->device_address, REG_MMDAD, value);
     if (status != 0) {
-        debug("ERROR 2031: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
+        debug("ERROR 5003: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
     }
 
@@ -325,11 +320,11 @@ static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
 {
     /* Validate bit range */
     if (start > end) {
-        debug("ERROR 2010: mmd_read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
+        debug("ERROR 6000: mmd_read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
         return -1;
     }
     if (start < 0 || end > 15) {
-        debug("ERROR 2011: mmd_read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
+        debug("ERROR 6001: mmd_read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
         return -1;
     }
 
@@ -337,7 +332,7 @@ static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
     uint16_t data = 0;
     int status = mmd_read_register(lan, mmd_addr, register_offset, &data);
     if (status != 0) {
-        debug("ERROR 2032: mmd_read_register_field() failed to read register (Status: %d)\n", status);
+        debug("ERROR 6002: mmd_read_register_field() failed to read register (Status: %d)\n", status);
         return status;
     }
 
@@ -368,11 +363,11 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
 {
     /* Validate bit range */
     if (start > end) {
-        debug("ERROR 2016: mmd_write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
+        debug("ERROR 7000: mmd_write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
         return -1;
     }
     if (start < 0 || end > 15) {
-        debug("ERROR 2017: mmd_write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
+        debug("ERROR 7001: mmd_write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
         return -1;
     }
 
@@ -380,7 +375,7 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     int field_width = end - start + 1;
     uint16_t max_value = (1U << field_width) - 1;
     if (value > max_value) {
-        debug("ERROR 2018: mmd_write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
+        debug("ERROR 7002: mmd_write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
               value, max_value, field_width);
         return -1;
     }
@@ -389,7 +384,7 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     uint16_t data = 0;
     int status = mmd_read_register(lan, mmd_addr, register_offset, &data);
     if (status != 0) {
-        debug("ERROR 2033: mmd_write_register_field() failed to read register (Status: %d)\n", status);
+        debug("ERROR 7003: mmd_write_register_field() failed to read register (Status: %d)\n", status);
         return status;
     }
 
@@ -400,7 +395,7 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     /* Write back the modified value */
     status = mmd_write_register(lan, mmd_addr, register_offset, data);
     if (status != 0) {
-        debug("ERROR 2034: mmd_write_register_field() failed to write register (Status: %d)\n", status);
+        debug("ERROR 7004: mmd_write_register_field() failed to write register (Status: %d)\n", status);
         return status;
     }
 
@@ -423,81 +418,58 @@ void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read, Wr
 
 int lan8670_reset(lan8670_t *lan)
 {
-	int status = lan->write(lan->device_address, REG_BASIC_CONTROL, 0x8000); // Set bit 15 in the Basic Control Register, and clear all other bits. This starts a software reset of the PHY. 
-	if(status != 0) {
-		debug("ERROR 1453: lan8670_reset() failed while trying to write REG_BASIC_CONTROL with lan->write() (Status: %d).\n", status);
-		return status;
-	}
+    // Set bit 15 in the Basic Control Register, and clear all other bits.
+    // This starts a software reset of the PHY.
+	return lan->write(lan->device_address, REG_BASIC_CONTROL, 0x8000);
 }
 
 int lan8670_loopback(lan8670_t *lan, bool setting)
 {
-	int status = write_register_field(lan, REG_BASIC_CONTROL, 14, 14, setting); // Modify bit 14 of the Basic Control Register to whatever 'setting' is.
-	if (status != 0) {
-		debug("ERROR 1454: lan8670_loopback() failed while trying to write REG_BASIC_CONTROL with write_register_field() (Status: %d).\n", status);
-		return status;
-	}
+    // Modify bit 14 of the Basic Control Register to whatever 'setting' is.
+	return write_register_field(lan, REG_BASIC_CONTROL, 14, 14, setting);
 }
 
 int lan8670_low_power_mode(lan8670_t *lan, bool setting)
 {
-	int status = write_register_field(lan, REG_BASIC_CONTROL, 11, 11, setting); // Modify bit 11 of the Basic Control Register to whatever 'setting' is.
-	if (status != 0) {
-		debug("ERROR 1455: lan8670_low_power_mode() failed while trying to write REG_BASIC_CONTROL with write_register_field() (Status: %d).\n", status);
-		return status;
-	}
+    // Modify bit 11 of the Basic Control Register to whatever 'setting' is.
+	return write_register_field(lan, REG_BASIC_CONTROL, 11, 11, setting);
 }
 
 int lan8670_isolate(lan8670_t *lan, bool setting)
 {
-    int status = write_register_field(lan, REG_BASIC_CONTROL, 10, 10, setting); // Modify bit 10 of the Basic Control Register to whatever 'setting' is.
-    if (status != 0) {
-        debug("ERROR 1456: lan8670_isolate() failed while trying to write REG_BASIC_CONTROL with write_register_field() (Status: %d).\n", status);
-        return status;
-    }
+    // Modify bit 10 of the Basic Control Register to whatever 'setting' is.
+    return write_register_field(lan, REG_BASIC_CONTROL, 10, 10, setting);
 }
 
 int lan8670_collision_test(lan8670_t *lan, bool setting)
 {
-    int status = write_register_field(lan, REG_BASIC_CONTROL, 7, 7, setting); // Modify bit 7 of the Basic Control Register to whatever 'setting' is.
-    if (status != 0) {
-        debug("ERROR 1457: lan8670_collision_test() failed while trying to write REG_BASIC_CONTROL with write_register_field() (Status: %d).\n", status);
-        return status;
-    }
+    // Modify bit 7 of the Basic Control Register to whatever 'setting' is.
+    return write_register_field(lan, REG_BASIC_CONTROL, 7, 7, setting);
 }
 
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 {
-    int status = read_register_field(lan, REG_BASIC_STATUS, 1, 1, jabber_status); // Read bit 1 of the Basic Status Register to 'jabber_status'. If it's 1, jabber is detected.
-    if (status != 0) {
-        debug("ERROR 1458: lan8670_detect_jabber() failed while trying to read REG_BASIC_STATUS with read_register_field() (Status: %d).\n", status);
-        return status;
-    }
-	return 0;
+    // Read bit 1 of the Basic Status Register to 'jabber_status'. If it's 1, jabber is detected.
+    return read_register_field(lan, REG_BASIC_STATUS, 1, 1, jabber_status);
 }
 
 int lan8670_plca_reset(lan8670_t *lan)
 {
-	uint32_t data = 0x4000; // Set bit 14 in the PLCA Control 0 Register, and clear all other bits. This starts a software reset of the PLCA reconciliation sublayer. 
-	int status = mmd_write_register(lan, MMD_MISC, MISC_PLCA_CTRL0, data);
-	if(status != 0) {
-		debug("ERROR 1492: lan8670_plca_reset() failed while calling mmd_write_register() (Status: %d).\n", status);
-		return status;
-	}
+    // Set bit 14 in the PLCA Control 0 Register, and clear all other bits.
+    // This starts a software reset of the PLCA reconciliation sublayer. 
+	return mmd_write_register(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x4000);
 }
 
 int lan8670_plca(lan8670_t *lan, bool setting)
 {
-    int status = mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL0, 15, 15, setting); // Set/clear bit 15 of the PLCA Control 0 Register to whatever 'setting' is.
-	if(status != 0) {
-		debug("ERROR 1776: lan8670_plca() failed while calling mmd_modify_register_bit() (Status: %d).\n", status);
-		return status;
-	}
+    // Set/clear bit 15 of the PLCA Control 0 Register to whatever 'setting' is.
+    return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL0, 15, 15, setting);
 }
 
-int lan8670_set_node_count(lan8670_t *lan, uint8_t node_count) 
+int lan8670_plca_set_node_count(lan8670_t *lan, uint8_t node_count) 
 {
-	uint16_t write = node_count << 8; // The node count is stored in bits 8-15 of register PLCA_CTRL1
+    // Set bits 8-15 of the PLCA Control 1 Register to whatever 'node_count' is.
+	return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 8, 15, node_count);
 }
 
 // clang-format on
