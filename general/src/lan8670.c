@@ -191,7 +191,7 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
 // EXAMPLE USAGE:
 // To read the '10BASE-T1S Test Mode Control' register, which is a PMA/PMD register, you would write:
 // uint16_t data;
-// mmd_read_register(lan, MMD_PMAPMD, MISC_PINCTRL, data);
+// mmd_read_register(lan, MMD_PMAPMD, MISC_PINCTRL, &data);
 // (Note: All the register macros are defined at the top of this file.)
 
 /**
