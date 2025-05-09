@@ -10,7 +10,6 @@
 
 #include <stdio.h> // Used for debug()
 #include <stdarg.h> // Used for debug()
-#include <assert.h> // Used for compile-time checks
 
 /* SMI Registers */
 #define REG_BASIC_CONTROL 		0x00 // Basic Control Register. (Datasheet pgs. 63-64)
@@ -449,8 +448,19 @@ int lan8670_collision_test(lan8670_t *lan, bool setting)
 
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
 {
-    // Read bit 1 of the Basic Status Register to 'jabber_status'. If it's 1, jabber is detected.
+    // Read bit 1 of the Basic Status Register to 'jabber_status'.
     return read_register_field(lan, REG_BASIC_STATUS, 1, 1, jabber_status);
+}
+
+int lan8670_collision_detection(lan8670_t *lan, bool setting) {
+    // Modify bit 15 of the Collision Detector Control 0 Register to whatever 'setting' is.
+    return mmd_write_register_field(lan, MMD_MISC, MISC_CDCTL0, 15, 15, setting);
+}
+
+int lan8670_plca_on(lan8670_t *lan, bool setting)
+{
+    // Set/clear bit 15 of the PLCA Control 0 Register to whatever 'setting' is.
+    return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL0, 15, 15, setting);
 }
 
 int lan8670_plca_reset(lan8670_t *lan)
@@ -460,16 +470,15 @@ int lan8670_plca_reset(lan8670_t *lan)
 	return mmd_write_register(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x4000);
 }
 
-int lan8670_plca(lan8670_t *lan, bool setting)
-{
-    // Set/clear bit 15 of the PLCA Control 0 Register to whatever 'setting' is.
-    return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL0, 15, 15, setting);
-}
-
 int lan8670_plca_set_node_count(lan8670_t *lan, uint8_t node_count) 
 {
-    // Set bits 8-15 of the PLCA Control 1 Register to whatever 'node_count' is.
+    // Modify bits 8-15 of the PLCA Control 1 Register to whatever 'node_count' is.
 	return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 8, 15, node_count);
 }
 
+int lan8670_plca_set_node_id(lan8670_t *lan, uint8_t id) 
+{
+    // Modify bits 0-7 of the PLCA Control 1 Register to whatever 'id' is.
+    return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
+}
 // clang-format on

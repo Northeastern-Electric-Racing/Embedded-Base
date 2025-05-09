@@ -47,7 +47,7 @@ int lan8670_reset(lan8670_t *lan); // Performs a software reset of the LAN8670 E
  *
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable loopback mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
+ * @return 0 on success, or a non-zero error code.
  */
 int lan8670_loopback(lan8670_t *lan, bool setting); // Enables or disables loopback mode on the LAN8670.
 
@@ -59,7 +59,7 @@ int lan8670_loopback(lan8670_t *lan, bool setting); // Enables or disables loopb
  *
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable low power mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
+ * @return 0 on success, or a non-zero error code.
  */
 int lan8670_low_power_mode(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's low power mode.
 
@@ -67,7 +67,7 @@ int lan8670_low_power_mode(lan8670_t *lan, bool setting); // Enables or disables
  * @brief Electrically isolates the LAN8670 from MII/RMII.
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to isolate the device, false for normal operation.
- * @return 0 on success, or a non-zero error code from the read/write operations.
+ * @return 0 on success, or a non-zero error code.
  */
 int lan8670_isolate(lan8670_t *lan, bool setting); // Electrically isolates the LAN8670 from MII/RMII.
 
@@ -80,7 +80,7 @@ int lan8670_isolate(lan8670_t *lan, bool setting); // Electrically isolates the 
  *   
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable collision test mode, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
+ * @return 0 on success, or a non-zero error code.
  */
 int lan8670_collision_test(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's collision test mode.
 
@@ -88,20 +88,61 @@ int lan8670_collision_test(lan8670_t *lan, bool setting); // Enables or disables
  * @brief Detects jabber condition on the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param jabber_status Pointer to a boolean variable to store the jabber status.
- * @return 0 on success, or a non-zero error code from the read operation.
+ * @return 0 on success, or a non-zero error code.
  */
 int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status); // Detects jabber condition on the LAN8670.
 
 /**
+ * @brief Enables or disables collision detection on the LAN8670.
+ * @param lan Pointer to the lan8670_t instance.
+ * @param setting true to enable collision detection, false to disable it.
+ * @return 0 on success, or a non-zero error code.
+ */
+int lan8670_collision_detection(lan8670_t *lan, bool setting);
+
+/**
  * @brief Enables or disables Physical Layer Collision Avoidence (PLCA).
  * 
- *  Note: When PLCA is enabled on a properly configured mixing segment, no collisions should occur
- *  on the physical layer. It is therefore recommended to disable physical layer collision detection to
- *  achieve a higher level of noise tolerance.
+ *  Note: When PLCA is enabled, collision detection should be disabled.
+ *  This can be done using the lan8670_collision_detection() function.
+ *  (See page 141 of the datasheet for more information.)
  *   
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable PLCA, false to disable it.
- * @return 0 on success, or a non-zero error code from the read/write operations.
+ * @return 0 on success, or a non-zero error code.
  */
-int lan8670_plca(lan8670_t *lan, bool setting);
+int lan8670_plca_on(lan8670_t *lan, bool setting);
+
+/**
+ * @brief Resets the PLCA reconciliation sublayer.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @return 0 on success, or a non-zero error code.
+ */
+int lan8670_plca_reset(lan8670_t *lan);
+
+/**
+ * @brief Configures the maximum number of nodes supported on the multidrop network.
+ *  
+ * Proper operation requires that this field be set to at least the 
+ * number of nodes that may exist on the network.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param node_count The number of nodes on the network.
+ * @return 0 on success, or a non-zero error code.
+ */
+int lan8670_plca_set_node_count(lan8670_t *lan, uint8_t node_count);
+
+/**
+ * @brief Sets the ID of the PLCA node.
+ * 
+ * This ID must be unique for each node on the network.
+ * The ID for the controller node must be 0.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param id The ID of the PLCA node (0-31).
+ * @return 0 on success, or a non-zero error code.
+ */
+int lan8670_plca_set_node_id(lan8670_t *lan, uint8_t id);
+
 // clang-format on
