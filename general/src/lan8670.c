@@ -481,4 +481,29 @@ int lan8670_plca_set_node_id(lan8670_t *lan, uint8_t id)
     // Modify bits 0-7 of the PLCA Control 1 Register to whatever 'id' is.
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
 }
+
+int lan8670_get_link_state(lan8670_t *lan, bool *link_up)
+{
+    uint32_t link_status = 0;
+    
+    // Read bit 2 of the Basic Status Register
+    // Bit 2: Link Status (1 = link is up, 0 = link is down)
+    int status = read_register_field(lan, REG_BASIC_STATUS, 2, 2, &link_status);
+    if (status != 0) {
+        debug(lan, "ERROR 8000: lan8670_get_link_state() failed to read link status (Status: %d)\n", status);
+        return status;
+    }
+
+    // The link status bit is latched low, so we need to read it twice to get the current state
+    // First read clears the latch, second read gets the current state
+    status = read_register_field(lan, REG_BASIC_STATUS, 2, 2, &link_status);
+    if (status != 0) {
+        debug(lan, "ERROR 8001: lan8670_get_link_state() failed to read link status (Status: %d)\n", status);
+        return status;
+    }
+
+    *link_up = (link_status == 1);
+    return 0;
+}
+
 // clang-format on

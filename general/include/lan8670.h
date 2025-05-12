@@ -145,4 +145,12 @@ int lan8670_plca_set_node_count(lan8670_t *lan, uint8_t node_count);
  */
 int lan8670_plca_set_node_id(lan8670_t *lan, uint8_t id);
 
+/**
+ * @brief Gets the current link state of the LAN8670.
+ * @param lan Pointer to the lan8670_t instance.
+ * @param link_up Pointer to a boolean variable to store the link state (true if link is up, false if down).
+ * @return 0 on success, or a non-zero error code.
+ */
+int lan8670_get_link_state(lan8670_t *lan, bool *link_up);
+
 // clang-format on
