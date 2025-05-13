@@ -108,14 +108,6 @@ int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // Electrically isolates 
 int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's collision test mode.
 
 /**
- * @brief Detects jabber condition on the LAN8670.
- * @param lan Pointer to the lan8670_t instance.
- * @param jabber_status Pointer to a boolean variable to store the jabber status.
- * @return Status.
- */
-int32_t LAN8670_Detect_Jabber(lan8670_t *lan, bool *jabber_status); // Detects jabber condition on the LAN8670.
-
-/**
  * @brief Enables or disables collision detection on the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable collision detection, false to disable it.
