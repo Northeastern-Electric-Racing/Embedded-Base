@@ -407,82 +407,103 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
 
 /**** API FUNCTIONS ****/
 
-void lan8670_init(lan8670_t *lan, uint32_t device_address, lan8670_ReadReg_Func read, lan8670_WriteReg_Func write)
+int32_t LAN8670_Init(lan8670_t *lan)
 {
-	lan->IO.WriteReg = write;
-	lan->IO.ReadReg = read;
-	lan->DevAddr = device_address;
-	lan->debug = false; // Default to no debugging. Set this to true (after calling lan8670_init()) if you want debugging enabled.
+    // Set the device address to the SMIADR[4:0] field of the Strap Control 0 Register.
+    uint32_t buffer = 0;
+	int32_t status = read_register_field(lan, REG_STRAP_CTRL0, 0, 4, &buffer);
+    if(status != 0) {
+        debug(lan, "ERROR 0000: LAN8670_Init() failed to read Strap Control Register 0 (Status: %d)\n", status);
+        return -1;
+    }
+    lan->DevAddr = buffer;
+
+	lan->debug = false; // Default to no debugging.
 }
 
-int lan8670_reset(lan8670_t *lan)
+int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx)
+{
+    if(!lan || !ioctx->ReadReg || !ioctx->WriteReg || !ioctx->GetTick) {
+        return -1; // Invalid parameters
+    }
+
+    lan->IO.Init = ioctx->Init;
+    lan->IO.DeInit = ioctx->DeInit;
+    lan->IO.WriteReg = ioctx->WriteReg;
+    lan->IO.ReadReg = ioctx->ReadReg;
+    lan->IO.GetTick = ioctx->GetTick;
+
+    return 0;
+}
+
+int32_t LAN8670_Reset(lan8670_t *lan)
 {
     // Set bit 15 in the Basic Control Register, and clear all other bits.
     // This starts a software reset of the PHY.
 	return lan->IO.WriteReg(lan->DevAddr, REG_BASIC_CONTROL, 0x8000);
 }
 
-int lan8670_loopback(lan8670_t *lan, bool setting)
+int32_t LAN8670_Loopback(lan8670_t *lan, bool setting)
 {
     // Modify bit 14 of the Basic Control Register to whatever 'setting' is.
 	return write_register_field(lan, REG_BASIC_CONTROL, 14, 14, setting);
 }
 
-int lan8670_low_power_mode(lan8670_t *lan, bool setting)
+int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting)
 {
     // Modify bit 11 of the Basic Control Register to whatever 'setting' is.
 	return write_register_field(lan, REG_BASIC_CONTROL, 11, 11, setting);
 }
 
-int lan8670_isolate(lan8670_t *lan, bool setting)
+int32_t LAN8670_Isolate(lan8670_t *lan, bool setting)
 {
     // Modify bit 10 of the Basic Control Register to whatever 'setting' is.
     return write_register_field(lan, REG_BASIC_CONTROL, 10, 10, setting);
 }
 
-int lan8670_collision_test(lan8670_t *lan, bool setting)
+int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting)
 {
     // Modify bit 7 of the Basic Control Register to whatever 'setting' is.
     return write_register_field(lan, REG_BASIC_CONTROL, 7, 7, setting);
 }
 
-int lan8670_detect_jabber(lan8670_t *lan, bool *jabber_status)
+int32_t LAN8670_Detect_Jabber(lan8670_t *lan, bool *jabber_status)
 {
     // Read bit 1 of the Basic Status Register to 'jabber_status'.
     return read_register_field(lan, REG_BASIC_STATUS, 1, 1, jabber_status);
 }
 
-int lan8670_collision_detection(lan8670_t *lan, bool setting) {
+int32_t LAN8670_Collision_Detection(lan8670_t *lan, bool setting) {
     // Modify bit 15 of the Collision Detector Control 0 Register to whatever 'setting' is.
     return mmd_write_register_field(lan, MMD_MISC, MISC_CDCTL0, 15, 15, setting);
 }
 
-int lan8670_plca_on(lan8670_t *lan, bool setting)
+int32_t LAN8670_PLCA_On(lan8670_t *lan, bool setting)
 {
     // Set/clear bit 15 of the PLCA Control 0 Register to whatever 'setting' is.
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL0, 15, 15, setting);
 }
 
-int lan8670_plca_reset(lan8670_t *lan)
+int32_t LAN8670_PLCA_Reset(lan8670_t *lan)
 {
     // Set bit 14 in the PLCA Control 0 Register, and clear all other bits.
     // This starts a software reset of the PLCA reconciliation sublayer. 
 	return mmd_write_register(lan, MMD_MISC, MISC_PLCA_CTRL0, 0x4000);
 }
 
-int lan8670_plca_set_node_count(lan8670_t *lan, uint8_t node_count) 
+int32_t LAN8670_PLCA_Set_Node_Count(lan8670_t *lan, uint8_t node_count) 
 {
     // Modify bits 8-15 of the PLCA Control 1 Register to whatever 'node_count' is.
 	return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 8, 15, node_count);
 }
 
-int lan8670_plca_set_node_id(lan8670_t *lan, uint8_t id) 
+int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id) 
 {
     // Modify bits 0-7 of the PLCA Control 1 Register to whatever 'id' is.
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
 }
 
-int lan8670_get_link_state(lan8670_t *lan, bool *link_up)
+int32_t LAN8670_Get_Link_State(lan8670_t *lan, bool *link_up)
 {
     uint32_t link_status = 0;
     
