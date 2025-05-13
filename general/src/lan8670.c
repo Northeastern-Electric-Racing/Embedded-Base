@@ -419,6 +419,8 @@ int32_t LAN8670_Init(lan8670_t *lan)
     lan->DevAddr = buffer;
 
 	lan->debug = false; // Default to no debugging.
+
+    return 0;
 }
 
 int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx)
