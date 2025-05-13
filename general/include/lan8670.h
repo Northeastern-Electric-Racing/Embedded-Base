@@ -11,14 +11,27 @@
 #include <stdbool.h>
 
 /* FUNCTION POINTERS */
-typedef int (*ReadFunction)(uint32_t device_address, uint32_t register_address, uint32_t *data); // Function pointer for reading data from the PHY. Analagous to HAL_ETH_ReadPHYRegister() in the STM32 HAL.
-typedef int (*WriteFunction)(uint32_t device_address, uint32_t register_address, uint32_t data); // Function pointer for writing data to the PHY. Analagous to HAL_ETH_WritePHYRegister() in the STM32 HAL.
+typedef int32_t  (*lan8670_Init_Func) (void); 
+typedef int32_t  (*lan8670_DeInit_Func) (void);
+typedef int32_t  (*lan8670_ReadReg_Func)   (uint32_t, uint32_t, uint32_t *);
+typedef int32_t  (*lan8670_WriteReg_Func)  (uint32_t, uint32_t, uint32_t);
+typedef int32_t  (*lan8670_GetTick_Func)  (void);
+
+/* IO STRUCT */
+typedef struct 
+{                   
+  lan8670_Init_Func      Init; 
+  lan8670_DeInit_Func    DeInit;
+  lan8670_WriteReg_Func  WriteReg;
+  lan8670_ReadReg_Func   ReadReg; 
+  lan8670_GetTick_Func   GetTick;   
+} lan8670_IOCtx_t;  
 
 /* LAN8670 STRUCT */
 typedef struct {
-	uint32_t device_address; // The address of the LAN8670 device.
-	ReadFunction read; // Function to read data from the PHY.
-	WriteFunction write; // Function to write data to the PHY.
+	uint32_t DevAddr; // The address of the LAN8670 device.
+        uint32_t Is_Initialized; // Indicates if the device is initialized.
+        lan8670_IOCtx_t IO; // I/O context for the device.
         bool debug; // Enables printfs for debugging. Defaults to false.
 } lan8670_t;
 
@@ -29,7 +42,7 @@ typedef struct {
  * @param read Function pointer for reading data from the LAN8670.
  * @param write Function pointer for writing data to the LAN8670.
  */
-void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read, WriteFunction write); // Initializes a LAN8670 instance.
+void lan8670_init(lan8670_t *lan, uint32_t device_address, lan8670_ReadReg_Func read, lan8670_WriteReg_Func write); // Initializes a LAN8670 instance.
 
 /**
  * @brief Performs a software reset of the LAN8670 Ethernet PHY.

@@ -136,7 +136,7 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
 
     /* Read the register */
     uint32_t data = 0;
-    int status = lan->read(lan->device_address, reg, &data);
+    int status = lan->IO.ReadReg(lan->DevAddr, reg, &data);
     if (status != 0) {
         debug("ERROR 1002: read_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
         return status;
@@ -187,7 +187,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
 
     /* Read the current register value */
     uint32_t data = 0;
-    int status = lan->read(lan->device_address, reg, &data);
+    int status = lan->IO.ReadReg(lan->DevAddr, reg, &data);
     if (status != 0) {
         debug("ERROR 3000: write_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
         return status;
@@ -198,7 +198,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     data = (data & ~mask) | ((value << start) & mask);
 
     /* Write back the modified value */
-    status = lan->write(lan->device_address, reg, data);
+    status = lan->IO.WriteReg(lan->DevAddr, reg, data);
     if (status != 0) {
         debug("ERROR 3001: write_register_field() failed to write register 0x%X (Status: %d)\n", reg, status);
         return status;
@@ -223,14 +223,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
 {
     /* Tell the MMDCTRL register what MMD device you intend to access */
     uint16_t mmd_ctrl = mmd_addr & 0x1F;
-    int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+    int status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 4000: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
-    status = lan->write(lan->device_address, REG_MMDAD, register_offset);
+    status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, register_offset);
     if (status != 0) {
         debug("ERROR 4001: mmd_read_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
@@ -238,14 +238,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
 
     /* Set the MMD function to 'Data - No post increment' */
     mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14);
-    status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+    status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 4002: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Read data from MMDAD */
-    status = lan->read(lan->device_address, REG_MMDAD, value);
+    status = lan->IO.ReadReg(lan->DevAddr, REG_MMDAD, value);
     if (status != 0) {
         debug("ERROR 4003: mmd_read_register() failed when reading REG_MMDAD (Status: %d)\n", status);
         return status;
@@ -270,14 +270,14 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
 {
     /* Tell the MMDCTRL register what MMD device you intend to access */
     uint16_t mmd_ctrl = mmd_addr & 0x1F;
-    int status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+    int status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 5000: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
-    status = lan->write(lan->device_address, REG_MMDAD, register_offset);
+    status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, register_offset);
     if (status != 0) {
         debug("ERROR 5001: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
@@ -285,14 +285,14 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
 
     /* Set the MMD function to 'Data - No post increment' */
     mmd_ctrl = (mmd_addr & 0x1F) | (1 << 14);
-    status = lan->write(lan->device_address, REG_MMDCTRL, mmd_ctrl);
+    status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 5002: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
         return status;
     }
 
     /* Write data to MMDAD */
-    status = lan->write(lan->device_address, REG_MMDAD, value);
+    status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, value);
     if (status != 0) {
         debug("ERROR 5003: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
         return status;
@@ -407,11 +407,11 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
 
 /**** API FUNCTIONS ****/
 
-void lan8670_init(lan8670_t *lan, uint32_t device_address, ReadFunction read, WriteFunction write)
+void lan8670_init(lan8670_t *lan, uint32_t device_address, lan8670_ReadReg_Func read, lan8670_WriteReg_Func write)
 {
-	lan->write = write;
-	lan->read = read;
-	lan->device_address = device_address;
+	lan->IO.WriteReg = write;
+	lan->IO.ReadReg = read;
+	lan->DevAddr = device_address;
 	lan->debug = false; // Default to no debugging. Set this to true (after calling lan8670_init()) if you want debugging enabled.
 }
 
@@ -419,7 +419,7 @@ int lan8670_reset(lan8670_t *lan)
 {
     // Set bit 15 in the Basic Control Register, and clear all other bits.
     // This starts a software reset of the PHY.
-	return lan->write(lan->device_address, REG_BASIC_CONTROL, 0x8000);
+	return lan->IO.WriteReg(lan->DevAddr, REG_BASIC_CONTROL, 0x8000);
 }
 
 int lan8670_loopback(lan8670_t *lan, bool setting)
