@@ -245,12 +245,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
     }
 
     /* Read data from MMDAD */
-    status = lan->IO.ReadReg(lan->DevAddr, REG_MMDAD, value);
+    uint32_t read = 0;
+    int status = lan->IO.ReadReg(lan->DevAddr, REG_MMDAD, &read);
     if (status != 0) {
         debug(lan, "ERROR 4003: mmd_read_register() failed when reading REG_MMDAD (Status: %d)\n", status);
         return LAN8670_STATUS_READ_ERROR;
     }
 
+    *value = (uint16_t)(read & 0xFFFF); // Truncate to 16 bits
     return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
@@ -315,8 +317,10 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
  * @param value Pointer to store the read value.
  * @return Status.
  */
-static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
+static int __attribute__((unused)) mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
 {
+    // NOTE: Remove the __attribute__((unused)) if this function gets used.
+    
     /* Validate bit range */
     if (start > end) {
         debug(lan, "ERROR 6000: mmd_read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
