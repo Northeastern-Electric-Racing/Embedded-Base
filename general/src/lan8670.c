@@ -120,18 +120,18 @@ static void debug(lan8670_t *lan, const char *format, ...) {
  * @param start The starting bit position (must be between 0 and 31, since the SMI registers are 32 bits).
  * @param end The ending bit position (must be between 0 and 31, since the SMI registers are 32 bits).
  * @param value Pointer to store the read value.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint32_t *value)
 {
     /* Validate bit range (If the first bit is greater than the last bit, the field is invalid.) */
     if (start > end) {
         debug("ERROR 1000: read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
     if (start < 0 || end > 31) {
         debug("ERROR 1001: read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Read the register */
@@ -139,7 +139,7 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
     int status = lan->IO.ReadReg(lan->DevAddr, reg, &data);
     if (status != 0) {
         debug("ERROR 1002: read_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     /* Calculate field width and mask */
@@ -148,7 +148,7 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
 
     /* Extract and shift the field */
     *value = (data & mask) >> start;
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To read bits 8 through 15 of the Basic Status Register:
@@ -162,18 +162,18 @@ static int read_register_field(lan8670_t *lan, int reg, int start, int end, uint
  * @param start The starting bit position (must be between 0 and 31, since the SMI registers are 32 bits).
  * @param end The ending bit position (must be between 0 and 31, since the SMI registers are 32 bits).
  * @param value The value to write to the field.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int write_register_field(lan8670_t *lan, int reg, int start, int end, uint32_t value)
 {
     /* Validate bit range (If the first bit is greater than the last bit, the field is invalid.) */
     if (start > end) {
         debug("ERROR 2000: write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
     if (start < 0 || end > 31) {
         debug("ERROR 2001: write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Calculate field width and validate value */
@@ -182,7 +182,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     if (value > max_value) {
         debug("ERROR 2002: write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
               value, max_value, field_width);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Read the current register value */
@@ -190,7 +190,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     int status = lan->IO.ReadReg(lan->DevAddr, reg, &data);
     if (status != 0) {
         debug("ERROR 3000: write_register_field() failed to read register 0x%X (Status: %d)\n", reg, status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     /* Calculate mask and update the field */
@@ -201,10 +201,10 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
     status = lan->IO.WriteReg(lan->DevAddr, reg, data);
     if (status != 0) {
         debug("ERROR 3001: write_register_field() failed to write register 0x%X (Status: %d)\n", reg, status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To write bits 0 through 7 of the Basic Control Register:
@@ -217,7 +217,7 @@ static int write_register_field(lan8670_t *lan, int reg, int start, int end, uin
  * @param mmd_addr The MMD device address (PMA/PMD, PCS, or MISC).
  * @param register_offset The offset of the register within the MMD group.
  * @param value Pointer to store the read value.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t *value)
 {
@@ -226,14 +226,14 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
     int status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 4000: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
     status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, register_offset);
     if (status != 0) {
         debug("ERROR 4001: mmd_read_register() failed when writing REG_MMDAD (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Set the MMD function to 'Data - No post increment' */
@@ -241,17 +241,17 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
     status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 4002: mmd_read_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Read data from MMDAD */
     status = lan->IO.ReadReg(lan->DevAddr, REG_MMDAD, value);
     if (status != 0) {
         debug("ERROR 4003: mmd_read_register() failed when reading REG_MMDAD (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To read the Pin Control Register (which is a Miscellaneous register):
@@ -264,7 +264,7 @@ static int mmd_read_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t registe
  * @param mmd_addr The MMD device address (PMA/PMD, PCS, or MISC).
  * @param register_offset The offset of the register within the MMD group.
  * @param value The value to write to the register.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, uint16_t value)
 {
@@ -273,14 +273,14 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
     int status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 5000: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Tell the MMDAD register what specific register you want to access */
     status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, register_offset);
     if (status != 0) {
         debug("ERROR 5001: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Set the MMD function to 'Data - No post increment' */
@@ -288,17 +288,17 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
     status = lan->IO.WriteReg(lan->DevAddr, REG_MMDCTRL, mmd_ctrl);
     if (status != 0) {
         debug("ERROR 5002: mmd_write_register() failed when writing REG_MMDCTRL (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
     /* Write data to MMDAD */
     status = lan->IO.WriteReg(lan->DevAddr, REG_MMDAD, value);
     if (status != 0) {
         debug("ERROR 5003: mmd_write_register() failed when writing REG_MMDAD (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To write to the PLCA Control 1 Register (which is a Miscellaneous register):
@@ -313,18 +313,18 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
  * @param start The starting bit position (must be between 0 and 15, since the MMD registers are 16 bits).
  * @param end The ending bit position (must be between 0 and 15, since the MMD registers are 16 bits).
  * @param value Pointer to store the read value.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
 {
     /* Validate bit range */
     if (start > end) {
         debug("ERROR 6000: mmd_read_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
     if (start < 0 || end > 15) {
         debug("ERROR 6001: mmd_read_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Read the full register */
@@ -332,7 +332,7 @@ static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
     int status = mmd_read_register(lan, mmd_addr, register_offset, &data);
     if (status != 0) {
         debug("ERROR 6002: mmd_read_register_field() failed to read register (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     /* Calculate field width and mask */
@@ -341,7 +341,7 @@ static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
 
     /* Extract and shift the field */
     *value = (data & mask) >> start;
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To read bits 0 through 7 of the PLCA Control 1 Register (which is a Miscellaneous register):
@@ -356,18 +356,18 @@ static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t r
  * @param start The starting bit position (must be between 0 and 15, since the MMD registers are 16 bits).
  * @param end The ending bit position (must be between 0 and 15, since the MMD registers are 16 bits).
  * @param value The value to write to the field.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t value)
 {
     /* Validate bit range */
     if (start > end) {
         debug("ERROR 7000: mmd_write_register_field() invalid bit range: start (%d) > end (%d)\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
     if (start < 0 || end > 15) {
         debug("ERROR 7001: mmd_write_register_field() bit range out of bounds: start=%d, end=%d\n", start, end);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Calculate field width and validate value */
@@ -376,7 +376,7 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     if (value > max_value) {
         debug("ERROR 7002: mmd_write_register_field() value 0x%X exceeds maximum 0x%X for %d-bit field\n", 
               value, max_value, field_width);
-        return -1;
+        return LAN8670_STATUS_ERROR;
     }
 
     /* Read current register value */
@@ -384,7 +384,7 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     int status = mmd_read_register(lan, mmd_addr, register_offset, &data);
     if (status != 0) {
         debug("ERROR 7003: mmd_write_register_field() failed to read register (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     /* Calculate mask and update the field */
@@ -395,10 +395,10 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
     status = mmd_write_register(lan, mmd_addr, register_offset, data);
     if (status != 0) {
         debug("ERROR 7004: mmd_write_register_field() failed to write register (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_WRITE_ERROR;
     }
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 // EXAMPLE USAGE:
 // To write bits 0 through 7 of the PLCA Control 1 Register (which is a Miscellaneous register):
@@ -414,19 +414,19 @@ int32_t LAN8670_Init(lan8670_t *lan)
 	int32_t status = read_register_field(lan, REG_STRAP_CTRL0, 0, 4, &buffer);
     if(status != 0) {
         debug(lan, "ERROR 0000: LAN8670_Init() failed to read Strap Control Register 0 (Status: %d)\n", status);
-        return -1;
+        return LAN8670_STATUS_READ_ERROR;
     }
     lan->DevAddr = buffer;
 
 	lan->debug = false; // Default to no debugging.
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 
 int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx)
 {
     if(!lan || !ioctx->ReadReg || !ioctx->WriteReg || !ioctx->GetTick) {
-        return -1; // Invalid parameters
+        return LAN8670_STATUS_ERROR; // Invalid parameters
     }
 
     lan->IO.Init = ioctx->Init;
@@ -435,7 +435,7 @@ int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx)
     lan->IO.ReadReg = ioctx->ReadReg;
     lan->IO.GetTick = ioctx->GetTick;
 
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 
 int32_t LAN8670_Reset(lan8670_t *lan)
@@ -505,7 +505,7 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id)
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
 }
 
-int32_t LAN8670_Get_Link_State(lan8670_t *lan, bool *link_up)
+int32_t LAN8670_GetLinkState(lan8670_t *lan, bool *link_up)
 {
     uint32_t link_status = 0;
     
@@ -514,7 +514,7 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, bool *link_up)
     int status = read_register_field(lan, REG_BASIC_STATUS, 2, 2, &link_status);
     if (status != 0) {
         debug(lan, "ERROR 8000: lan8670_get_link_state() failed to read link status (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     // The link status bit is latched low, so we need to read it twice to get the current state
@@ -522,11 +522,11 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, bool *link_up)
     status = read_register_field(lan, REG_BASIC_STATUS, 2, 2, &link_status);
     if (status != 0) {
         debug(lan, "ERROR 8001: lan8670_get_link_state() failed to read link status (Status: %d)\n", status);
-        return status;
+        return LAN8670_STATUS_READ_ERROR;
     }
 
     *link_up = (link_status == 1);
-    return 0;
+    return LAN8670_STATUS_OK;
 }
 
 // clang-format on

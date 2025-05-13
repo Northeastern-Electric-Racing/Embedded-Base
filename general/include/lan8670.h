@@ -10,6 +10,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* STATUS CODES */
+#define  LAN8670_STATUS_READ_ERROR            ((int32_t)-5)
+#define  LAN8670_STATUS_WRITE_ERROR           ((int32_t)-4)
+#define  LAN8670_STATUS_ADDRESS_ERROR         ((int32_t)-3)
+#define  LAN8670_STATUS_RESET_TIMEOUT         ((int32_t)-2)
+#define  LAN8670_STATUS_ERROR                 ((int32_t)-1)
+#define  LAN8670_STATUS_OK                    ((int32_t) 0)
+#define  LAN8670_STATUS_LINK_DOWN             ((int32_t) 1)
+
 /* FUNCTION POINTERS */
 typedef int32_t  (*lan8670_Init_Func) (void); 
 typedef int32_t  (*lan8670_DeInit_Func) (void);
@@ -41,14 +50,14 @@ typedef struct {
  * @param device_address The address of the LAN8670.
  * @param read Function pointer for reading data from the LAN8670.
  * @param write Function pointer for writing data to the LAN8670.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Init(lan8670_t *lan); // Initializes a LAN8670 instance.
 
 /**
  * @brief Performs a software reset of the LAN8670 Ethernet PHY.
  * @param lan Pointer to the lan8670_t instance.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Reset(lan8670_t *lan); // Performs a software reset of the LAN8670 Ethernet PHY.
 
@@ -61,7 +70,7 @@ int32_t LAN8670_Reset(lan8670_t *lan); // Performs a software reset of the LAN86
  *
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable loopback mode, false to disable it.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Loopback(lan8670_t *lan, bool setting); // Enables or disables loopback mode on the LAN8670.
 
@@ -73,7 +82,7 @@ int32_t LAN8670_Loopback(lan8670_t *lan, bool setting); // Enables or disables l
  *
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable low power mode, false to disable it.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's low power mode.
 
@@ -81,7 +90,7 @@ int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting); // Enables or disa
  * @brief Electrically isolates the LAN8670 from MII/RMII.
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to isolate the device, false for normal operation.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // Electrically isolates the LAN8670 from MII/RMII.
 
@@ -94,7 +103,7 @@ int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // Electrically isolates 
  *   
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable collision test mode, false to disable it.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's collision test mode.
 
@@ -102,7 +111,7 @@ int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting); // Enables or disa
  * @brief Detects jabber condition on the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param jabber_status Pointer to a boolean variable to store the jabber status.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Detect_Jabber(lan8670_t *lan, bool *jabber_status); // Detects jabber condition on the LAN8670.
 
@@ -110,7 +119,7 @@ int32_t LAN8670_Detect_Jabber(lan8670_t *lan, bool *jabber_status); // Detects j
  * @brief Enables or disables collision detection on the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable collision detection, false to disable it.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_Collision_Detection(lan8670_t *lan, bool setting);
 
@@ -123,7 +132,7 @@ int32_t LAN8670_Collision_Detection(lan8670_t *lan, bool setting);
  *   
  * @param lan Pointer to the lan8670_t instance.
  * @param setting true to enable PLCA, false to disable it.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_PLCA_On(lan8670_t *lan, bool setting);
 
@@ -131,7 +140,7 @@ int32_t LAN8670_PLCA_On(lan8670_t *lan, bool setting);
  * @brief Resets the PLCA reconciliation sublayer.
  * 
  * @param lan Pointer to the lan8670_t instance.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_PLCA_Reset(lan8670_t *lan);
 
@@ -143,7 +152,7 @@ int32_t LAN8670_PLCA_Reset(lan8670_t *lan);
  * 
  * @param lan Pointer to the lan8670_t instance.
  * @param node_count The number of nodes on the network.
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_PLCA_Set_Node_Count(lan8670_t *lan, uint8_t node_count);
 
@@ -155,7 +164,7 @@ int32_t LAN8670_PLCA_Set_Node_Count(lan8670_t *lan, uint8_t node_count);
  * 
  * @param lan Pointer to the lan8670_t instance.
  * @param id The ID of the PLCA node (0-31).
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  */
 int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id);
 
@@ -163,9 +172,9 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id);
  * @brief Gets the current link state of the LAN8670.
  * @param lan Pointer to the lan8670_t instance.
  * @param link_up Pointer to a boolean variable to store the link state (true if link is up, false if down).
- * @return 0 on success, or a non-zero error code.
+ * @return Status.
  * @note For the LAN8670, this ALWAYS reads '1'. This function was mainly implemented for consistency with the STM32 HAL ethernet stuff.
  */
-int32_t LAN8670_Get_Link_State(lan8670_t *lan, bool *link_up);
+int32_t LAN8670_GetLinkState(lan8670_t *lan, bool *link_up);
 
 // clang-format on
