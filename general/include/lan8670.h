@@ -160,13 +160,4 @@ int32_t LAN8670_PLCA_Set_Node_Count(lan8670_t *lan, uint8_t node_count);
  */
 int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id);
 
-/**
- * @brief Gets the current link state of the LAN8670.
- * @param lan Pointer to the lan8670_t instance.
- * @param link_up Pointer to a boolean variable to store the link state (true if link is up, false if down).
- * @return Status.
- * @note For the LAN8670, this ALWAYS reads '1'. This function was mainly implemented for consistency with the STM32 HAL ethernet stuff.
- */
-int32_t LAN8670_GetLinkState(lan8670_t *lan, bool *link_up);
-
 // clang-format on
