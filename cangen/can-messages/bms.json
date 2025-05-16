@@ -969,8 +969,8 @@
         "size": 12,
         "format": "divide1000",
         "sim": {
-          "min": 60,
-          "max": 105,
+          "min": 2.5,
+          "max": 4.2,
           "inc_min": 0.005,
           "inc_max": 1
         }
@@ -979,8 +979,8 @@
         "size": 12,
         "format": "divide1000",
         "sim": {
-          "min": 60,
-          "max": 105,
+          "min": 2.5,
+          "max": 4.2,
           "inc_min": 0.005,
           "inc_max": 1
         }
@@ -989,8 +989,8 @@
         "size": 12,
         "format": "divide1000",
         "sim": {
-          "min": 60,
-          "max": 105,
+          "min": 2.5,
+          "max": 4.2,
           "inc_min": 0.005,
           "inc_max": 1
         }
@@ -999,8 +999,8 @@
         "size": 12,
         "format": "divide1000",
         "sim": {
-          "min": 60,
-          "max": 105,
+          "min": 2.5,
+          "max": 4.2,
           "inc_min": 0.005,
           "inc_max": 1
         }
@@ -1009,8 +1009,8 @@
         "size": 12,
         "format": "divide1000",
         "sim": {
-          "min": 60,
-          "max": 105,
+          "min": 2.5,
+          "max": 4.2,
           "inc_min": 0.005,
           "inc_max": 1
         }
@@ -1072,50 +1072,50 @@
     "points": [
       {
         "size": 12,
-        "format": "divide1000",
+        "format": "divide10",
         "sim": {
-          "min": 2.5,
-          "max": 4.2,
+          "min": 60,
+          "max": 105,
           "inc_min": 0.005,
           "inc_max": 1
         }
       },
       {
         "size": 12,
-        "format": "divide1000",
+        "format": "divide10",
         "sim": {
-          "min": 2.5,
-          "max": 4.2,
+          "min": 60,
+          "max": 105,
           "inc_min": 0.005,
           "inc_max": 1
         }
       },
       {
         "size": 12,
-        "format": "divide1000",
+        "format": "divide10",
         "sim": {
-          "min": 2.5,
-          "max": 4.2,
+          "min": 60,
+          "max": 105,
           "inc_min": 0.005,
           "inc_max": 1
         }
       },
       {
         "size": 12,
-        "format": "divide1000",
+        "format": "divide10",
         "sim": {
-          "min": 2.5,
-          "max": 4.2,
+          "min": 60,
+          "max": 105,
           "inc_min": 0.005,
           "inc_max": 1
         }
       },
       {
         "size": 12,
-        "format": "divide1000",
+        "format": "divide10",
         "sim": {
-          "min": 2.5,
-          "max": 4.2,
+          "min": 60,
+          "max": 105,
           "inc_min": 0.005,
           "inc_max": 1
         }
