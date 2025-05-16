@@ -4,7 +4,7 @@
       "desc": "MPU Status",
       "points": [
         {
-          "size": 8,
+          "size": 4,
           "sim": {
             "options": [
               [0, 0.01],
@@ -16,7 +16,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 4,
           "sim": {
             "options": [
               [0, 0.2],
@@ -30,7 +30,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 12,
           "signed": true,
           "sim": {
             "min": 0,
@@ -40,7 +40,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 1,
           "sim": {
             "options": [
               [0, 0.8],
@@ -49,7 +49,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 7,
           "sim": {
             "min": 0,
             "max": 100,
@@ -58,7 +58,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 1,
           "sim": {
             "options": [
               [0, 0.8],
@@ -67,7 +67,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 10,
           "sim": {
             "min": 0,
             "max": 50,
@@ -76,7 +76,7 @@
           }
         },
         {
-          "size": 8,
+          "size": 1,
           "sim": {
             "options": [
               [0, 0.8],
