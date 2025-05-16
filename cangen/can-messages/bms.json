@@ -1072,7 +1072,7 @@
     "points": [
       {
         "size": 12,
-        "format": "divide10",
+        "format": "divide39",
         "sim": {
           "min": 60,
           "max": 105,
@@ -1082,7 +1082,7 @@
       },
       {
         "size": 12,
-        "format": "divide10",
+        "format": "divide39",
         "sim": {
           "min": 60,
           "max": 105,
@@ -1092,7 +1092,7 @@
       },
       {
         "size": 12,
-        "format": "divide10",
+        "format": "divide39",
         "sim": {
           "min": 60,
           "max": 105,
@@ -1102,7 +1102,7 @@
       },
       {
         "size": 12,
-        "format": "divide10",
+        "format": "divide39",
         "sim": {
           "min": 60,
           "max": 105,
@@ -1112,7 +1112,7 @@
       },
       {
         "size": 12,
-        "format": "divide10",
+        "format": "divide39",
         "sim": {
           "min": 60,
           "max": 105,
