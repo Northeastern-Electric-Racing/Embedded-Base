@@ -30,7 +30,7 @@
           }
         },
         {
-          "size": 12,
+          "size": 16,
           "signed": true,
           "sim": {
             "min": 0,
@@ -83,6 +83,10 @@
               [1, 0.2]
             ]
           }
+        }, 
+        {
+          "size": 4,
+          "parse": false
         }
       ],
       "fields": [
