@@ -63,11 +63,13 @@ int bitstream_add_signed(bitstream_t *bitstream, int32_t value, size_t num_bits)
 		}
 	}
 
-	/* Convert to unsigned representation for bit manipulation */
-	uint32_t unsigned_value = (uint32_t)value;
+	/* Create a mask for the num_bits we want to extract */
+	uint32_t mask = (1u << num_bits) - 1;
+	/* Extract the bits we want, including the sign bit */
+	uint32_t bits = (uint32_t)value & mask;
 
 	for (int i = 0; i < num_bits; ++i) {
-		if (unsigned_value & (1u << (num_bits - 1 - i))) {
+		if (bits & (1u << (num_bits - 1 - i))) {
 			bitstream->data[(bitstream->total_bits + i) / 8] |=
 				(1 << (7 - ((bitstream->total_bits + i) % 8)));
 		}
