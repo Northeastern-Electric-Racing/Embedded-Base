@@ -40,21 +40,45 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 	return 0; // Success
 }
 
-uint32_t bitstream_read(bitstream_t *bitstream, uint32_t start_bit,
-			size_t num_bits)
+int bitstream_add_signed(bitstream_t *bitstream, int32_t value, size_t num_bits)
 {
-	uint32_t result = 0;
-
-	if (start_bit + num_bits > bitstream->total_bits) {
-		return -1; // Error: trying to read beyond bit length
+	if (bitstream->total_bits + num_bits > (bitstream->bytes * 8)) {
+		return -1; // Error: not enough space in the bitstream
 	}
 
-	for (int i = 0; i < num_bits; ++i) {
-		if (bitstream->data[(start_bit + i) / 8] &
-		    (1 << (7 - ((start_bit + i) % 8)))) {
-			result |= (1 << (num_bits - 1 - i));
+	bool overflow = false;
+	/* For a signed int, 'value' must be in between -2^(num_bits - 1) and 2^(num_bits-1) - 1. */
+	/* For example, an 6-bit input value must be in-between -32 and 31. */
+	int32_t max_value = (1LL << (num_bits - 1)) - 1;
+	int32_t min_value = -(1LL << (num_bits - 1));
+
+	if (value > max_value || value < min_value) {
+		overflow = true; // Error: value is too large or too small
+
+		/* Cap value to maximum or minimum */
+		if (value > max_value) {
+			value = max_value;
+		} else {
+			value = min_value;
 		}
 	}
 
-	return result;
+	/* Convert to unsigned representation for bit manipulation */
+	uint32_t unsigned_value = (uint32_t)value;
+
+	for (int i = 0; i < num_bits; ++i) {
+		if (unsigned_value & (1u << (num_bits - 1 - i))) {
+			bitstream->data[(bitstream->total_bits + i) / 8] |=
+				(1 << (7 - ((bitstream->total_bits + i) % 8)));
+		}
+	}
+
+	bitstream->total_bits += num_bits;
+
+	if (overflow) {
+		bitstream->overflow = true;
+		return 1; // Error: Overflow occurred
+	}
+
+	return 0; // Success
 }
