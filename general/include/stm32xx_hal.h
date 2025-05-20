@@ -13,4 +13,9 @@
 #include "stm32g4xx_hal.h"
 #endif
 
+#ifdef TESTING
+#include "mock_funtions.h"
+#include "mock_typedefs.h"
+#endif
+
 #endif /* STM32XX_HAL_H*/

@@ -143,7 +143,7 @@ void VL6180x_GetI2CAccess(VL6180xDev_t dev);
  * used.
  * @ingroup cci_i2c
  */
-#define VL6180x_GetI2CAccess(dev) (void)0 /* TODO delete if function used */
+//#define VL6180x_GetI2CAccess(dev) (void)0 /* TODO delete if function used */
 
 /**
  * @brief Release acquired lock or mutex for i2c access.\n
@@ -161,7 +161,7 @@ void VL6180x_DoneI2CAccess(VL6180xDev_t dev);
  * used.
  * @ingroup cci_i2c
  */
-#define VL6180x_DoneI2CAcces(dev) (void)0 /*TODO delete  if function used */
+//#define VL6180x_DoneI2CAcces(dev) (void)0 /*TODO delete  if function used */
 
 /**
  * @brief Provided data buffer for i2c access for at least n_byte.

@@ -1,9 +1,9 @@
 #include "pid.h"
 
-pid_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
+pidc_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
 		float max_out)
 {
-	pid_t *pid = malloc(sizeof(pid_t));
+	pidc_t *pid = malloc(sizeof(pidc_t));
 
 	pid->kP = kP;
 	pid->kI = kI;
@@ -19,7 +19,7 @@ pid_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
 	return pid;
 }
 
-float pid_calculate(pid_t *pid, float setpoint, float measurement)
+float pid_calculate(pidc_t *pid, float setpoint, float measurement)
 {
 	float output = 0;
 	float period = 0;
@@ -59,7 +59,7 @@ float pid_calculate(pid_t *pid, float setpoint, float measurement)
 				       output;
 }
 
-bool pid_at_setpoint(pid_t *pid)
+bool pid_at_setpoint(pidc_t *pid)
 {
 	// not using abs function since it converts to int
 	return (pid->err < 0 ? pid->err * -1.0 : pid->err) < pid->err_tol;

@@ -20,6 +20,7 @@
 
 #ifdef TESTING
 #include "mock_typedefs.h"
+#include "mock_funtions.h"
 #endif
 
 #endif /* STM32XX_HAL_H*/

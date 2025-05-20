@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <pthread.h>
 #include <unistd.h>
 
-#include "stm32f4xx_hal.h" // NER
+#include "stm32xx_hal.h" // NER
 
 /**
  * @file vl6180x_platform.h
@@ -235,7 +235,7 @@ void VL6180x_PollDelay(
  * real function
  * @ingroup api_platform
  */
-#define VL6180x_PollDelay(dev) (void)0
+//#define VL6180x_PollDelay(dev) (void)0
 
 #if VL6180X_LOG_ENABLE
 #include <stdio.h>

@@ -204,19 +204,19 @@ void LTC6804_adcv(ltc_config *config);
 void LTC6804_adax(ltc_config *config);
 
 uint8_t LTC6804_rdcv(ltc_config *config, uint8_t reg, uint8_t total_ic,
-		     uint16_t cell_codes[][12]);
+		     uint16_t **cell_codes);
 
 int8_t LTC6804_rdaux(ltc_config *config, uint8_t reg, uint8_t nIC,
-		     uint16_t aux_codes[][6]);
+		     uint16_t **aux_codes);
 
 void LTC6804_clraux(ltc_config *config);
 
-void LTC6804_wrcfg(ltc_config *config, uint8_t nIC, uint8_t data_config[][6]);
+void LTC6804_wrcfg(ltc_config *config, uint8_t nIC, uint8_t **data_config);
 
-int8_t LTC6804_rdcfg(ltc_config *config, uint8_t nIC, uint8_t r_config[][8]);
+int8_t LTC6804_rdcfg(ltc_config *config, uint8_t nIC, uint8_t **r_config);
 
 void LTC6804_wrcomm(ltc_config *config, uint8_t total_ic,
-		    uint8_t writeData[][6]);
+		    uint8_t **writeData);
 
 void LTC6804_stcomm(ltc_config *config, uint8_t len);
 

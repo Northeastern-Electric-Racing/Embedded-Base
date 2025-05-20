@@ -3,7 +3,8 @@
   :mock_prefix: mock_   
   :when_no_prototypes:
   :warn:
-  :enforce_strict_ordering: TRUE
+  :enforce_strict_ordering: true
+  :parse_comments: true
   :plugins:
     - :ignore
     - :ignore_arg
@@ -16,3 +17,4 @@
     uint32:   UINT32
     int8:     INT8
     bool:     UINT8
+    
