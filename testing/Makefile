@@ -1,4 +1,3 @@
-
 UNITY_SRC = /cmock_portable/vendor/unity/src
 CMOCK_SRC = /cmock_portable/src
 PROJECT_DIR = /home/app
@@ -33,8 +32,10 @@ UNMOCKED_INCLUDES = \
 C_INCLUDES = $(MOCKED_INCLUDES) $(UNMOCKED_INCLUDES) 
 CFLAGS = -Wall -Wextra -Wno-unused-variable -Wno-array-parameter -DTESTING $(C_INCLUDES)
 
-MOCK_C_SOURCES := $(wildcard $(MOCKS)/mock_*.c)
+MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
+MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
 TEST_C_SOURCES := $(shell cat $(TEST_SOURCE_FILE))
+
 C_SOURCES = \
 	$(PROJECT_DIR)/Tests/Src/test_source.c \
 	$(CMOCK_SRC)/cmock.c \
@@ -43,22 +44,21 @@ C_SOURCES = \
 	$(TEST_C_SOURCES)
 
 
-.PHONY: all mock clean build
+.PHONY: all clean build
 
 all: build
 	./$(TEST_BUILD)/test_runner.out
 
-mock:
-	rm -rf $(MOCKS)
-	@echo "Generating mocks..."
-	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
-
-build: mock
+build: $(MOCK_C_SOURCES)
 	@echo $(MOCKED_INCLUDES)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) $(C_SOURCES) -o $(TEST_BIN)
 
+$(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
+	@echo "Generating mock for $*..."
+	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
+	@touch $@  # Ensure the files exist after generation
+
 clean:
 	rm -rf $(TEST_BUILD)
 	rm -rf $(MOCKS)
-
