@@ -14,8 +14,8 @@
 #endif
 
 #ifdef TESTING
-#include "mock_funtions.h"
-#include "mock_typedefs.h"
+#include "stub_functions.h"
+#include "stub_typedefs.h"
 #endif
 
 #endif /* STM32XX_HAL_H*/

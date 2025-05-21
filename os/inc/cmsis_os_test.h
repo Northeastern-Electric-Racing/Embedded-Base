@@ -4,8 +4,8 @@
 #ifndef TESTING
 #include "cmsis_os.h"
 #else
-#include "mock_typedefs.h"
-#include "mock_funtions.h"
+#include "stub_typedefs.h"
+#include "stub_functions.h"
 #endif
 
 #endif
