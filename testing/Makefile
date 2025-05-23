@@ -43,7 +43,7 @@ UNMOCKED_INCLUDES = \
 
 
 C_INCLUDES = $(MOCKED_INCLUDES) $(UNMOCKED_INCLUDES) 
-CFLAGS = -Wall -Wextra -Wno-unused-variable -Wno-array-parameter -DTESTING $(C_INCLUDES)
+CFLAGS = -Wall -Wextra -Wno-unused-variable -Wno-array-parameter -Wnounused-parameter -Wenum-conversion -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
