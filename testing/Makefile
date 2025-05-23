@@ -52,6 +52,7 @@ C_SOURCES = \
 	$(PROJECT_DIR)/Tests/Src/test_source.c \
 	$(CMOCK_SRC)/cmock.c \
 	$(UNITY_SRC)/unity.c \
+	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
 	$(MOCK_C_SOURCES) \
 	$(CORE_SOURCES)
 

@@ -33,6 +33,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Read(void *hi2c, uint16_t devAddress, uint16_t mem
 HAL_StatusTypeDef HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t PinState);
 HAL_StatusTypeDef HAL_CAN_GetTxMailboxesFreeLevel(CAN_HandleTypeDef *hcan);
 void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+uint32_t HAL_GetTick(void);
 
 #define I2C_MEMADD_SIZE_8BIT 1
 #define HAL_MAX_DELAY 0xFFFFFFFFU
