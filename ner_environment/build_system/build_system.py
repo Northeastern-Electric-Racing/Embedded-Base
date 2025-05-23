@@ -67,7 +67,7 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
     if clean:
         suffix = "make clean"
     else:
-        suffix = "make"
+        suffix = "make" 
     command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd testing/ && {suffix}"]
 
     run_command(command, stream_output=True)
