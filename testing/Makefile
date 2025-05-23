@@ -1,15 +1,18 @@
-UNITY_SRC = /cmock_portable/vendor/unity/src
-CMOCK_SRC = /cmock_portable/src
+
+CC = gcc
+
 PROJECT_DIR = /home/app
 
-TEST_DIR = $(PROJECT_DIR)/Tests
-MOCKED_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
+UNITY_SRC = /cmock_portable/vendor/unity/src
+CMOCK_SRC = /cmock_portable/src
 
+TEST_DIR = $(PROJECT_DIR)/Tests
 TEST_BUILD = build
 TEST_BIN = $(TEST_BUILD)/test_runner.out
 MOCKS = mocks
-CC = gcc
 
+
+MOCKED_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
@@ -64,9 +67,8 @@ build: $(MOCK_C_SOURCES)
 	$(CC) $(CFLAGS) $(C_SOURCES) -o $(TEST_BIN) -lm
 
 $(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
-	@echo "Generating mock for $*..."
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
-	@touch $@  # Ensure the files exist after generation
+	@touch $@  
 
 clean:
 	rm -rf $(TEST_BUILD)

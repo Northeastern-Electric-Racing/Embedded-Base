@@ -58,6 +58,17 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     run_command(command, stream_output=True)
 
 # ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test Source File")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "c", "/testing", "make"]
+    if clean:
+        command += "clean"
+    run_command(command, stream_output=True)
+
+# ==============================================================================
 # Clang command
 # ==============================================================================
 

@@ -12,7 +12,7 @@
 #define RTOS_UTILS_H
 
 #include <stdbool.h>
-#include "cmsis_os_test.h"
+#include "ner_cmsis_os.h"
 
 /**
  * @brief Queue a message and set a thread noticication flag. The message is queued with a timeout of 0.
