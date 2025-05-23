@@ -68,7 +68,7 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
         suffix = "make clean"
     else:
         suffix = "make"
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd /testing && {suffix}"]
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd testing/ && {suffix}"]
 
     run_command(command, stream_output=True)
 
@@ -223,6 +223,21 @@ def update():
             sys.exit(1)
 
     run_command(command)
+
+# ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test Source File")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
+    suffix = ""
+    if clean:
+        suffix = "make clean"
+    else:
+        suffix = "make"
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd /testing && {suffix}"]
+
+    run_command(command, stream_output=True)
     
 # ==============================================================================
 # USBIP command
