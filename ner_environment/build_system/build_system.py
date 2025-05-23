@@ -61,7 +61,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 # Test command
 # ==============================================================================
 
-@app.command(help="Run Unity Test Source File")
+@app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
     suffix = ""
     if clean:

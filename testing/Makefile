@@ -12,8 +12,8 @@ TEST_BIN = $(TEST_BUILD)/test_runner.out
 MOCKS = mocks
 
 
-MOCKED_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
-EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_INCLUDES))
+MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
+EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
     $(foreach f,$(CORE_ALL_SOURCES), \
@@ -27,7 +27,7 @@ MOCKED_INCLUDES :=  \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/debounce.h \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/c_utils.h \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/timer.h \
-	$(MOCKED_INCLUDES)
+	$(MOCKED_CORE_INCLUDES)
 	
 UNMOCKED_INCLUDES = \
 	-Imanual_mocks \
