@@ -63,9 +63,13 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
 @app.command(help="Run Unity Test Source File")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "c", "/testing", "make"]
+    suffix = ""
     if clean:
-        command += "clean"
+        suffix = "make clean"
+    else:
+        suffix = "make"
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd /testing && {suffix}"]
+
     run_command(command, stream_output=True)
 
 # ==============================================================================
