@@ -15,7 +15,7 @@ typedef struct {
 	float max_out;
 
 	float integral_sum;
-} pidc_t;
+} pid_t;
 
 /**
  * @brief Initializes a PID controller
@@ -26,9 +26,9 @@ typedef struct {
  * @param err_tol Error tolerance for checking if reached setpoint
  * @param min_out Minimum output value
  * @param max_out Maximum output value
- * @return pidc_t
+ * @return pid_t
  */
-pidc_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
+pid_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
 		float max_out);
 
 /**
@@ -38,7 +38,7 @@ pidc_t *pid_init(float kP, float kI, float kD, float err_tol, float min_out,
  * @param setpoint Desired state value
  * @param measurement Current state value
  */
-float pid_calculate(pidc_t *pid, float setpoint, float measurement);
+float pid_calculate(pid_t *pid, float setpoint, float measurement);
 
 /**
  * @brief Returns whether or not the controller is within error tolerance
@@ -47,6 +47,6 @@ float pid_calculate(pidc_t *pid, float setpoint, float measurement);
  * @return true
  * @return false
  */
-bool pid_at_setpoint(pidc_t *pid);
+bool pid_at_setpoint(pid_t *pid);
 
 #endif // PID_H

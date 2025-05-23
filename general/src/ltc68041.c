@@ -302,7 +302,7 @@ uint8_t
 LTC6804_rdcv(ltc_config *config,
 	     uint8_t reg, // Controls which cell voltage register is read back.
 	     uint8_t total_ic, // the number of ICs in the system
-	     uint16_t **cell_codes // Array of the parsed cell codes
+	     uint16_t cell_codes[][12] // Array of the parsed cell codes
 )
 {
 	const uint8_t NUM_RX_BYT = 8;
@@ -592,7 +592,7 @@ int8_t LTC6804_rdaux(
 	ltc_config *config,
 	uint8_t reg, // Determines which GPIO voltage register is read back.
 	uint8_t total_ic, // the number of ICs in the system
-	uint16_t **aux_codes // A two dimensional array of the gpio voltage codes.
+	uint16_t aux_codes[][6] // A two dimensional array of the gpio voltage codes.
 )
 {
 	const uint8_t NUM_RX_BYT = 8;
@@ -998,7 +998,7 @@ void LTC6804_clraux(ltc_config *config)
 void LTC6804_wrcfg(
 	ltc_config *config,
 	uint8_t total_ic, // The number of ICs being written to
-	uint8_t **data_config // A two dimensional array of the configuration
+	uint8_t data_config[][6] // A two dimensional array of the configuration
 	// data that will be written
 )
 {
@@ -1293,7 +1293,7 @@ void write_68(ltc_config *config,
 }
 
 void LTC6804_wrcomm(ltc_config *config, uint8_t total_ic,
-		    uint8_t **writeData)
+		    uint8_t writeData[][6])
 {
 	uint8_t cmd[2] = { 0x07, 0x21 };
 	uint8_t write_buffer[256];
