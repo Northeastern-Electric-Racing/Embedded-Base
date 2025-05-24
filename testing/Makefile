@@ -8,8 +8,17 @@ CMOCK_SRC = /cmock_portable/src
 
 TEST_DIR = $(PROJECT_DIR)/Tests
 TEST_BUILD = build
-TEST_BIN = $(TEST_BUILD)/test_runner.out
 MOCKS = mocks
+MOCKS_STAMP := $(MOCKS)/.mocks_generated
+
+TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
+TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
+
+ifeq ($(TEST_FILE),)
+  TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
+else
+  TARGETS := $(TEST_BUILD)/$(basename $(TEST_FILE)).out
+endif
 
 
 MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
@@ -30,7 +39,7 @@ MOCKED_INCLUDES :=  \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/platforms/stm32f405/include/can.h \
 	$(MOCKED_CORE_INCLUDES)
 	
-UNMOCKED_INCLUDES = \
+C_INCLUDES = \
 	-Imanual_mocks \
 	-I$(PROJECT_DIR)/Core/Inc \
 	-I$(MOCKS) \
@@ -45,14 +54,13 @@ UNMOCKED_INCLUDES = \
 	-I$(PROJECT_DIR)/Drivers/adbms/program/inc
 
 
-C_INCLUDES = $(MOCKED_INCLUDES) $(UNMOCKED_INCLUDES) 
 CFLAGS = -Wall -Wextra -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
 
 C_SOURCES = \
-	$(PROJECT_DIR)/Tests/Src/test_source.c \
+	$(PROJECT_DIR)/Tests/Src/$(TEST_FILE) \
 	$(CMOCK_SRC)/cmock.c \
 	$(UNITY_SRC)/unity.c \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
@@ -63,16 +71,29 @@ C_SOURCES = \
 .PHONY: all clean build
 
 all: build
-	./$(TEST_BUILD)/test_runner.out
+	@for t in $(TARGETS); do ./$$t; done
 
-build: $(MOCK_C_SOURCES)
-	@echo $(MOCKED_INCLUDES)
+build: $(TARGETS)
+
+$(MOCKS_STAMP): $(MOCKED_INCLUDES)
+	@mkdir -p $(MOCKS)
+	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
+	@touch $@
+
+$(TEST_BUILD)/%.out: $(MOCKS_STAMP)
 	@mkdir -p $(TEST_BUILD)
-	$(CC) $(CFLAGS) $(C_SOURCES) -o $(TEST_BIN) -lm
+	$(CC) $(CFLAGS) \
+		$(TEST_DIR)/Src/$*.c \
+		$(CMOCK_SRC)/cmock.c \
+		$(UNITY_SRC)/unity.c \
+		$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
+		$(MOCK_C_SOURCES) \
+		$(CORE_SOURCES) \
+		-o $@ -lm
+
 
 $(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
-	@touch $@  
 
 clean:
 	rm -rf $(TEST_BUILD)
