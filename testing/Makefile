@@ -27,6 +27,7 @@ MOCKED_INCLUDES :=  \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/debounce.h \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/c_utils.h \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include/timer.h \
+	$(PROJECT_DIR)/Drivers/Embedded-Base/platforms/stm32f405/include/can.h \
 	$(MOCKED_CORE_INCLUDES)
 	
 UNMOCKED_INCLUDES = \
@@ -39,12 +40,13 @@ UNMOCKED_INCLUDES = \
 	-I$(PROJECT_DIR)/Drivers/Embedded-Base/platforms/stm32f405/include \
 	-I$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/include \
 	-I$(PROJECT_DIR)/Drivers/Embedded-Base/general/include \
-	-I$(PROJECT_DIR)/Drivers/Embedded-Base/os/inc
+	-I$(PROJECT_DIR)/Drivers/Embedded-Base/os/inc \
+	-I$(PROJECT_DIR)/Drivers/adbms/lib/inc \
+	-I$(PROJECT_DIR)/Drivers/adbms/program/inc
 
 
 C_INCLUDES = $(MOCKED_INCLUDES) $(UNMOCKED_INCLUDES) 
-CFLAGS = -Wall -Wextra -Wno-unused-variable -Wno-array-parameter -Wno-unused-parameter \
- -Wno-enum-conversion -Wno-sign-compare -DTESTING $(C_INCLUDES)
+CFLAGS = -Wall -Wextra -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))

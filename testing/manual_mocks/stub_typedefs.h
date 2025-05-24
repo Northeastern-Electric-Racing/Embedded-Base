@@ -50,6 +50,7 @@ typedef void *ADC_HandleTypeDef;
 typedef void *I2C_HandleTypeDef;
 typedef void *CAN_HandleTypeDef;
 typedef void *SPI_HandleTypeDef;
+typedef void *TIM_HandleTypeDef;
 
 typedef void *osMutexId_t;
 typedef void *osTimerId_t;

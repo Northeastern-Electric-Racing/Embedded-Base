@@ -40,6 +40,20 @@ HAL_StatusTypeDef HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin,
 HAL_StatusTypeDef HAL_CAN_GetTxMailboxesFreeLevel(CAN_HandleTypeDef *hcan);
 void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
 uint32_t HAL_GetTick(void);
+HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c,
+                                          uint16_t DevAddress,
+                                          uint8_t *pData,
+                                          uint16_t Size,
+                                          uint32_t Timeout);
+HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c,
+                                         uint16_t DevAddress,
+                                         uint8_t *pData,
+                                         uint16_t Size,
+                                         uint32_t Timeout);
+int HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+int __HAL_TIM_GET_COUNTER(TIM_HandleTypeDef *htim);
+int HAL_Delay(int delay);
+
 
 #define I2C_MEMADD_SIZE_8BIT 1
 #define HAL_MAX_DELAY	     0xFFFFFFFFU
@@ -65,6 +79,10 @@ uint32_t HAL_GetTick(void);
 
 #define CAN_RX_FIFO0 0
 #define CAN_ID_EXT   1
+
+#define GPIOA ((GPIO_TypeDef *)0x40020000)
+#define GPIOB ((GPIO_TypeDef *)0x40020400)
+#define GPIOC ((GPIO_TypeDef *)0x40020800)
 
 #define osFlagsWaitAny 0x00000001U
 
