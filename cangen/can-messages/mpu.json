@@ -4,70 +4,35 @@
       "desc": "MPU Status",
       "points": [
         {
-          "size": 8,
+          "size": 4,
           "sim": {
             "options": [
-              [
-                0,
-                0.01
-              ],
-              [
-                1,
-                0.78
-              ],
-              [
-                2,
-                0.1
-              ],
-              [
-                3,
-                0.1
-              ],
-              [
-                4,
-                0.01
-              ]
+              [0, 0.01],
+              [1, 0.78],
+              [2, 0.1],
+              [3, 0.1],
+              [4, 0.01]
             ]
           }
         },
         {
-          "size": 8,
+          "size": 4,
           "sim": {
             "options": [
-              [
-                0,
-                0.2
-              ],
-              [
-                1,
-                0.2
-              ],
-              [
-                2,
-                0.2
-              ],
-              [
-                3,
-                0.1
-              ],
-              [
-                4,
-                0.1
-              ],
-              [
-                5,
-                0.1
-              ],
-              [
-                6,
-                0.1
-              ]
+              [0, 0.2],
+              [1, 0.2],
+              [2, 0.2],
+              [3, 0.1],
+              [4, 0.1],
+              [5, 0.1],
+              [6, 0.1]
             ]
           }
         },
         {
-          "size": 8,
+          "size": 16,
           "signed": true,
+          "format": "divide10",
           "sim": {
             "min": 0,
             "max": 88,
@@ -76,88 +41,95 @@
           }
         },
         {
-          "size": 8,
+          "size": 1,
           "sim": {
             "options": [
-              [
-                0,
-                0.8
-              ],
-              [
-                1,
-                0.2
-              ]
+              [0, 0.8],
+              [1, 0.2]
             ]
           }
         },
         {
-          "size": 8,
-          "format": "divide100",
+          "size": 7,
           "sim": {
             "min": 0,
-            "max": 1,
-            "inc_min": 0.1,
-            "inc_max": 0.1
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
           }
         },
         {
-          "size": 8,
+          "size": 1,
           "sim": {
             "options": [
-              [
-                0,
-                0.8
-              ],
-              [
-                1,
-                0.2
-              ]
+              [0, 0.8],
+              [1, 0.2]
             ]
           }
+        },
+        {
+          "size": 10,
+          "sim": {
+            "min": 0,
+            "max": 50,
+            "inc_min": 5,
+            "inc_max": 5
+          }
+        },
+        {
+          "size": 1,
+          "sim": {
+            "options": [
+              [0, 0.8],
+              [1, 0.2]
+            ]
+          }
+        }, 
+        {
+          "size": 4,
+          "parse": false
         }
       ],
       "fields": [
         {
           "name": "MPU/State/Mode",
           "unit": "",
-          "values": [
-            1
-          ]
+          "values": [1]
         },
         {
           "name": "MPU/State/ModeIndex",
           "unit": "",
-          "values": [
-            2
-          ]
+          "values": [2]
         },
         {
           "name": "MPU/State/Speed",
           "unit": "mph",
-          "values": [
-            3
-          ]
+          "values": [3]
         },
         {
           "name": "MPU/State/TSMS",
           "unit": "",
-          "values": [
-            4
-          ]
+          "values": [4]
         },
         {
           "name": "MPU/State/TorqueLimit",
           "unit": "percentage",
-          "values": [
-            5
-          ]
+          "values": [5]
         },
         {
           "name": "MPU/State/Direction",
           "unit": "",
-          "values": [
-            6
-          ]
+          "values": [6]
+        },
+        {
+          "name": "MPU/State/RegenLimit",
+          "unit": "A",
+          "values": [7]
+        },
+        {
+          "name": "MPU/State/LaunchControl",
+          "unit": "",
+          "values": [8]
         }
       ],
       "clients": [
