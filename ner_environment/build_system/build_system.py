@@ -23,6 +23,7 @@ import os
 import glob
 import time
 from pathlib import Path
+from typing import List
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
@@ -56,6 +57,25 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     else:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
     run_command(command, stream_output=True)
+
+# ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test source file")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        files: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+    
+    if clean:
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
+        run_command(command, stream_output=True)
+        return
+   
+    file_args = " ".join(files) if files else ""
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make TEST_FILES='{file_args}'"]
+    run_command(command, stream_output=True)
+
+    
 
 # ==============================================================================
 # Clang command
