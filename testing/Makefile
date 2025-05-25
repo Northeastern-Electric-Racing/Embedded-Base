@@ -22,7 +22,8 @@ TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
 
 
 
-MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(MOCKED_INCLUDES_FILE))
+MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(TEST_DIR)/mocked_includes.txt), \
+							$(addprefix $(PROJECT_DIR)/, $(f)))
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
