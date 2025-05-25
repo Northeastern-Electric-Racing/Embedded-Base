@@ -70,25 +70,12 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
         run_command(command, stream_output=True)
         return
+   
+    file_args = " ".join(files) if files else ""
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make TEST_FILES='{file_args}'"]
+    run_command(command, stream_output=True)
+
     
-    if not files:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ && make"]
-        run_command(command, stream_output=True)
-        return
-
-    procs = []
-    for file in files:
-        cmd = [
-            "docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c",
-            f"cd Drivers/Embedded-Base/testing/ && flock /tmp/test_runner.lock -c 'make TEST_FILE={file}'"
-        ]
-        # Use Popen for parallel execution
-        proc = subprocess.Popen(cmd)
-        procs.append(proc)
-
-    # Wait for all to finish
-    for proc in procs:
-        proc.wait()
 
 # ==============================================================================
 # Clang command
