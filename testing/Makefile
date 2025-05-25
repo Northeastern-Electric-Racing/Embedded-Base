@@ -12,12 +12,13 @@ MOCKS = mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
 TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
-TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
 ifeq ($(TEST_FILES),)
-  TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
+  TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
 else
-  TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_FILES)))
+  TEST_NAMES := $(basename $(notdir $(TEST_FILES)))
 endif
+TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
+
 
 
 MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
