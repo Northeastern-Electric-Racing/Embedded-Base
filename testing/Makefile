@@ -11,9 +11,9 @@ TEST_BUILD = build
 MOCKS = mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
+TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
+TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
 ifeq ($(TEST_FILES),)
-  TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
-  TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
   TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
 else
   TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_FILES)))
@@ -57,6 +57,12 @@ CFLAGS = -Wall -Wextra -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
+C_SOURCES = \
+	$(CMOCK_SRC)/cmock.c \
+	$(UNITY_SRC)/unity.c \
+	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
+	$(MOCK_C_SOURCES) \
+	$(CORE_SOURCES) 
 
 .PHONY: all clean build
 
@@ -88,3 +94,6 @@ $(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
 clean:
 	rm -rf $(TEST_BUILD)
 	rm -rf $(MOCKS)
+
+list:
+	@for name in $(TEST_NAMES); do echo $$name; done
