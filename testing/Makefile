@@ -53,7 +53,7 @@ C_INCLUDES = \
 	-I$(PROJECT_DIR)/Drivers/adbms/program/inc
 
 
-CFLAGS = -Wall -Wextra -DTESTING $(C_INCLUDES)
+CFLAGS = -w -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
