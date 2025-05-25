@@ -10,6 +10,7 @@ TEST_DIR = $(PROJECT_DIR)/Tests
 TEST_BUILD = build
 MOCKS = mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
+MOCKED_INCLUDES_FILE := $(TEST_DIR)/mocked_includes.txt
 
 TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
 ifeq ($(TEST_FILES),)
@@ -21,7 +22,7 @@ TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
 
 
 
-MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(TEST_DIR)/mocked_includes.txt)
+MOCKED_CORE_INCLUDES = $(shell sed "s|^|$(PROJECT_DIR)/|" $(MOCKED_INCLUDES_FILE))
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
@@ -58,12 +59,6 @@ CFLAGS = -w -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
-C_SOURCES = \
-	$(CMOCK_SRC)/cmock.c \
-	$(UNITY_SRC)/unity.c \
-	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
-	$(MOCK_C_SOURCES) \
-	$(CORE_SOURCES) 
 
 .PHONY: all clean build
 
@@ -72,7 +67,7 @@ all: build
 
 build: $(TARGETS)
 
-$(MOCKS_STAMP): $(MOCKED_INCLUDES)
+$(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 	@mkdir -p $(MOCKS)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
 	@touch $@
@@ -87,10 +82,6 @@ $(TEST_BUILD)/%.out: $(TEST_DIR)/Src/%.c $(MOCKS_STAMP)
 		$(MOCK_C_SOURCES) \
 		$(CORE_SOURCES) \
 		-o $@ -lm
-
-
-$(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
-	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
 
 clean:
 	rm -rf $(TEST_BUILD)
