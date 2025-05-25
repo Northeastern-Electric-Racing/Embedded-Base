@@ -64,10 +64,16 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
 @app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
         files: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
     
     if clean:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
+        run_command(command, stream_output=True)
+        return
+
+    if list:
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make list"]
         run_command(command, stream_output=True)
         return
    
