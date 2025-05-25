@@ -11,13 +11,12 @@ TEST_BUILD = build
 MOCKS = mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
-TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
-TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
-
-ifeq ($(TEST_FILE),)
+ifeq ($(TEST_FILES),)
+  TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
+  TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
   TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
 else
-  TARGETS := $(TEST_BUILD)/$(basename $(TEST_FILE)).out
+  TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_FILES)))
 endif
 
 
@@ -59,15 +58,6 @@ CFLAGS = -Wall -Wextra -DTESTING $(C_INCLUDES)
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
 
-C_SOURCES = \
-	$(PROJECT_DIR)/Tests/Src/$(TEST_FILE) \
-	$(CMOCK_SRC)/cmock.c \
-	$(UNITY_SRC)/unity.c \
-	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
-	$(MOCK_C_SOURCES) \
-	$(CORE_SOURCES)
-
-
 .PHONY: all clean build
 
 all: build
@@ -80,7 +70,7 @@ $(MOCKS_STAMP): $(MOCKED_INCLUDES)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
 	@touch $@
 
-$(TEST_BUILD)/%.out: $(MOCKS_STAMP)
+$(TEST_BUILD)/%.out: $(TEST_DIR)/Src/%.c $(MOCKS_STAMP)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
 		$(TEST_DIR)/Src/$*.c \
@@ -98,6 +88,3 @@ $(MOCKS)/mock_%.c $(MOCKS)/mock_%.h:
 clean:
 	rm -rf $(TEST_BUILD)
 	rm -rf $(MOCKS)
-
-debug-print:
-	@echo $(MOCKED_INCLUDES)
