@@ -65,23 +65,32 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 @app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
         list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
-        files: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
-    
+        packages: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+
+    mock_configs_dir = Path("Tests/mock_configs")
+    test_packages = [file.stem for file in mock_configs_dir.iterdir() if file.is_file()]
+
     if clean:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
         run_command(command, stream_output=True)
-        return
+        return    
 
     if list:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make list"]
-        run_command(command, stream_output=True)
+        for tp in test_packages:
+            print(tp)
         return
-   
-    file_args = " ".join(files) if files else ""
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make TEST_FILES='{file_args}'"]
-    run_command(command, stream_output=True)
-
     
+    if packages == None:
+        packages = test_packages
+    
+    processes = []
+    for package in packages:
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make TEST_PACKAGE='{package}'"]
+        processes.append(subprocess.Popen(command))
+        
+    for p in processes:
+        p.wait()
+
 
 # ==============================================================================
 # Clang command
