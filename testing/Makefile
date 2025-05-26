@@ -8,22 +8,17 @@ CMOCK_SRC = /cmock_portable/src
 
 TEST_DIR = $(PROJECT_DIR)/Tests
 TEST_BUILD = build
-MOCKS = mocks
+MOCKS = mocks/$(TEST_PACKAGE)_mocks
+MOCK_CONFIG=$(TEST_DIR)/mock_configs/$(TEST_PACKAGE).txt
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
-MOCKED_INCLUDES_FILE := $(TEST_DIR)/mocked_includes.txt
 
-TEST_SOURCES := $(wildcard $(TEST_DIR)/Src/test_*.c)
-ifeq ($(TEST_FILES),)
-  TEST_NAMES := $(basename $(notdir $(TEST_SOURCES)))
-else
-  TEST_NAMES := $(basename $(notdir $(TEST_FILES)))
-endif
-TARGETS := $(addprefix $(TEST_BUILD)/, $(addsuffix .out, $(TEST_NAMES)))
+TEST_SOURCE := $(TEST_DIR)/Src/$(TEST_PACKAGE)
+TARGET := $(addprefix $(TEST_BUILD)/, $(TEST_PACKAGE))
 
 
-
-MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(TEST_DIR)/mocked_includes.txt), \
-							$(addprefix $(PROJECT_DIR)/, $(f)))
+ifdef TEST_PACKAGE
+MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(MOCK_CONFIG)), \
+                           $(addprefix $(PROJECT_DIR)/, $(f)))
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
@@ -60,23 +55,31 @@ CFLAGS = -w -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
+C_SOURCES = \
+	$(CMOCK_SRC)/cmock.c \
+	$(UNITY_SRC)/unity.c \
+	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
+	$(MOCK_C_SOURCES) \
+	$(CORE_SOURCES) 
+
+endif
 
 .PHONY: all clean build
 
 all: build
-	@for t in $(TARGETS); do ./$$t; done
+	./$(TARGET)
 
-build: $(TARGETS)
+build: $(TARGET)
 
-$(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
+$(MOCKS_STAMP): $(MOCK_CONFIG) $(MOCKED_INCLUDES) 
 	@mkdir -p $(MOCKS)
-	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKED_INCLUDES)
+	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
 
-$(TEST_BUILD)/%.out: $(TEST_DIR)/Src/%.c $(MOCKS_STAMP)
+$(TARGET): $(MOCKS_STAMP)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
-		$(TEST_DIR)/Src/$*.c \
+		$(TEST_DIR)/Src/$(TEST_PACKAGE).c \
 		$(CMOCK_SRC)/cmock.c \
 		$(UNITY_SRC)/unity.c \
 		$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
@@ -86,7 +89,7 @@ $(TEST_BUILD)/%.out: $(TEST_DIR)/Src/%.c $(MOCKS_STAMP)
 
 clean:
 	rm -rf $(TEST_BUILD)
-	rm -rf $(MOCKS)
+	rm -rf mocks
 
-list:
-	@for name in $(TEST_NAMES); do echo $$name; done
+
+	
