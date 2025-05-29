@@ -279,5 +279,321 @@
     ],
     "key": "RadFanStatus",
     "sim_freq": 750
+  },
+  {
+    "id": "0x60A",
+    "desc": "Zero IMU - Front Left MSB",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/MSB/FrontLeft/ZeroIMU/Yaw",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/FrontLeft/ZeroIMU/Pitch",
+        "unit": "bool",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/FrontLeft/ZeroIMU/Roll",
+        "unit": "bool",
+        "values": [
+          3
+        ]
+      }
+    ],
+    "key": "FrontLeftZeroIMU",
+    "sim_freq": 750
+  },
+  {
+    "id": "0x60B",
+    "desc": "Zero IMU - Front Right MSB",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/MSB/FrontRight/ZeroIMU/Yaw",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/FrontRight/ZeroIMU/Pitch",
+        "unit": "bool",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/FrontRight/ZeroIMU/Roll",
+        "unit": "bool",
+        "values": [
+          3
+        ]
+      }
+    ],
+    "key": "FrontRightZeroIMU",
+    "sim_freq": 750
+  },
+  {
+    "id": "0x60C",
+    "desc": "Zero IMU - Back Left MSB",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/MSB/BackLeft/ZeroIMU/Yaw",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/BackLeft/ZeroIMU/Pitch",
+        "unit": "bool",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/BackLeft/ZeroIMU/Roll",
+        "unit": "bool",
+        "values": [
+          3
+        ]
+      }
+    ],
+    "key": "BackLeftZeroIMU",
+    "sim_freq": 750
+  },
+  {
+    "id": "0x60D",
+    "desc": "Zero IMU - Back Right MSB",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      },
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/MSB/BackRight/ZeroIMU/Yaw",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/BackRight/ZeroIMU/Pitch",
+        "unit": "bool",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "Calypso/Bidir/MSB/BackRight/ZeroIMU/Roll",
+        "unit": "bool",
+        "values": [
+          3
+        ]
+      }
+    ],
+    "key": "BackRightZeroIMU",
+    "sim_freq": 750
   }
 ]
