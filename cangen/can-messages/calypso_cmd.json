@@ -518,7 +518,7 @@
     "sim_freq": 750
   },
   {
-    "id": "0x60D",
+    "id": "0x60E",
     "desc": "Zero IMU Back Right MSB",
     "points": [
       {
