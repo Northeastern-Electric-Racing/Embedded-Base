@@ -282,7 +282,7 @@
   },
   {
     "id": "0x60A",
-    "desc": "Zero IMU - Front Left MSB",
+    "desc": "Zero IMU Front Left MSB",
     "points": [
       {
         "size": 8,
@@ -361,7 +361,7 @@
   },
   {
     "id": "0x60B",
-    "desc": "Zero IMU - Front Right MSB",
+    "desc": "Zero IMU Front Right MSB",
     "points": [
       {
         "size": 8,
@@ -440,7 +440,7 @@
   },
   {
     "id": "0x60C",
-    "desc": "Zero IMU - Back Left MSB",
+    "desc": "Zero IMU Back Left MSB",
     "points": [
       {
         "size": 8,
@@ -519,7 +519,7 @@
   },
   {
     "id": "0x60D",
-    "desc": "Zero IMU - Back Right MSB",
+    "desc": "Zero IMU Back Right MSB",
     "points": [
       {
         "size": 8,
