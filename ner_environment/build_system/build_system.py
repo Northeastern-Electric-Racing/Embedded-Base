@@ -60,8 +60,8 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
             # Clean main build directory and any subproject build directories
             clean_cmd = """
                 cd /home/app && \
-                rm -rf build Appli/build Boot/build && \
-                find . -name CMakeCache.txt -delete
+                cmake --build build --target clean && \
+                rm -rf build &&
             """
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", clean_cmd], stream_output=True)
             print("[blue]Cleaned build directories.[/blue]")
