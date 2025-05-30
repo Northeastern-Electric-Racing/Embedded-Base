@@ -56,9 +56,9 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         print("[bold blue]CMake project detected.\n")
         if clean:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", ".", "--target", "clean"], stream_output=True)
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", "--target", "clean"], stream_output=True)
         else:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", ".", f"-j{os.cpu_count()}"], stream_output=True)
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", f"-j{os.cpu_count()}"], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.\n")
         if clean:
