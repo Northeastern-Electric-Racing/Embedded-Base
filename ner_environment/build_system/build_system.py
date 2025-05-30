@@ -63,7 +63,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
             print("[blue]Cleaned build directories.[/blue]")
         else:
             # Configure and build in one command
-            command = "cd /home/app && mkdir -p build && cd build && cmake .. && cmake --build ."
+            command = "cd /home/app && mkdir -p build && cd build && cmake -DCMAKE_C_COMPILER=/home/dev/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc -DCMAKE_CXX_COMPILER=/home/dev/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++ .. && cmake --build ."
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.")
