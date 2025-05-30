@@ -58,23 +58,13 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         
         if clean:
             # Clean main build directory and any subproject build directories
-            clean_cmd = """
-                cd /home/app && \
-                cmake --build build --target clean && \
-                rm -rf build &&
-            """
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", clean_cmd], stream_output=True)
+            command = "cd /home/app && cmake --build build --target clean && rm -rf build"
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command], stream_output=True)
             print("[blue]Cleaned build directories.[/blue]")
         else:
             # Configure and build in one command
-            build_cmd = """
-                cd /home/app && \
-                mkdir -p build && \
-                cd build && \
-                cmake .. && \
-                cmake --build .
-            """
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", build_cmd], stream_output=True)
+            command = "cd /home/app && mkdir -p build && cd build && cmake .. && cmake --build ."
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.")
         if clean:
