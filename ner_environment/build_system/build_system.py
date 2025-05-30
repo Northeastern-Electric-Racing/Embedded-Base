@@ -54,13 +54,19 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     is_cmake = os.path.exists("CMakeLists.txt")
 
     if is_cmake: # Repo uses CMake, so execute CMake commands.
-        print("[bold blue]CMake project detected.\n")
+        print("[bold blue]CMake project detected.")
+        
+        # If CMakeCache.txt doesn't exist or has wrong paths, configure CMake
+        if not os.path.exists("build/CMakeCache.txt"):
+            print("[blue]No CMake cache found. Configuring CMake...[/blue]")
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", "cd /home/app && mkdir -p build && cd build && cmake .."], stream_output=True)
+        
         if clean:
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", "--target", "clean"], stream_output=True)
         else:
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build"], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
-        print("[bold blue]Makefile project detected.\n")
+        print("[bold blue]Makefile project detected.")
         if clean:
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"], stream_output=True)
         else:
