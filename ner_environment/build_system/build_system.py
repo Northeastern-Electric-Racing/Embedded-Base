@@ -52,7 +52,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
     is_cmake = os.path.exists("CMakeLists.txt")
-
+    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cmake --version"], stream_output=True) # remove this
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         print("[bold blue]CMake project detected.")
         
