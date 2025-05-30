@@ -57,11 +57,16 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         print("[bold blue]CMake project detected.")
         
         if clean:
-            # Clean by removing build directory entirely
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "rm", "-rf", "/home/app/build"], stream_output=True)
-            print("[blue]Cleaned build directory.[/blue]")
+            # Clean main build directory and any subproject build directories
+            clean_cmd = """
+                cd /home/app && \
+                rm -rf build Appli/build Boot/build && \
+                find . -name CMakeCache.txt -delete
+            """
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", clean_cmd], stream_output=True)
+            print("[blue]Cleaned build directories.[/blue]")
         else:
-            # Always configure and build in one command to ensure consistency
+            # Configure and build in one command
             build_cmd = """
                 cd /home/app && \
                 mkdir -p build && \
