@@ -47,15 +47,26 @@ def unsupported_option_cb(value:bool):
 # Build command
 # ==============================================================================
 
-@app.command(help="Build the project with GCC ARM Toolchain and Make")
+@app.command(help="Build the project with GCC ARM Toolchain and Make/CMake")
 def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
-    if clean:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
-    else:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
-    run_command(command, stream_output=True)
+    is_cmake = os.path.exists("CMakeLists.txt")
+
+    if is_cmake: # Repo uses CMake, so execute CMake commands.
+        # If the build directory doesn't exist, make it and configure CMake
+        if not os.path.exists("build"):
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "mkdir", "-p", "build"], stream_output=True)
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "-S", ".", "-B", "build"], stream_output=True)
+        if clean:
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", "--target", "clean"], stream_output=True)
+        else:
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", f"-j{os.cpu_count()}"], stream_output=True)
+    else: # Repo uses Make, so execute Make commands.
+        if clean:
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"], stream_output=True)
+        else:
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"], stream_output=True)
 
 # ==============================================================================
 # Clang command
