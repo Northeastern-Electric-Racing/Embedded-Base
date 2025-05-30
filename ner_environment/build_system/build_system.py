@@ -54,6 +54,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     is_cmake = os.path.exists("CMakeLists.txt")
 
     if is_cmake: # Repo uses CMake, so execute CMake commands.
+        print("[bold blue]CMake project detected.\n")
         # If the build directory doesn't exist, make it and configure CMake
         if not os.path.exists("build"):
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "mkdir", "-p", "build"], stream_output=True)
@@ -63,6 +64,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         else:
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", f"-j{os.cpu_count()}"], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
+        print("[bold blue]Makefile project detected.\n") # REMOVE THIS
         if clean:
             run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"], stream_output=True)
         else:
