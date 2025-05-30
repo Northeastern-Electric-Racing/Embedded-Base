@@ -56,15 +56,20 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         print("[bold blue]CMake project detected.")
         
-        # If CMakeCache.txt doesn't exist or has wrong paths, configure CMake
-        if not os.path.exists("build/CMakeCache.txt"):
-            print("[blue]No CMake cache found. Configuring CMake...[/blue]")
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", "cd /home/app && mkdir -p build && cd build && cmake .."], stream_output=True)
-        
         if clean:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build", "--target", "clean"], stream_output=True)
+            # Clean by removing build directory entirely
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "rm", "-rf", "/home/app/build"], stream_output=True)
+            print("[blue]Cleaned build directory.[/blue]")
         else:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "cmake", "--build", "build"], stream_output=True)
+            # Always configure and build in one command to ensure consistency
+            build_cmd = """
+                cd /home/app && \
+                mkdir -p build && \
+                cd build && \
+                cmake .. && \
+                cmake --build .
+            """
+            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "bash", "-c", build_cmd], stream_output=True)
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.")
         if clean:
