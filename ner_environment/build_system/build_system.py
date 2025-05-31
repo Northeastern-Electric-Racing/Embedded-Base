@@ -65,7 +65,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     # If Makefile is in Makefile directory, add cd command
     if makefile_in_dir:
         if clean:
-            command.extend(["sh", "-c", "cd Makefile && make clean"])
+            command.extend(["sh", "-c", "cd Makefile && make clean && cd Appli && make clean && cd ../Boot && make clean"])
         else:
             command.extend(["sh", "-c", f"cd Makefile && make -j{os.cpu_count()}"])
     else:
