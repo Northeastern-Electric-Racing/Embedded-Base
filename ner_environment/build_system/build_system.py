@@ -64,15 +64,10 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         
         if clean:
             # Clean main build directory and any subproject build directories
-            run_command_docker("cmake --build build --target clean")
-            run_command_docker("find . -type d -name 'build' -exec rm -rf {} +")
+            run_command_docker("if [ -d 'build' ]; then cmake --build build --target clean; fi && find . -type d -name 'build' -exec rm -rf {} +")
         else:
             # Configure and build in one command
-            command = "mkdir -p build && cd build && cmake .. && cmake --build ."
-            run_command_docker("mkdir -p build")
-            run_command_docker("cd build")
-            run_command_docker("cmake ..")
-            run_command_docker("cmake --build .")
+            run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .")
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.")
         if clean:
