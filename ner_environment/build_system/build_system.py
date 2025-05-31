@@ -60,20 +60,18 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
-        print("[bold blue]CMake project detected.")
-        
         if clean:
             # Clean main build directory and any subproject build directories
             run_command_docker("if [ -d 'build' ]; then cmake --build build --target clean; fi && find . -type d -name 'build' -exec rm -rf {} +")
+            print("[bold green]Ran build-cleaning command.")
         else:
             # Configure and build in one command
             run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .")
     else: # Repo uses Make, so execute Make commands.
-        print("[bold blue]Makefile project detected.")
         if clean:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"], stream_output=True)
+            run_command_docker("make clean")
         else:
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"], stream_output=True)
+            run_command_docker(f"make -j{os.cpu_count()}")
 
 # ==============================================================================
 # Clang command
