@@ -50,14 +50,6 @@ def unsupported_option_cb(value:bool):
 @app.command(help="Build the project with GCC ARM Toolchain and Make/CMake")
 def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
-
-
-    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "arm-none-eabi-gcc --version"], stream_output=True)
-    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cmake --version"], stream_output=True)
-    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "ls", "-la", "/home/app"])
-    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "ls", "-la", "/home/dev"])
-
-
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         if clean:
