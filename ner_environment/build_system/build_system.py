@@ -51,10 +51,30 @@ def unsupported_option_cb(value:bool):
 def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
 
-    if clean:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
+    # Check if Makefile exists in root or in Makefile directory
+    makefile_in_root = os.path.exists("Makefile")
+    makefile_in_dir = os.path.exists(os.path.join("Makefile", "Makefile"))
+
+    if not makefile_in_root and not makefile_in_dir:
+        print("[bold red]Error: No Makefile found in root directory or Makefile directory")
+        sys.exit(1)
+
+    # Base command
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
+    
+    # If Makefile is in Makefile directory, add cd command
+    if makefile_in_dir:
+        if clean:
+            command.extend(["sh", "-c", "cd Makefile && make clean"])
+        else:
+            command.extend(["sh", "-c", f"cd Makefile && make -j{os.cpu_count()}"])
     else:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
+        # Makefile is in root
+        if clean:
+            command.extend(["make", "clean"])
+        else:
+            command.extend(["make", f"-j{os.cpu_count()}"])
+
     run_command(command, stream_output=True)
 
 # ==============================================================================
