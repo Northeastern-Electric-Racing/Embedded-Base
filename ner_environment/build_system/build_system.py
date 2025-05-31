@@ -64,13 +64,15 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         
         if clean:
             # Clean main build directory and any subproject build directories
-            command = "cmake --build build --target clean && rm -rf build"
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command], stream_output=True)
-            print("[blue]Cleaned build directories.[/blue]")
+            run_command_docker("cmake --build build --target clean")
+            run_command_docker("find . -type d -name 'build' -exec rm -rf {} +")
         else:
             # Configure and build in one command
             command = "mkdir -p build && cd build && cmake .. && cmake --build ."
-            run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command], stream_output=True)
+            run_command_docker("mkdir -p build")
+            run_command_docker("cd build")
+            run_command_docker("cmake ..")
+            run_command_docker("cmake --build .")
     else: # Repo uses Make, so execute Make commands.
         print("[bold blue]Makefile project detected.")
         if clean:
@@ -360,6 +362,12 @@ def run_command(command, stream_output=False, exit_on_fail=True):
             print(e.stderr, file=sys.stderr)
             if exit_on_fail:
                 sys.exit(e.returncode)
+
+def run_command_docker(command):
+    """Run a command in the Docker container."""
+    docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
+    print(f"[bold blue]Running command '{command}' in Docker container:[/bold blue]")
+    run_command(docker_command, stream_output=True, exit_on_fail=True)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
