@@ -179,7 +179,7 @@
     "points": [
       {
         "size": 32,
-        "iee754_f32": true,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
           "max": 3,
@@ -493,7 +493,7 @@
     "points": [
       {
         "size": 32,
-        "iee754_f32": true,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
           "max": 3,
@@ -807,7 +807,7 @@
     "points": [
       {
         "size": 32,
-        "iee754_f32": true,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
           "max": 3,
@@ -1121,7 +1121,7 @@
     "points": [
       {
         "size": 32,
-        "iee754_f32": true,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
           "max": 3,
