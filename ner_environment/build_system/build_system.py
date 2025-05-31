@@ -54,6 +54,9 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 
     run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "arm-none-eabi-gcc --version"], stream_output=True)
     run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cmake --version"], stream_output=True)
+    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "ls", "-la", "/home/app"])
+    run_command(["docker", "compose", "run", "--rm", "ner-gcc-arm", "ls", "-la", "/home/dev"])
+
 
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
