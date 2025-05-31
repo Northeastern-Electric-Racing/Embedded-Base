@@ -349,7 +349,7 @@ def run_command(command, stream_output=False, exit_on_fail=True):
 def run_command_docker(command, stream_output=False):
     """Run a command in the Docker container."""
     docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
-    print(f"[bold blue]Running command '{command}' in Docker container:[/bold blue]")
+    print(f"[bold blue]Running command '{command}' in Docker container.")
     run_command(docker_command, stream_output=stream_output, exit_on_fail=True)
 
 def disconnect_usbip():
