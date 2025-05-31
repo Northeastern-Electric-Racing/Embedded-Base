@@ -42,12 +42,11 @@ RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
-RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 | tar -xvj
+RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.07/gcc-arm-none-eabi-10.3-2021.07-x86_64-linux.tar.bz2 | tar -xvj
 
-ENV PATH $PATH:/home/dev/gcc-arm-none-eabi-10.3-2021.10/bin
+ENV PATH $PATH:/home/dev/gcc-arm-none-eabi-10.3-2021.07/bin
 
 WORKDIR /home/app
 
 # Set up safe directory
 RUN git config --global --add safe.directory /home/app
-
