@@ -42,9 +42,9 @@ RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
-RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.07/gcc-arm-none-eabi-10.3-2021.07-x86_64-linux.tar.bz2 | tar -xvj
+RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv
 
-ENV PATH $PATH:/home/dev/gcc-arm-none-eabi-10.3-2021.07/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
 
 WORKDIR /home/app
 
