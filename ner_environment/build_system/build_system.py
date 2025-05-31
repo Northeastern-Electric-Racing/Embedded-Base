@@ -61,17 +61,15 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         if clean:
-            # Clean main build directory and any subproject build directories
-            run_command_docker("if [ -d 'build' ]; then cmake --build build --target clean; fi && find . -type d -name 'build' -exec rm -rf {} +")
+            run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
             print("[bold green]Ran build-cleaning command.")
         else:
-            # Configure and build in one command
-            run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .")
+            run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .", stream_output=True)
     else: # Repo uses Make, so execute Make commands.
         if clean:
-            run_command_docker("make clean")
+            run_command_docker("make clean", stream_output=True)
         else:
-            run_command_docker(f"make -j{os.cpu_count()}")
+            run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
 
 # ==============================================================================
 # Clang command
@@ -356,11 +354,11 @@ def run_command(command, stream_output=False, exit_on_fail=True):
             if exit_on_fail:
                 sys.exit(e.returncode)
 
-def run_command_docker(command):
+def run_command_docker(command, stream_output=False):
     """Run a command in the Docker container."""
     docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
     print(f"[bold blue]Running command '{command}' in Docker container:[/bold blue]")
-    run_command(docker_command, stream_output=True, exit_on_fail=True)
+    run_command(docker_command, stream_output=stream_output, exit_on_fail=True)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
