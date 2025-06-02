@@ -6,18 +6,19 @@ PROJECT_DIR = /home/app
 UNITY_SRC = /cmock_portable/vendor/unity/src
 CMOCK_SRC = /cmock_portable/src
 
+# MOCK_CONFIG IS A PARAMETER
+# TEST_SOURCE IS A PARAMETER
+TEST_FILENAME = $(basename $(notdir $(TEST_SOURCE)))
+MOCK_CONFIG_FILENAME = $(basename $(notdir $(MOCK_CONFIG)))
+
 TEST_DIR = $(PROJECT_DIR)/Tests
 TEST_BUILD = build
-MOCKS = mocks/$(TEST_PACKAGE)_mocks
-MOCK_CONFIG=$(TEST_DIR)/mock_configs/$(TEST_PACKAGE).txt
+MOCKS = mocks/$(MOCK_CONFIG_FILENAME)_mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
-TEST_SOURCE := $(TEST_DIR)/Src/$(TEST_PACKAGE)
-TARGET := $(addprefix $(TEST_BUILD)/, $(TEST_PACKAGE))
+TARGET := $(addprefix $(TEST_BUILD)/, $(TEST_FILENAME))
 
-
-ifdef TEST_PACKAGE
-MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(MOCK_CONFIG)), \
+MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(PROJECT_DIR)/$(MOCK_CONFIG)), \
                            $(addprefix $(PROJECT_DIR)/, $(f)))
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
@@ -62,8 +63,6 @@ C_SOURCES = \
 	$(MOCK_C_SOURCES) \
 	$(CORE_SOURCES) 
 
-endif
-
 .PHONY: all clean build
 
 all: build
@@ -71,7 +70,7 @@ all: build
 
 build: $(TARGET)
 
-$(MOCKS_STAMP): $(MOCK_CONFIG) $(MOCKED_INCLUDES) 
+$(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 	@mkdir -p $(MOCKS)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
@@ -79,7 +78,7 @@ $(MOCKS_STAMP): $(MOCK_CONFIG) $(MOCKED_INCLUDES)
 $(TARGET): $(MOCKS_STAMP)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
-		$(TEST_DIR)/Src/$(TEST_PACKAGE).c \
+		$(PROJECT_DIR)/$(TEST_SOURCE) \
 		$(CMOCK_SRC)/cmock.c \
 		$(UNITY_SRC)/unity.c \
 		$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
