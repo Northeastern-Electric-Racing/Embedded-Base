@@ -52,14 +52,14 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
-        print("[bold white][ ner build ]:[/bold white] [blue]CMake-based project detected.[/blue]")
+        print("[#cccccc][ ner build ]:[/#cccccc] [blue]CMake-based project detected.[/blue]")
         if clean:
             run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
-            print("[bold white][ ner build ]:[/bold white] [green]Ran build-cleaning command.[/green]")
+            print("[#cccccc][ ner build ]:[/#cccccc] [green]Ran build-cleaning command.[/green]")
         else:
             run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .", stream_output=True)
     else: # Repo uses Make, so execute Make commands.
-        print("[bold white][ ner build ]:[/bold white] [blue]Makefile-based project detected.[/blue]")
+        print("[#cccccc][ ner build ]:[/#cccccc] [blue]Makefile-based project detected.[/blue]")
         if clean:
             run_command_docker("make clean", stream_output=True)
         else:
