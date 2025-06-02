@@ -341,7 +341,8 @@ def run_command(command, stream_output=False, exit_on_fail=True):
     else:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
-            print(result.stdout)
+            if result.stdout and result.stdout.strip():  # Only print if stdout is not empty or just whitespace
+                print(result.stdout)
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {e}", file=sys.stderr)
             print(e.stderr, file=sys.stderr)
@@ -351,7 +352,7 @@ def run_command(command, stream_output=False, exit_on_fail=True):
 def run_command_docker(command, stream_output=False):
     """Run a command in the Docker container."""
     docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
-    print(f"[bold blue]Running command '{command}' in Docker container.")
+    print(f"[bold blue](ner-gcc-arm): Running command '{command}' in Docker container.")
     run_command(docker_command, stream_output=stream_output, exit_on_fail=True)
 
 def disconnect_usbip():
