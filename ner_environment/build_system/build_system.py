@@ -55,7 +55,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         print("[bold white][[ner build]]:[/bold white] [blue]CMake-based project detected.[/blue]")
         if clean:
             run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
-            print("[bold white][[ner build]]:[/bold white] [green]Ran build-cleaning command.[/green]")
+            print("[bold white][[ ner build ]]:[/bold white] [green]Ran build-cleaning command.[/green]")
         else:
             run_command_docker("mkdir -p build && cd build && cmake .. && cmake --build .", stream_output=True)
     else: # Repo uses Make, so execute Make commands.
