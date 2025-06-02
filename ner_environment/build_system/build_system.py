@@ -22,6 +22,7 @@ import sys
 import os
 import glob
 import time
+import re
 from pathlib import Path
 from typing import List
 
@@ -65,32 +66,32 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 @app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
         list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
-        packages: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
-
-    mock_configs_dir = Path("Tests/mock_configs")
-    test_packages = [file.stem for file in mock_configs_dir.iterdir() if file.is_file()]
+        tests: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
 
     if clean:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
         run_command(command, stream_output=True)
         return    
+    
+    test_packages = get_test_packages()
 
     if list:
         for tp in test_packages:
             print(tp)
         return
-    
-    if packages == None:
-        packages = test_packages
+
+    if tests == None:
+        tests = test_packages
     
     processes = []
-    for package in packages:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make TEST_PACKAGE='{package}'"]
-        processes.append(subprocess.Popen(command))
-        
+    for test in tests:
+        if test in test_packages:
+            processes.extend(handle_test_package(test))
+        else:
+            processes.append(handle_test_file(test))
+    
     for p in processes:
         p.wait()
-
 
 # ==============================================================================
 # Clang command
@@ -392,6 +393,50 @@ def contains_subdir(base_path, search_str):
         if item.is_dir() and search_str in item.name:
             return True
     return False
+
+def get_test_packages():
+    mock_configs_dir = Path("Tests/mock_configs")
+    mock_configs = [file.stem for file in mock_configs_dir.iterdir() if file.is_file()]
+    test_packages = []
+
+    for mc in mock_configs:
+        if len(mc.split(".")) == 1:
+            test_packages.append(mc)
+
+    return test_packages
+
+def get_tests_in_package(test_package):
+    test_sources_dir = Path("Tests/Src")
+    test_package_files = []
+    for file in test_sources_dir.iterdir():
+        if file.is_file() and re.search(f"^{test_package}.*.c$", file.name):
+            test_package_files.append(file)
+    
+    return test_package_files
+
+def handle_test_file(test_file):
+    filepath = Path(test_file)
+    if not filepath.exists():
+        sys.exit(1)
+
+    mc = Path(f"Tests/mock_configs/{filepath.stem}.txt")
+    if not mc.exists():
+        mc = Path(f"Tests/mock_configs/{filepath.stem.split('.')[0]}.txt")
+    
+    if not mc.exists():
+        sys.exit(1)
+    
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
+                   + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
+    return subprocess.Popen(command)
+
+def handle_test_package(test_package):
+    test_files = get_tests_in_package(test_package)
+    processes = []  
+    for test_file in test_files:
+        processes.append(handle_test_file(test_file))
+    return processes
+    
 
 # ==============================================================================
 # Entry
