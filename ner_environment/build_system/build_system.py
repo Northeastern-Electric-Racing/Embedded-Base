@@ -22,12 +22,13 @@ import sys
 import os
 import glob
 import time
-import re
 from pathlib import Path
 from typing import List
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .test_runner import main as test_runner
+from .test_runner import get_test_packages 
 
 # ==============================================================================
 # Typer application setup
@@ -73,12 +74,7 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
         run_command(command, stream_output=True)
         return    
     
-    mock_configs = get_mock_config_files()
-    test_packages = []
-    for mc in mock_configs:
-        if len(mc.stem.split(".")) == 1:
-            test_packages.append(mc.stem) 
-
+    test_packages = get_test_packages()
     if list:
         for tp in test_packages:
             print(tp)
@@ -87,23 +83,7 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
     if tests == None:
         tests = test_packages
 
-    processes = []
-    for mc in mock_configs:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
-                   + f"&& make mocks MOCK_CONFIG={str(mc)}"]
-        processes.append(subprocess.Popen(command))
-    
-    for p in processes:
-        p.wait()
-
-    for test in tests:
-        if test in test_packages:
-            processes.extend(handle_test_package(test))
-        else:
-            processes.append(handle_test_file(test))
-    
-    for p in processes:
-        p.wait()
+    test_runner(tests)
 
 # ==============================================================================
 # Clang command
@@ -406,42 +386,7 @@ def contains_subdir(base_path, search_str):
             return True
     return False
 
-def get_mock_config_files():
-    mock_configs_dir = Path("Tests/mock_configs")
-    mock_configs = [file for file in mock_configs_dir.iterdir() if file.is_file()]
-    return mock_configs
 
-def get_tests_in_package(test_package):
-    test_sources_dir = Path("Tests/Src")
-    test_package_files = []
-    for file in test_sources_dir.iterdir():
-        if file.is_file() and re.search(f"^{test_package}.*.c$", file.name):
-            test_package_files.append(file)
-    
-    return test_package_files
-
-def handle_test_file(test_file):
-    filepath = Path(test_file)
-    if not filepath.exists():
-        sys.exit(1)
-
-    mc = Path(f"Tests/mock_configs/{filepath.stem}.txt")
-    if not mc.exists():
-        mc = Path(f"Tests/mock_configs/{filepath.stem.split('.')[0]}.txt")
-    
-    if not mc.exists():
-        sys.exit(1)
-    
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
-                   + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
-    return subprocess.Popen(command)
-
-def handle_test_package(test_package):
-    test_files = get_tests_in_package(test_package)
-    processes = []  
-    for test_file in test_files:
-        processes.append(handle_test_file(test_file))
-    return processes
     
 
 # ==============================================================================
