@@ -160,4 +160,18 @@ int32_t LAN8670_PLCA_Set_Node_Count(lan8670_t *lan, uint8_t node_count);
  */
 int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id);
 
+/**
+ * @brief Gets the current link state of the LAN8670.
+ * 
+ * The link state can be one of the following:
+ * - 0: Link is down
+ * - 1: Link is up
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param state Pointer to a variable to store the link state.
+ * @note For the LAN8670, the link state bit is always 1 (link is up). If this function returns 0, something weird has happened.
+ * @return Status.
+ */
+int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state);
+
 // clang-format on
