@@ -32,13 +32,13 @@ void bitstream_init(bitstream_t *bitstream, uint8_t *data, size_t bytes);
 int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits);
 
 /**
- * @brief Reads info from the bitstream.
- * @param *bitstream The bitstream to read from.
- * @param start_bit The bit to start reading from.
- * @param num_bits The amount of bits to read. The maximum is 32 bits, and (start_bit + num_bits) must be less than the total number of bits in the bitstream.
- * @return Returns 1 if failed, and 0 if successful.
+ * @brief Adds a signed int to a bitstream. The data is added to the end of the bitstream.
+ * @param *bitstream The bitstream to add data to.
+ * @param value The data to add to the bitstream.
+ * @param num_bits The length of the data in bits.
+ * @return Returns 0 if successful, -1 if there is insufficient space in the bitstream, and 1 if overflow occurs.
  */
-uint32_t bitstream_read(bitstream_t *bitstream, uint32_t start_bit,
-			size_t num_bits);
+int bitstream_add_signed(bitstream_t *bitstream, int32_t value,
+			 size_t num_bits);
 
 #endif // BITSTREAM_H
