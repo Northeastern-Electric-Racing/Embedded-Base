@@ -24,7 +24,7 @@ typedef int32_t  (*lan8670_Init_Func) (void);
 typedef int32_t  (*lan8670_DeInit_Func) (void);
 typedef int32_t  (*lan8670_ReadReg_Func)   (uint32_t, uint32_t, uint32_t *);
 typedef int32_t  (*lan8670_WriteReg_Func)  (uint32_t, uint32_t, uint32_t);
-typedef int32_t  (*lan8670_GetTick_Func)  (void);
+typedef uint32_t  (*lan8670_GetTick_Func)  (void);
 
 /* IO STRUCT */
 typedef struct 
@@ -174,4 +174,12 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id);
  */
 int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state);
 
+/**
+ * @brief Registers HAL ethernet functions for use in this driver.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param ioctx Pointer to the lan8670_IOCtx_t instance containing the HAL functions.
+ * @return Status.
+ */
+int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx);
 // clang-format on
