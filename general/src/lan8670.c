@@ -503,4 +503,19 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id)
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
 }
 
+int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
+{   
+    // Read bit 2 of the Basic Status register. (Note: For the LAN8670, this will always be 1.)
+    uint32_t value = 0;
+    int status = read_register_field(lan, REG_BASIC_STATUS, 2, 2, &value);
+    if (status != LAN8670_STATUS_OK) {
+        debug(lan, "ERROR 8000: LAN8670_Get_Link_State() failed to read Basic Status Register (Status: %d)\n", status);
+        return status;
+    }
+
+    // Store the link state in the provided pointer.
+    *state = (uint8_t)value;
+    return LAN8670_STATUS_OK;
+}
+
 // clang-format on
