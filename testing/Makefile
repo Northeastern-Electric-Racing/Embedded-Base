@@ -18,8 +18,10 @@ MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
 TARGET := $(addprefix $(TEST_BUILD)/, $(TEST_FILENAME))
 
+ifdef MOCK_CONFIG
 MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(PROJECT_DIR)/$(MOCK_CONFIG)), \
                            $(addprefix $(PROJECT_DIR)/, $(f)))
+endif
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
 CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
@@ -70,12 +72,14 @@ all: build
 
 build: $(TARGET)
 
-$(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
+mocks: $(MOCKS_STAMP) 
+
+$(MOCKS_STAMP): $(PROJECT_DIR)/$(MOCK_CONFIG) $(MOCKED_INCLUDES)
 	@mkdir -p $(MOCKS)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
 
-$(TARGET): $(MOCKS_STAMP)
+$(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
 		$(PROJECT_DIR)/$(TEST_SOURCE) \
