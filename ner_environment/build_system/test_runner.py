@@ -4,21 +4,29 @@ import subprocess
 import re
 import sys
 
-def main(tests):
+def main(tests=None, test_packages=None):
 
+    if test_packages == None:
+        test_packages = get_test_packages()
+
+    if tests == None:
+        tests = test_packages
+
+    # generate mocks for tests
     processes = []
     for test in tests:
         p = generate_mocks(test)
         if (p != None):
             processes.append(p)
-    
+
+    # wait for all mocks to finish generating
     for p in processes:
         retcode = p.wait()
         if retcode != 0:
             throw_error("failed to build tests", retcode)
 
+    # run make on each test 
     processes = []
-    test_packages = get_test_packages()
     for test in tests:
         if test in test_packages:
             processes.extend(handle_test_package(test))
@@ -27,6 +35,7 @@ def main(tests):
             if (p != None):
                 processes.append(p)
 
+    # wait for all builds to finish
     for p in processes:
         retcode = p.wait()
         if retcode != 0:
@@ -45,7 +54,7 @@ def generate_mocks(test):
     mc = get_mock_config(Path(test).stem)
     command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
                 + f"&& make mocks MOCK_CONFIG={str(mc)}"]
-    return subprocess.Popen(command)
+    return subprocess.Popen(command, text=True)
 
 def get_test_packages():
     mc_dir = Path("Tests/mock_configs")
@@ -73,7 +82,7 @@ def handle_test_file(test_file):
     mc = get_mock_config(filepath.stem)
     command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
                    + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
-    return subprocess.Popen(command)
+    return subprocess.Popen(command, text=True)
 
 def handle_test_package(test_package):
     test_files = get_tests_in_package(test_package)

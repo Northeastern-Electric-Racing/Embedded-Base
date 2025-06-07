@@ -83,7 +83,8 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
     if tests == None:
         tests = test_packages
 
-    test_runner(tests)
+    test_runner(tests=tests, test_packages=test_packages)
+    run_command(["stty", "sane"]);
 
 # ==============================================================================
 # Clang command
