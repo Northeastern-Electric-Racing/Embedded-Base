@@ -74,7 +74,7 @@ build: $(TARGET)
 
 mocks: $(MOCKS_STAMP) 
 
-$(MOCKS_STAMP): $(PROJECT_DIR)/$(MOCK_CONFIG) $(MOCKED_INCLUDES)
+$(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 	@mkdir -p $(MOCKS)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
