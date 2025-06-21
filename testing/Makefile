@@ -54,7 +54,7 @@ C_INCLUDES = \
 	-I$(PROJECT_DIR)/Drivers/adbms/program/inc
 
 
-CFLAGS = -w -DTESTING $(C_INCLUDES)
+CFLAGS = -w -g -DTESTING $(C_INCLUDES)
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
@@ -70,7 +70,7 @@ C_SOURCES = \
 all: build
 	./$(TARGET)
 
-build: $(TARGET)
+build: $(TARGET) 
 
 mocks: $(MOCKS_STAMP) 
 
@@ -79,7 +79,7 @@ $(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
 
-$(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE)
+$(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE) $(C_SOURCES) $(MOCK_C_SOURCES)	
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
 		$(PROJECT_DIR)/$(TEST_SOURCE) \

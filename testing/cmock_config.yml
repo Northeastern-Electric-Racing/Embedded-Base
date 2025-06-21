@@ -7,14 +7,8 @@
     - :callback
     - :expect
     - :expect_any_args
-  :headers:
-    - mock_stub_functions.h 
-  :test:
-  :treat_as:
-    uint8:    HEX8
-    uint16:   HEX16
-    uint32:   UINT32
-    int8:     INT8
-    bool:     UINT8
+  :treat_as_array:
+    discharge_config
+
 
     
