@@ -4,14 +4,14 @@ import subprocess
 import re
 import sys
 
-def main(tests=None, test_packages=None):
-
-    if test_packages == None:
-        test_packages = get_test_packages()
-
-    if tests == None:
+def main():
+    
+    test_packages = get_test_packages()
+    if (len(sys.argv) > 1):
+        tests = sys.argv[1:]
+    else:
         tests = test_packages
-
+    
     # generate mocks for tests
     processes = []
     for test in tests:
@@ -54,7 +54,7 @@ def get_mock_config(filename):
 
 def generate_mocks(test):    
     mc = get_mock_config(Path(test).stem)
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
+    command = ["sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
                 + f"&& make mocks MOCK_CONFIG={str(mc)}"]
     return subprocess.Popen(command, text=True)
 
@@ -82,8 +82,8 @@ def handle_test_file(test_file):
         return
 
     mc = get_mock_config(filepath.stem)
-    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
-                   + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
+    command = ["sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
+                + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
     return subprocess.Popen(command, text=True)
 
 def handle_test_package(test_package):
