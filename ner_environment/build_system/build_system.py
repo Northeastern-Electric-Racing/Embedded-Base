@@ -28,7 +28,6 @@ from typing import List
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
-from .test_runner import main as test_runner
 from .test_runner import get_test_packages 
 
 # ==============================================================================
@@ -83,11 +82,10 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
 
     if tests == None:
         tests = test_packages
-
-    retcode = test_runner(tests=tests, test_packages=test_packages)
-    if retcode != 0:
-        print(f"Tests failed to build. Exited with error code: {retcode}")
-    run_command(["stty", "sane"])
+        
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", 
+               "sh", "-c", f"python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py {' '.join(tests)}"]
+    run_command(command, stream_output=True)
 
 # ==============================================================================
 # Clang command
