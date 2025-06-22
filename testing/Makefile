@@ -12,11 +12,11 @@ TEST_FILENAME = $(basename $(notdir $(TEST_SOURCE)))
 MOCK_CONFIG_FILENAME = $(basename $(notdir $(MOCK_CONFIG)))
 
 TEST_DIR = $(PROJECT_DIR)/Tests
-TEST_BUILD = build
+TEST_BUILD = build/$(TEST_FILENAME)
 MOCKS = mocks/$(MOCK_CONFIG_FILENAME)_mocks
 MOCKS_STAMP := $(MOCKS)/.mocks_generated
 
-TARGET := $(addprefix $(TEST_BUILD)/, $(TEST_FILENAME))
+TARGET := $(TEST_BUILD)/$(TEST_FILENAME)
 
 ifdef MOCK_CONFIG
 MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(PROJECT_DIR)/$(MOCK_CONFIG)), \
@@ -87,7 +87,7 @@ $(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 
 $(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE) $(OBJS)
 	@mkdir -p $(TEST_BUILD)
-	$(CC) $(CFLAGS) \
+	$(CC) -ftest-coverage -fprofile-arcs -dumpbase '' $(CFLAGS) \
 		$(PROJECT_DIR)/$(TEST_SOURCE) \
 		$(OBJS) \
 		-o $@ -lm
