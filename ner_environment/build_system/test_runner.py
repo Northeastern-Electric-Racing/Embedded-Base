@@ -34,12 +34,14 @@ def main():
             p = handle_test_file(test)
             if (p != None):
                 processes.append(p)
-
+        
+    retcode = 0   
     # wait for all builds to finish
     for p in processes:
-        retcode = p.wait()
-        if retcode != 0:
-            return retcode
+        retcode += p.wait()
+    
+    if retcode != 0:
+        sys.exit(1)
     
     return 0
 
