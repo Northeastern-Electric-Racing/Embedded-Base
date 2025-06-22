@@ -24,7 +24,9 @@ MOCKED_CORE_INCLUDES = $(foreach f, $(shell cat $(PROJECT_DIR)/$(MOCK_CONFIG)), 
 endif
 EXCLUDED_C_SOURCES := $(patsubst $(PROJECT_DIR)/Core/Inc/%.h,$(PROJECT_DIR)/Core/Src/%.c, $(MOCKED_CORE_INCLUDES))
 CORE_ALL_SOURCES := $(wildcard $(PROJECT_DIR)/Core/Src/*.c)
-CORE_SOURCES := $(filter-out $(EXCLUDED_C_SOURCES), \
+CORE_SOURCES := $(CMOCK_SRC)/cmock.c \
+	$(UNITY_SRC)/unity.c \
+	$(filter-out $(EXCLUDED_C_SOURCES), \
     $(foreach f,$(CORE_ALL_SOURCES), \
         $(if $(or $(findstring stm,$(notdir $(f))), \
                   $(findstring sys,$(notdir $(f))), \
@@ -55,6 +57,7 @@ C_INCLUDES = \
 
 
 CFLAGS = -w -g -DTESTING $(C_INCLUDES)
+GCOV_FLAGS = 
 
 MOCK_HEADERS := $(patsubst %,$(MOCKS)/mock_%.h,$(basename $(notdir $(MOCKED_INCLUDES))))
 MOCK_C_SOURCES := $(patsubst %.h,%.c,$(MOCK_HEADERS))
@@ -62,8 +65,11 @@ C_SOURCES = \
 	$(CMOCK_SRC)/cmock.c \
 	$(UNITY_SRC)/unity.c \
 	$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
-	$(MOCK_C_SOURCES) \
 	$(CORE_SOURCES) 
+
+MOCK_OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(notdir $(MOCK_C_SOURCES)))
+C_OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(notdir $(C_SOURCES)))
+OBJS := $(MOCK_OBJS) $(OTHER_OBJS)
 
 .PHONY: all clean build
 
@@ -79,16 +85,20 @@ $(MOCKS_STAMP): $(MOCKED_INCLUDES_FILE) $(MOCKED_INCLUDES)
 	@bash $(PROJECT_DIR)/Drivers/Embedded-Base/dev/scripts/mock.sh $(MOCKS) $(MOCKED_INCLUDES)
 	@touch $@
 
-$(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE) $(C_SOURCES) $(MOCK_C_SOURCES)	
+$(TARGET): $(MOCKS_STAMP) $(PROJECT_DIR)/$(TEST_SOURCE) $(OBJS)
 	@mkdir -p $(TEST_BUILD)
 	$(CC) $(CFLAGS) \
 		$(PROJECT_DIR)/$(TEST_SOURCE) \
-		$(CMOCK_SRC)/cmock.c \
-		$(UNITY_SRC)/unity.c \
-		$(PROJECT_DIR)/Drivers/Embedded-Base/middleware/src/bitstream.c \
-		$(MOCK_C_SOURCES) \
-		$(CORE_SOURCES) \
+		$(OBJS) \
 		-o $@ -lm
+
+$(TEST_BUILD)/%.o: %.c
+	@mkdir -p $(TEST_BUILD)
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c $< -o $@ -lm
+
+$(TEST_BUILD)/%.o: $(MOCKS)/%.c
+	@mkdir -p $(TEST_BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 clean:
 	rm -rf $(TEST_BUILD)
