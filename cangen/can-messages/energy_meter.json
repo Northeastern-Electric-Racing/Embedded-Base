@@ -82,38 +82,62 @@
     "points": [
       {
         "size": 3,
-        "format": "multiply5"
+        "formatter": {
+ 				"key": "multiply",
+				"arg": 5
+				}
       },
       {
         "size": 5
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       },
       {
         "size": 8,
-        "format": "temperature"
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
       }
     ],
     "fields": [

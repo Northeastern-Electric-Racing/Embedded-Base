@@ -5,7 +5,10 @@
     "points": [
       {
         "size": 32,
-        "format": "divide10000",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 10000
+				},
         "default": 18.443,
         "sim": {
           "min": 1,
@@ -39,7 +42,10 @@
         "size": 16,
         "signed": true,
         "endianness": "little",
-        "format": "divide100",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
         "default": -21.8,
         "sim": {
           "min": 1,

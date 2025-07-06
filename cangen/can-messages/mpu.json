@@ -32,7 +32,10 @@
         {
           "size": 16,
           "signed": true,
-          "format": "divide10",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 10
+				},
           "sim": {
             "min": 0,
             "max": 88,
@@ -563,7 +566,10 @@
         {
           "size": 16,
           "endianness": "little",
-          "format": "divide100",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 22.5,
             "max": 29,
@@ -605,7 +611,10 @@
       "points": [
         {
           "size": 16,
-          "format": "divide100",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 50,
             "max": 150,
@@ -615,7 +624,10 @@
         },
         {
           "size": 16,
-          "format": "divide100",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 150,
             "max": 300,
@@ -625,7 +637,10 @@
         },
         {
           "size": 16,
-          "format": "divide100",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 0,
             "max": 330,
@@ -635,7 +650,10 @@
         },
         {
           "size": 16,
-          "format": "divide100",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 0,
             "max": 330,
@@ -1876,7 +1894,10 @@
         {
           "size": 16,
           "endianness": "little",
-          "format": "divide1000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 3,
@@ -1887,7 +1908,10 @@
         {
           "size": 16,
           "endianness": "little",
-          "format": "divide1000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 5,
@@ -1898,7 +1922,10 @@
         {
           "size": 16,
           "endianness": "little",
-          "format": "divide1000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 2,
@@ -1909,7 +1936,10 @@
         {
           "size": 16,
           "endianness": "little",
-          "format": "divide1000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 1.25,
@@ -1957,7 +1987,10 @@
         {
           "size": 32,
           "endianness": "little",
-          "format": "divide10000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 10000
+				},
           "sim": {
             "min": 0,
             "max": 3.3,
@@ -1968,7 +2001,10 @@
         {
           "size": 32,
           "endianness": "little",
-          "format": "divide10000",
+          "formatter": {
+ 				"key": "divide",
+				"arg": 10000
+				},
           "sim": {
             "min": 0,
             "max": 3.3,
