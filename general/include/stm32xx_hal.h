@@ -18,4 +18,4 @@
 #include "stub_typedefs.h"
 #endif
 
-#endif /* STM32XX_HAL_H*/
+#endif /* STM32XX_HAL_H */
