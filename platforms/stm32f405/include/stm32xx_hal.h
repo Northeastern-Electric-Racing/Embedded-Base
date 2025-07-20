@@ -1,7 +1,6 @@
 #ifndef STM32XX_HAL_H
 #define STM32XX_HAL_H
 
-
 #ifdef STM32F405xx
 #include "stm32f4xx_hal.h"
 #endif
@@ -23,5 +22,4 @@
 #include "stub_functions.h"
 #endif
 
-#endif /* STM32XX_HAL_H*/
-
+#endif /* STM32XX_HAL_H */
