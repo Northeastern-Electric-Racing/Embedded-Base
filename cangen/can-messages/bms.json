@@ -963,7 +963,7 @@
   },
   {
     "id": "0x90",
-    "desc": "Segment Voltages",
+    "desc": "Segment Average Voltages",
     "points": [
       {
         "size": 12,
@@ -1067,6 +1067,111 @@
     "sim_freq": 700
   },
   {
+    "id": "0x91",
+    "desc": "Segment Total Voltages",
+    "points": [
+      {
+        "size": 12,
+        "format": "divide39",
+        "sim": {
+          "min": 60,
+          "max": 105,
+          "inc_min": 0.005,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 12,
+        "format": "divide39",
+        "sim": {
+          "min": 60,
+          "max": 105,
+          "inc_min": 0.005,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 12,
+        "format": "divide39",
+        "sim": {
+          "min": 60,
+          "max": 105,
+          "inc_min": 0.005,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 12,
+        "format": "divide39",
+        "sim": {
+          "min": 60,
+          "max": 105,
+          "inc_min": 0.005,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 12,
+        "format": "divide39",
+        "sim": {
+          "min": 60,
+          "max": 105,
+          "inc_min": 0.005,
+          "inc_max": 1
+        }
+      },
+      {
+        "size": 4,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "BMS/Segment_Total_Volt/0",
+        "unit": "V",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "BMS/Segment_Total_Volt/1",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "BMS/Segment_Total_Volt/2",
+        "unit": "V",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "BMS/Segment_Total_Volt/3",
+        "unit": "V",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "BMS/Segment_Total_Volt/4",
+        "unit": "V",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "BMS/Segment_Total_Volt/Extra",
+        "unit": "",
+        "values": [
+          6
+        ]
+      }
+    ],
+    "sim_freq": 700
+  },
+  {
     "id": "0x702",
     "desc": "BMS Debug",
     "points": [
@@ -1149,7 +1254,8 @@
         }
       },
       {
-        "size": 16,
+        "size": 32,
+        "ieee754_f32": true,
         "sim": {
           "min": -100,
           "max": 100,
