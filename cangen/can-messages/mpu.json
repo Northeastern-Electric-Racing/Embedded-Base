@@ -642,6 +642,26 @@
             "inc_min": 1,
             "inc_max": 10
           }
+        },
+        {
+          "size": 16,
+          "format": "divide100",
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
+        },
+        {
+          "size": 16,
+          "format": "divide100",
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
         }
       ],
       "fields": [
@@ -671,6 +691,20 @@
           "unit": "volts",
           "values": [
             4
+          ]
+        },
+        {
+          "name": "MPU/Pedals/Accel_norm",
+          "unit": "volts",
+          "values": [
+            5
+          ]
+        },
+        {
+          "name": "MPU/Pedals/Brake_norm",
+          "unit": "volts",
+          "values": [
+            6
           ]
         }
       ],
