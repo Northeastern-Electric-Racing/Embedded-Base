@@ -689,7 +689,7 @@
             "inc_min": 10,
             "inc_max": 10
           }
-        },
+        },  
         {
           "size": 16,
           "format": "divide100",
@@ -704,14 +704,14 @@
       "fields": [
         {
           "name": "MPU/Pedals/Accelerator_Norm",
-          "unit": "percentage",
+          "unit": "%",
           "values": [
             1
           ]
         },
         {
           "name": "MPU/Pedals/Brake_Norm",
-          "unit": "percentage",
+          "unit": "%",
           "values": [
             2
           ]
