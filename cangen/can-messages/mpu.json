@@ -601,7 +601,7 @@
     },
     {
       "id": "0x504",
-      "desc": "MPU Pedals",
+      "desc": "MPU Pedals Volts",
       "points": [
         {
           "size": 16,
@@ -642,26 +642,6 @@
             "inc_min": 1,
             "inc_max": 10
           }
-        },
-        {
-          "size": 16,
-          "format": "divide100",
-          "sim": {
-            "min": 0,
-            "max": 100,
-            "inc_min": 10,
-            "inc_max": 10
-          }
-        },
-        {
-          "size": 16,
-          "format": "divide100",
-          "sim": {
-            "min": 0,
-            "max": 100,
-            "inc_min": 10,
-            "inc_max": 10
-          }
         }
       ],
       "fields": [
@@ -692,23 +672,51 @@
           "values": [
             4
           ]
-        },
-        {
-          "name": "MPU/Pedals/Accel_norm",
-          "unit": "volts",
-          "values": [
-            5
-          ]
-        },
-        {
-          "name": "MPU/Pedals/Brake_norm",
-          "unit": "volts",
-          "values": [
-            6
-          ]
         }
       ],
       "sim_freq": 100
+    },
+    {
+      "id": "0x505",
+      "desc": "MPU Normalized Pedals",
+      "points": [
+        {
+          "size": 16,
+          "format": "divide100",
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
+        },
+        {
+          "size": 16,
+          "format": "divide100",
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
+        }
+      ],
+      "fields": [
+        {
+          "name": "MPU/Pedals/Accelerator_Norm",
+          "unit": "percentage",
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "MPU/Pedals/Brake_Norm",
+          "unit": "percentage",
+          "values": [
+            2
+          ]
+        }
+      ]
     },
     {
       "id": "0x701",
