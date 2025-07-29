@@ -188,7 +188,7 @@ def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device t
 # Serial2 command
 # ==============================================================================
 
-@app.command(help="Open UART terminal of connected device 2")
+@app.command(help="Like 'ner serial', but with some extra custom features (message filtering, graphing, and monitoring).")
 def serial2(
             ls: bool = typer.Option(False, "--list", help="List available serial devices and exit."),
             device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
