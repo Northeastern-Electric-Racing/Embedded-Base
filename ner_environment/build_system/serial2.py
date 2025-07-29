@@ -5,7 +5,6 @@ import sys
 from rich import print
 from rich.panel import Panel
 import serial.tools.list_ports
-import tkinter as tk
 from collections import defaultdict
 
 # Returns true if the script is running in WSL. Returns false otherwise.
@@ -56,6 +55,8 @@ ui_monitor_labels = {}
 def update_monitor(line):
     global ui_monitor, ui_monitor_labels
     """Update monitor panel with new data."""
+
+    import tkinter as tk # Only import tkinter if monitor stuff is being used (dunno if this is python bad practice)
 
     parts = line.strip().split("/")
     if len(parts) != 4: return # If there aren't exactly 4 parts, the line is malformed. So, skip it.
