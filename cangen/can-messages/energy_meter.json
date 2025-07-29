@@ -1,0 +1,262 @@
+[
+  {
+    "id": "0x10D",
+    "desc": "Energy Meter Measurement",
+    "points": [
+      {
+        "size": 32,
+        "ieee754_f32": true
+      },
+      {
+        "size": 32,
+        "ieee754_f32": true
+      }
+    ],
+    "fields": [
+      {
+        "name": "EM/Measurement/Current",
+        "unit": "A",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "EM/Measurement/Voltage",
+        "unit": "V",
+        "values": [
+          2
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x40D",
+    "desc": "Energy Meter Status",
+    "points": [
+      {
+        "size": 1
+      },
+      {
+        "size": 1
+      },
+      {
+        "size": 6,
+        "parse": false
+      },
+      {
+        "size": 32,
+        "ieee754_f32": true
+      },
+      {
+        "size": 24,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "EM/Status/Violation",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "EM/Status/Logging",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "EM/Status/Energy",
+        "unit": "Whr",
+        "values": [
+          4
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x60D",
+    "desc": "Energy Meter Temperature",
+    "points": [
+      {
+        "size": 3,
+        "formatter": {
+ 				"key": "multiply",
+				"arg": 5
+				}
+      },
+      {
+        "size": 5
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      },
+      {
+        "size": 8,
+        "formatter": {
+ 				"key": "temperature",
+				"arg": 0
+				}
+      }
+    ],
+    "fields": [
+      {
+        "name": "EM/Temperature/NumSensors",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "EM/Temperature/MinTemp",
+        "unit": "C",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "EM/Temperature/MaxTemp",
+        "unit": "C",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "EM/Temperature/Temp/{1}/0",
+        "unit": "C",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "EM/Temperature/Temp/{1}/1",
+        "unit": "C",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "EM/Temperature/Temp/{1}/2",
+        "unit": "C",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "EM/Temperature/Temp/{1}/3",
+        "unit": "C",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "EM/Temperature/Temp/{1}/4",
+        "unit": "C",
+        "values": [
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x30D",
+    "desc": "Energy Meter Team Data One",
+    "points": [
+      {
+        "size": 32,
+        "signed": true
+      },
+      {
+        "size": 32,
+        "signed": true
+      }
+    ],
+    "fields": [
+      {
+        "name": "EM/Team/Signal/1",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "EM/Team/Signal/2",
+        "unit": "",
+        "values": [
+          2
+        ]
+      }
+    ]
+  },
+  {
+    "id": "0x30E",
+    "desc": "Energy Meter Team Data Two",
+    "points": [
+      {
+        "size": 32,
+        "signed": true
+      },
+      {
+        "size": 32,
+        "signed": true
+      }
+    ],
+    "fields": [
+      {
+        "name": "EM/Team/Signal/3",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "EM/Team/Signal/4",
+        "unit": "",
+        "values": [
+          2
+        ]
+      }
+    ]
+  }
+]

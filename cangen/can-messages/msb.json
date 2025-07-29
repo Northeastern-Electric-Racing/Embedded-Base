@@ -5,7 +5,10 @@
     "points": [
       {
         "size": 16,
-        "format": "divide10",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 10
+				},
         "sim": {
           "min": 0,
           "max": 80,
@@ -15,7 +18,10 @@
       },
       {
         "size": 16,
-        "format": "divide10",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 10
+				},
         "sim": {
           "min": 20,
           "max": 80,
@@ -179,20 +185,38 @@
     "points": [
       {
         "size": 32,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
-          "max": 10,
-          "inc_min": 0.001,
-          "inc_max": 0.02
+          "max": 3,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 0,
+          "max": 4095,
+          "inc_min": 1,
+          "inc_max": 20
         }
       }
     ],
     "fields": [
       {
         "name": "MSB/FL/Shock",
-        "unit": "",
+        "unit": "in",
         "values": [
           1
+        ]
+      },
+      {
+        "name": "MSB/FL/ShockRaw",
+        "unit": "",
+        "values": [
+          2
         ]
       }
     ],
@@ -475,20 +499,38 @@
     "points": [
       {
         "size": 32,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
-          "max": 10,
-          "inc_min": 0.001,
-          "inc_max": 0.02
+          "max": 3,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 0,
+          "max": 4095,
+          "inc_min": 1,
+          "inc_max": 20
         }
       }
     ],
     "fields": [
       {
         "name": "MSB/FR/Shock",
-        "unit": "",
+        "unit": "in",
         "values": [
           1
+        ]
+      },
+      {
+        "name": "MSB/FR/ShockRaw",
+        "unit": "",
+        "values": [
+          2
         ]
       }
     ],
@@ -771,20 +813,38 @@
     "points": [
       {
         "size": 32,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
-          "max": 10,
-          "inc_min": 0.001,
-          "inc_max": 0.02
+          "max": 3,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 0,
+          "max": 4095,
+          "inc_min": 1,
+          "inc_max": 20
         }
       }
     ],
     "fields": [
       {
         "name": "MSB/BL/Shock",
-        "unit": "",
+        "unit": "in",
         "values": [
           1
+        ]
+      },
+      {
+        "name": "MSB/BL/ShockRaw",
+        "unit": "",
+        "values": [
+          2
         ]
       }
     ],
@@ -1067,20 +1127,38 @@
     "points": [
       {
         "size": 32,
+        "ieee754_f32": true,
         "sim": {
           "min": 0,
-          "max": 10,
-          "inc_min": 0.001,
-          "inc_max": 0.02
+          "max": 3,
+          "inc_min": 0.01,
+          "inc_max": 0.5
+        }
+      },
+      {
+        "size": 16,
+        "endianness": "little",
+        "sim": {
+          "min": 0,
+          "max": 4095,
+          "inc_min": 1,
+          "inc_max": 20
         }
       }
     ],
     "fields": [
       {
         "name": "MSB/BR/Shock",
-        "unit": "",
+        "unit": "in",
         "values": [
           1
+        ]
+      },
+      {
+        "name": "MSB/BR/ShockRaw",
+        "unit": "",
+        "values": [
+          2
         ]
       }
     ],
