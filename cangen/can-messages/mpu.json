@@ -463,94 +463,108 @@
       ],
       "fields": [
         {
-          "name": "MPU/Fault/Critical/ONBOARD_PEDAL",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_OC",
           "unit": "",
           "values": [
             1
           ]
         },
         {
-          "name": "MPU/Fault/Critical/CAN_DISPATCH",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_SC",
           "unit": "",
           "values": [
             2
           ]
         },
         {
-          "name": "MPU/Fault/Critical/CAN_ROUTING",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_DIFF",
           "unit": "",
           "values": [
             3
           ]
         },
         {
-          "name": "MPU/Fault/Critical/BMS_CAN_MONITOR",
+          "name": "MPU/Fault/Critical/CAN_DISPATCH",
           "unit": "",
           "values": [
             4
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/rONBOARD_TEMP",
+          "name": "MPU/Fault/Critical/CAN_ROUTING",
+          "unit": "",
+          "values": [
+            5
+          ]
+        },
+        {
+          "name": "MPU/Fault/Critical/BMS_CAN_MONITOR",
           "unit": "",
           "values": [
             6
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/IMU",
+          "name": "MPU/Fault/Non-Critical/rONBOARD_TEMP",
           "unit": "",
           "values": [
             7
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/FUSE_MONITOR",
+          "name": "MPU/Fault/Non-Critical/IMU",
           "unit": "",
           "values": [
             8
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/SHUTDOWN_MONITOR",
+          "name": "MPU/Fault/Non-Critical/FUSE_MONITOR",
           "unit": "",
           "values": [
             9
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/LV_MONITOR",
+          "name": "MPU/Fault/Non-Critical/SHUTDOWN_MONITOR",
           "unit": "",
           "values": [
             10
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/BSPD_PREFAULT",
+          "name": "MPU/Fault/Non-Critical/LV_MONITOR",
           "unit": "",
           "values": [
             11
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/RTDS",
+          "name": "MPU/Fault/Non-Critical/BSPD_PREFAULT",
           "unit": "",
           "values": [
             12
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/PUMP_SENSORS",
+          "name": "MPU/Fault/Non-Critical/RTDS",
           "unit": "",
           "values": [
             13
           ]
         },
         {
-          "name": "MPU/Fault/Non-Critical/PDU_CURRENT",
+          "name": "MPU/Fault/Non-Critical/PUMP_SENSORS",
           "unit": "",
           "values": [
             14
+          ]
+        },
+        {
+          "name": "MPU/Fault/Non-Critical/PDU_CURRENT",
+          "unit": "",
+          "values": [
+            15
           ]
         }
       ],
