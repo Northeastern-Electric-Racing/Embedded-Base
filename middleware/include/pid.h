@@ -1,7 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
-#include "stm32f4xx_hal.h"
+#include "stm32xx_hal.h"
 #include <stdbool.h>
 
 typedef struct {
