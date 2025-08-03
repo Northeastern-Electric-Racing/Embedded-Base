@@ -13,4 +13,9 @@
 #include "stm32g4xx_hal.h"
 #endif
 
-#endif /* STM32XX_HAL_H*/
+#ifdef TESTING
+#include "stub_functions.h"
+#include "stub_typedefs.h"
+#endif
+
+#endif /* STM32XX_HAL_H */
