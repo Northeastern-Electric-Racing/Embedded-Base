@@ -5,7 +5,10 @@
     "points": [
       {
         "size": 16,
-        "format": "divide10",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 10
+				},
         "sim": {
           "min": 0,
           "max": 80,
@@ -15,7 +18,10 @@
       },
       {
         "size": 16,
-        "format": "divide10",
+        "formatter": {
+ 				"key": "divide",
+				"arg": 10
+				},
         "sim": {
           "min": 20,
           "max": 80,
