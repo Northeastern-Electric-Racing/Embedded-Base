@@ -32,10 +32,7 @@
         {
           "size": 16,
           "signed": true,
-          "formatter": {
- 				"key": "divide",
-				"arg": 10
-				},
+          "format": "divide10",
           "sim": {
             "min": 0,
             "max": 88,
@@ -496,21 +493,21 @@
       ],
       "fields": [
         {
-          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_OC",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_OPEN_CIRCUIT",
           "unit": "",
           "values": [
             1
           ]
         },
         {
-          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_SC",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_SHORT_CIRCUIT",
           "unit": "",
           "values": [
             2
           ]
         },
         {
-          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_DIFF",
+          "name": "MPU/Fault/Critical/ONBOARD_PEDAL_DIFFERENCE",
           "unit": "",
           "values": [
             3
@@ -610,10 +607,7 @@
         {
           "size": 16,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 100
-				},
+          "format": "divide100",
           "sim": {
             "min": 22.5,
             "max": 29,
@@ -655,10 +649,7 @@
       "points": [
         {
           "size": 16,
-          "formatter": {
- 				"key": "divide",
-				"arg": 100
-				},
+          "format": "divide100",
           "sim": {
             "min": 50,
             "max": 150,
@@ -668,10 +659,7 @@
         },
         {
           "size": 16,
-          "formatter": {
- 				"key": "divide",
-				"arg": 100
-				},
+          "format": "divide100",
           "sim": {
             "min": 150,
             "max": 300,
@@ -681,10 +669,7 @@
         },
         {
           "size": 16,
-          "formatter": {
- 				"key": "divide",
-				"arg": 100
-				},
+          "format": "divide100",
           "sim": {
             "min": 0,
             "max": 330,
@@ -694,10 +679,7 @@
         },
         {
           "size": 16,
-          "formatter": {
- 				"key": "divide",
-				"arg": 100
-				},
+          "format": "divide100",
           "sim": {
             "min": 0,
             "max": 330,
@@ -1938,10 +1920,7 @@
         {
           "size": 16,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 1000
-				},
+          "format": "divide1000",
           "sim": {
             "min": 0,
             "max": 3,
@@ -1952,10 +1931,7 @@
         {
           "size": 16,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 1000
-				},
+          "format": "divide1000",
           "sim": {
             "min": 0,
             "max": 5,
@@ -1966,10 +1942,7 @@
         {
           "size": 16,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 1000
-				},
+          "format": "divide1000",
           "sim": {
             "min": 0,
             "max": 2,
@@ -1980,10 +1953,7 @@
         {
           "size": 16,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 1000
-				},
+          "format": "divide1000",
           "sim": {
             "min": 0,
             "max": 1.25,
@@ -2031,10 +2001,7 @@
         {
           "size": 32,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 10000
-				},
+          "format": "divide10000",
           "sim": {
             "min": 0,
             "max": 3.3,
@@ -2045,10 +2012,7 @@
         {
           "size": 32,
           "endianness": "little",
-          "formatter": {
- 				"key": "divide",
-				"arg": 10000
-				},
+          "format": "divide10000",
           "sim": {
             "min": 0,
             "max": 3.3,
