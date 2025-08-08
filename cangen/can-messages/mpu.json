@@ -33,9 +33,9 @@
           "size": 16,
           "signed": true,
           "formatter": {
- 				    "key": "divide",
-				    "arg": 10
-				  },
+ 				"key": "divide",
+				"arg": 10
+				},
           "sim": {
             "min": 0,
             "max": 88,
@@ -321,37 +321,7 @@
           }
         },
         {
-          "size": 1,
-          "sim": {
-            "options": [
-              [
-                0,
-                0.5
-              ],
-              [
-                1,
-                0.5
-              ]
-            ]
-          }
-        },
-        {
-          "size": 1,
-          "sim": {
-            "options": [
-              [
-                0,
-                0.5
-              ],
-              [
-                1,
-                0.5
-              ]
-            ]
-          }
-        },
-        {
-          "size": 10,
+          "size": 12,
           "parse": false
         },
         {
@@ -541,63 +511,63 @@
           "name": "MPU/Fault/Non-Critical/rONBOARD_TEMP",
           "unit": "",
           "values": [
-            7
+            8
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/IMU",
           "unit": "",
           "values": [
-            8
+            9
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/FUSE_MONITOR",
           "unit": "",
           "values": [
-            9
+            10
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/SHUTDOWN_MONITOR",
           "unit": "",
           "values": [
-            10
+            11
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/LV_MONITOR",
           "unit": "",
           "values": [
-            11
+            12
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/BSPD_PREFAULT",
           "unit": "",
           "values": [
-            12
+            13
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/RTDS",
           "unit": "",
           "values": [
-            13
+            14
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/PUMP_SENSORS",
           "unit": "",
           "values": [
-            14
+            15
           ]
         },
         {
           "name": "MPU/Fault/Non-Critical/PDU_CURRENT",
           "unit": "",
           "values": [
-            15
+            16
           ]
         }
       ],
@@ -611,9 +581,9 @@
           "size": 16,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 100
-				  },
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 22.5,
             "max": 29,
@@ -656,9 +626,9 @@
         {
           "size": 16,
           "formatter": {
- 				    "key": "divide",
-				    "arg": 100
-				  },
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 50,
             "max": 150,
@@ -669,9 +639,9 @@
         {
           "size": 16,
           "formatter": {
- 				    "key": "divide",
-				    "arg": 100
-				  },
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 150,
             "max": 300,
@@ -682,9 +652,9 @@
         {
           "size": 16,
           "formatter": {
- 				    "key": "divide",
-				    "arg": 100
-				  },
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 0,
             "max": 330,
@@ -695,9 +665,9 @@
         {
           "size": 16,
           "formatter": {
- 				    "key": "divide",
-				    "arg": 100
-				  },
+ 				"key": "divide",
+				"arg": 100
+				},
           "sim": {
             "min": 0,
             "max": 330,
@@ -1939,9 +1909,9 @@
           "size": 16,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 1000
-				  },
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 3,
@@ -1953,9 +1923,9 @@
           "size": 16,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 1000
-				  },
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 5,
@@ -1967,9 +1937,9 @@
           "size": 16,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 1000
-				  },
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 2,
@@ -1981,9 +1951,9 @@
           "size": 16,
           "endianness": "little",
           "formatter": {
-            "key": "divide",
-            "arg": 1000
-          },
+ 				"key": "divide",
+				"arg": 1000
+				},
           "sim": {
             "min": 0,
             "max": 1.25,
@@ -2032,9 +2002,9 @@
           "size": 32,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 10000
-				  },
+ 				"key": "divide",
+				"arg": 10000
+				},
           "sim": {
             "min": 0,
             "max": 3.3,
@@ -2046,9 +2016,9 @@
           "size": 32,
           "endianness": "little",
           "formatter": {
- 				    "key": "divide",
-				    "arg": 10000
-				  },
+ 				"key": "divide",
+				"arg": 10000
+				},
           "sim": {
             "min": 0,
             "max": 3.3,
