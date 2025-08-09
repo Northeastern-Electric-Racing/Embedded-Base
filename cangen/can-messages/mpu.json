@@ -651,7 +651,7 @@
     },
     {
       "id": "0x504",
-      "desc": "MPU Pedals",
+      "desc": "MPU Pedals Volts",
       "points": [
         {
           "size": 16,
@@ -733,6 +733,55 @@
           "unit": "volts",
           "values": [
             4
+          ]
+        }
+      ],
+      "sim_freq": 100
+    },
+    {
+      "id": "0x505",
+      "desc": "MPU Normalized Pedals",
+      "points": [
+        {
+          "size": 16,
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
+        },  
+        {
+          "size": 16,
+          "formatter": {
+ 				"key": "divide",
+				"arg": 100
+				},
+          "sim": {
+            "min": 0,
+            "max": 100,
+            "inc_min": 10,
+            "inc_max": 10
+          }
+        }
+      ],
+      "fields": [
+        {
+          "name": "MPU/Pedals/Accelerator_Norm",
+          "unit": "%",
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "MPU/Pedals/Brake_Norm",
+          "unit": "%",
+          "values": [
+            2
           ]
         }
       ],
