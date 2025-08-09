@@ -285,5 +285,38 @@
     ],
     "key": "RadFanStatus",
     "sim_freq": 750
+  },
+  {
+    "id": "0x49A",
+    "desc": "Cerberus RTDS Override",
+    "points": [
+      {
+        "size": 8,
+        "default": 0,
+        "sim": {
+          "options": [
+            [
+              0,
+              0.95
+            ],
+            [
+              1,
+              0.05
+            ]
+          ]
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "Calypso/Bidir/State/RTDSOverride/A",
+        "unit": "bool",
+        "values": [
+          1
+        ]
+      }
+    ],
+    "key": "RTDSOverride",
+    "sim_freq": 750
   }
 ]
