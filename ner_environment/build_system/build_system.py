@@ -22,10 +22,13 @@ import sys
 import os
 import glob
 import time
+import re
 from pathlib import Path
+from typing import List
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .test_runner import get_test_packages 
 
 # ==============================================================================
 # Typer application setup
@@ -64,6 +67,33 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
             run_command_docker("make clean", stream_output=True)
         else:
             run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
+
+# ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test source file")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
+        tests: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+
+    if clean:
+        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", f"cd Drivers/Embedded-Base/testing/ && make clean"]
+        run_command(command, stream_output=True)
+        return    
+    
+    test_packages = get_test_packages()
+    if list:
+        for tp in test_packages:
+            print(tp)
+        return
+
+    if tests == None:
+        tests = test_packages
+        
+    command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", 
+               "sh", "-c", f"python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py {' '.join(tests)}"]
+    run_command(command, stream_output=True)
 
 # ==============================================================================
 # Clang command
@@ -372,6 +402,9 @@ def contains_subdir(base_path, search_str):
         if item.is_dir() and search_str in item.name:
             return True
     return False
+
+
+    
 
 # ==============================================================================
 # Entry
