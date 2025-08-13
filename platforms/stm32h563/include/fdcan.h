@@ -7,18 +7,20 @@
 
 #include "stm32xx_hal.h"
 
-typedef struct {
+typedef struct
+{
 	uint32_t id;
 	uint8_t data[8]; // technically can go to 64 bytes but i cant count that high
-    bool id_is_extended;
+	bool id_is_extended;
 	uint8_t len;
 } can_msg_t;
 
 typedef void (*can_callback_t)(can_msg_t *message);
 
-typedef struct {
+typedef struct
+{
 	FDCAN_HandleTypeDef *hcan;
-	
+
 	uint32_t standard_filter_index;
 	uint32_t extended_filter_index;
 	can_callback_t callback; // callback function that can be configured in the application layer.
