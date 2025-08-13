@@ -74,11 +74,11 @@ HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
 	}
 
 	/* Add can_t instance to this file's can_t tracker */
-	status = add_interface(can);
-	if (status != 0)
+	uint8_t interface_status = add_interface(can);
+	if (interface_status != 0)
 	{
 		printf("[fdcan.c/can_init()] ERROR: Failed to add a can_t instance to the can_t tracker (Status: %d).\n", status);
-		return status;
+		return interface_status;
 	}
 
 	return status;
