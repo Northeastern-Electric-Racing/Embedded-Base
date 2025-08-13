@@ -3,15 +3,14 @@
 #include <string.h>
 
 /* NOTE: STM32H563 will have MAX of 2 CAN buses */
-/* (assuming i have read the datasheet correctly) */
 #define MAX_CAN_BUS 2
 
-can_t *can_struct_list[MAX_CAN_BUS] = { NULL, NULL, NULL };
+can_t *can_struct_list[MAX_CAN_BUS] = { NULL, NULL };
 
 static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
 {
 	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
-		if (hcan == can_struct_list[i]->hcan)
+		if ((can_struct_list[i] != NULL) && (hcan == can_struct_list[i]->hcan))
 			return can_struct_list[i]->callback;
 	}
 	return NULL;
@@ -22,11 +21,11 @@ static uint8_t add_interface(can_t *interface)
 {
 	for (uint8_t i = 0; i < MAX_CAN_BUS; i++) {
 		/* Interface already added */
-		if (interface->hcan == can_struct_list[i]->hcan)
+		if ((can_struct_list[i] != NULL) && (interface->hcan == can_struct_list[i]->hcan))
 			return -1;
 
 		/* If empty, add interface */
-		if (can_struct_list[i]->hcan == NULL) {
+		if (can_struct_list[i] == NULL) {
 			can_struct_list[i] = interface;
 			return 0;
 		}
@@ -36,64 +35,137 @@ static uint8_t add_interface(can_t *interface)
 	return -2;
 }
 
-/* Run callback function when there a new message is received */
-void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
-{
-	/* Handle CAN reception event */
-	can_callback_t callback = find_callback(hcan);
+HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback) {
 
-	if (callback != NULL) {
-		callback(hcan);
+	/* Init these guys to 0 */
+	can->standard_filter_index = 0;
+	can->extended_filter_index = 0;
+
+	/* Store the callback function that's been passed in */
+	can->callback = callback;
+
+	/* Start FDCAN */
+	HAL_StatusTypeDef status = HAL_FDCAN_Start(can->hcan);
+	if (status != HAL_OK) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_Start() (Status: %d).\n", status);
+		return status;
 	}
+
+	/* Config interrupts */
+	status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, FDCAN_INTERRUPT_LINE0);
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() (Status: %d).\n", status);
+		return status;
+	}
+	
+	/* Activate interrupt notifications */
+	status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ActivateNotification() (Status: %d).\n", status);
+		return status;
+	}
+
+	/* Add can_t instance to this file's can_t tracker */
+	status = add_interface(can);
+	if(status != 0) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to add a can_t instance to the can_t tracker (Status: %d).\n", status);
+		return status;
+	}
+
+	return status;
 }
 
-HAL_StatusTypeDef can_init(can_t *can)
-{
-	/* set up filter */
-	uint16_t high_id = can->id_list[0];
-	uint16_t low_id = can->id_list[0];
+/* Callback for any FIFO0 interrupt stuff */
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs) {
+    
+	/* If a message has just been recieved... */
+	if (RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) {
+        can_msg_t message;
+		FDCAN_RxHeaderTypeDef rx_header;
 
-	for (uint8_t i = 0; i < can->id_list_len; i++) {
-		if (can->id_list[i] > high_id)
-			high_id = can->id_list[i];
-		if (can->id_list[i] < low_id)
-			low_id = can->id_list[i];
+		if(HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, message.data) == HAL_OK) {
+			message.id = rx_header.Identifier;
+			message.id_is_extended = (rx_header.IdType == FDCAN_EXTENDED_ID);
+			message.len = (uint8_t)rx_header.DataLength;
+
+			/* Check size */
+			if(rx_header.DataLength > 8) {
+    			printf("[fdcan.c/HAL_FDCAN_RxFifo0Callback()] ERROR: Recieved message is larger than 8 bytes.\n");
+    			return;
+			}
+
+			/* Send message to the application layer via the configured callback */
+			can_callback_t callback = find_callback(hfdcan);
+			if(callback != NULL) {
+				callback(&message);
+			}
+			else {
+				printf("[fdcan.c/HAL_FDCAN_RxFifo0Callback()] ERROR: callback() is null.\n");
+			}
+		} 
+    }
+}
+
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2]) {
+	FDCAN_FilterTypeDef filter;
+
+	/* Config the filter */
+	filter.IdType = FDCAN_STANDARD_ID;
+	filter.FilterIndex = can->standard_filter_index;
+	filter.FilterType = FDCAN_FILTER_DUAL;
+	filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+	filter.FilterID1 = can_ids[0];
+	filter.FilterID2 = can_ids[1];
+	
+	/* Send HAL the config, and check if it was sucessful */
+	HAL_StatusTypeDef status = HAL_FDCAN_ConfigFilter(can->hcan, &filter); 
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_add_filter_standard()] ERROR: Failed to config standard FDCAN filter (Status: %d, Filter Index: %d).\n", status, filter.FilterIndex);
+		return status;
 	}
 
-	uint32_t full_id = ((uint32_t)high_id << 16) | low_id;
+	/* If successful, increment the standard filter index */
+	can->standard_filter_index++;
+	return status;
+	
+}
 
-	FDCAN_FilterTypeDef sFilterConfig;
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2]) {
+	FDCAN_FilterTypeDef filter;
 
-	sFilterConfig.IdType = FDCAN_STANDARD_ID;
-	sFilterConfig.FilterIndex = 0;
-	sFilterConfig.FilterType = FDCAN_FILTER_RANGE;
-	sFilterConfig.FilterConfig = FDCAN_FILTER_DISABLE;
-	sFilterConfig.FilterID1 = 0x0;
-	sFilterConfig.FilterID2 = 0x7FF;
+	/* Config the filter */
+	filter.IdType = FDCAN_EXTENDED_ID;
+	filter.FilterIndex = can->extended_filter_index;
+	filter.FilterType = FDCAN_FILTER_DUAL;
+	filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+	filter.FilterID1 = can_ids[0];
+	filter.FilterID2 = can_ids[1];
+	
+	/* Send HAL the config, and check if it was sucessful */
+	HAL_StatusTypeDef status = HAL_FDCAN_ConfigFilter(can->hcan, &filter); 
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_add_filter_extended()] ERROR: Failed to config extended FDCAN filter (Status: %d, Filter Index: %d). \n", status, filter.FilterIndex);
+		return status;
+	}
 
-	uint8_t err = 0;
-	err = HAL_FDCAN_ConfigFilter(can->hcan, &sFilterConfig);
-	if (err != HAL_OK)
-		return err;
-
-	/* set up interrupt & activate CAN */
-	err = HAL_FDCAN_Start(can->hcan);
-	if (err != HAL_OK)
-		return err;
-
-	/* Override the default callback for FDCAN_IT_LIST_RX_FIFO0 */
-	// err = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_LIST_RX_FIFO0);
-	err = add_interface(can);
-
-	return err;
+	/* If successful, increment the extended filter index */
+	can->extended_filter_index++;
+	return status;
+	
 }
 
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
+	/* Validate message length */
+    if (msg->len > 8) {
+        printf("[fdcan.c/can_send_msg()] ERROR: FDCAN message length exceeds 8 bytes (Length: %d, Message ID: %d).\n", msg->len, msg->id);
+        return HAL_ERROR;
+    }
+
 	FDCAN_TxHeaderTypeDef tx_header;
 	tx_header.Identifier = msg->id;
-    tx_header.TxFrameType = FDCAN_DATA_FRAME;
 	tx_header.DataLength = msg->len;
+    tx_header.TxFrameType = FDCAN_DATA_FRAME;
 	tx_header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
 	tx_header.BitRateSwitch = FDCAN_BRS_OFF;
 	tx_header.FDFormat = FDCAN_CLASSIC_CAN;
@@ -104,12 +176,15 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
     else
         tx_header.IdType = FDCAN_STANDARD_ID;
 
-	uint32_t tx_mailbox;
-	if (HAL_FDCAN_GetTxFifoFreeLevel(can->hcan) == 0)
-		return HAL_BUSY;
+	HAL_StatusTypeDef status = HAL_FDCAN_GetTxFifoFreeLevel(can->hcan);
+	if (status != HAL_OK)
+		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_GetTxFifoFreeLevel() failed (Status: %d, Message ID: %d).\n", status, msg->id);
+		return status;
 
-	if (HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, &msg->data))
-		return HAL_ERROR;
+	status = HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, msg->data);
+	if (status != HAL_OK)
+		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_AddMessageToTxFifoQ() failed (Status: %d, Message ID: %d).\n", status, msg->id);
+		return status;
 
-	return HAL_OK;
+	return status;
 }

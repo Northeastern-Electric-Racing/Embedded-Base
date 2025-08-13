@@ -7,30 +7,26 @@
 
 #include "stm32xx_hal.h"
 
-/* function pointer type for the callback */
-typedef void (*can_callback_t)(FDCAN_HandleTypeDef *hcan);
-
-typedef struct {
-	FDCAN_HandleTypeDef *hcan;
-
-	const uint16_t *standard_id_list;
-    uint8_t standard_id_list_len;
-
-    const uint32_t *extended_id_list;
-    uint8_t extended_id_list_len;
-
-	/* desired behavior varies by app - so implement this at app level */
-	can_callback_t callback;
-} can_t;
-
 typedef struct {
 	uint32_t id;
-	uint8_t data[8]; // technically can go to 64 but cannot count that high
+	uint8_t data[8]; // technically can go to 64 bytes but i cant count that high
     bool id_is_extended;
 	uint8_t len;
 } can_msg_t;
 
-HAL_StatusTypeDef can_init(can_t *can);
+typedef void (*can_callback_t)(can_msg_t *message);
+
+typedef struct {
+	FDCAN_HandleTypeDef *hcan;
+	
+	uint32_t standard_filter_index;
+	uint32_t extended_filter_index;
+	can_callback_t callback; // callback function that can be configured in the application layer.
+} can_t;
+
+HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
+HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2]);
+HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2]);
 
 #endif // FDCAN_H
