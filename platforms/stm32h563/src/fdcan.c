@@ -194,13 +194,10 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	else
 		tx_header.IdType = FDCAN_STANDARD_ID;
 
-	uint32_t status = HAL_FDCAN_GetTxFifoFreeLevel(can->hcan);
-	if (status != 0) {
-		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_GetTxFifoFreeLevel() failed (Status: %d, Message ID: %d).\n", status, msg->id);
-		return status;
-	}
-
-	status = HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, msg->data);
+	if (HAL_FDCAN_GetTxFifoFreeLevel(can->hcan) == 0)
+		return HAL_BUSY;
+	
+	HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, msg->data);
 	if (status != HAL_OK) {
 		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_AddMessageToTxFifoQ() failed (Status: %d, Message ID: %d).\n", status, msg->id);
 		return status;
