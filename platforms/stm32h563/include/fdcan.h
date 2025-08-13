@@ -1,6 +1,7 @@
 #ifndef FDCAN_H
 #define FDCAN_H
 
+// clang-format off
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -31,4 +32,5 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2]);
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2]);
 
+// clang-format on
 #endif // FDCAN_H
