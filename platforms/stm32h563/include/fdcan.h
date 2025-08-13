@@ -1,0 +1,36 @@
+#ifndef FDCAN_H
+#define FDCAN_H
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "stm32xx_hal.h"
+
+/* function pointer type for the callback */
+typedef void (*can_callback_t)(FDCAN_HandleTypeDef *hcan);
+
+typedef struct {
+	FDCAN_HandleTypeDef *hcan;
+
+	const uint16_t *standard_id_list;
+    uint8_t standard_id_list_len;
+
+    const uint32_t *extended_id_list;
+    uint8_t extended_id_list_len;
+
+	/* desired behavior varies by app - so implement this at app level */
+	can_callback_t callback;
+} can_t;
+
+typedef struct {
+	uint32_t id;
+	uint8_t data[8]; // technically can go to 64 but cannot count that high
+    bool id_is_extended;
+	uint8_t len;
+} can_msg_t;
+
+HAL_StatusTypeDef can_init(can_t *can);
+HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
+
+#endif // FDCAN_H
