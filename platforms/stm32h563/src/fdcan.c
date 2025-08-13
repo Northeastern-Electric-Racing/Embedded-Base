@@ -1,3 +1,4 @@
+// clang-format off
 #include "fdcan.h"
 #include <stdint.h>
 #include <string.h>
@@ -24,7 +25,7 @@ static uint8_t add_interface(can_t *interface)
 	{
 		/* Interface already added */
 		if ((can_struct_list[i] != NULL) && (interface->hcan == can_struct_list[i]->hcan))
-			return -1;
+			return 1;
 
 		/* If empty, add interface */
 		if (can_struct_list[i] == NULL)
@@ -35,7 +36,7 @@ static uint8_t add_interface(can_t *interface)
 	}
 
 	/* No open slots, something is wrong */
-	return -2;
+	return 2;
 }
 
 HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
@@ -193,15 +194,17 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	else
 		tx_header.IdType = FDCAN_STANDARD_ID;
 
-	HAL_StatusTypeDef status = HAL_FDCAN_GetTxFifoFreeLevel(can->hcan);
-	if (status != HAL_OK)
+	uint32_t status = HAL_FDCAN_GetTxFifoFreeLevel(can->hcan);
+	if (status != 0) {
 		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_GetTxFifoFreeLevel() failed (Status: %d, Message ID: %d).\n", status, msg->id);
-	return status;
+		return status;
+	}
 
 	status = HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, msg->data);
-	if (status != HAL_OK)
+	if (status != HAL_OK) {
 		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_AddMessageToTxFifoQ() failed (Status: %d, Message ID: %d).\n", status, msg->id);
-	return status;
+		return status;
+	}
 
 	return status;
 }
