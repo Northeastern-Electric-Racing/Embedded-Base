@@ -3,62 +3,16 @@
 #include <stdint.h>
 #include <string.h>
 
-/* NOTE: STM32H563 will have MAX of 2 CAN buses */
-#define MAX_CAN_BUS 2
-
-can_t *can_struct_list[MAX_CAN_BUS] = {NULL, NULL};
-
-static can_callback_t find_callback(FDCAN_HandleTypeDef *hcan)
-{
-	for (uint8_t i = 0; i < MAX_CAN_BUS; i++)
-	{
-		if ((can_struct_list[i] != NULL) && (hcan == can_struct_list[i]->hcan))
-			return can_struct_list[i]->callback;
-	}
-	return NULL;
-}
-
-/* Add a CAN interfae to be searched for during the event of a callback */
-static uint8_t add_interface(can_t *interface)
-{
-	for (uint8_t i = 0; i < MAX_CAN_BUS; i++)
-	{
-		/* Interface already added */
-		if ((can_struct_list[i] != NULL) && (interface->hcan == can_struct_list[i]->hcan))
-			return 1;
-
-		/* If empty, add interface */
-		if (can_struct_list[i] == NULL)
-		{
-			can_struct_list[i] = interface;
-			return 0;
-		}
-	}
-
-	/* No open slots, something is wrong */
-	return 2;
-}
-
-HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
+/* Initializes CAN */
+HAL_StatusTypeDef can_init(can_t *can)
 {
 
 	/* Init these guys to 0 */
 	can->standard_filter_index = 0;
 	can->extended_filter_index = 0;
 
-	/* Store the callback function that's been passed in */
-	can->callback = callback;
-
-	/* Start FDCAN */
-	HAL_StatusTypeDef status = HAL_FDCAN_Start(can->hcan);
-	if (status != HAL_OK)
-	{
-		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_Start() (Status: %d).\n", status);
-		return status;
-	}
-
 	/* Config interrupts */
-	status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, FDCAN_INTERRUPT_LINE0);
+	HAL_StatusTypeDef status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, FDCAN_INTERRUPT_LINE0);
 	if (status != HAL_OK)
 	{
 		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() (Status: %d).\n", status);
@@ -73,54 +27,18 @@ HAL_StatusTypeDef can_init(can_t *can, can_callback_t callback)
 		return status;
 	}
 
-	/* Add can_t instance to this file's can_t tracker */
-	uint8_t interface_status = add_interface(can);
-	if (interface_status != 0)
+	/* Start FDCAN */
+	status = HAL_FDCAN_Start(can->hcan);
+	if (status != HAL_OK)
 	{
-		printf("[fdcan.c/can_init()] ERROR: Failed to add a can_t instance to the can_t tracker (Status: %d).\n", status);
-		return interface_status;
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_Start() (Status: %d).\n", status);
+		return status;
 	}
 
 	return status;
 }
 
-/* Callback for any FIFO0 interrupt stuff */
-void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
-{
-
-	/* If a message has just been recieved... */
-	if (RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE)
-	{
-		can_msg_t message;
-		FDCAN_RxHeaderTypeDef rx_header;
-
-		if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, message.data) == HAL_OK)
-		{
-			message.id = rx_header.Identifier;
-			message.id_is_extended = (rx_header.IdType == FDCAN_EXTENDED_ID);
-			message.len = (uint8_t)rx_header.DataLength;
-
-			/* Check size */
-			if (rx_header.DataLength > 8)
-			{
-				printf("[fdcan.c/HAL_FDCAN_RxFifo0Callback()] ERROR: Recieved message is larger than 8 bytes.\n");
-				return;
-			}
-
-			/* Send message to the application layer via the configured callback */
-			can_callback_t callback = find_callback(hfdcan);
-			if (callback != NULL)
-			{
-				callback(&message);
-			}
-			else
-			{
-				printf("[fdcan.c/HAL_FDCAN_RxFifo0Callback()] ERROR: callback() is null.\n");
-			}
-		}
-	}
-}
-
+/* Adds Standard CAN ID(s) to the CAN filter. */
 HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2])
 {
 	FDCAN_FilterTypeDef filter;
@@ -146,6 +64,7 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2])
 	return status;
 }
 
+/* Adds Extended CAN ID(s) to the CAN filter. */
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2])
 {
 	FDCAN_FilterTypeDef filter;
@@ -171,6 +90,7 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2])
 	return status;
 }
 
+/* Sends a CAN message. */
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 {
 	/* Validate message length */
