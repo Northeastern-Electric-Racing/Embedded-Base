@@ -175,7 +175,7 @@
       "fields": [
         {
           "name": "MPU/Sense/Accel",
-          "unit": "g",
+          "unit": "xg.yg.zg",
           "values": [
             1,
             2,
@@ -220,7 +220,7 @@
       "fields": [
         {
           "name": "MPU/Sense/Gyro",
-          "unit": "",
+          "unit": "xg.yg.zg",
           "values": [
             1,
             2,
