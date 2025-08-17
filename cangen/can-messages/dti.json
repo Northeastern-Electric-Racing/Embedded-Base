@@ -871,6 +871,8 @@
     "points": [
       {
         "size": 16,
+        "name": "brake_current_target_ac",
+        "c_type": "float",
         "signed": true,
         "formatter": {
  				"key": "divide",
@@ -1181,6 +1183,8 @@
       {
         "size": 16,
         "signed": true,
+        "name": "max_ac_current_target",
+        "c_type": "float",
         "formatter": {
  				"key": "divide",
 				"arg": 10
@@ -1222,6 +1226,8 @@
       {
         "size": 16,
         "signed": true,
+        "name": "max_ac_brake_current_target",
+        "c_type": "float",
         "formatter": {
  				"key": "divide",
 				"arg": 10
@@ -1263,6 +1269,8 @@
       {
         "size": 16,
         "signed": true,
+        "name": "max_dc_current_target",
+        "c_type": "float",
         "formatter": {
  				"key": "divide",
 				"arg": 10
@@ -1293,6 +1301,8 @@
       {
         "size": 16,
         "signed": true,
+        "name": "max_dc_brake_current_target",
+        "c_type": "float",
         "formatter": {
  				"key": "divide",
 				"arg": 10
@@ -1322,6 +1332,8 @@
     "points": [
       {
         "size": 8,
+        "name": "drive_enable",
+        "c_type": "bool",
         "sim": {
           "options": [
             [
