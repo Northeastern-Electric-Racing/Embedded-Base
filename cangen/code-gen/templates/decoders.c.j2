@@ -20,12 +20,11 @@ void receive_{{ macros.function_name(msg) }}(can_msg_t message, {{macros.functio
 	uint8_t bitstream_data[{{ macros.msg_size(msg) }}];
 	bitstream_init(&bitstream, bitstream_data, {{ macros.msg_size(msg) }});
     bitstream_add(&bitstream, data, {{ macros.msg_size(msg) }} * 8);
-    {% for field in msg.fields -%}
-    {% for value in field["values"] -%}
-    {% set point = msg.points[value - 1] %}
-    {{macros.function_name(msg) -}}->{{- macros.field_name(field, loop.index) }} = bitstream_remove(&bitstream, {{ point.size }});
-{%- endfor %}
-{%- endfor %}
+    {% for point in msg.points -%}
+    {% if point.name is defined -%}
+    {{macros.function_name(msg) -}}->{{ point.name }} = bitstream_remove(&bitstream, {{ point.size }});
+    {% endif %}
+    {%- endfor -%}
 }
 
 {% endfor %}

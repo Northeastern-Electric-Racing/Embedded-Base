@@ -2,10 +2,10 @@
 {{ macros.imports() -}}
 {% for msg in can_msgs %}
 typedef struct {
-{% for field in msg.fields -%}
-{% for value in field["values"] %}  {{ macros.field_type(msg.points, field) }} {{ macros.field_name(field, loop.index) }};
+{% for point in msg.points -%}
+{% if point.name is defined %} {{ point.c_type }} {{ point.name }};
+{% endif -%}
 {% endfor -%}
-{%- endfor -%}
 } {{ macros.function_name(msg) -}}_t;
 
 void receive_{{ macros.function_name(msg) }}(can_msg_t message, {{macros.function_name(msg) }}_t *{{macros.function_name(msg) }});

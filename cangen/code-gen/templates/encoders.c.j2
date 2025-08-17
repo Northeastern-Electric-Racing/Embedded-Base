@@ -16,11 +16,11 @@
 {% for msg in can_msgs -%}
 void send_{{ macros.function_name(msg) }}
 (
-    {% for field in msg.fields -%}
-    {% for value in field["values"] -%}
-    {{ macros.field_type(msg.points, field) }} {{ macros.field_name(field, loop.index) }},
-    {% endfor -%}
-    {% endfor -%}
+    {% for point in msg.points -%}
+    {%- if point.name is defined -%}
+    {{ point.c_type }} {{ point.name }},
+    {% endif %}
+    {%- endfor -%}
     can_t *can
 )
 {
@@ -29,14 +29,10 @@ void send_{{ macros.function_name(msg) }}
 	uint8_t bitstream_data[{{ macros.msg_size(msg) }}];
 	bitstream_init(&{{ macros.function_name(msg) }}_msg, bitstream_data, {{ macros.msg_size(msg) }});
 
-	{% for field in msg.fields -%}
-    {% for value in field["values"] -%}
-        {% set point = msg.points[value - 1] -%}
-        {% if point.parse is not defined or point.parse == true -%}
-        bitstream_add(&{{ macros.function_name(msg) -}}_msg, {{ macros.field_name(field, loop.index) -}}, {{ point.size -}});
-    {% set field_idx.value = field_idx.value + 1 -%}
+	{% for point in msg.points -%}
+    {% if point.name is defined -%}
+        bitstream_add(&{{ macros.function_name(msg) -}}_msg, {{ point.name -}}, {{ point.size -}});
     {% endif -%}
-    {% endfor -%}
     {%- endfor %}
     can_msg_t msg;
     msg.id = {{ msg.id }};
