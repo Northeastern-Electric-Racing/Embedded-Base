@@ -1,0 +1,70 @@
+{#
+    This is a Jinja template, everything in {{ }} or {% %} brackets is replaced with C code.
+    Code inside brackets are Python snippets.
+
+    This file defines macros to be used by other templates.
+-#}
+
+{% macro imports() %}
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "can.h"
+#include "bitstream.h"
+{% endmacro -%}
+
+{#
+    convert msg description to a function name that can be used by can
+-#}
+{% macro function_name(msg) -%}
+
+    {{- msg.desc.replace(' ', '_').lower() -}}
+    
+{% endmacro -%}
+
+{%- macro c_int_type(size, signed) -%}
+    {%- if size <= 8 -%}
+        {{- "int8_t" if signed else "uint8_t" -}}
+    {%- elif size <= 16 -%}
+        {{- "int16_t" if signed else "uint16_t" -}}
+    {%- elif size <= 32 -%}
+        {{- "int32_t" if signed else "uint32_t" -}}
+    {%- else -%}
+        {{- "int64_t" if signed else "uint64_t" -}}
+    {%- endif -%}
+{%- endmacro -%}
+
+{# 
+    get the C type of each field variable (ex. uint16_t)
+-#}
+{% macro field_type(points, field) -%}
+    {% set point = points[field["values"][0] - 1] -%}
+    {{ c_int_type(point.size, point.signed) -}}
+{% endmacro -%}
+
+
+{#-
+    convert field name to one that can be used by C
+-#}
+{% macro field_name(field, idx) -%}
+
+    {% set units = field.unit.split(".") -%}
+    {% set extension = units[idx - 1] -%}
+    
+    {% if units | length <= 1 -%}
+        {{- '_'.join(field.name.split('/')[-2:]).replace('-', '_').lower() -}}
+    {% else -%}
+        {{- '_'.join(field.name.split('/')[-2:]).replace('-', '_').lower() + "_"  + extension -}}
+    {% endif -%}
+
+{% endmacro %}
+
+{% macro msg_size(msg) -%}
+
+    {% set size = namespace(value=0) -%}
+    {% for point in msg.points -%}
+    {% set size.value = size.value + point.size -%}
+    {% endfor -%}
+    {{ size.value // 8 -}}
+
+{% endmacro -%}

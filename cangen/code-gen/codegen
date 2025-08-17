@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+from jinja2 import Environment, FileSystemLoader
+import json
+
+with open('../can-messages/mpu.json', 'r') as json_file:
+    json = json.loads(json_file.read())
+    json_file.close()
+
+# Jinja2 environment
+env = Environment(loader=FileSystemLoader("."))
+
+decoder_src_template = env.get_template("templates/decoders.c.j2")
+decoder_inc_template = env.get_template("templates/decoders.h.j2")
+encoder_template = env.get_template("templates/encoders.c.j2")
+router_template = env.get_template("templates/router.c.j2")
+
+output = decoder_inc_template.render(can_msgs=json)
+with open(f'cgen/decoders.h', 'w') as decoders:
+    decoders.write(output)
+
+output = decoder_src_template.render(can_msgs=json)
+with open(f'cgen/decoders.c', 'w') as decoders:
+    decoders.write(output)
+
+output = encoder_template.render(can_msgs=json)
+with open(f'cgen/encoders.c', 'w') as encoders:
+    encoders.write(output)
+
+    output = router_template.render(can_msgs=json)
+with open(f'cgen/router.c', 'w') as encoders:
+    encoders.write(output)

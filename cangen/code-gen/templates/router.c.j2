@@ -1,0 +1,17 @@
+{%- import "templates/macros.j2" as macros -%}
+#include "decoders.h"
+
+{% for msg in can_msgs -%}
+{{macros.function_name(msg) }}_t {{macros.function_name(msg) }};
+{% endfor %}
+void receive_can(can_msg_t msg) {
+    switch (msg.id) {
+    {%- for msg in can_msgs %}
+        case {{ msg.id }}:
+            receive_{{ macros.function_name(msg) }}(msg, &{{macros.function_name(msg) }});
+            break;
+    {%- endfor %}
+        default:
+            break;
+    }
+}

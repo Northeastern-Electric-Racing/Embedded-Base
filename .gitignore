@@ -4,3 +4,5 @@ __pycache__/
 
 *.nix
 .DS_Store
+
+cangen/code-gen/cgen/*
