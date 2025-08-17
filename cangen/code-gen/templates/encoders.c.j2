@@ -10,7 +10,9 @@
 
 {% import "templates/macros.j2" as macros -%}
 
-{{ macros.imports() }}
+{{ macros.imports() -}}
+#include "can_handler.h"
+
 {% for msg in can_msgs -%}
 void send_{{ macros.function_name(msg) }}
 (
