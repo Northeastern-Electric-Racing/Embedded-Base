@@ -93,6 +93,7 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 @app.command(help="Start a debug session")
 def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default) Set this flag if the device uses an FTDI chip"),
         no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
+          custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
           docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
     command = ["openocd"]
@@ -101,7 +102,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
     if not no_ftdi:
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
-    else:
+    elif not custom:
         command = command + ["-f", "interface/cmsis-dap.cfg"]
 
     build_directory = os.path.join("build", "*.elf")
