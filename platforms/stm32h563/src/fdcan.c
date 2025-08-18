@@ -5,12 +5,13 @@
 #include <stdio.h>
 
 /* Initializes CAN */
-HAL_StatusTypeDef can_init(can_t *can)
+HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 {
 
-	/* Init these guys to 0 */
+	/* Init these guys */
 	can->standard_filter_index = 0;
 	can->extended_filter_index = 0;
+	can->hcan = hcan;
 
 	/* Config interrupts */
 	HAL_StatusTypeDef status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, FDCAN_INTERRUPT_LINE0);
