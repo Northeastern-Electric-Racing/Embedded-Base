@@ -26,6 +26,7 @@ from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .serial2 import main as serial2_start
 
 # ==============================================================================
 # Typer application setup
@@ -47,15 +48,23 @@ def unsupported_option_cb(value:bool):
 # Build command
 # ==============================================================================
 
-@app.command(help="Build the project with GCC ARM Toolchain and Make")
+@app.command(help="Build the project with GCC ARM Toolchain and Make/CMake")
 def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
-
-    if clean:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", "clean"]
-    else:
-        command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "make", f"-j{os.cpu_count()}"]
-    run_command(command, stream_output=True)
+    is_cmake = os.path.exists("CMakeLists.txt")
+    if is_cmake: # Repo uses CMake, so execute CMake commands.
+        print("[#cccccc](ner build):[/#cccccc] [blue]CMake-based project detected.[/blue]")
+        if clean:
+            run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
+            print("[#cccccc](ner build):[/#cccccc] [green]Ran build-cleaning command.[/green]")
+        else:
+            run_command_docker("mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .", stream_output=True)
+    else: # Repo uses Make, so execute Make commands.
+        print("[#cccccc](ner build):[/#cccccc] [blue]Makefile-based project detected.[/blue]")
+        if clean:
+            run_command_docker("make clean", stream_output=True)
+        else:
+            run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
 
 # ==============================================================================
 # Clang command
@@ -182,6 +191,21 @@ def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device t
         miniterm(ls=True, device=device)
     else:
         miniterm(device=device)
+
+# ==============================================================================
+# Serial2 command
+# ==============================================================================
+
+@app.command(help="Like 'ner serial', but with some extra custom features (message filtering, graphing, and monitoring).")
+def serial2(
+            ls: bool = typer.Option(False, "--list", help="List available serial devices and exit."),
+            device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
+            monitor: str = typer.Option(None, "--monitor", help="Opens a monitor window of the specified title. (Note: A monitor window can be created/configured using the serial_monitor() function from serial.c)"),
+            graph: str = typer.Option(None, "--graph", help="Opens a live graph window of the specified title. (Note: A graph window can be created/configured using the serial_graph() function from serial.c)"),
+            filter: str = typer.Option(None, "--filter", help="Only shows specific messages. Ex. 'ner serial2 --filter EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
+    """Custom serial terminal."""
+    
+    serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
 
 # ==============================================================================
 # Update command
@@ -333,12 +357,19 @@ def run_command(command, stream_output=False, exit_on_fail=True):
     else:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
-            print(result.stdout)
+            if result.stdout and result.stdout.strip():  # Only print if stdout is not empty or just whitespace
+                print(result.stdout)
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {e}", file=sys.stderr)
             print(e.stderr, file=sys.stderr)
             if exit_on_fail:
                 sys.exit(e.returncode)
+
+def run_command_docker(command, stream_output=False):
+    """Run a command in the Docker container."""
+    docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
+    print(f"[bold blue](ner-gcc-arm): Running command '{command}' in Docker container.")
+    run_command(docker_command, stream_output=stream_output, exit_on_fail=True)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
