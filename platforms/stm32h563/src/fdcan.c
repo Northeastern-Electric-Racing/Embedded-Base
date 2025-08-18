@@ -2,6 +2,7 @@
 #include "fdcan.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 /* Initializes CAN */
 HAL_StatusTypeDef can_init(can_t *can)
@@ -55,7 +56,7 @@ HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2])
 	HAL_StatusTypeDef status = HAL_FDCAN_ConfigFilter(can->hcan, &filter);
 	if (status != HAL_OK)
 	{
-		printf("[fdcan.c/can_add_filter_standard()] ERROR: Failed to config standard FDCAN filter (Status: %d, Filter Index: %d).\n", status, filter.FilterIndex);
+		printf("[fdcan.c/can_add_filter_standard()] ERROR: Failed to config standard FDCAN filter (Status: %d, Filter Index: %ld).\n", status, filter.FilterIndex);
 		return status;
 	}
 
@@ -81,7 +82,7 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2])
 	HAL_StatusTypeDef status = HAL_FDCAN_ConfigFilter(can->hcan, &filter);
 	if (status != HAL_OK)
 	{
-		printf("[fdcan.c/can_add_filter_extended()] ERROR: Failed to config extended FDCAN filter (Status: %d, Filter Index: %d). \n", status, filter.FilterIndex);
+		printf("[fdcan.c/can_add_filter_extended()] ERROR: Failed to config extended FDCAN filter (Status: %d, Filter Index: %ld). \n", status, filter.FilterIndex);
 		return status;
 	}
 
@@ -96,7 +97,7 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	/* Validate message length */
 	if (msg->len > 8)
 	{
-		printf("[fdcan.c/can_send_msg()] ERROR: FDCAN message length exceeds 8 bytes (Length: %d, Message ID: %d).\n", msg->len, msg->id);
+		printf("[fdcan.c/can_send_msg()] ERROR: FDCAN message length exceeds 8 bytes (Length: %d, Message ID: %ld).\n", msg->len, msg->id);
 		return HAL_ERROR;
 	}
 
@@ -119,7 +120,7 @@ HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg)
 	
 	HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(can->hcan, &tx_header, msg->data);
 	if (status != HAL_OK) {
-		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_AddMessageToTxFifoQ() failed (Status: %d, Message ID: %d).\n", status, msg->id);
+		printf("[fdcan.c/can_send_msg()] ERROR: HAL_FDCAN_AddMessageToTxFifoQ() failed (Status: %d, Message ID: %ld).\n", status, msg->id);
 		return status;
 	}
 
