@@ -1,0 +1,1291 @@
+[
+  {
+    "id": "1792",
+    "desc": "SensoricSolutionsOMSRace_VelAndAngPOI",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -450.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -100.0,
+          "max": 100.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": 0.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.003
+        },
+        "sim": {
+          "min": -40.0,
+          "max": 40.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngPOI/VelXPoi",
+        "unit": "km/h",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngPOI/VelYPoi",
+        "unit": "km/h",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngPOI/VelAPoi",
+        "unit": "km/h",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngPOI/AngSPoi",
+        "unit": "°",
+        "values": [
+          4
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1793",
+    "desc": "SensoricSolutionsOMSRace_DistPOI",
+    "points": [
+      {
+        "size": 32,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.001
+        },
+        "sim": {
+          "min": -2000000.0,
+          "max": 2000000.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.01
+        },
+        "sim": {
+          "min": -327.68,
+          "max": 327.67,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/DistPOI/DistAPoi",
+        "unit": "m",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/DistPOI/RadiusPoi",
+        "unit": "m",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/DistPOI/AccCPoi",
+        "unit": "m/s^2",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1794",
+    "desc": "SensoricSolutionsOMSRace_PitchAndRoll",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.003
+        },
+        "sim": {
+          "min": -90.0,
+          "max": 90.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.003
+        },
+        "sim": {
+          "min": -90.0,
+          "max": 90.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/PitchAndRoll/Roll",
+        "unit": "°",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/PitchAndRoll/Pitch",
+        "unit": "°",
+        "values": [
+          2
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1795",
+    "desc": "SensoricSolutionsOMSRace_AccHor",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/AccHor/AccXHor",
+        "unit": "m/s^2",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/AccHor/AccYHor",
+        "unit": "m/s^2",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/AccHor/AccZHor",
+        "unit": "m/s^2",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1796",
+    "desc": "SensoricSolutionsOMSRace_RateHor",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/RateHor/RateXHor",
+        "unit": "°/s",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/RateHor/RateYHor",
+        "unit": "°/s",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/RateHor/RateZHor",
+        "unit": "°/s",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1797",
+    "desc": "SensoricSolutionsOMSRace_VelAndAng",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -450.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -100.0,
+          "max": 100.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": 0.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.003
+        },
+        "sim": {
+          "min": -40.0,
+          "max": 40.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAng/VelX",
+        "unit": "km/h",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAng/VelY",
+        "unit": "km/h",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAng/VelA",
+        "unit": "km/h",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAng/AngS",
+        "unit": "°",
+        "values": [
+          4
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1798",
+    "desc": "SensoricSolutionsOMSRace_Dist",
+    "points": [
+      {
+        "size": 32,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.001
+        },
+        "sim": {
+          "min": -2000000.0,
+          "max": 2000000.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.01
+        },
+        "sim": {
+          "min": -327.68,
+          "max": 327.67,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/Dist/DistA",
+        "unit": "m",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Dist/Radius",
+        "unit": "m",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Dist/AccC",
+        "unit": "m/s^2",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1799",
+    "desc": "SensoricSolutionsOMSRace_Acc",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -200.0,
+          "max": 200.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/Acc/AccX",
+        "unit": "m/s^2",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Acc/AccY",
+        "unit": "m/s^2",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Acc/AccZ",
+        "unit": "m/s^2",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1800",
+    "desc": "SensoricSolutionsOMSRace_Rate",
+    "points": [
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -500.0,
+          "max": 500.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/Rate/RateX",
+        "unit": "°/s",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Rate/RateY",
+        "unit": "°/s",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Rate/RateZ",
+        "unit": "°/s",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1801",
+    "desc": "SensoricSolutionsOMSRace_VelAndAngSp",
+    "points": [
+      {
+        "size": 16,
+        "signed": false,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": 0.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.003
+        },
+        "sim": {
+          "min": -40.0,
+          "max": 40.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 65535.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 65535.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngSp/VelASp",
+        "unit": "km/h",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngSp/AngSSp",
+        "unit": "°",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngSp/QualityCh0",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/VelAndAngSp/QualityCh1",
+        "unit": "",
+        "values": [
+          4
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1802",
+    "desc": "SensoricSolutionsOMSRace_DistAndVelSp",
+    "points": [
+      {
+        "size": 32,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.001
+        },
+        "sim": {
+          "min": -2000000.0,
+          "max": 2000000.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -450.0,
+          "max": 450.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.02
+        },
+        "sim": {
+          "min": -100.0,
+          "max": 100.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/DistAndVelSp/DistASp",
+        "unit": "m",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/DistAndVelSp/VelXSp",
+        "unit": "km/h",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/DistAndVelSp/VelYSp",
+        "unit": "km/h",
+        "values": [
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1803",
+    "desc": "SensoricSolutionsOMSRace_Status",
+    "points": [
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 3,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 5.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": true,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.1
+        },
+        "sim": {
+          "min": -20.0,
+          "max": 85.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 24,
+        "signed": false,
+        "formatter": {
+          "key": "divide",
+          "arg": 0.001
+        },
+        "sim": {
+          "min": 0.0,
+          "max": 16777.215,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/Status/Standstill",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/DirectionNeg",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/RateAdjustActive",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/Trigger",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/BrakeAccStatus",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/IlluOn",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/IlluOk",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/SensorConnected",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/AdjustmentActive",
+        "unit": "",
+        "values": [
+          9
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/CanAngAdjFailed",
+        "unit": "",
+        "values": [
+          10
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/StatusOk",
+        "unit": "",
+        "values": [
+          11
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/TempSensor",
+        "unit": "°C",
+        "values": [
+          12
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Status/SampleTime",
+        "unit": "s",
+        "values": [
+          13
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1804",
+    "desc": "SensoricSolutionsOMSRace_Info",
+    "points": [
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 1,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 1.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 65535.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 8,
+        "signed": true,
+        "sim": {
+          "min": -128.0,
+          "max": 127.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoError",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoTransversal",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoInverseMounting",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoMovAvgActive",
+        "unit": "",
+        "values": [
+          4
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoPoi",
+        "unit": "",
+        "values": [
+          5
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoIlluIncomp",
+        "unit": "",
+        "values": [
+          6
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/InfoServiceMode",
+        "unit": "",
+        "values": [
+          7
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/LastErrorCode",
+        "unit": "",
+        "values": [
+          8
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/Info/TempProcessor",
+        "unit": "°C",
+        "values": [
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1805",
+    "desc": "SensoricSolutionsOMSRace_StaticInfo",
+    "points": [
+      {
+        "size": 16,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 65535.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 16,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 65535.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 24,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 16777215.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      },
+      {
+        "size": 8,
+        "signed": false,
+        "sim": {
+          "min": 0.0,
+          "max": 255.0,
+          "inc_min": 1.0,
+          "inc_max": 2.0
+        }
+      }
+    ],
+    "fields": [
+      {
+        "name": "SensoricSolutionsOMSRace/StaticInfo/SerialEcu",
+        "unit": "",
+        "values": [
+          1
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/StaticInfo/SerialSensor",
+        "unit": "",
+        "values": [
+          2
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/StaticInfo/FwVersion",
+        "unit": "",
+        "values": [
+          3
+        ]
+      },
+      {
+        "name": "SensoricSolutionsOMSRace/StaticInfo/ParamSetLoaded",
+        "unit": "",
+        "values": [
+          4
+        ]
+      }
+    ]
+  }
+]
