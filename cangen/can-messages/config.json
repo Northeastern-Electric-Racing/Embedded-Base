@@ -1,0 +1,32 @@
+[
+    {
+        "id": "0x510",
+        "desc": "Pump1HighTemp",
+        "points": [
+            {
+            "size": 16,
+            "endianness": "little",
+            "formatter": {
+                    "key": "divide",
+                    "arg": 10000
+                    },
+            "sim": {
+                "min": 0,
+                "max": 3.3,
+                "inc_min": 0.01,
+                "inc_max": 1
+            }
+            }
+        ],
+        "fields": [
+            {
+            "name": "Config/MPU/Pump1HighTemp",
+            "unit": "C",
+            "values": [
+                1
+            ]
+            }
+        ],
+        "sim_freq": 1
+    }
+]
