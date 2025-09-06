@@ -3,7 +3,7 @@
 from jinja2 import Environment, FileSystemLoader
 import json
 
-with open('../can-messages/mpu.json', 'r') as json_file:
+with open('../can-messages/config.json', 'r') as json_file:
     json = json.loads(json_file.read())
     json_file.close()
 
