@@ -1,0 +1,279 @@
+[
+  {
+    "id": "0x37",
+    "desc": "IMD General Information",
+        "points": [
+      {
+        "size": 16
+      },
+      {
+        "size": 8
+      },
+      {
+        "size": 8
+      },
+      {
+        "size": 16
+      },
+      {
+        "size": 8
+      },
+      {
+        "size": 8,
+        "parse": false
+      }
+    ],
+    "fields": [
+      {
+        "name": "IMD/Info/General/R_Iso_corrected",
+        "unit": "kΩ",
+        "values": [
+            1
+        ]
+      },
+      {
+        "name": "IMD/Info/General/R_Iso_status",
+        "unit": "",
+        "values":[
+            2
+        ]
+      },
+      {
+        "name": "IMD/Info/General/Measurement_Counter",
+        "unit": "",
+        "values":[
+            3
+        ]
+      },
+      {
+        "name": "IMD/Info/General/Warnings_and_Alarms",
+        "unit": "",
+        "values": [
+            4
+        ]
+      },
+      {
+        "name": "IMD/Info/General/Device_Activity",
+        "unit" : "",
+        "values": [
+            5
+        ]
+      }
+    ]
+
+  },
+
+  {
+    "id": "0x38",
+    "desc": "IMD Isolation Detail Information",
+    "points": [
+        {
+            "size":16
+        },
+        {
+            "size":16
+        },
+        {
+            "size":16
+        },
+        {
+            "size":8
+        },
+        {
+            "size":8
+        }
+    ],
+    "fields":[
+        {
+            "name":"IMD/Info/Isolation-Detail/R_iso_neg",
+            "unit":"kΩ",
+            "values":[
+                1
+            ]
+        },
+        {
+            "name":"IMD/Info/Isolation-Detail/R_iso_pos",
+            "unit":"kΩ",
+            "values":[
+                2
+            ]
+        },
+        {
+            "name":"IMD/Info/Isolation-Detail/R_iso_original",
+            "unit":"kΩ",
+            "values":[
+                3
+            ]
+
+        },
+        {
+            "name":"IMD/Info/Isolation-Detail/Measurement-Counter",
+            "unit":"",
+            "values":[
+                4
+            ]
+        },
+        {
+            "name":"IMD/Info/Isolation-Detail/Quality",
+            "unit":"%",
+            "values":[
+                5
+            ]
+        }
+    ]
+  },
+  {
+    "id":"0x39",
+    "desc":"IMD Voltage Information",
+    "points":[
+        {
+            "size":16
+        },
+        {
+            "size":16
+        },
+        {
+            "size":16
+        },
+        {
+            "size":8
+        },
+        {
+            "size":8,
+            "parse":false
+        }
+    ],
+    "fields":[
+        {
+            "name":"IMD/Info/Voltage/HV_system",
+            "unit":"V",
+            "values":[
+                1
+            ]
+        },
+        {
+            "name":"IMD/Info/Voltage/HV_neg_to_earth",
+            "unit":"V",
+            "values":[
+                2
+            ]
+        },
+        {
+            "name":"IMD/Info/Voltage/HV_pos_to_earth",
+            "unit":"V",
+            "values":[
+                3
+            ]
+        },
+        {
+            "name":"IMD/Info/Voltage/Measurement-Counter",
+            "unit":"",
+            "values":[
+                4
+            ]
+        }
+    ]
+  },
+  {
+    "id":"0x3A",
+    "desc":"IMD IT-System Info",
+    "points":[
+        {
+            "size":16
+        },
+        {
+            "size":8
+        },
+        {
+            "size":8
+        },
+        {
+            "size":8
+        },
+        {
+            "size":16
+        },
+        {
+            "size":8,
+            "parse":false
+        }
+    ],
+    "fields":[
+        {
+            "name":"IMD/Info/IT-System/Capacity_Measured_Value",
+            "unit":"0.1 μF",
+            "values":[
+                1
+            ]
+        },
+        {
+            "name":"IMD/Info/IT-System/Capacity_Measurement_Counter",
+            "unit":"",
+            "values":[
+                2
+            ]
+        },
+        {
+            "name":"IMD/Info/IT-System/Unbalance_Measured_Value",
+            "unit":"%",
+            "values":[
+                3
+            ]
+        },
+        {
+            "name":"IMD/Info/IT-System/Unbalance_Measurement_Counter",
+            "unit":"",
+            "values":[
+                4
+            ]
+        },
+        {
+            "name":"IMD/Info/IT-System/Voltage_Measured_Frequency",
+            "unit":"0.1 Hz",
+            "values":[
+                5
+            ]
+        }
+    ]
+  },
+  {
+    "id":"0x22",
+    "desc":"IMD Request",
+    "points":[
+        {
+            "size":8
+        },
+        {
+            "size":56
+        }
+    ],
+    "fields":[
+        {
+            "name":"IMD/Request/Index"
+        },
+        {
+            "name":"IMD/Request/Request"
+        }
+    ]
+  },
+  {
+    "id":"0x23",
+    "desc":"IMD Response",
+    "points":[
+        {
+            "size":8
+        },
+        {
+            "size":56
+        }
+    ],
+    "fields":[
+        {
+            "name":"IMD/Response/Index"
+        },
+        {
+            "name":"IMD/Response/Response"
+        }
+    ]
+  }
+]
