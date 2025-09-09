@@ -272,11 +272,17 @@
     "fields":[
         {
             "name":"IMD/Response/Index",
-            "unit":""
+            "unit":"",
+            "values":[
+                1
+            ]
         },
         {
             "name":"IMD/Response/Response",
-            "unit":""
+            "unit":"",
+            "values":[
+                2
+            ]
         }
     ]
   }
