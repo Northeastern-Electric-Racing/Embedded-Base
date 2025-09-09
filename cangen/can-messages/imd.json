@@ -250,11 +250,17 @@
     "fields":[
         {
             "name":"IMD/Request/Index",
-            "unit":""
+            "unit":"",
+            "values":[
+                1
+            ]
         },
         {
             "name":"IMD/Request/Request",
-            "unit":""
+            "unit":"",
+            "values":[
+                2
+            ]
         }
     ]
   },
