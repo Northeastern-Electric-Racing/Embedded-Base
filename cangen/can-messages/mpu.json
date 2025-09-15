@@ -89,6 +89,15 @@
           }
         }, 
         {
+          "size": 8,
+          "sim": {
+            "min": 0,
+            "max": 256,
+            "inc_min": 1,
+            "inc_max": 256
+          }
+        },
+        {
           "size": 4,
           "parse": false
         }
@@ -133,6 +142,11 @@
           "name": "MPU/State/LaunchControl",
           "unit": "",
           "values": [8]
+        },
+        {
+          "name": "MPU/State/TransitionError",
+          "unit": "",
+          "values": [9]
         }
       ],
       "clients": [
