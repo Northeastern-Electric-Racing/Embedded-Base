@@ -26,6 +26,7 @@ from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
+from .serial2 import main as serial2_start
 
 # ==============================================================================
 # Typer application setup
@@ -93,6 +94,7 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 @app.command(help="Start a debug session")
 def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default) Set this flag if the device uses an FTDI chip"),
         no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
+          custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
           docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
     command = ["openocd"]
@@ -101,7 +103,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
     if not no_ftdi:
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
-    else:
+    elif not custom:
         command = command + ["-f", "interface/cmsis-dap.cfg"]
 
     build_directory = os.path.join("build", "*.elf")
@@ -143,6 +145,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 @app.command(help="Flash the firmware")
 def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default): Set this flag if the device uses an FTDI chip"),
         no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
+          custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
           docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
 
     command = []
@@ -160,7 +163,7 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
         current_directory = os.getcwd()
         ftdi_path = os.path.join(current_directory, "Drivers", "Embedded-Base", "ftdi_flash.cfg")
         command = command + ["-f", ftdi_path]
-    else:
+    elif not custom:
         command = command + ["-f", "interface/cmsis-dap.cfg"]
     
 
@@ -190,6 +193,21 @@ def serial(ls: bool = typer.Option(False, "--list", help='''Specify the device t
         miniterm(ls=True, device=device)
     else:
         miniterm(device=device)
+
+# ==============================================================================
+# Serial2 command
+# ==============================================================================
+
+@app.command(help="Like 'ner serial', but with some extra custom features (message filtering, graphing, and monitoring).")
+def serial2(
+            ls: bool = typer.Option(False, "--list", help="List available serial devices and exit."),
+            device: str = typer.Option("", "--device", "-d", help="Specify the board to connect to."),
+            monitor: str = typer.Option(None, "--monitor", help="Opens a monitor window of the specified title. (Note: A monitor window can be created/configured using the serial_monitor() function from serial.c)"),
+            graph: str = typer.Option(None, "--graph", help="Opens a live graph window of the specified title. (Note: A graph window can be created/configured using the serial_graph() function from serial.c)"),
+            filter: str = typer.Option(None, "--filter", help="Only shows specific messages. Ex. 'ner serial2 --filter EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
+    """Custom serial terminal."""
+    
+    serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
 
 # ==============================================================================
 # Update command
