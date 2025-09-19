@@ -2,9 +2,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* Initializes all threads. Called from app_threadx.c */
-uint8_t threads_init(TX_BYTE_POOL *byte_pool);
-
 typedef struct {
     /* PUBLIC: Thread Configuration Settings */
     /* Set these when defining an instance of this struct. */
@@ -22,3 +19,5 @@ typedef struct {
     /* (should only be accessed by functions in u_threads.c) */
     TX_THREAD _TX_THREAD;
 } thread_t;
+
+uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread);
