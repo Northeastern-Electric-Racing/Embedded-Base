@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "fdcan.h"
 
-uint8_t can_filter_init(FDCAN_HandleTypeDef *hcan, can_t *can, uint16_t standard_ids[2], uint32_t extended_ids[2]);
+uint8_t can_filter_init(FDCAN_HandleTypeDef *hcan, can_t *can,
+			uint16_t standard_ids[2], uint32_t extended_ids[2]);
 
 #endif

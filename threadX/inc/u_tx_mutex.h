@@ -10,14 +10,15 @@
 #define MUTEX_WAIT_TIME TX_WAIT_FOREVER
 
 typedef struct {
-    /* PUBLIC: Mutex Configuration Settings */
-    /* Set these when defining an instance of this struct. */
-    const CHAR *name;            /* Name of Mutex */
-    const UINT priority_inherit; /* Specifies if the mutex supports priority inheritance. See page 55 of the "Azure RTOS ThreadX User Guide". */
+	/* PUBLIC: Mutex Configuration Settings */
+	/* Set these when defining an instance of this struct. */
+	const CHAR *name; /* Name of Mutex */
+	const UINT
+		priority_inherit; /* Specifies if the mutex supports priority inheritance. See page 55 of the "Azure RTOS ThreadX User Guide". */
 
-    /* PRIVATE: Internal implementation - DO NOT ACCESS DIRECTLY */
-    /* (should only be accessed by functions in u_tx_queueses.c) */
-    TX_MUTEX _TX_MUTEX;
+	/* PRIVATE: Internal implementation - DO NOT ACCESS DIRECTLY */
+	/* (should only be accessed by functions in u_tx_queueses.c) */
+	TX_MUTEX _TX_MUTEX;
 } mutex_t;
 
 /* API */
