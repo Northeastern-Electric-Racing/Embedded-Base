@@ -1,5 +1,5 @@
 
-#include "u_mutex.h"
+#include "u_tx_mutex.h"
 
 /* Helper function. Creates a ThreadX mutex. */
 static uint8_t create_mutex(mutex_t *mutex) {

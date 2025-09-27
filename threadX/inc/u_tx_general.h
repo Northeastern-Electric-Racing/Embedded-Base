@@ -1,5 +1,5 @@
-#ifndef __U_GENERAL_H
-#define __U_GENERAL_H
+#ifndef __U_TX_GENERAL_H
+#define __U_TX_GENERAL_H
 
 #include "tx_port.h"
 

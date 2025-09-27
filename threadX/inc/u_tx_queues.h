@@ -1,8 +1,8 @@
-#ifndef __U_QUEUES_H
-#define __U_QUEUES_H
+#ifndef __U_TX_QUEUES_H
+#define __U_TX_QUEUES_H
 
 #include "tx_api.h"
-#include "u_debug.h"
+#include "u_tx_debug.h"
 #include <stdint.h>
 
 /*
@@ -23,7 +23,7 @@ typedef struct {
     const UINT capacity;     /* Maximum number of messages in the queue */
 
     /* PRIVATE: Internal implementation - DO NOT ACCESS DIRECTLY */
-    /* (should only be accessed by functions in u_queues.c) */
+    /* (should only be accessed by functions in u_tx_queues.c) */
     TX_QUEUE _TX_QUEUE;      /* Queue instance. */
     size_t   _bytes;         /* Size of each queue message, in bytes. */
     size_t   _words;         /* Size of each queue message, in 32-bit words. */

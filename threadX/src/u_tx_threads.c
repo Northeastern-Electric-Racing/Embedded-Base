@@ -1,6 +1,6 @@
 
-#include "u_threads.h"
-#include "u_debug.h"
+#include "u_tx_threads.h"
+#include "u_tx_debug.h"
 
 uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread) {
     CHAR *pointer;

@@ -1,5 +1,5 @@
-#ifndef _U_CAN_H
-#define _U_CAN_H
+#ifndef _U_TX_CAN_H
+#define _U_TX_CAN_H
 
 #include "stm32h5xx.h"
 #include <stdint.h>

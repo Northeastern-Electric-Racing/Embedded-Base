@@ -1,3 +1,6 @@
+#ifndef __U_TX_THEADS_H
+#define __U_TX_THREADS_H
+
 #include "tx_api.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -16,8 +19,10 @@ typedef struct {
     VOID            (*function)(ULONG);   /* Thread Function */
 
     /* PRIVATE: Internal implementation - DO NOT ACCESS DIRECTLY */
-    /* (should only be accessed by functions in u_threads.c) */
+    /* (should only be accessed by functions in u_tx_threads.c) */
     TX_THREAD _TX_THREAD;
 } thread_t;
 
 uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread);
+
+#endif
