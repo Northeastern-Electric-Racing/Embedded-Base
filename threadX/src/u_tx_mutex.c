@@ -2,7 +2,7 @@
 #include "u_tx_mutex.h"
 
 /* Helper function. Creates a ThreadX mutex. */
-static uint8_t create_mutex(mutex_t *mutex) {
+uint8_t create_mutex(mutex_t *mutex) {
     uint8_t status = tx_mutex_create(&mutex->_TX_MUTEX, (CHAR*)mutex->name, mutex->priority_inherit);
     if(status != TX_SUCCESS) {
         DEBUG_PRINTLN("ERROR: Failed to create mutex (Status: %d/%s, Name: %s).", status, tx_status_toString(status), mutex->name);
