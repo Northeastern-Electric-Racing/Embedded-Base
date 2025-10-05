@@ -12,7 +12,7 @@ extern TX_EVENT_FLAGS_GROUP event_flags;
  * Note: for our use-case there will be 
  * one event-group per project
  */
-uint8_t init_flags();
+uint8_t flags_init();
 
 /**
  * Sets a thread flag

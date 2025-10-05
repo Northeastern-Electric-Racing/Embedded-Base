@@ -2,7 +2,7 @@
 
 TX_EVENT_FLAGS_GROUP event_flags;
 
-uint8_t init_flags()
+uint8_t flags_init()
 {
 	if (!tx_event_flags_create(&event_flags, "Thread Flags")) {
 		DEBUG_PRINTLN("Failed to initialize flag event groups.");

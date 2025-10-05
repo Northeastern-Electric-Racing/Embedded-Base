@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "tx_api.h"
-#include "stm32h5xx_hal.h"
+#include "stm32xx_hal.h"
 
 /* General-purpose status macros. */
 #define U_SUCCESS     0
