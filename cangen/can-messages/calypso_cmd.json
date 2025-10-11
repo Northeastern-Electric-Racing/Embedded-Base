@@ -91,6 +91,7 @@
   {
     "id": "0xFFFFF",
     "desc": "Example Enc Msg Ext",
+    "bidir_mode": "oneshot",
     "points": [
       {
         "size": 32,
