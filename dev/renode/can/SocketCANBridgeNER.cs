@@ -171,7 +171,7 @@ namespace Antmicro.Renode.Peripherals.CAN
 
                 buffer.AddRange(data);
 
-                if (!buffer.TryDecodeAsSocketCANFrame(out var frame, false))
+                if (!buffer.TryDecodeAsSocketCANFrame(out var frame))
                 {
                     // not enough bytes
                     continue;
