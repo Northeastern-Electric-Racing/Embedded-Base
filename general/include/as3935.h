@@ -53,8 +53,8 @@
 #define AS3935_INT_D  0x04 /* Disruptor detected */
 #define AS3935_INT_L  0x08 /* Lightning detected */
 
-#define AS3935_AFE_INDOOR  0b10010 /* Indoor mode */
-#define AS3935_AFE_OUTDOOR 0b01110 /* Outdoor mode */
+#define AS3935_AFE_INDOOR  0x12 /* 0b10010 Indoor mode */
+#define AS3935_AFE_OUTDOOR 0xE /* 0b01110 Outdoor mode */
 
 #define AS3935_READ_CMD \
 	0x4000 /* 0b0100000000000000 First few bits for read command */
