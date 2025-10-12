@@ -1,8 +1,0 @@
-distro
-pre-commit
-clang-format
-tkinter
-pyserial
-typer
-matplotlib
-rich
