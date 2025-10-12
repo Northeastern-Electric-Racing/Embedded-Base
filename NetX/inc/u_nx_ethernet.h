@@ -8,6 +8,7 @@
 */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "nx_api.h"
 
 /* CONFIG */
