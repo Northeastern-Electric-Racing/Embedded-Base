@@ -26,16 +26,20 @@ def main():
     
     # Get a list of staged files
     staged_files = get_staged_files()
+    filtered_files = [f for f in staged_files if f.endswith(('.c', '.h'))]
+
+    if len(filtered_files) == 0:
+        return
     
     # Run clang-format on staged files
 
     if "bedded" in current_directory:
-        result = subprocess.run(['clang-format', '--style=file:clang-format', '-i'] + staged_files, 
+        result = subprocess.run(['clang-format', '--style=file:clang-format', '-i'] + filtered_files, 
                             capture_output=True, text=True)
     else:
 
         clang_format_path = os.path.join(current_directory, 'Drivers', 'Embedded-Base', 'clang-format')
-        result = subprocess.run(['clang-format', f'--style=file:{clang_format_path}', '-i'] + staged_files, 
+        result = subprocess.run(['clang-format', f'--style=file:{clang_format_path}', '-i'] + filtered_files, 
                             capture_output=True, text=True)
 
     if result.returncode == 0:
