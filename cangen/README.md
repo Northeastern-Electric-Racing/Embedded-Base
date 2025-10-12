@@ -65,9 +65,9 @@ Occassionally you may want Calypso to also send a message on the CAN network. Us
 - `key`, string representing the key to index the Encodable Message to, e.g. it would be sent to Calypso on `"Calypso/Bidir/Command/{key}"` 
 - `is_ext`, boolean representing whether the CAN ID is extended or standard (`false` by default)
 It is recommended that the decoding of the message be done to the topic `"Calypso/Bidir/State/{key}/{field_name}"`. Note decoding works exactly the same with these messages, so serves as an accurate representation of what Calypso is current sending out to the car.
-
-Also, you should allow for simulation of the data point whenever possible.
-  - `sim_freq`, integer frequency of which this message is usually emitted, in ms
+- `bidir_mode`, string specifying which bidirectionality functional profile the message uses (`broadcast` by default). Options:
+  - `broadcast`: The message is sent on a loop of about one second with the most recent value, or the default value (see below).  Default value is required.
+  - `oneshot`: The message is sent once instantaneously upon reception of a setting.  There are no default values used. 
 
 You may want to publish the fields of a message to additional MQTT clients. Add the following optional field to specify which additional client ports the fields should be published on.
 - `clients`, (optional) list of u16s representing the ports of additional MQTT clients to publish to. Currently supported additional ports are: 1882
@@ -90,7 +90,7 @@ Within the `points` member of a NetField object, there is a list of Point object
 - `endianness` (optional), string representing the byte endianness of the bits being read, either `"big"` or `"little"` (`"big"` by default)
 - `format` (optional), string representing the format of the bits (e.g. `divide100`) (blank by default)
   - Use an existing formatter if possible.  To create a new one, add it to the `impl FormatData` block in `Calypso/src/data.rs`.  Name it what it does if it could be reused by unrelated functions (ex. divide by 100 --> `divide100`) or if its very obscure use whats its used for (ex. multiply by 0029 in IMU datasheet --> `acceleration`). Include `_d` and `_e` implementations for decoding and encoding, respectively
-- `default_value` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point (`0` by default) 
+- `default_value` (optional, only for Encodable Messages), float representing the default value to be sent before a command is received or when an empty command is received. This is ignored when decoding the Point, and ignored if using bidirectionality profile `oneshot` (`0` by default) 
 - `ieee754_f32` (optional), boolean indicating if the bits in the Point should be interpreted as an IEEE754 32-bit float. **Be sure to endian swap the float before sending!!** (`false` by default)
 - `sim` (optional), the simulation mode for the Point. See below
 
@@ -102,9 +102,9 @@ Within the `sim` member of a CANPoint object, there is a single sim object.  Thi
 - `max`, float, the maximum value to emit
 - `inc_min`, float, the minimum increment
 - `inc_max`, float, the maximum increment
-- `round`, bool, whether to round values to a whole number (more precise rounding is not supported)
+- `round`, bool, whether to round values to a whole number (more precise rounding is not supported) (default: false)
 
-or  
+**or**  
 `enum`: choose from a certain list of values
 - `options`, list[[`value`, `freq`]...], a list containing lists of length two.  Each inner list's first item is the value to be emitted, and the second item is the probability the item should be emitted.  **These probabilities must add to 1, or they won't be obeyed.**
 
