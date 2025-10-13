@@ -8,6 +8,7 @@ uint8_t flags_init()
 		DEBUG_PRINTLN("Failed to initialize flag event groups.");
 		return U_ERROR;
 	}
+	DEBUG_PRINTLN("Ran flags_init().");
 	return U_SUCCESS;
 }
 
@@ -22,7 +23,8 @@ uint8_t set_flag(ULONG flag)
 
 uint8_t get_flag(ULONG flag, ULONG timeout)
 {
-	if (tx_event_flags_get(&event_flags, flag, TX_OR_CLEAR, NULL,
+	ULONG result_flags;
+	if (tx_event_flags_get(&event_flags, flag, TX_OR_CLEAR, &result_flags,
 				timeout)) {
 		DEBUG_PRINTLN("Failed to get flag %d.", flag);
 		return U_ERROR;
