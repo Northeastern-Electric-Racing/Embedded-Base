@@ -27,21 +27,21 @@
 
 /* PRINTLN_ERROR() */
 #ifdef LOG_ERROR
-    #define PRINTLN_ERROR(message, ...) printf("[%s/%s()] ERROR: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an error message in the format: "[file_name.c/function()] ERROR: {message}"*/
+    #define PRINTLN_ERROR(message, ...) printf("[%s/%s()] ERROR: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an ERROR message in the format: "[file_name.c/function()] ERROR: {message}"*/
 #else
     #define PRINTLN_ERROR(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_WARNING() */
 #ifdef LOG_WARNING
-    #define PRINTLN_WARNING(message, ...) printf("[%s/%s()] WARNING: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an error message in the format: "[file_name.c/function()] WARNING: {message}"*/
+    #define PRINTLN_WARNING(message, ...) printf("[%s/%s()] WARNING: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints a WARNING message in the format: "[file_name.c/function()] WARNING: {message}"*/
 #else
     #define PRINTLN_WARNING(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_INFO() */
 #ifdef LOG_INFO
-    #define PRINTLN_INFO(message, ...) printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an error message in the format: "[file_name.c/function()] INFO: {message}"*/
+    #define PRINTLN_INFO(message, ...) printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an INFO message in the format: "[file_name.c/function()] INFO: {message}"*/
 #else
     #define PRINTLN_INFO(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
@@ -57,7 +57,7 @@
 #define CATCH_ERROR(function_call, success) do { \
     int _function_status = (function_call); \
     if (_function_status != success) { \
-        DEBUG_PRINTLN("CATCH_ERROR(): Function failed: %s (Status: %d)", #function_call, _function_status); \
+        PRINTLN_ERROR("Function failed inside CATCH_ERROR() (Function: %s, Status: %d).", #function_call, _function_status); \
         return _function_status; \
     } \
 } while(0)
