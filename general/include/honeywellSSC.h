@@ -75,10 +75,12 @@ typedef int (*ReadPtr)(uint16_t dev_addr, uint8_t *data, uint16_t data_size); //
 typedef struct {
     uint16_t dev_addr;
     ReadPtr read;
+    uint8_t min_pressure;
+    uint8_t max_pressure;
 } honeywellSSC_t;
 
 // sets stuff up
-void honeywellSSC_init(honeywellSSC_t *ssc, ReadPtr read, uint16_t dev_addr);
+void honeywellSSC_init(honeywellSSC_t *ssc, ReadPtr read, uint16_t dev_addr, uint8_t min_pressure, uint8_t max_pressure);
 
 // Reads the data into the provided data pointer
 // expects honeywellSSC_t and a pointer to a uint8_t array of length 2 or 4

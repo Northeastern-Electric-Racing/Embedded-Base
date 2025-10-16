@@ -7,9 +7,11 @@
 #include "honeywellSSC.h"
 
 // sets stuff up
-void honeywellSSC_init(honeywellSSC_t *ssc, ReadPtr read, uint16_t dev_addr) {
+void honeywellSSC_init(honeywellSSC_t *ssc, ReadPtr read, uint16_t dev_addr, uint8_t min_pressure, uint8_t max_pressure) {
     ssc->read = read;
     ssc->dev_addr = dev_addr;
+    ssc->min_pressure = min_pressure;
+    ssc->max_pressure = max_pressure;
 }
 
 // Reads the data into the provided data pointer
@@ -46,7 +48,7 @@ int honeywellSSC_read_pressure(honeywellSSC_t *ssc, float *result) {
 
     uint16_t pressure_data = status_and_pressure_data & SSC_PRESSURE_MASK;
     // Pressure = ((output - output_min) * (pressure_max - pressure_min)) / (output_max - output_min) + pressure_min
-    float pressure_reading = (((pressure_data - SSC_OUTPUT_MIN) * (SSC_PRESSURE_MAX - SSC_PRESSURE_MIN)) / (SSC_OUTPUT_MAX - SSC_OUTPUT_MIN) + SSC_PRESSURE_MIN);
+    float pressure_reading = (((pressure_data - ssc->min_pressure) * (ssc->max_pressure - ssc->min_pressure)) / (SSC_OUTPUT_MAX - SSC_OUTPUT_MIN) + ssc->min_pressure);
 
     *result = pressure_reading;
     return 0;
@@ -75,5 +77,32 @@ int honeywellSSC_read_temp(honeywellSSC_t *ssc, float *result) {
     float temperature_reading = ((float)temp_data / SSC_TEMP_COUNTS_MAX) * SSC_TEMP_SCALE + SSC_TEMP_OFFSET;
 
     *result = temperature_reading;
+    return 0;
+}
+
+// Reads the pressure and temperature in psi and Celcius respectivly
+int honeywellSSC_read_pressure_and_temp(honeywellSSC_t *ssc, float *pressure_result, float *temp_result) {
+    uint8_t data_array[4];
+
+    int success_msg = honeywellSSC_read_data(ssc, data_array, 4);
+    if (success_msg != 0) {
+        return success_msg;
+    }
+
+    uint16_t status_and_pressure_data = ((uint16_t)data_array[0] << 8) | data_array[1];
+    uint16_t pressure_data = status_and_pressure_data & SSC_PRESSURE_MASK;
+    uint16_t temp_data = ((((uint16_t)data_array[2] << 8) | data_array[3]) & SSC_TEMP_MASK) >> 5;
+
+    uint8_t status;
+    honeywellSSC_read_status(status_and_pressure_data, &status);
+    if (status != SSC_STATUS_NORMAL) {
+        return -1;
+    }
+
+    float pressure_reading = (((pressure_data - ssc->min_pressure) * (ssc->max_pressure - ssc->min_pressure)) / (SSC_OUTPUT_MAX - SSC_OUTPUT_MIN) + ssc->min_pressure);
+    float temperature_reading = ((float)temp_data / SSC_TEMP_COUNTS_MAX) * SSC_TEMP_SCALE + SSC_TEMP_OFFSET;
+
+    *pressure_result = pressure_reading;
+    *temp_result = temperature_reading;
     return 0;
 }
