@@ -48,10 +48,9 @@ Pressure is calculated from the reading as:
 Pressure = ((output - output_min) * (pressure_max - pressure_min)) / (output_max - output_min) + pressure_min
 The following are the constants for that equation
 */
-// TRANSFER FUNCTION VALUES (10% to 90% of 2^14 counts) 
-#define SSC_OUTPUT_MIN 1638  // 10% of 2^14
-#define SSC_OUTPUT_MAX 14746 // 90% of 2^14
-#define SSC_COUNTS_FULL_SCALE 16384 // 2^14
+// TRANSFER FUNCTION VALUES (2^14 counts) 
+#define SSC_OUTPUT_MIN 0  // 0% of 2^14
+#define SSC_OUTPUT_MAX 16384 // 100% of 2^14
 
 // PRESSURE RANGE VALUES (0 to 60 psi)
 #define SSC_PRESSURE_MIN 0.0f  // 0 psi
