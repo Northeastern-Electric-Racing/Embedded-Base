@@ -31,6 +31,6 @@ uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread)
 			pointer); // Free allocated memory if thread creation fails
 		return U_ERROR;
 	}
-	
+
 	return U_SUCCESS;
 }
