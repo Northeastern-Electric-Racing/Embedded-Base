@@ -34,11 +34,9 @@ uint8_t as3935_read(as3935_t *as3935, uint8_t reg)
 			   ((reg & 0x3F) << 8); /* 0x3F = 0b111111*/
 	uint8_t rx_buf[2] = { 0 };
 
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_RESET);
 	// HAL SPI wants an 8 bit array of length 2 for tx_data
 	HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(
 		as3935->hspi, (uint8_t *)&tx_data, &rx_buf, 2, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 
 	if (status != HAL_OK) {
 		return 0xFF;
