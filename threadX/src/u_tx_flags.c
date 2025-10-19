@@ -1,5 +1,7 @@
 #include "u_tx_flags.h"
 
+// clang-format off
+
 TX_EVENT_FLAGS_GROUP event_flags;
 
 uint8_t flags_init()
@@ -31,3 +33,5 @@ uint8_t get_flag(ULONG flag, ULONG timeout)
 	}
 	return U_SUCCESS;
 }
+
+// clang-format on

@@ -1,6 +1,8 @@
 #ifndef _U_TX_FLAGS_H
 #define _U_TX_FLAGS_H
 
+// clang-format off
+
 #include "tx_api.h"
 #include "u_tx_debug.h"
 #include <stdint.h>
@@ -29,3 +31,5 @@ uint8_t set_flag(ULONG flag);
 uint8_t get_flag(ULONG flag, ULONG timeout);
 
 #endif
+
+// clang-format on
