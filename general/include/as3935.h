@@ -73,8 +73,7 @@ typedef struct {
 	uint8_t address;
 } as3935_t;
 
-void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
-		 GPIO_TypeDef *cs_port, uint16_t cs_pin);
+void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi);
 
 uint8_t as3935_read(as3935_t *as3935, uint8_t reg);
 uint8_t as3935_write(as3935_t *as3935, uint8_t reg, uint8_t value);
