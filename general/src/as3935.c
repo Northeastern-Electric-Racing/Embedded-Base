@@ -13,11 +13,7 @@ void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
 		 GPIO_TypeDef *cs_port, uint16_t cs_pin)
 {
 	as3935->hspi = hspi;
-	as3935->cs_port = cs_port;
-	as3935->cs_pin = cs_pin;
 	as3935->address = 0;
-
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 }
 
 /**
@@ -57,13 +53,11 @@ uint8_t as3935_write(as3935_t *as3935, uint8_t reg, uint8_t value)
 	uint16_t tx_data = AS3935_WRITE_CMD | ((reg & 0x3F) << 8) |
 			   value; /* 0x3F = 0b111111*/
 
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_RESET);
 	// HAL SPI wants an 8 bit array of length 2 for tx_data
 	HAL_StatusTypeDef status = HAL_SPI_Transmit(
 		as3935->hspi, (uint8_t *)&tx_data, 2, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 
-	return status == HAL_OK;
+	return status;
 }
 
 /**
