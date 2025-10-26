@@ -6,11 +6,8 @@
  * 
  * @param as3935 pointer to the allocated as3935_t struct
  * @param hspi pointer to the SPI_HandleTypeDef of the sensor
- * @param cs_port port of the cs line in spi
- * @param cs_pin pin of the cs line in spi
  */
-void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
-		 GPIO_TypeDef *cs_port, uint16_t cs_pin)
+void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi)
 {
 	as3935->hspi = hspi;
 	as3935->address = 0;
