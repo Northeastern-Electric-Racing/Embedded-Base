@@ -9,7 +9,8 @@ void bitstream_init(bitstream_t *bitstream, uint8_t *data, size_t bytes)
 	memset(bitstream->data, 0, bytes); // Zero out the buffer
 }
 
-int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
+int _bitstream_add_unsignedint(bitstream_t *bitstream, uint32_t value,
+			       size_t num_bits)
 {
 	if (bitstream->total_bits + num_bits > (bitstream->bytes * 8)) {
 		return -1; // Error: not enough space in the bitstream
@@ -40,7 +41,8 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 	return 0; // Success
 }
 
-int bitstream_add_signed(bitstream_t *bitstream, int32_t value, size_t num_bits)
+int _bitstream_add_signedint(bitstream_t *bitstream, int32_t value,
+			     size_t num_bits)
 {
 	if (bitstream->total_bits + num_bits > (bitstream->bytes * 8)) {
 		return -1; // Error: not enough space in the bitstream
