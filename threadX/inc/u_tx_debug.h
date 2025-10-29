@@ -17,30 +17,38 @@
 /* Gets the name of the file. */
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-/* Debug message types. 
-*  Specific types can by enabled/disabled by commenting/uncommenting their #define statements.
-*  (i.e. if a #define is commented out, the associated messages will not be printed.)
-*/
+/* DEBUG MESSAGE LEVELS */ 
+/* These can be commented out to enable/disable printing of the associated debug messages. */
 #define LOG_ERROR	/* Messages indicating that something has definitely gone wrong. */
 #define LOG_WARNING	/* Messages indicating that something 'might' have gone wrong, but either isn't immidietely critical or is only a problem in certain contexts. */
 #define LOG_INFO	/* Messages with miscellaneous/nice-to-have information. */
 
+/*
+*   COOL TIP: To disable debugging for a specific file, add this to the project's CMakeLists.txt:
+*   set_source_files_properties(
+*     src/example_file_1.c
+*     src/example_file_2.c
+*     etc...
+*     PROPERTIES COMPILE_DEFINITIONS "NO_LOG"
+*   )
+*/
+
 /* PRINTLN_ERROR() */
-#ifdef LOG_ERROR
+#if defined(LOG_ERROR) && !defined(NO_LOG)
     #define PRINTLN_ERROR(message, ...) printf("[%s/%s()] ERROR: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an ERROR message in the format: "[file_name.c/function()] ERROR: {message}"*/
 #else
     #define PRINTLN_ERROR(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_WARNING() */
-#ifdef LOG_WARNING
+#if defined(LOG_WARNING) && !defined(NO_LOG)
     #define PRINTLN_WARNING(message, ...) printf("[%s/%s()] WARNING: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints a WARNING message in the format: "[file_name.c/function()] WARNING: {message}"*/
 #else
     #define PRINTLN_WARNING(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_INFO() */
-#ifdef LOG_INFO
+#if defined(LOG_INFO) && !defined(NO_LOG)
     #define PRINTLN_INFO(message, ...) printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an INFO message in the format: "[file_name.c/function()] INFO: {message}"*/
 #else
     #define PRINTLN_INFO(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
