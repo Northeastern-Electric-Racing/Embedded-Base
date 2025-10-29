@@ -16,9 +16,9 @@ typedef struct {
 	bool overflow; // False by default. If bitstream_add() is called for a value larger than its allotted bits, overflow will be set to true.
 } bitstream_t;
 
-/* Private implementation functions. Not part of the public API. Use the general bitstream_add() macro. */
-static inline int _bitstream_add_unsignedint(bitstream_t *bitstream, uint32_t value, size_t num_bits);
-static inline int _bitstream_add_signedint(bitstream_t *bitstream, int32_t value, size_t num_bits);
+/* Private implementation functions. Please the general bitstream_add() macro. */
+int _bitstream_add_unsignedint(bitstream_t *bitstream, uint32_t value, size_t num_bits);
+int _bitstream_add_signedint(bitstream_t *bitstream, int32_t value, size_t num_bits);
 
 /**
  * @brief Adds data to a bitstream. The data is added to the end of the bitstream.
@@ -35,7 +35,7 @@ static inline int _bitstream_add_signedint(bitstream_t *bitstream, int32_t value
 		int8_t:   _bitstream_add_signedint,   \
 		int16_t:  _bitstream_add_signedint,   \
 		int32_t:  _bitstream_add_signedint,   \
-		int:	  _bitstream_add_signedint,   \
+		int:      _bitstream_add_signedint    \
 	)((bitstream), (value), (num_bits))
 
 /**
