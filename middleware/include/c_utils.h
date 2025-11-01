@@ -33,6 +33,18 @@
 */
 #define EXTRACT_BIT(byte, bit_index) ((byte >> (bit_index)) & 0x01)
 
+/**
+ * Macro for returning the min of two numbers
+ * @param a first number
+ * @param b second number
+ */
+#define min(a, b)                       \
+	({                              \
+		__typeof__(a) _a = (a); \
+		__typeof__(b) _b = (b); \
+		_a < _b ? _a : _b;      \
+	})
+
 void endian_swap(void *ptr, int size);
 
 /// @brief Reverses the bit order of a byte

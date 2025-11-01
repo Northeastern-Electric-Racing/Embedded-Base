@@ -2,6 +2,7 @@
 #define TIMER_H
 
 #include "stm32xx_hal.h"
+#include <stdint.h>
 #include <stdbool.h>
 
 typedef struct {
