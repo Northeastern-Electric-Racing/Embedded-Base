@@ -1,99 +1,41 @@
-
-from pathlib import Path
+import tomli
+import os
 import subprocess
-import re
-import sys
 
-def main():
-    
-    test_packages = get_test_packages()
-    if (len(sys.argv) > 1):
-        tests = sys.argv[1:]
-    else:
-        tests = test_packages
-    
-    # generate mocks for tests
+PROJECT_DIR_PATH = "/home/app/"
+EMBEDDED_BASE_PATH = PROJECT_DIR_PATH + "Drivers/Embedded-Base/"
+EMBEDDED_BASE_TESTING_DIR_PATH = EMBEDDED_BASE_PATH + "Testing/"
+PROJECT_TEST_DIR_PATH = PROJECT_DIR_PATH + "Tests/"
+TEST_CONF_PATH = PROJECT_TEST_DIR_PATH + "ner_test.conf"
+CMOCK_RUBY_SCRIPT_PATH = "/cmock_portable/lib/cmock.rb"
+CMOCK_CONFIG = EMBEDDED_BASE_TESTING_DIR_PATH + "cmock-config.yml"
+
+with open(TEST_CONF_PATH, "rb") as f:
+    data = tomli.load(f)
+
+def create_mocks():
+    test_packages = data.get("test-packages", {})
     processes = []
-    for test in tests:
-        p = generate_mocks(test)
-        if (p != None):
-            processes.append(p)
 
-    # wait for all mocks to finish generating
+    for tp_name, tp_data in test_packages.items():
+        dir_path = os.path.join(PROJECT_TEST_DIR_PATH, tp_name)
+        os.makedirs(dir_path, exist_ok=True)
+        print(f"Created directory for test package: {tp_name}")
+
+        files = tp_data.get("files", [])
+        for file_name in files:
+            command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{CMOCK_CONFIG}", f"--mock_path={PROJECT_TEST_DIR_PATH + tp_name}", file_name]
+            processes.append(subprocess.Popen(command, text=True))
+
+    # wait for all mocks to be created
     for p in processes:
-        retcode = p.wait()
-        if retcode != 0:
-            return retcode
+        p.wait()
 
-    # run make on each test 
-    processes = []
-    for test in tests:
-        if test in test_packages:
-            processes.extend(handle_test_package(test))
-        else:
-            p = handle_test_file(test)
-            if (p != None):
-                processes.append(p)
-        
-    retcode = 0   
-    # wait for all builds to finish
-    for p in processes:
-        retcode += p.wait()
+
     
-    if retcode != 0:
-        sys.exit(1)
+
     
-    return 0
 
-def get_mock_config(filename):
-    mc = Path(f"Tests/mock_configs/{filename}.txt")
-    if not mc.exists():
-        mc = Path(f"Tests/mock_configs/{filename.split('.')[0]}.txt")
-    if not mc.exists():
-        return 
+
+
     
-    return mc
-
-def generate_mocks(test):    
-    mc = get_mock_config(Path(test).stem)
-    command = ["sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
-                + f"&& make mocks MOCK_CONFIG={str(mc)}"]
-    return subprocess.Popen(command, text=True)
-
-def get_test_packages():
-    mc_dir = Path("Tests/mock_configs")
-    test_packages = []
-    for file in mc_dir.iterdir():
-        if file.is_file() and len(file.stem.split(".")) == 1:
-            test_packages.append(file.stem)
-    
-    return test_packages
-
-def get_tests_in_package(test_package):
-    test_sources_dir = Path("Tests/Src")
-    test_package_files = []
-    for file in test_sources_dir.iterdir():
-        if file.is_file() and re.search(f"^{test_package}.*.c$", file.name):
-            test_package_files.append(file)
-    
-    return test_package_files
-
-def handle_test_file(test_file):
-    filepath = Path(test_file)
-    if not filepath.exists():
-        return
-
-    mc = get_mock_config(filepath.stem)
-    command = ["sh", "-c", "cd Drivers/Embedded-Base/testing/ " 
-                + f"&& make TEST_SOURCE={test_file} MOCK_CONFIG={str(mc)}"]
-    return subprocess.Popen(command, text=True)
-
-def handle_test_package(test_package):
-    test_files = get_tests_in_package(test_package)
-    processes = []  
-    for test_file in test_files:
-        processes.append(handle_test_file(test_file))
-    return processes
-
-if __name__ == "__main__":
-    main()

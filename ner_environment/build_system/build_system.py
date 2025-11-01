@@ -29,6 +29,7 @@ from typing import List
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
 from .serial2 import main as serial2_start
+from .test_runner import create_mocks
 
 # ==============================================================================
 # Typer application setup
@@ -210,6 +211,26 @@ def serial2(
     """Custom serial terminal."""
     
     serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
+
+# ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test source file")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
+        tests: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+
+
+    # Stage 1: create mocks here
+    create_mocks()
+
+    # Stage 2: build and run tests
+    
+    # Stage 3: Win
+    
+    # run_command(command, stream_output=True)
+
 
 # ==============================================================================
 # Update command
