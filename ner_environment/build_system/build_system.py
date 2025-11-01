@@ -29,7 +29,7 @@ from typing import List
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
 from .serial2 import main as serial2_start
-from .test_runner import create_mocks
+from .test_runner import get_project_sources
 
 # ==============================================================================
 # Typer application setup
@@ -223,9 +223,12 @@ def test(clean: bool = typer.Option(False, "--clean", help="Clean the build dire
 
 
     # Stage 1: create mocks here
-    create_mocks()
+    # run_command_docker("python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py", stream_output=True)
 
     # Stage 2: build and run tests
+    sources = get_project_sources("balancing_algos")
+    for ps in sources:
+        print(ps)
     
     # Stage 3: Win
     
