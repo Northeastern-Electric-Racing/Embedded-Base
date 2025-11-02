@@ -1,22 +1,16 @@
 #include "as3935.h"
+#include "stm32h5xx_hal.h"
 
 /**
  * @brief initializes attributes for as3935_t struct; also makes sure cs pin is high
  * 
  * @param as3935 pointer to the allocated as3935_t struct
  * @param hspi pointer to the SPI_HandleTypeDef of the sensor
- * @param cs_port port of the cs line in spi
- * @param cs_pin pin of the cs line in spi
  */
-void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
-		 GPIO_TypeDef *cs_port, uint16_t cs_pin)
+void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi)
 {
 	as3935->hspi = hspi;
-	as3935->cs_port = cs_port;
-	as3935->cs_pin = cs_pin;
 	as3935->address = 0;
-
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 }
 
 /**
@@ -29,14 +23,13 @@ void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
 uint8_t as3935_read(as3935_t *as3935, uint8_t reg)
 {
 	// first two bits of tx_data is be 0x01. Next 6 bits should be register address.
-	uint16_t tx_data = AS3935_READ_CMD | ((reg & 0b111111) << 8);
+	uint16_t tx_data = AS3935_READ_CMD |
+			   ((reg & 0x3F) << 8); /* 0x3F = 0b111111*/
 	uint8_t rx_buf[2] = { 0 };
 
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_RESET);
 	// HAL SPI wants an 8 bit array of length 2 for tx_data
 	HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(
 		as3935->hspi, (uint8_t *)&tx_data, &rx_buf, 2, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 
 	if (status != HAL_OK) {
 		return 0xFF;
@@ -54,15 +47,14 @@ uint8_t as3935_read(as3935_t *as3935, uint8_t reg)
  */
 uint8_t as3935_write(as3935_t *as3935, uint8_t reg, uint8_t value)
 {
-	uint16_t tx_data = AS3935_WRITE_CMD | ((reg & 0b111111) << 8) | value;
+	uint16_t tx_data = AS3935_WRITE_CMD | ((reg & 0x3F) << 8) |
+			   value; /* 0x3F = 0b111111*/
 
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_RESET);
 	// HAL SPI wants an 8 bit array of length 2 for tx_data
 	HAL_StatusTypeDef status = HAL_SPI_Transmit(
 		as3935->hspi, (uint8_t *)&tx_data, 2, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(as3935->cs_port, as3935->cs_pin, GPIO_PIN_SET);
 
-	return status == HAL_OK;
+	return status;
 }
 
 /**
@@ -106,7 +98,7 @@ uint8_t as3935_set_AFE(as3935_t *as3935, uint8_t afe_setting)
 	}
 
 	// clear AFE_GB bits 5-1 and set it to new afe_setting value
-	current_reg &= 0b11000001; // clear bits 5-1
+	current_reg &= 0xC1; // clear bits 5-1 (C1 = 0b11000001)
 	current_reg |= (afe_setting << 1);
 
 	return as3935_write(as3935, AS3935_AFE_GB, current_reg);
@@ -129,7 +121,7 @@ uint8_t as3935_get_interrupt(as3935_t *as3935)
 	}
 
 	// return only interrupt bits
-	return int_reg & 0b00001111;
+	return int_reg & 0xF; // 0xF = 0b00001111
 }
 
 /**
@@ -149,7 +141,7 @@ uint8_t as3935_get_distance(as3935_t *as3935)
 	}
 
 	// read first 5 bits
-	return dist_reg & 0b111111;
+	return dist_reg & 0x3F; /* 0x3F = 0b00001111 */
 }
 
 /**
