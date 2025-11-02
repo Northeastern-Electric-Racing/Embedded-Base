@@ -8,7 +8,7 @@
 /* This file contains NetX-specific debug helpers. */
 
 /* API */
-const char *nx_status_toString(UINT status); /* Converts a NetX status macro to a printable string. Meant to be used with DEBUG_PRINTLN() (defined in another file). */
+const char *nx_status_toString(UINT status); /* Converts a NetX status macro to a printable string. Meant to be used with PRINTLN_...() macros (defined in another file). */
 
 // clang-format on
 #endif /* u_nx_debug.h */
