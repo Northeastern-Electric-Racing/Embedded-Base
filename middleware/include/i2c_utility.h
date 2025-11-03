@@ -6,9 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef TESTING
 #include "serial_monitor.h"
-#endif
 
 #define HEX_LABELS "\t 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n"
 #define SPACING	   " " // Spacing in between each printed address

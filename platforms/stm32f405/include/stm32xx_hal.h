@@ -21,9 +21,4 @@
 #include "stm32f1xx_hal.h"
 #endif
 
-#ifdef TESTING
-#include "stub_typedefs.h"
-#include "stub_functions.h"
-#endif
-
 #endif /* STM32XX_HAL_H */

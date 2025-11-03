@@ -1,12 +1,7 @@
-# Makefile for NER Testing Framework
-# Usage:
-#   make TEST_NAME=charging TEST_FILE=Tests/Src/test_analyzer.c TEST_PACKAGE=dcl_calcs \
-#        C_SOURCES="Core/Src/foo.c Core/Src/bar.c" \
-#        INCLUDE_DIRS="/home/app/Core/Inc /home/app/Tests/Inc" all
+
 
 # Compiler
 CC := gcc
-CFLAGS := -std=c11 -I$(UNITY_SRC) -I$(CMOCK_SRC)
 
 # Project directories
 PROJECT_DIR := /home/app
@@ -41,26 +36,45 @@ endif
 TARGET := $(TEST_BUILD)/$(TEST_NAME)
 
 # Include dirs
-INCLUDES := $(addprefix -I,$(INCLUDE_DIRS)) -I$(MOCKS_DIR)/$(TEST_PACKAGE) -I$(TEST_DIR)/Inc
+C_INCLUDES := -I$(UNITY_SRC) -I$(CMOCK_SRC) $(addprefix -I,$(INCLUDE_DIRS)) -IDrivers/Embedded-Base/Testing/manual_mocks -I$(MOCKS_DIR)/$(TEST_PACKAGE) -I$(TEST_DIR)/Inc 
+
+CFLAGS = -w -DTESTING $(C_INCLUDES)
+
+TEST_SOURCES = $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c
 
 # All source files
-SOURCES := $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c $(PROJECT_DIR)/$(TEST_FILE) $(C_SOURCES)
+SOURCES := $(TEST_FILE) $(C_SOURCES)
+TEST_SRCS := $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c
 
 # Object files
 OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(SOURCES))
+TEST_OBJS = $(CMOCK_SRC)/cmock.o $(UNITY_SRC)/unity.o
+
+ALL_OBJS := $(OBJS) $(TEST_OBJS)
 
 # Default target
 all: $(TARGET)
 
 # Link executable
-$(TARGET): $(OBJS)
+$(TARGET): $(ALL_OBJS)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@  -lm
 
 # Compile object files
 $(TEST_BUILD)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -lm
+
+$(TEST_BUILD)/cmock.o: $(CMOCK_SRC)/cmock.c
+	@mkdir -p $(dir $@)
+	@echo "Compiling $< -> $@"
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TEST_BUILD)/unity.o: $(UNITY_SRC)/unity.c
+	@mkdir -p $(dir $@)
+	@echo "Compiling $< -> $@"
+	$(CC) $(CFLAGS) -c $< -o $@
+
 
 # Clean
 clean:
