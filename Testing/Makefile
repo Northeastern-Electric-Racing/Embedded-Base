@@ -36,7 +36,13 @@ endif
 TARGET := $(TEST_BUILD)/$(TEST_NAME)
 
 # Include dirs
-C_INCLUDES := -I$(UNITY_SRC) -I$(CMOCK_SRC) $(addprefix -I,$(INCLUDE_DIRS)) -IDrivers/Embedded-Base/Testing/manual_mocks -I$(MOCKS_DIR)/$(TEST_PACKAGE) -I$(TEST_DIR)/Inc 
+C_INCLUDES := \
+	-I$(UNITY_SRC) \
+ 	-I$(CMOCK_SRC) \
+	$(addprefix -I,$(INCLUDE_DIRS)) \
+	-IDrivers/Embedded-Base/Testing/manual_mocks \
+	-I$(MOCKS_DIR)/$(TEST_PACKAGE) \
+	-I$(TEST_DIR)/Inc 
 
 CFLAGS = -w -DTESTING $(C_INCLUDES)
 
@@ -44,11 +50,11 @@ TEST_SOURCES = $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c
 
 # All source files
 SOURCES := $(TEST_FILE) $(C_SOURCES)
-TEST_SRCS := $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c
+TEST_SRCS := $(TEST)/cmock.c $(UNITY_SRC)/unity.c
 
 # Object files
 OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(SOURCES))
-TEST_OBJS = $(CMOCK_SRC)/cmock.o $(UNITY_SRC)/unity.o
+TEST_OBJS = $(TEST_BUILD)/cmock.o $(TEST_BUILD)/unity.o
 
 ALL_OBJS := $(OBJS) $(TEST_OBJS)
 
@@ -67,7 +73,6 @@ $(TEST_BUILD)/%.o: %.c
 
 $(TEST_BUILD)/cmock.o: $(CMOCK_SRC)/cmock.c
 	@mkdir -p $(dir $@)
-	@echo "Compiling $< -> $@"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TEST_BUILD)/unity.o: $(UNITY_SRC)/unity.c

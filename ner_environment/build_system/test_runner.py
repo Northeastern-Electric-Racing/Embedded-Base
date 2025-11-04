@@ -67,8 +67,6 @@ def build_test(test_name, test_file, test_package, source_files):
     
     joined_sources =  " ".join(source_files) 
     joined_include_dirs = " ".join(include_dirs) 
-
-    print("TEST FILE: " + test_file)
     
     make_command = f"""
     make -f {os.path.join(EMBEDDED_BASE_TESTING_DIR_PATH, "Makefile")} \
@@ -95,13 +93,18 @@ def main():
         test_file = t_data["test-file"]
         sources = get_project_sources(test_package)
 
-        print("SOURCES: ")
-        print(sources)
-
         processes.append(build_test(t_name, test_file, test_package, sources))
 
     for p in processes:
         p.wait()
+    
+    processes = []
+    for t_name in tests.keys():
+        processes.append(subprocess.Popen(f"Tests/build/{t_name}", shell=True, text=True))
+    
+    for p in processes:
+        p.wait()
+    
 
 if __name__ == "__main__":
     main()

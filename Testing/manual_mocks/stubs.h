@@ -92,7 +92,7 @@ typedef struct {
 
 uint32_t HAL_GetTick(void);
 
-/*
+
 osMutexId_t osMutexNew(const osMutexAttr_t *attr);
 uint32_t osMutexAcquire(osMutexId_t mutex, uint32_t timeout);
 uint32_t osMutexRelease(osMutexId_t mutex);
@@ -169,6 +169,6 @@ int HAL_Delay(int delay);
 #define GPIOC ((GPIO_TypeDef *)0x40020800)
 
 #define osFlagsWaitAny 0x00000001U
-*/
+
 
 #endif
