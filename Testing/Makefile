@@ -41,7 +41,6 @@ TARGET := $(TEST_BUILD_BIN)/$(TEST_NAME)
 # Include dirs
 C_INCLUDES := \
 	-I$(EMEBEDDED_TESTING_DIR)/manual_mocks \
-	-I$(EMEBEDDED_TESTING_DIR)/manual_mocks/mock_headers \
 	-I$(UNITY_SRC) \
  	-I$(CMOCK_SRC) \
 	$(addprefix -I,$(INCLUDE_DIRS)) \
