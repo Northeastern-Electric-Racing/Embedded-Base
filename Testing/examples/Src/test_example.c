@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// clang-format off
+
 // gets run before every test function
 void setUp(void) {
     
@@ -24,3 +26,5 @@ int main(void) {
     RUN_TEST(test_exmaple);
     return UNITY_END();
 }
+
+// clang-format on
