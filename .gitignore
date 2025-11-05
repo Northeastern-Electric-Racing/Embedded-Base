@@ -4,6 +4,3 @@ __pycache__/
 
 *.nix
 .DS_Store
-
-Tests/Mocks
-Tests/build
