@@ -21,7 +21,7 @@ with open("Tests/ner_test.conf", "rb") as f:
         data = tomllib.load(f)
     
 test_packages = data.get("test-packages", {})
-tests = data.get("test", {})
+tests = data.get("tests", {})
 mocked_files = data.get("mocked-files", [])
 core_sources = data.get("sources", [])
 include_dirs = data.get("include-dirs", [])
@@ -114,14 +114,14 @@ def build_test(test_name, test_file, test_package, source_files):
 def get_selected_test_packages(selected_tests):
     selected_test_packages = []
     for test in selected_tests:
-        if test not in data["test"]:
-            raise KeyError(f"Test '{test}' not found in [test] section of ner_test.conf")
-        elif "test-package" not in data["test"][test]:
+        if test not in data["tests"]:
+            raise KeyError(f"Test '{test}' not found in [tests] section of ner_test.conf")
+        elif "test-package" not in data["tests"][test]:
             raise KeyError(f"Test '{test}' missing required field 'test-package' in ner_test.conf")
         elif tests[test]["test-package"] not in test_packages:
             raise KeyError(f"Test package '{tests[test]['test-package']}' not found in [test-packages]")
         else:
-            selected_test_packages.append(data["test"][test]["test-package"])
+            selected_test_packages.append(data["tests"][test]["test-package"])
     
     return selected_test_packages
 
