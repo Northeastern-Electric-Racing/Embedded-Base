@@ -15,7 +15,8 @@ PROJECT_TEST_BUILD_BIN =  "Tests/build/bin"
 TEST_MOCKS_DIR_PATH = PROJECT_TEST_DIR_PATH + "Mocks/"
 TEST_CONF_PATH = PROJECT_TEST_DIR_PATH + "ner_test.conf"
 CMOCK_RUBY_SCRIPT_PATH = "/cmock_portable/lib/cmock.rb"
-CMOCK_CONFIG = EMBEDDED_BASE_TESTING_DIR_PATH + "cmock-config.yml"
+EMBEDDED_BASE_CMOCK_CONFIG = EMBEDDED_BASE_TESTING_DIR_PATH + "cmock-config.yml"
+PROJECT_CMOCK_CONFIG = PROJECT_TEST_DIR_PATH + "cmock-config.yml"
 
 with open("Tests/ner_test.conf", "rb") as f:
         data = tomllib.load(f)
@@ -76,8 +77,15 @@ def create_mocks(selected_test_packages):
         create_mocks_dir_p = subprocess.Popen(["mkdir", "-p", f"{TEST_MOCKS_DIR_PATH}"])
         create_mocks_dir_p.wait() 
 
+        cmock_config_defined = False
+        if os.path.isfile(PROJECT_CMOCK_CONFIG):
+            cmock_config_defined = True
+
         for file_path in files:
-            command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
+            if cmock_config_defined:
+                command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{PROJECT_CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
+            else:
+                command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{EMBEDDED_BASE_CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
             processes.append(subprocess.Popen(command, text=True))
 
     # wait for all mocks to be created
