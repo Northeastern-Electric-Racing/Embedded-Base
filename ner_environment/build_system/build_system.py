@@ -28,7 +28,6 @@ from typing import List
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
 from .serial2 import main as serial2_start
-from .test_runner import get_project_sources
 
 # ==============================================================================
 # Typer application setup
@@ -217,21 +216,16 @@ def serial2(
 
 @app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
-        list: bool = typer.Option(False, "--list", help="List available tests to run", show_default=True),
         tests: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
 
+    if (clean):
+        run_command_docker(f"rm -rf Tests/Mocks/* Tests/build")
+        return
 
-    # Stage 1: create mocks here
-    # run_command_docker("python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py", stream_output=True)
-
-    # Stage 2: build and run tests
-    sources = get_project_sources("balancing_algos")
-    for ps in sources:
-        print(ps)
-    
-    # Stage 3: Win
-    
-    # run_command(command, stream_output=True)
+    if tests == None:
+        run_command_docker("python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py", stream_output=True)
+    else:
+        run_command_docker(f"python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py {' '.join(tests)}", stream_output=True)
 
 
 # ==============================================================================
@@ -416,8 +410,6 @@ def contains_subdir(base_path, search_str):
             return True
     return False
 
-
-    
 
 # ==============================================================================
 # Entry
