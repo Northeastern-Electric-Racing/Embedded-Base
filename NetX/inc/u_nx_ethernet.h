@@ -29,9 +29,14 @@ typedef enum {
 } ethernet_node_t;
 #define ETH_IP(node) IP_ADDRESS(239, 0, 0, node)
 
-/* These node ids are ONLY relavent to PLCA configuration. 
-/* They are meant to be used when configuring a PHY. The IDs must be sequential, and the "0" id always indicates the network's coordinator node. */
-/* They have no impact on application-level IP addresses or message processing. */
+/* These node ids are ONLY relavent to PLCA configuration.
+   They are meant to be used when configuring a PHY. The IDs must be sequential, and the "0" id always indicates the network's coordinator node.
+   They have no impact on application-level IP addresses or message processing. 
+   
+   For example, if you're using the LAN8670 PHY driver, you'd probably use these enum values like this:
+   LAN8670_PLCA_Set_Node_Count(&lan8670, PLCA_NUM_NODES);
+   LAN8670_PLCA_Set_Node_Id(&lan8670, PLCA_VCU) // replace 'PLCA_VCU' with whatever board it is		
+   */
 typedef enum {
 	PLCA_VCU,		// 0. This is the PLCA coordinator node.
 	PLCA_COMPUTE,
@@ -40,7 +45,8 @@ typedef enum {
 	PLCA_MSB2,
 	PLCA_MSB3,
 	PLCA_MSB4,
-	PLCA_NODE8
+	PLCA_NODE8,
+	PLCA_NUM_NODES
 } plca_node_id_t;
 /* END CONFIG */
 
