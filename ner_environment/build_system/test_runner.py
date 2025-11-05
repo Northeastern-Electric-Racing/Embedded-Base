@@ -5,13 +5,13 @@ import os
 import subprocess
 import sys
 
-PROJECT_DIR_PATH = "/home/app/"
-EMBEDDED_BASE_PATH = PROJECT_DIR_PATH + "Drivers/Embedded-Base/"
+EMBEDDED_BASE_PATH = "Drivers/Embedded-Base/"
 EMBEDDED_BASE_TESTING_DIR_PATH = EMBEDDED_BASE_PATH + "Testing/"
 MOCK_STUBS_FILEPATH = EMBEDDED_BASE_TESTING_DIR_PATH + "manual_mocks/mock_stubs.h" 
 BUILD_DIR = EMBEDDED_BASE_TESTING_DIR_PATH + "build"
 CMAKE_TOOLCHAIN_FILEPATH = EMBEDDED_BASE_TESTING_DIR_PATH + "test-toolchain.cmake"
-PROJECT_TEST_DIR_PATH = PROJECT_DIR_PATH + "Tests/"
+PROJECT_TEST_DIR_PATH =  "Tests/"
+PROJECT_TEST_BUILD_BIN =  "Tests/build/bin"
 TEST_MOCKS_DIR_PATH = PROJECT_TEST_DIR_PATH + "Mocks/"
 TEST_CONF_PATH = PROJECT_TEST_DIR_PATH + "ner_test.conf"
 CMOCK_RUBY_SCRIPT_PATH = "/cmock_portable/lib/cmock.rb"
@@ -143,7 +143,7 @@ def run_test_bin(selected_tests):
     processes = []
     for t_name in selected_tests:
         if t_name in selected_tests:
-            processes.append(subprocess.Popen(f"Tests/build/{t_name}", shell=True, text=True))
+            processes.append(subprocess.Popen(f"{PROJECT_TEST_BUILD_BIN}/{t_name}", shell=True, text=True))
     
     retcode = 0
     for p in processes:

@@ -8,6 +8,8 @@ PROJECT_DIR := /home/app
 TEST_DIR := $(PROJECT_DIR)/Tests
 MOCKS_DIR := $(TEST_DIR)/Mocks
 TEST_BUILD := $(TEST_DIR)/build
+TEST_BUILD_BIN := $(TEST_BUILD)/bin
+TEST_BUILD_OBJS := $(TEST_BUILD)/objs
 UNITY_SRC := /cmock_portable/vendor/unity/src
 CMOCK_SRC := /cmock_portable/src
 EMEBEDDED_TESTING_DIR := Drivers/Embedded-Base/Testing
@@ -34,7 +36,7 @@ $(error You must define C_SOURCES)
 endif
 
 # Output executable
-TARGET := $(TEST_BUILD)/$(TEST_NAME)
+TARGET := $(TEST_BUILD_BIN)/$(TEST_NAME)
 
 # Include dirs
 C_INCLUDES := \
@@ -55,8 +57,8 @@ SOURCES := $(TEST_FILE) $(C_SOURCES)
 TEST_SRCS := $(TEST)/cmock.c $(UNITY_SRC)/unity.c
 
 # Object files
-OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(SOURCES))
-TEST_OBJS := $(TEST_BUILD)/cmock.o $(TEST_BUILD)/unity.o
+OBJS := $(patsubst %.c,$(TEST_BUILD_OBJS)/%.o,$(SOURCES))
+TEST_OBJS := $(TEST_BUILD_OBJS)/cmock.o $(TEST_BUILD_OBJS)/unity.o
 
 ALL_OBJS := $(OBJS) $(TEST_OBJS)
 
@@ -69,15 +71,15 @@ $(TARGET): $(ALL_OBJS)
 	$(CC) $(CFLAGS) $^ -o $@  -lm
 
 # Compile object files
-$(TEST_BUILD)/%.o: %.c
+$(TEST_BUILD_OBJS)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
-$(TEST_BUILD)/cmock.o: $(CMOCK_SRC)/cmock.c
+$(TEST_BUILD_OBJS)/cmock.o: $(CMOCK_SRC)/cmock.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TEST_BUILD)/unity.o: $(UNITY_SRC)/unity.c
+$(TEST_BUILD_OBJS)/unity.o: $(UNITY_SRC)/unity.c
 	@mkdir -p $(dir $@)
 	@echo "Compiling $< -> $@"
 	$(CC) $(CFLAGS) -c $< -o $@
