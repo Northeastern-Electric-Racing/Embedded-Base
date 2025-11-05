@@ -28,6 +28,20 @@ typedef enum {
 	NODE8 = (1 << 7),   // 0b10000000
 } ethernet_node_t;
 #define ETH_IP(node) IP_ADDRESS(239, 0, 0, node)
+
+/* These node ids are ONLY relavent to PLCA configuration. 
+/* They are meant to be used when configuring a PHY. The IDs must be sequential, and the "0" id always indicates the network's coordinator node. */
+/* They have no impact on application-level IP addresses or message processing. */
+typedef enum {
+	PLCA_VCU,		// 0. This is the PLCA coordinator node.
+	PLCA_COMPUTE,
+	PLCA_TPU,
+	PLCA_MSB1,
+	PLCA_MSB2,
+	PLCA_MSB3,
+	PLCA_MSB4,
+	PLCA_NODE8
+} plca_node_id_t;
 /* END CONFIG */
 
 typedef struct {
