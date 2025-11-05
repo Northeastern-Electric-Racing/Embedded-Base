@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <math.h>
 
+// clang-format off
+
 #define osWaitForever	0xFFFFFFFFU
 #define osTimerPeriodic 0
 #define osTimerOnce	1
@@ -170,5 +172,6 @@ int HAL_Delay(int delay);
 
 #define osFlagsWaitAny 0x00000001U
 
+// clang-format on
 
 #endif
