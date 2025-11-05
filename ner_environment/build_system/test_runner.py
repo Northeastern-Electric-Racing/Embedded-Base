@@ -73,6 +73,9 @@ def create_mocks(selected_test_packages):
             if mock not in files:
                 files.append(mock)
 
+        create_mocks_dir_p = subprocess.Popen(["mkdir", "-p", f"{TEST_MOCKS_DIR_PATH}"])
+        create_mocks_dir_p.wait() 
+
         for file_path in files:
             command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
             processes.append(subprocess.Popen(command, text=True))
