@@ -22,7 +22,6 @@ import sys
 import os
 import glob
 import time
-import re
 from pathlib import Path
 from typing import List
 

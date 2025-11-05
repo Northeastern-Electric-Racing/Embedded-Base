@@ -3,6 +3,7 @@
 import tomllib
 import os
 import subprocess
+import sys
 
 PROJECT_DIR_PATH = "/home/app/"
 EMBEDDED_BASE_PATH = PROJECT_DIR_PATH + "Drivers/Embedded-Base/"
@@ -29,7 +30,6 @@ def get_project_sources(test_package_name):
 
     source_files = core_sources
     mocked_source_dir = os.path.join(TEST_MOCKS_DIR_PATH, test_package_name) 
-    # mocked_source_dir = "Tests/Mocks"
 
     for _, _, filenames in os.walk(mocked_source_dir):
         for fname in filenames:
@@ -42,7 +42,7 @@ def get_project_sources(test_package_name):
 
 def get_parent_mocks(test_package_name, visited):
     if test_package_name not in data["test-packages"]:
-        return []
+        raise KeyError(f"test-package {test_package_name} does not exist")
     
     if test_package_name in visited:
         return []
@@ -51,23 +51,24 @@ def get_parent_mocks(test_package_name, visited):
     if "parent-package" in data["test-packages"][test_package_name]:
         visited.append(test_package_name)
         files += get_parent_mocks(data["test-packages"][test_package_name]["parent-package"], visited)
+
     return files
-    
 
-
-def create_mocks():
+def create_mocks(selected_test_packages):
 
     print("Creating Mocks...")
 
     processes = []
-    for tp_name, tp_data in test_packages.items():
+    for tp_name in selected_test_packages:
+        tp_data = test_packages[tp_name]
+       
         dir_path = os.path.join(TEST_MOCKS_DIR_PATH, tp_name)
         os.makedirs(dir_path, exist_ok=True)
         print(f"Created directory for test package: {tp_name}")
 
         files = tp_data.get("mocked-files", [])
         additional_mocks = mocked_files + get_parent_mocks(tp_name, [])
-        print(additional_mocks)
+
         for mock in additional_mocks:
             if mock not in files:
                 files.append(mock)
@@ -77,8 +78,14 @@ def create_mocks():
             processes.append(subprocess.Popen(command, text=True))
 
     # wait for all mocks to be created
+    retcode = 0
     for p in processes:
-        p.wait()
+        retcode = p.wait()
+        if retcode != 0:
+            return retcode
+    
+    return retcode
+
 
 def build_test(test_name, test_file, test_package, source_files):
 
@@ -100,30 +107,76 @@ def build_test(test_name, test_file, test_package, source_files):
 
     # Run Build
     return subprocess.Popen(command, text=True)
-  
 
-def main():
-    create_mocks()
+def get_selected_test_packages(selected_tests):
+    selected_test_packages = []
+    for test in selected_tests:
+        if test not in data["test"]:
+            raise KeyError(f"Test '{test}' not found in [test] section of ner_test.conf")
+        elif "test-package" not in data["test"][test]:
+            raise KeyError(f"Test '{test}' missing required field 'test-package' in ner_test.conf")
+        elif tests[test]["test-package"] not in test_packages:
+            raise KeyError(f"Test package '{tests[test]['test-package']}' not found in [test-packages]")
+        else:
+            selected_test_packages.append(data["test"][test]["test-package"])
+    
+    return selected_test_packages
 
+def build_tests(selected_tests):
     processes = []
-    for t_name, t_data in tests.items():
-
+    for t_name in selected_tests:
+        t_data = tests[t_name]
         test_package = t_data["test-package"]
         test_file = t_data["test-file"]
         sources = get_project_sources(test_package)
-
         processes.append(build_test(t_name, test_file, test_package, sources))
 
+    retcode = 0
     for p in processes:
-        p.wait()
-    
+        retcode = p.wait()
+        if retcode != 0:
+            return retcode
+
+    return retcode
+
+def run_test_bin(selected_tests):
     processes = []
-    for t_name in tests.keys():
-        processes.append(subprocess.Popen(f"Tests/build/{t_name}", shell=True, text=True))
+    for t_name in selected_tests:
+        if t_name in selected_tests:
+            processes.append(subprocess.Popen(f"Tests/build/{t_name}", shell=True, text=True))
     
+    retcode = 0
     for p in processes:
-        p.wait()
-    
+        retcode = p.wait()
+        if retcode != 0:
+            return retcode
+        
+    return retcode
+
+def main():
+  
+    if (len(sys.argv) > 1):
+        selected_tests = sys.argv[1:]
+    else:
+        selected_tests = tests.keys()
+    selected_test_packages = get_selected_test_packages(selected_tests)
+
+    ret = 0
+
+    # creates mocks for all the necessary test packages
+    ret = create_mocks(selected_test_packages)
+    if ret != 0:
+        return ret
+
+    # builds bin and obj files for running test
+    ret = build_tests(selected_tests)
+    if ret != 0:
+        return ret
+
+    # runs the test binary
+    ret = run_test_bin(selected_tests)
+    if ret != 0:
+        return ret
 
 if __name__ == "__main__":
     main()
