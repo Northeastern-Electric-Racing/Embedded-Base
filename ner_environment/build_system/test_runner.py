@@ -40,6 +40,21 @@ def get_project_sources(test_package_name):
 
     return source_files
 
+def get_parent_mocks(test_package_name, visited):
+    if test_package_name not in data["test-packages"]:
+        return []
+    
+    if test_package_name in visited:
+        return []
+
+    files = data["test-packages"][test_package_name].get("mocked-files", [])
+    if "parent-package" in data["test-packages"][test_package_name]:
+        visited.append(test_package_name)
+        files += get_parent_mocks(data["test-packages"][test_package_name]["parent-package"], visited)
+    return files
+    
+
+
 def create_mocks():
 
     print("Creating Mocks...")
@@ -51,7 +66,11 @@ def create_mocks():
         print(f"Created directory for test package: {tp_name}")
 
         files = tp_data.get("mocked-files", [])
-        files += mocked_files
+        additional_mocks = mocked_files + get_parent_mocks(tp_name, [])
+        print(additional_mocks)
+        for mock in additional_mocks:
+            if mock not in files:
+                files.append(mock)
 
         for file_path in files:
             command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]

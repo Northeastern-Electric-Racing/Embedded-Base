@@ -10,6 +10,7 @@ MOCKS_DIR := $(TEST_DIR)/Mocks
 TEST_BUILD := $(TEST_DIR)/build
 UNITY_SRC := /cmock_portable/vendor/unity/src
 CMOCK_SRC := /cmock_portable/src
+EMEBEDDED_TESTING_DIR := Drivers/Embedded-Base/Testing
 
 # Command line variables (must be provided)
 TEST_NAME ?=
@@ -37,10 +38,11 @@ TARGET := $(TEST_BUILD)/$(TEST_NAME)
 
 # Include dirs
 C_INCLUDES := \
+	-I$(EMEBEDDED_TESTING_DIR)/manual_mocks \
+	-I$(EMEBEDDED_TESTING_DIR)/manual_mocks/mock_headers \
 	-I$(UNITY_SRC) \
  	-I$(CMOCK_SRC) \
 	$(addprefix -I,$(INCLUDE_DIRS)) \
-	-IDrivers/Embedded-Base/Testing/manual_mocks \
 	-I$(MOCKS_DIR)/$(TEST_PACKAGE) \
 	-I$(TEST_DIR)/Inc 
 
@@ -54,7 +56,7 @@ TEST_SRCS := $(TEST)/cmock.c $(UNITY_SRC)/unity.c
 
 # Object files
 OBJS := $(patsubst %.c,$(TEST_BUILD)/%.o,$(SOURCES))
-TEST_OBJS = $(TEST_BUILD)/cmock.o $(TEST_BUILD)/unity.o
+TEST_OBJS := $(TEST_BUILD)/cmock.o $(TEST_BUILD)/unity.o
 
 ALL_OBJS := $(OBJS) $(TEST_OBJS)
 
