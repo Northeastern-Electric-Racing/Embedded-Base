@@ -59,7 +59,6 @@ def create_mocks(selected_test_packages):
 
     print("Creating Mocks...")
 
-    processes = []
     for tp_name in selected_test_packages:
         tp_data = test_packages[tp_name]
        
@@ -86,16 +85,13 @@ def create_mocks(selected_test_packages):
                 command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{PROJECT_CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
             else:
                 command = ["ruby", CMOCK_RUBY_SCRIPT_PATH, f"-o{EMBEDDED_BASE_CMOCK_CONFIG}", f"--mock_path={TEST_MOCKS_DIR_PATH + tp_name}", file_path]
-            processes.append(subprocess.Popen(command, text=True))
-
-    # wait for all mocks to be created
-    retcode = 0
-    for p in processes:
-        retcode = p.wait()
-        if retcode != 0:
-            return retcode
+            process = subprocess.Popen(command, text=True)
+            retcode = process.wait()
+            if (retcode != 0):
+                return retcode
     
-    return retcode
+    return 0
+    
 
 
 def build_test(test_name, test_file, test_package, source_files):
@@ -134,21 +130,17 @@ def get_selected_test_packages(selected_tests):
     return selected_test_packages
 
 def build_tests(selected_tests):
-    processes = []
     for t_name in selected_tests:
         t_data = tests[t_name]
         test_package = t_data["test-package"]
         test_file = t_data["test-file"]
         sources = get_project_sources(test_package)
-        processes.append(build_test(t_name, test_file, test_package, sources))
-
-    retcode = 0
-    for p in processes:
-        retcode = p.wait()
-        if retcode != 0:
+        process = build_test(t_name, test_file, test_package, sources)
+        retcode = process.wait()
+        if (retcode != 0):
             return retcode
 
-    return retcode
+    return 0
 
 def run_test_bin(selected_tests):
     processes = []

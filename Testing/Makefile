@@ -9,7 +9,6 @@ TEST_DIR := $(PROJECT_DIR)/Tests
 MOCKS_DIR := $(TEST_DIR)/Mocks
 TEST_BUILD := $(TEST_DIR)/build
 TEST_BUILD_BIN := $(TEST_BUILD)/bin
-TEST_BUILD_OBJS := $(TEST_BUILD)/objs
 UNITY_SRC := /cmock_portable/vendor/unity/src
 CMOCK_SRC := /cmock_portable/src
 EMEBEDDED_TESTING_DIR := Drivers/Embedded-Base/Testing
@@ -20,6 +19,8 @@ TEST_FILE ?=
 TEST_PACKAGE ?=
 C_SOURCES ?=
 INCLUDE_DIRS ?=
+
+TEST_BUILD_OBJS := $(TEST_BUILD)/objs/$(TEST_PACKAGE)
 
 # Sanity check
 ifeq ($(TEST_NAME),)
