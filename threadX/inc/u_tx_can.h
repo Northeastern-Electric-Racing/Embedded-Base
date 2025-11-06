@@ -13,7 +13,7 @@
  * @param standard_ids standard ID list
  * @param extended_ds extended ID lsist
  */
-uint8_t can_filter_init(FDCAN_HandleTypeDef *hcan, can_t *can,			
-    uint16_t standard_ids[2], uint32_t extended_ids[2]);
+uint8_t can_filter_init(FDCAN_HandleTypeDef *hcan, can_t *can,
+			uint16_t standard_ids[2], uint32_t extended_ids[2]);
 
 #endif
