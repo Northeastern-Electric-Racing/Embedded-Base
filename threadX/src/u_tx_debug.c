@@ -4,7 +4,7 @@
 // clang-format off
 
 /* Converts a ThreadX status macro to a printable string. */
-/* This function is intended to be used with DEBUG_PRINTLN(), and shouldn't really ever be used outside of debugging purposes. */
+/* This function is intended to be used with PRINTLN_...() macros, and shouldn't really ever be used outside of debugging purposes. */
 /* (these macros are defined in tx_api.h) */
 const char* tx_status_toString(UINT status) {
     switch(status) {
@@ -49,7 +49,7 @@ const char* tx_status_toString(UINT status) {
 }
 
 /* Converts a STM32 HAL status macro to a printable string. */
-/* This function is intended to be used with DEBUG_PRINTLN(), and shouldn't really ever be used outside of debugging purposes. */
+/* This function is intended to be used with PRINTLN_...() macros, and shouldn't really ever be used outside of debugging purposes. */
 /* (these macros are defined in stm32h5xx_hal_def.h) */
 const char* hal_status_toString(HAL_StatusTypeDef status) {
     switch(status) {

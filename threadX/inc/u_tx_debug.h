@@ -55,12 +55,12 @@
 #endif
 
 /**
- * @brief Checks if a function is successful when called. DEBUG_PRINTLNs an error message if it fails.
+ * @brief Checks if a function is successful when called. Prints an error message if it fails.
  * @param function_call The function to call.
  * @param success The function's success code/macro (e.g., U_SUCCESS, TX_SUCCESS, etc.).
  * 
  * @note This macro intentionally doesn't support custom error messages, for the sake of readability. If an error is complex enough to 
- *       require a custom message, the error should probably be checked manually and DEBUG_PRINTLN() called directly.
+ *       require a custom message, the error should probably be checked manually and PRINTLN_ERROR() called directly.
  */
 #define CATCH_ERROR(function_call, success) do { \
     int _function_status = (function_call); \
@@ -71,12 +71,12 @@
 } while(0)
 
 /* Converts a ThreadX status macro to a printable string. */
-/* This function is intended to be used with DEBUG_PRINTLN(), and shouldn't really ever be used outside of debugging purposes. */
+/* This function is intended to be used with a PRINTLN...() macro, and shouldn't really ever be used outside of debugging purposes. */
 /* (these macros are defined in tx_api.h) */
 const char *tx_status_toString(UINT status);
 
 /* Converts a STM32 HAL status macro to a printable string. */
-/* This function is intended to be used with DEBUG_PRINTLN(), and shouldn't really ever be used outside of debugging purposes. */
+/* This function is intended to be used with PRINTLN_...() macros, and shouldn't really ever be used outside of debugging purposes. */
 /* (these macros are defined in stm32h5xx_hal_def.h) */
 const char *hal_status_toString(HAL_StatusTypeDef status);
 
