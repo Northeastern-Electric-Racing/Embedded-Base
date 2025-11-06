@@ -30,6 +30,9 @@ include_dirs = data.get("include-dirs", [])
 def get_project_sources(test_package_name):
 
     source_files = core_sources
+    package_sources = test_packages[test_package_name].get("sources", [])
+    source_files += [ps for ps in package_sources if ps not in source_files]
+
     mocked_source_dir = os.path.join(TEST_MOCKS_DIR_PATH, test_package_name) 
 
     for _, _, filenames in os.walk(mocked_source_dir):
