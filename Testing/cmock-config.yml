@@ -9,5 +9,3 @@
     - :callback
     - :expect
     - :expect_any_args
-  :treat_as_array:
-    discharge_config
