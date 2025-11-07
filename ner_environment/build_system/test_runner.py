@@ -29,7 +29,8 @@ include_dirs = data.get("include-dirs", [])
 
 def get_project_sources(test_package_name):
 
-    source_files = core_sources
+    source_files = []
+    source_files += core_sources
     package_sources = test_packages[test_package_name].get("sources", [])
     source_files += [ps for ps in package_sources if ps not in source_files]
 
@@ -41,7 +42,7 @@ def get_project_sources(test_package_name):
             if ext != "c":
                 continue
             source_files.append(os.path.join(f"Tests/Mocks/{test_package_name}", fname))
-
+    
     return source_files
 
 def get_parent_mocks(test_package_name, visited):
