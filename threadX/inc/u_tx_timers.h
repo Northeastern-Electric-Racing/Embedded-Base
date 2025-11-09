@@ -4,6 +4,7 @@
 
 #include "tx_api.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef enum {
     ONESHOT,    /* Timer runs once. */
