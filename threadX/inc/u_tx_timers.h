@@ -31,6 +31,6 @@ int timer_start(timer_t* timer);
 int timer_stop(timer_t* timer);
 int timer_reset(timer_t* timer);
 int timer_restart(timer_t* timer);
-int timer_getRemainingTicks(uint32_t *remaining);
+int timer_getRemainingTicks(timer_t* timer, uint32_t *remaining);
 
 // clang-format on

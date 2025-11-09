@@ -101,7 +101,7 @@ int timer_reset(timer_t* timer) {
 
     /* Set reschedule ticks setting. */
     ULONG reschedule_ticks;
-    if(timer->one_shot) {
+    if(timer->type == ONESHOT) {
         reschedule_ticks = 0; // If it's a one-shot timer, don't reschedule the timer.
     }
     else {
