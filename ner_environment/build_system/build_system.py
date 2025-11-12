@@ -23,7 +23,6 @@ import os
 import glob
 import time
 from pathlib import Path
-from typing import List
 
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
@@ -216,10 +215,10 @@ def serial2(
 
 @app.command(help="Run Unity Test source file")
 def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
-        tests: List[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+        tests: list[str] = typer.Argument(None, help="Specific test file to run (optional)")):
 
     if (clean):
-        run_command_docker(f"rm -rf Tests/Mocks/* Tests/build")
+        run_command_docker(f"rm -r Tests/Mocks/* Tests/build")
         return
 
     if tests == None:

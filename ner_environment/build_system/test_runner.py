@@ -18,6 +18,7 @@ CMOCK_RUBY_SCRIPT_PATH = "/cmock_portable/lib/cmock.rb"
 EMBEDDED_BASE_CMOCK_CONFIG = EMBEDDED_BASE_TESTING_DIR_PATH + "cmock-config.yml"
 PROJECT_CMOCK_CONFIG = PROJECT_TEST_DIR_PATH + "cmock-config.yml"
 
+data = {}
 with open("Tests/ner_test.conf", "rb") as f:
         data = tomllib.load(f)
     
