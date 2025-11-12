@@ -210,6 +210,24 @@ def serial2(
     serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
 
 # ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test source file")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        tests: list[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+
+    if (clean):
+        run_command_docker(f"rm -r Tests/Mocks/* Tests/build")
+        return
+
+    if tests == None:
+        run_command_docker("python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py", stream_output=True)
+    else:
+        run_command_docker(f"python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py {' '.join(tests)}", stream_output=True)
+
+
+# ==============================================================================
 # Update command
 # ==============================================================================
 
