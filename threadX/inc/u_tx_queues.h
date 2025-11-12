@@ -6,13 +6,10 @@
 #include <stdint.h>
 
 /*
-*   Basically just a wrapper for ThreadX stuff. Lets you create/configure queues.
-*   
-*   Author: Blake Jackson
-*/
-
-/* Queue Config Macros */
-#define QUEUE_WAIT_TIME TX_NO_WAIT
+ *   Basically just a wrapper for ThreadX stuff. Lets you create/configure queues.
+ *
+ *   Author: Blake Jackson
+ */
 
 typedef struct {
 	/* PUBLIC: Queue Configuration Settings */
@@ -31,10 +28,11 @@ typedef struct {
 
 /* API */
 uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue);
-uint8_t queue_send(queue_t *queue,
-		   void *message); // Sends a message to the specified queue.
 uint8_t
-queue_receive(queue_t *queue,
-	      void *message); // Receives a message from the specified queue
+queue_send(queue_t *queue, void *message,
+	   uint32_t wait_time); // Sends a message to the specified queue.
+uint8_t queue_receive(
+	queue_t *queue, void *message,
+	uint32_t wait_time); // Receives a message from the specified queue
 
 #endif
