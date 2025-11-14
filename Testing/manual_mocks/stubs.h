@@ -51,7 +51,10 @@ typedef enum {
 typedef void *ADC_HandleTypeDef;
 typedef void *I2C_HandleTypeDef;
 typedef void *CAN_HandleTypeDef;
+<<<<<<< HEAD
 typedef void *FDCAN_HandleTypeDef;
+=======
+>>>>>>> main
 typedef void *SPI_HandleTypeDef;
 typedef void *TIM_HandleTypeDef;
 typedef void *IWDG_HandleTypeDef;
@@ -95,6 +98,10 @@ typedef struct {
 
 uint32_t HAL_GetTick(void);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 osMutexId_t osMutexNew(const osMutexAttr_t *attr);
 uint32_t osMutexAcquire(osMutexId_t mutex, uint32_t timeout);
 uint32_t osMutexRelease(osMutexId_t mutex);
