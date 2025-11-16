@@ -26,12 +26,47 @@ typedef struct {
     TX_TIMER TX_TIMER_;      /* The actual timer instance. */
 } timer_t;
 
-/* API */
+/**
+ * @brief Initializes a ThreadX timer.
+ * 
+ * @param timer Pointer to the timer to initialize.
+ */
 int timer_init(timer_t* timer);
+
+/**
+ * @brief Starts a ThreadX timer.
+ * 
+ * @param timer Pointer to the timer to start.
+ */
 int timer_start(timer_t* timer);
+
+/**
+ * @brief Stops a ThreadX timer. If the timer is already deactivated, this function will have no effect.
+ * 
+ * @param timer Pointer to the timer to stop.
+ */
 int timer_stop(timer_t* timer);
+
+/**
+ * @brief Resets a ThreadX timer back to its starting position. Does not automatically start the timer after resetting (use timer_restart() for that).
+ * 
+ * @param timer Pointer to the timer to reset.
+ */
 int timer_reset(timer_t* timer);
+
+/**
+ * @brief Restarts a timer.
+ * 
+ * @param timer Pointer to the timer to restart.
+ */
 int timer_restart(timer_t* timer);
+
+/**
+ * @brief Gets the remaining number of ticks until the timer's expiration.
+ * 
+ * @param timer Pointer to the timer.
+ * @param remaining Buffer to store the information.
+ */
 int timer_getRemainingTicks(timer_t* timer, uint32_t *remaining);
 
 // clang-format on
