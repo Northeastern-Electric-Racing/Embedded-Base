@@ -7,7 +7,6 @@ import sys
 
 EMBEDDED_BASE_PATH = "Drivers/Embedded-Base/"
 EMBEDDED_BASE_TESTING_DIR_PATH = EMBEDDED_BASE_PATH + "Testing/"
-MOCK_STUBS_FILEPATH = EMBEDDED_BASE_TESTING_DIR_PATH + "manual_mocks/mock_stubs.h" 
 BUILD_DIR = EMBEDDED_BASE_TESTING_DIR_PATH + "build"
 CMAKE_TOOLCHAIN_FILEPATH = EMBEDDED_BASE_TESTING_DIR_PATH + "test-toolchain.cmake"
 PROJECT_TEST_DIR_PATH =  "Tests/"
@@ -16,7 +15,7 @@ TEST_MOCKS_DIR_PATH = PROJECT_TEST_DIR_PATH + "Mocks/"
 TEST_CONF_PATH = PROJECT_TEST_DIR_PATH + "ner_test.conf"
 CMOCK_RUBY_SCRIPT_PATH = "/cmock_portable/lib/cmock.rb"
 EMBEDDED_BASE_CMOCK_CONFIG = EMBEDDED_BASE_TESTING_DIR_PATH + "cmock-config.yml"
-PROJECT_CMOCK_CONFIG = PROJECT_TEST_DIR_PATH + "cmock-config.yml"
+PROJECT_CMOCK_CONFIG = PROJECT_TEST_DIR_PATH + "cmock-config.yml" 
 
 data = {}
 with open("Tests/ner_test.conf", "rb") as f:
@@ -99,7 +98,7 @@ def create_mocks(selected_test_packages):
     
 
 
-def build_test(test_name, test_file, test_package, source_files):
+def build_test(test_name, test_file, test_package, source_files, c_defines):
 
     print("BUILDING TEST: " + test_name)
     
@@ -112,6 +111,7 @@ def build_test(test_name, test_file, test_package, source_files):
     TEST_FILE={test_file} \
     TEST_PACKAGE={test_package} \
     C_SOURCES="{joined_sources}" \
+    C_DEFINES="{c_defines}" \
     INCLUDE_DIRS="{joined_include_dirs}"
     """
 
@@ -134,13 +134,23 @@ def get_selected_test_packages(selected_tests):
     
     return selected_test_packages
 
+def get_formatted_defines():
+    c_defines = data.get("defines", [])
+    formatted_defines = []
+    for cd in c_defines:
+        formatted_defines.append("-D" + cd)
+    
+    return " ".join(formatted_defines)
+
+
 def build_tests(selected_tests):
+    c_defines = get_formatted_defines()
     for t_name in selected_tests:
         t_data = tests[t_name]
         test_package = t_data["test-package"]
         test_file = t_data["test-file"]
         sources = get_project_sources(test_package)
-        process = build_test(t_name, test_file, test_package, sources)
+        process = build_test(t_name, test_file, test_package, sources, c_defines)
         retcode = process.wait()
         if (retcode != 0):
             return retcode
