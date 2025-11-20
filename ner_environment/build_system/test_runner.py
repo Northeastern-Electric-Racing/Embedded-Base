@@ -197,5 +197,6 @@ def main():
         return ret
 
 if __name__ == "__main__":
-    main()
+    ret = main()
+    sys.exit(ret)
         
