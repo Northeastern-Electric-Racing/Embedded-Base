@@ -3,7 +3,7 @@
 // clang-format off
 
 /* Converts a NetX status macro to a printable string. */
-/* This function is intended to be used with DEBUG_PRINTLN(), and shouldn't really ever be used outside of debugging purposes. */
+/* This function is intended to be used with PRINTLN_...() macros, and shouldn't really ever be used outside of debugging purposes. */
 /* (these macros are defined in nx_api.h) */
 const char* nx_status_toString(UINT status) {
     switch(status) {

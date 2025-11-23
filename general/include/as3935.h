@@ -19,6 +19,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "stm32h5xx_hal.h"
+
 /* Registers */
 #define AS3935_AFE_GB	    0x00
 #define AS3935_NF_LEV	    0x01
@@ -51,18 +53,18 @@
 #define AS3935_INT_D  0x04 /* Disruptor detected */
 #define AS3935_INT_L  0x08 /* Lightning detected */
 
-#define AS3935_AFE_INDOOR  0b10010 /* Indoor mode */
-#define AS3935_AFE_OUTDOOR 0b01110 /* Outdoor mode */
+#define AS3935_AFE_INDOOR  0x12 /* 0b10010 Indoor mode */
+#define AS3935_AFE_OUTDOOR 0xE /* 0b01110 Outdoor mode */
 
 #define AS3935_READ_CMD \
-	0b0100 0000 0000 0000 /* First few bits for read command */
+	0x4000 /* 0b0100000000000000 First few bits for read command */
 #define AS3935_WRITE_CMD \
-	0b0000 0000 0000 0000 /* First few bits of write command */
+	0x0 /* 0b0000000000000000 First few bits of write command */
 
 #define AS3935_DISTANCE_OUT_OF_RANGE \
-	0b111111 /* This distance reading means storm is out of range */
+	3F /* 0b111111 This distance reading means storm is out of range */
 #define AS3935_DISTANCE_OVERHEAD \
-	0b000001 /* This distance reading means the storm is overhead */
+	0x1 /* 0b000001 This distance reading means the storm is overhead */
 
 typedef struct {
 	SPI_HandleTypeDef *hspi;
@@ -71,8 +73,7 @@ typedef struct {
 	uint8_t address;
 } as3935_t;
 
-void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi,
-		 GPIO_TypeDef *cs_port, uint16_t cs_pin);
+void as3935_init(as3935_t *as3935, SPI_HandleTypeDef *hspi);
 
 uint8_t as3935_read(as3935_t *as3935, uint8_t reg);
 uint8_t as3935_write(as3935_t *as3935, uint8_t reg, uint8_t value);
@@ -88,4 +89,4 @@ uint8_t as3935_get_distance(as3935_t *as3935);
 
 uint32_t as3935_get_energy(as3935_t *as3935);
 
-#endif AS3935_H
+#endif //AS3935_H

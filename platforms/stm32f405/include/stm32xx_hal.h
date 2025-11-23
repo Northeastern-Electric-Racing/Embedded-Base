@@ -21,4 +21,4 @@
 #include "stm32f1xx_hal.h"
 #endif
 
-#endif /* STM32XX_HAL_H*/
+#endif /* STM32XX_HAL_H */

@@ -1,6 +1,8 @@
 
 #include "u_tx_queues.h"
 
+// clang-format off
+
 uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 {
 	uint8_t status;
@@ -11,9 +13,7 @@ uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 	/* Basically, queue messages have to be a multiple of 4 bytes? Kinda weird but this should handle it. */
 	UINT message_size_words = (queue->message_size + 3) / 4;
 	if (message_size_words < 1 || message_size_words > 16) {
-		DEBUG_PRINTLN(
-			"ERROR: Invalid message size %d bytes (must be 1-64 bytes). Queue: %s",
-			queue->message_size, queue->name);
+		PRINTLN_ERROR("Invalid message size %d bytes (must be 1-64 bytes). Queue: %s", queue->message_size, queue->name);
 		return U_ERROR;
 	}
 
@@ -25,31 +25,24 @@ uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 	int queue_size_bytes = message_size_words * 4 * queue->capacity;
 
 	/* Allocate the stack for the queue. */
-	status = tx_byte_allocate(byte_pool, (VOID **)&pointer,
-				  queue_size_bytes, TX_NO_WAIT);
+	status = tx_byte_allocate(byte_pool, (VOID **)&pointer, queue_size_bytes, TX_NO_WAIT);
 	if (status != TX_SUCCESS) {
-		DEBUG_PRINTLN(
-			"ERROR: Failed to allocate memory before creating queue (Status: %d/%s, Queue: %s).",
-			status, tx_status_toString(status), queue->name);
+		PRINTLN_ERROR("Failed to allocate memory before creating queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->name);
 		return U_ERROR;
 	}
 
 	/* Create the queue */
-	status = tx_queue_create(&queue->_TX_QUEUE, (CHAR *)queue->name,
-				 message_size_words, pointer, queue_size_bytes);
+	status = tx_queue_create(&queue->_TX_QUEUE, (CHAR *)queue->name, message_size_words, pointer, queue_size_bytes);
 	if (status != TX_SUCCESS) {
-		DEBUG_PRINTLN(
-			"ERROR: Failed to create queue (Status: %d/%s, Queue: %s).",
-			status, tx_status_toString(status), queue->name);
-		tx_byte_release(
-			pointer); // Free allocated memory if queue creation fails
+		PRINTLN_ERROR("Failed to create queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->name);
+		tx_byte_release(pointer); // Free allocated memory if queue creation fails
 		return U_ERROR;
 	}
 
 	return U_SUCCESS;
 }
 
-uint8_t queue_send(queue_t *queue, void *message)
+uint8_t queue_send(queue_t *queue, void *message, uint32_t wait_time)
 {
 	UINT status;
 
@@ -61,19 +54,16 @@ uint8_t queue_send(queue_t *queue, void *message)
 	memcpy(buffer, message, queue->_bytes);
 
 	/* Send message (buffer) to the queue. */
-	status = tx_queue_send(&queue->_TX_QUEUE, buffer, QUEUE_WAIT_TIME);
+	status = tx_queue_send(&queue->_TX_QUEUE, buffer, (ULONG)wait_time);
 	if (status != TX_SUCCESS) {
-		DEBUG_PRINTLN(
-			"ERROR: Failed to send message to queue (Status: %d/%s, Queue: %s).",
-			status, tx_status_toString(status),
-			queue->_TX_QUEUE.tx_queue_name);
+		PRINTLN_ERROR("Failed to send message to queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->_TX_QUEUE.tx_queue_name);
 		return U_ERROR;
 	}
 
 	return U_SUCCESS;
 }
 
-uint8_t queue_receive(queue_t *queue, void *message)
+uint8_t queue_receive(queue_t *queue, void *message, uint32_t wait_time)
 {
 	UINT status;
 
@@ -82,16 +72,13 @@ uint8_t queue_receive(queue_t *queue, void *message)
 	memset(buffer, 0, sizeof(buffer)); // Initialize buffer to zero
 
 	/* Receive message from the queue. */
-	status = tx_queue_receive(&queue->_TX_QUEUE, buffer, QUEUE_WAIT_TIME);
+	status = tx_queue_receive(&queue->_TX_QUEUE, buffer, (ULONG)wait_time);
 	if (status == TX_QUEUE_EMPTY) {
 		return U_QUEUE_EMPTY;
 	}
 
 	if ((status != TX_SUCCESS)) {
-		DEBUG_PRINTLN(
-			"ERROR: Failed to receive message from queue (Status: %d/%s, Queue: %s).",
-			status, tx_status_toString(status),
-			queue->_TX_QUEUE.tx_queue_name);
+		PRINTLN_ERROR("Failed to receive message from queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->_TX_QUEUE.tx_queue_name);
 		return U_ERROR;
 	}
 
@@ -100,3 +87,5 @@ uint8_t queue_receive(queue_t *queue, void *message)
 
 	return U_SUCCESS;
 }
+
+// clang-format on

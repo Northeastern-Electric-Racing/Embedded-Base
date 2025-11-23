@@ -46,6 +46,25 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
     /* Recieve the packet */
     status = nx_udp_socket_receive(socket, &packet, NX_NO_WAIT);
     if(status == NX_SUCCESS) {
+        PRINTLN_INFO("Recieved UDP socket!");
+
+        /* Get packet information (for debugging). */
+        ULONG ip_address;
+        UINT protocol;
+        UINT port;
+        UINT interface_index;
+        status = nx_udp_packet_info_extract(packet, &ip_address, &protocol, &port, &interface_index);
+        if(status != NX_SUCCESS) {
+            PRINTLN_WARNING("Failed to extract UDP packet information (Status: %d/%s).", status, nx_status_toString(status));
+        }
+        else {
+            uint8_t ip_address_byte1 = (ip_address >> 24) & 0xFF;
+            uint8_t ip_address_byte2 = (ip_address >> 16) & 0xFF;
+            uint8_t ip_address_byte3 = (ip_address >> 8) & 0xFF;
+            uint8_t ip_address_byte4 = ip_address & 0xFF;
+            PRINTLN_INFO("UDP Packet - IP: %d.%d.%d.%d, Port: %d, Protocol: %d, Interface: %d", ip_address_byte1, ip_address_byte2, ip_address_byte3, ip_address_byte4, port, protocol, interface_index);
+        }
+
         /* Extract message from packet */
         status = nx_packet_data_extract_offset(
             packet,                         // Packet to extract from
@@ -55,12 +74,12 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
             &bytes_copied                   // Stores how many bytes were actually copied to &message
         );
         if(bytes_copied < sizeof(ethernet_message_t)) {
-            DEBUG_PRINTLN("WARNING: Received ethernet message was smaller than expected (only received %lu of %u expected bytes).", bytes_copied, sizeof(ethernet_message_t));
+            PRINTLN_WARNING("Received ethernet message was smaller than expected (only received %lu of %u expected bytes).", bytes_copied, sizeof(ethernet_message_t));
         }
 
         /* Process received message */
         if(status == NX_SUCCESS) {
-            DEBUG_PRINTLN("Received ethernet message! (Sender ID: %d, Message ID: %d).", message.sender_id, message.message_id);
+            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d).", message.sender_id, message.message_id);
             device.on_recieve(message);
         }
     }
@@ -77,7 +96,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
 
     /* Make sure device isn't already initialized */
     if(device.is_initialized) {
-        DEBUG_PRINTLN("ERROR: Ethernet is already initialized.");
+        PRINTLN_ERROR("Ethernet is already initialized.");
         return U_ERROR;
     }
 
@@ -95,7 +114,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         _PACKET_POOL_SIZE           // Size of the pool's memory area
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to create packet pool (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to create packet pool (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -112,7 +131,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         _IP_THREAD_PRIORITY                  // Priority of the IP thread
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to create IP instance (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to create IP instance (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -123,7 +142,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         _ARP_CACHE_SIZE            // Size of ARP cache
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to enable ARP (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to enable ARP (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -131,14 +150,14 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     /* Enable UDP */
     status = nx_udp_enable(&device.ip);
     if (status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to enable UDP (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to enable UDP (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
     /* Enable igmp */
     status = nx_igmp_enable(&device.ip);
     if (status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to enable igmp (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to enable igmp (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -156,7 +175,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
             ULONG address = ETH_IP(i);
             status = nx_igmp_multicast_join(&device.ip, address);
             if(status != NX_SUCCESS) {
-                DEBUG_PRINTLN("ERROR: Failed to join multicast group (Status: %d/%s, Address: %lu).", status, nx_status_toString(status), address);
+                PRINTLN_ERROR("Failed to join multicast group (Status: %d/%s, Address: %lu).", status, nx_status_toString(status), address);
             }
         }
     }
@@ -172,7 +191,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         _UDP_QUEUE_MAXIMUM          // UDP queue maximum
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to create UDP socket (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to create UDP socket (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -183,7 +202,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         TX_WAIT_FOREVER              // Wait forever
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to bind UDP socket (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to bind UDP socket (Status: %d/%s).", status, nx_status_toString(status));
         nx_udp_socket_delete(&device.socket);
         return status;
     }
@@ -194,7 +213,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         &_receive_message             // Callback function
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to set recieve callback (Status: %d/%s).", status, nx_status_toString(status));
+        PRINTLN_ERROR("Failed to set recieve callback (Status: %d/%s).", status, nx_status_toString(status));
         nx_udp_socket_unbind(&device.socket);
         nx_udp_socket_delete(&device.socket);
         return status;
@@ -203,7 +222,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     /* Mark device as initialized. */
     device.is_initialized = true;
 
-    DEBUG_PRINTLN("Ran ethernet_init().");
+    PRINTLN_INFO("Ran ethernet_init().");
     return NX_SUCCESS;
 }
 
@@ -213,7 +232,7 @@ ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t r
 
     /* Check data length */
     if (data_length > ETH_MESSAGE_SIZE) {
-        DEBUG_PRINTLN("ERROR: Data length exceeds maximum (message_id: %d).", message_id);
+        PRINTLN_ERROR("Data length exceeds maximum (message_id: %d).", message_id);
         return message; // Return empty message.
     }
 
@@ -234,13 +253,13 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
 
     /* Check if ethernet is initialized */
     if(!device.is_initialized) {
-        DEBUG_PRINTLN("ERROR: Ethernet device is not initialized, so ethernet_send_message() will not work.");
+        PRINTLN_ERROR("Ethernet device is not initialized, so ethernet_send_message() will not work.");
         return U_ERROR;
     }
 
     /* Check data length */
     if (message->data_length > ETH_MESSAGE_SIZE) {
-        DEBUG_PRINTLN("ERROR: Data length exceeds maximum (Message ID: %d).", message->message_id);
+        PRINTLN_ERROR("Data length exceeds maximum (Message ID: %d).", message->message_id);
         return U_ERROR;
     }
 
@@ -252,7 +271,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         TX_WAIT_FOREVER             // Wait indefinitely until a packet is available
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to allocate packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
+        PRINTLN_ERROR("Failed to allocate packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
         return U_ERROR;
     }
 
@@ -265,7 +284,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         TX_WAIT_FOREVER             // Wait indefinitely
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to append data to packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
+        PRINTLN_ERROR("Failed to append data to packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
         nx_packet_release(packet);
         return U_ERROR;
     }
@@ -278,12 +297,12 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         ETH_UDP_PORT
     );
     if(status != NX_SUCCESS) {
-        DEBUG_PRINTLN("ERROR: Failed to send packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
+        PRINTLN_ERROR("Failed to send packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
         nx_packet_release(packet);
         return U_ERROR;
     }
 
-    DEBUG_PRINTLN("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
+    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
     return U_SUCCESS;
 }
 // clang-format on

@@ -4,10 +4,10 @@
 #include <string.h>
 #include <stdio.h>
 
+
 /* Initializes CAN */
 HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 {
-
 	/* Init these guys */
 	can->standard_filter_index = 0;
 	can->extended_filter_index = 0;
