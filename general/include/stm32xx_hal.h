@@ -17,4 +17,4 @@
 #include "stm32g4xx_hal.h"
 #endif
 
-#endif /* STM32XX_HAL_H*/
+#endif /* STM32XX_HAL_H */
