@@ -13,7 +13,9 @@
 #
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
+from enum import Enum
 import shutil
+import requests
 import typer
 from rich import print
 import platform
@@ -36,13 +38,15 @@ app = typer.Typer(help="Northeastern Electric Racing Firmware Build System",
                   epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/524451844/2024+Firmware+Onboarding+Master",
                   add_completion=False)
 
-lp_app = typer.Typer(help="Install configure, and run launchpad environment items")
-app.add_typer(lp_app, name="lp")
-
 def unsupported_option_cb(value:bool):
     if value:
         print("[bold red] WARNING: the selected option is not currently implemented. This is either because is is an planned or deprecated feature")
         raise typer.Exit()
+    
+class OpenOCDLocation(str, Enum):
+    cube = "cube"
+    sys = "sys"
+    dl = "dl"
       
 # ==============================================================================
 # Build command
@@ -95,9 +99,11 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default) Set this flag if the device uses an FTDI chip"),
         no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
-          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
+          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux"),
+          openocd_loc: OpenOCDLocation = typer.Option(OpenOCDLocation.dl, "--openocd-loc", help="Use the OpenOCD binary from where"),
+          ):
 
-    command = fetch_openocd_command()
+    command = fetch_openocd_command(openocd_loc)
     current_directory = os.getcwd()
 
     if not no_ftdi:
@@ -144,9 +150,11 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 
 @app.command(help="Flash the firmware")
 def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default): Set this flag if the device uses an FTDI chip"),
-        no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
+          no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
-          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
+          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux"),
+          openocd_loc: OpenOCDLocation = typer.Option(OpenOCDLocation.dl, "--openocd-loc", help="Use the OpenOCD binary from where"),
+          ):
 
     command = []
 
@@ -158,7 +166,7 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
         command = command + ["openocd"]
     else:
-        command = command + fetch_openocd_command()
+        command = command + fetch_openocd_command(openocd_loc)
 
     if not no_ftdi:
         current_directory = os.getcwd()
@@ -295,62 +303,6 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
 # ---- Launchpad Section
 # ==============================================================================
 
-
-# ==============================================================================
-# init
-# ==============================================================================
-@lp_app.command(help="Initialize launchpad, run before any commands")
-def install():
-    """Install PlatformIO package."""
-    try:
-        # Install the platformio package
-        subprocess.check_call(['pip', 'install', 'platformio'])
-
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install PlatformIO: {e}", file=sys.stderr)
-        sys.exit(1)
-
-# ==============================================================================
-# uninstall
-# ==============================================================================
-@lp_app.command(help="Remove launchpad")
-def uninstall():
-    """Uninstall PlatformIO package."""
-    try:
-        # Install the platformio package
-        subprocess.check_call(['pip', 'uninstall', '-y', 'platformio'])
-
-        platformio_dir = os.path.expanduser('~/.platformio')
-        if os.path.isdir(platformio_dir):
-            shutil.rmtree(platformio_dir)
-            print("PlatformIO directory removed.")
-        else:
-            print("PlatformIO directory does not exist.")
-
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to uninstall PlatformIO: {e}", file=sys.stderr)
-        sys.exit(1)
-
-# ==============================================================================
-# build
-# ==============================================================================
-@lp_app.command(help="Build your launchpad project")
-def build():
-    subprocess.run(['platformio', 'run'])
-
-# ==============================================================================
-# flash
-# ==============================================================================
-@lp_app.command(help="Flash your launchpad project to a board")
-def flash():
-    subprocess.run(['platformio', 'run', '--target', 'upload'])
-
-# ==============================================================================
-# serial
-# ==============================================================================
-@lp_app.command(help="View serial output from the device")
-def serial():
-    subprocess.run(['platformio', 'device', 'monitor'])
     
 
 # ==============================================================================
@@ -410,16 +362,39 @@ def contains_subdir(base_path, search_str):
             return True
     return False
 
-def fetch_openocd_command() -> list[str]:
+def fetch_openocd_command(openocd_loc: OpenOCDLocation) -> list[str]:
     '''
     Creates an OpenOCD command 
     '''
     command: list[str] = []
     os_type = platform.system()
-    if os_type == "Darwin":
-        command.append(os.path.normpath(glob.glob("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd")[0]))
-    elif os_type == "Linux":
-        command.append(os.path.normpath(glob.glob(os.path.expanduser("~/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd"))[0]))
+
+    if openocd_loc.value == 'sys':
+        command.append('openocd')
+    elif openocd_loc.value == 'cube':
+        if os_type == "Darwin":
+            # for cubeIDE
+            command.append(os.path.normpath(glob.glob("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd")[0]))
+        elif os_type == "Linux":
+            # for cubeIDE
+            command.append(os.path.normpath(glob.glob(os.path.expanduser("~/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd"))[0]))
+    else:
+        if os.path.exists(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner'):
+            pass
+        else:
+            # download the binary if it doesnt exist
+            # TODO make builds on ner repo, for now this is good enough
+            r: requests.Response
+            if os_type == "Linux":
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.3/openocd-linux-x64', allow_redirects=True)
+            else:
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.3/openocd-macos-arm64', allow_redirects=True)
+            print(r)
+            open(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner', 'wb').write(r.content)
+            os.chmod(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner', 0o777)
+
+        command.append(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner')
+
     command.append("-s")
     command.append("./Drivers/Embedded-Base/dev/OpenOCD/tcl")
 
