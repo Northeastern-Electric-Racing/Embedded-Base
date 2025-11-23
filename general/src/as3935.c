@@ -29,7 +29,7 @@ uint8_t as3935_read(as3935_t *as3935, uint8_t reg)
 
 	// HAL SPI wants an 8 bit array of length 2 for tx_data
 	HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(
-		as3935->hspi, (uint8_t *)&tx_data, &rx_buf, 2, HAL_MAX_DELAY);
+		as3935->hspi, (uint8_t *)&tx_data, rx_buf, 2, HAL_MAX_DELAY);
 
 	if (status != HAL_OK) {
 		return 0xFF;
@@ -164,7 +164,7 @@ uint32_t as3935_get_energy(as3935_t *as3935)
 	}
 
 	// combine the three values. Only read the first 5 bits for energy_mm
-	energy = ((energy_mm & 0b11111) << 16) | (energy_m << 8) | energy_l;
+	energy = ((energy_mm & 0x1F) << 16) | (energy_m << 8) | energy_l;
 
 	return energy;
 }
