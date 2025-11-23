@@ -97,7 +97,7 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
           custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
           docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
 
-    command = ["openocd"]
+    command = fetch_openocd_command()
     current_directory = os.getcwd()
 
     if not no_ftdi:
@@ -156,8 +156,9 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 
     if docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
-
-    command = command + ["openocd"]
+        command = command + ["openocd"]
+    else:
+        command = command + fetch_openocd_command()
 
     if not no_ftdi:
         current_directory = os.getcwd()
@@ -408,6 +409,21 @@ def contains_subdir(base_path, search_str):
         if item.is_dir() and search_str in item.name:
             return True
     return False
+
+def fetch_openocd_command() -> list[str]:
+    '''
+    Creates an OpenOCD command 
+    '''
+    command: list[str] = []
+    os_type = platform.system()
+    if os_type == "Darwin":
+        command.append(os.path.normpath(glob.glob("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd")[0]))
+    elif os_type == "Linux":
+        command.append(os.path.normpath(glob.glob(os.path.expanduser("~/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd"))[0]))
+    command.append("-s")
+    command.append("./Drivers/Embedded-Base/dev/OpenOCD/tcl")
+
+    return command
 
 # ==============================================================================
 # Entry

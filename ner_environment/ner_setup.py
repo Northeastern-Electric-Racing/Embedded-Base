@@ -86,21 +86,23 @@ def install_launchpad(venv_python):
         sys.exit(1)
 
 def install_openocd():
-    os_type = platform.system()
+    #os_type = platform.system()
     try:
-        if os_type == "Darwin":
-            run_command(["brew", "install", "openocd"])
+        print("OpenOCD installation via package manager is no longer supported!")
+        print("Instead, install STM32CubeIDE and OpenOCD will be automatically found: \nhttps://www.st.com/en/development-tools/stm32cubeide.html")
+        # if os_type == "Darwin":
+        #     run_command(["brew", "install", "openocd"])
 
-        elif os_type == "Linux":
-            distro_name = distro.id()
-            if distro_name in ["ubuntu", "debian"]:
-                run_command(["sudo", "apt-get", "install", "-y", "openocd"])
-            elif distro_name == "fedora":
-                run_command(["sudo", "dnf", "install", "-y", "openocd"])
-            elif distro_name == "arch":
-                run_command(["sudo", "pacman", "-S", "--noconfirm", "openocd"])
-            else:
-                print("We haven't added OpenOCD install support for your distro, but if you're actually on linux, you can install it manually!")
+        # elif os_type == "Linux":
+        #     distro_name = distro.id()
+        #     if distro_name in ["ubuntu", "debian"]:
+        #         run_command(["sudo", "apt-get", "install", "-y", "openocd"])
+        #     elif distro_name == "fedora":
+        #         run_command(["sudo", "dnf", "install", "-y", "openocd"])
+        #     elif distro_name == "arch":
+        #         run_command(["sudo", "pacman", "-S", "--noconfirm", "openocd"])
+        #     else:
+        #         print("We haven't added OpenOCD install support for your distro, but if you're actually on linux, you can install it manually!")
 
     except Exception as e:
         print(f"Failed to install OpenOCD: {e}", file=sys.stderr)

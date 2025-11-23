@@ -27,15 +27,15 @@ RUN apt-get update && apt-get install -y \
 
 
 RUN wget https://github.com/renode/renode/releases/download/v1.15.3/renode-1.15.3.linux-portable.tar.gz
-RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1
+RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1 && rm renode-*.linux-portable.tar.gz
 ENV PATH $PATH:/renode_portable
 
 RUN wget https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v2.6.0.tar.gz -O cmock.tar.gz
-RUN mkdir cmock_portable && tar -xvf cmock.tar.gz -C cmock_portable --strip-components=1
+RUN mkdir cmock_portable && tar -xvf cmock.tar.gz -C cmock_portable --strip-components=1 && rm cmock.tar.gz
 ENV PATH $PATH:/cmock_portable
 
 RUN wget https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v2.6.1.tar.gz -O unity.tar.gz 
-RUN mkdir -p /cmock_portable/vendor/unity && tar -xvf unity.tar.gz -C /cmock_portable/vendor/unity --strip-components=1
+RUN mkdir -p /cmock_portable/vendor/unity && tar -xvf unity.tar.gz -C /cmock_portable/vendor/unity --strip-components=1 && rm unity.tar.gz
 
 # Set up a development tools directory
 WORKDIR /home/dev
@@ -58,6 +58,7 @@ RUN apt-get install -y libtool libusb-1.0.0-dev
 RUN git clone https://github.com/STMicroelectronics/OpenOCD
 RUN cd ./OpenOCD && ./bootstrap && ./configure --enable-stlink
 RUN cd ./OpenOCD && make && make install
+RUN rm -r ./OpenOCD
 
 WORKDIR /home/app
 
