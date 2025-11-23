@@ -94,7 +94,7 @@ int timer_stop(timer_t* timer) {
 int timer_reset(timer_t* timer) {
     /* Deactivate the timer. */
     int status = tx_timer_deactivate(&timer->TX_TIMER_);
-    if(status != TX_SUCCESS) {
+    if((status != TX_SUCCESS) && (status != TX_ACTIVATE_ERROR)) { /* TX_ACTIVATE_ERROR means timer was already inactive */
         PRINTLN_ERROR("Failed to call tx_timer_deactivate() (Status: %d/%s, Timer: %s).", status, tx_status_toString(status), timer->name);
         return U_ERROR;
     }
