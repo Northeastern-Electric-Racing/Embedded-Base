@@ -153,4 +153,20 @@ int timer_getRemainingTicks(timer_t* timer, uint32_t* remaining) {
     return U_SUCCESS;
 }
 
+/* Gets whether or not the timer is active. */
+int timer_isActive(timer_t* timer, bool* active) {
+    /* Get the remaining ticks status. */
+    UINT active;
+    int status = tx_timer_info_get(&timer->TX_TIMER_, (CHAR**)TX_NULL, &active, (ULONG*)TX_NULL, (ULONG*)TX_NULL, (TX_TIMER**)TX_NULL);
+    if(status != TX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call tx_timer_info_get (Status: %d/%s, Timer: %s).", status, tx_status_toString(status), timer->name);
+        return U_ERROR;
+    }
+
+    /* Set the remaining ticks. */
+    *active = (active == TX_TRUE);
+
+    return U_SUCCESS;
+}
+
 // clang-format on
