@@ -3,26 +3,6 @@
 
 // clang-format off
 
-/* Check if a timer is active. */
-int _is_timer_active(timer_t* timer, bool* active) {
-    /* Get the active indication. */
-    UINT is_active;
-    int status = tx_timer_info_get(&timer->TX_TIMER_, (CHAR**)TX_NULL, &is_active, (ULONG*)TX_NULL, (ULONG*)TX_NULL, (TX_TIMER**)TX_NULL);
-    if(status != TX_SUCCESS) {
-        PRINTLN_ERROR("Failed to call tx_timer_info_get (Status: %d/%s, Timer: %s).", status, tx_status_toString(status), timer->name);
-        return U_ERROR;
-    }
-
-    /* Check the indication. */
-    if(is_active == TX_TRUE) {
-        *active = true;
-    } else {
-        *active = false;
-    }
-
-    return U_SUCCESS;
-}
-
 /* Initializes a timer. */
 int timer_init(timer_t* timer) {
     /* Set reschedule ticks setting. */
@@ -57,7 +37,7 @@ int timer_init(timer_t* timer) {
 int timer_start(timer_t* timer) {
     /* Get active status. */
     bool is_active = false;
-    int status = _is_timer_active(timer, &is_active);
+    int status = timer_isActive(timer, &is_active);
     if(status != U_SUCCESS) {
         PRINTLN_ERROR("Failed to get the activation status of a timer (Timer: %s).", timer->name);
         return U_ERROR;
@@ -153,18 +133,22 @@ int timer_getRemainingTicks(timer_t* timer, uint32_t* remaining) {
     return U_SUCCESS;
 }
 
-/* Gets whether or not the timer is active. */
+/* Check if a timer is active. */
 int timer_isActive(timer_t* timer, bool* active) {
-    /* Get the active state (active or not active). */
-    UINT active_state;
-    int status = tx_timer_info_get(&timer->TX_TIMER_, (CHAR**)TX_NULL, &active_state, (ULONG*)TX_NULL, (ULONG*)TX_NULL, (TX_TIMER**)TX_NULL);
+    /* Get the active indication. */
+    UINT is_active;
+    int status = tx_timer_info_get(&timer->TX_TIMER_, (CHAR**)TX_NULL, &is_active, (ULONG*)TX_NULL, (ULONG*)TX_NULL, (TX_TIMER**)TX_NULL);
     if(status != TX_SUCCESS) {
         PRINTLN_ERROR("Failed to call tx_timer_info_get (Status: %d/%s, Timer: %s).", status, tx_status_toString(status), timer->name);
         return U_ERROR;
     }
 
-    /* Set the remaining ticks. */
-    *active = (active_state == TX_TRUE);
+    /* Check the indication. */
+    if(is_active == TX_TRUE) {
+        *active = true;
+    } else {
+        *active = false;
+    }
 
     return U_SUCCESS;
 }
