@@ -379,21 +379,21 @@ def fetch_openocd_command(openocd_loc: OpenOCDLocation) -> list[str]:
             # for cubeIDE
             command.append(os.path.normpath(glob.glob(os.path.expanduser("~/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd"))[0]))
     else:
-        if os.path.exists(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner'):
+        if os.path.exists(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner"):
             pass
         else:
             # download the binary if it doesnt exist
             # TODO make builds on ner repo, for now this is good enough
             r: requests.Response
             if os_type == "Linux":
-                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.3/openocd-linux-x64', allow_redirects=True)
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.4/openocd-linux-x64', allow_redirects=True)
             else:
-                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.3/openocd-macos-arm64', allow_redirects=True)
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.4/openocd-macos-arm64', allow_redirects=True)
             print(r)
-            open(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner', 'wb').write(r.content)
-            os.chmod(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner', 0o777)
+            open(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner", 'wb').write(r.content)
+            os.chmod(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner", 0o777)
 
-        command.append(f'{os.environ.get('VIRTUAL_ENV')}/openocd_ner')
+        command.append(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner")
 
     command.append("-s")
     command.append("./Drivers/Embedded-Base/dev/OpenOCD/tcl")
