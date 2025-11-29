@@ -37,7 +37,7 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits);
  * @param num_bits number of bits to remove from the bitstream
  * @return bits popped from the stream decoded as an integer, -1 if unsuccessful
  */
-int bitstream_remove(bitstream_t *bitstream, size_t num_bits)
+int bitstream_remove(bitstream_t *bitstream, size_t num_bits);
 
 /**
  * @brief Adds a signed int to a bitstream. The data is added to the end of the bitstream.
