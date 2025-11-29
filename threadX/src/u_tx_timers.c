@@ -49,7 +49,7 @@ int timer_init(timer_t* timer) {
     }
 
     /* Return successful. */
-    PRINTLN_INFO("Ran Timer::init() (Timer: %s).", timer->name);
+    ("Ran Timer::init() (Timer: %s).", timer->name);
     return U_SUCCESS;
 }
 

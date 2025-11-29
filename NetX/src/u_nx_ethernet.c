@@ -46,7 +46,7 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
     /* Recieve the packet */
     status = nx_udp_socket_receive(socket, &packet, NX_NO_WAIT);
     if(status == NX_SUCCESS) {
-        PRINTLN_INFO("Recieved UDP socket!");
+        ("Recieved UDP socket!");
 
         /* Get packet information (for debugging). */
         ULONG ip_address;
@@ -62,7 +62,7 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
             uint8_t ip_address_byte2 = (ip_address >> 16) & 0xFF;
             uint8_t ip_address_byte3 = (ip_address >> 8) & 0xFF;
             uint8_t ip_address_byte4 = ip_address & 0xFF;
-            PRINTLN_INFO("UDP Packet - IP: %d.%d.%d.%d, Port: %d, Protocol: %d, Interface: %d", ip_address_byte1, ip_address_byte2, ip_address_byte3, ip_address_byte4, port, protocol, interface_index);
+            ("UDP Packet - IP: %d.%d.%d.%d, Port: %d, Protocol: %d, Interface: %d", ip_address_byte1, ip_address_byte2, ip_address_byte3, ip_address_byte4, port, protocol, interface_index);
         }
 
         /* Extract message from packet */
@@ -79,7 +79,7 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
 
         /* Process received message */
         if(status == NX_SUCCESS) {
-            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d).", message.sender_id, message.message_id);
+            ("Received ethernet message! (Sender ID: %d, Message ID: %d).", message.sender_id, message.message_id);
             device.on_recieve(message);
         }
     }
@@ -222,7 +222,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     /* Mark device as initialized. */
     device.is_initialized = true;
 
-    PRINTLN_INFO("Ran ethernet_init().");
+    ("Ran ethernet_init().");
     return NX_SUCCESS;
 }
 
@@ -302,7 +302,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         return U_ERROR;
     }
 
-    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
+    ("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
     return U_SUCCESS;
 }
 // clang-format on

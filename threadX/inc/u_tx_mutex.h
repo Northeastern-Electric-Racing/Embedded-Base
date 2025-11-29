@@ -22,6 +22,7 @@ typedef struct {
 } mutex_t;
 
 /* API */
+uint8_t mutexes_init(mutex_t *mutex); // Initializes a mutex
 uint8_t create_mutex(mutex_t *mutex); // Create a mutex
 uint8_t mutex_get(mutex_t *mutex); // Gets a mutex.
 uint8_t mutex_put(mutex_t *mutex); // Puts a mutex.

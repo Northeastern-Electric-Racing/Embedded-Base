@@ -47,7 +47,7 @@
     #define PRINTLN_WARNING(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
-/* PRINTLN_INFO() */
+/* () */
 #if defined(LOG_INFO) && !defined(NO_LOG)
     #define PRINTLN_INFO(message, ...) printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an INFO message in the format: "[file_name.c/function()] INFO: {message}"*/
 #else

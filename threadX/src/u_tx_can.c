@@ -28,7 +28,7 @@ uint8_t can_filter_init(FDCAN_HandleTypeDef *hcan, can_t *can,
 		return U_ERROR;
 	}
 
-	PRINTLN_INFO("Ran can1_init().");
+	("Ran can1_init().");
 
 	return U_SUCCESS;
 }
