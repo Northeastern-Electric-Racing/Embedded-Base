@@ -24,12 +24,20 @@ void bitstream_init(bitstream_t *bitstream, uint8_t *data, size_t bytes);
 
 /**
  * @brief Adds data to a bitstream. The data is added to the end of the bitstream.
- * @param *bitstream The bitstream to add data to.
+ * @param bitstream The bitstream to add data to.
  * @param value The data to add to the bitstream.
  * @param num_bits The length of the data in bits.
  * @return Returns 0 if successful, -1 if there is insufficient space in the bitstream, and 1 if overflow occurs.
  */
 int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits);
+
+/**
+ * @brief Removes from the bitstream. The data is popped from the stream
+ * @param bitstream The bitstream to add data to
+ * @param num_bits number of bits to remove from the bitstream
+ * @return bits popped from the stream decoded as an integer, -1 if unsuccessful
+ */
+int bitstream_remove(bitstream_t *bitstream, size_t num_bits)
 
 /**
  * @brief Adds a signed int to a bitstream. The data is added to the end of the bitstream.

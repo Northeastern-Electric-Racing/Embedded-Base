@@ -40,6 +40,33 @@ int bitstream_add(bitstream_t *bitstream, uint32_t value, size_t num_bits)
 	return 0; // Success
 }
 
+int bitstream_remove(bitstream_t *bitstream, size_t num_bits)
+{
+    if (num_bits > bitstream->total_bits) {
+        return -1;
+    }
+
+    uint32_t value = 0;
+    size_t start_bit = bitstream->total_bits - num_bits;
+
+    for (size_t i = 0; i < num_bits; ++i) {
+        size_t bit_index = start_bit + i;
+        size_t byte_index = bit_index / 8;
+        size_t bit_in_byte = 7 - (bit_index % 8);
+
+        uint8_t bit = (bitstream->data[byte_index] >> bit_in_byte) & 1;
+
+        value = (value << 1) | bit;
+
+        // Clear the bit from the buffer
+        bitstream->data[byte_index] &= ~(1 << bit_in_byte);
+    }
+
+    bitstream->total_bits -= num_bits;
+
+    return (int)value;
+}
+
 int bitstream_add_signed(bitstream_t *bitstream, int32_t value, size_t num_bits)
 {
 	if (bitstream->total_bits + num_bits > (bitstream->bytes * 8)) {
