@@ -51,6 +51,10 @@ typedef enum {
 typedef void *ADC_HandleTypeDef;
 typedef void *I2C_HandleTypeDef;
 typedef void *CAN_HandleTypeDef;
+<<<<<<< HEAD
+typedef void *FDCAN_HandleTypeDef;
+=======
+>>>>>>> main
 typedef void *SPI_HandleTypeDef;
 typedef void *TIM_HandleTypeDef;
 typedef void *IWDG_HandleTypeDef;
@@ -94,7 +98,10 @@ typedef struct {
 
 uint32_t HAL_GetTick(void);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
 osMutexId_t osMutexNew(const osMutexAttr_t *attr);
 uint32_t osMutexAcquire(osMutexId_t mutex, uint32_t timeout);
 uint32_t osMutexRelease(osMutexId_t mutex);
@@ -169,8 +176,33 @@ int HAL_Delay(int delay);
 #define GPIOA ((GPIO_TypeDef *)0x40020000)
 #define GPIOB ((GPIO_TypeDef *)0x40020400)
 #define GPIOC ((GPIO_TypeDef *)0x40020800)
+#define GPIOD ((GPIO_TypeDef *)0x40020800)
+#define GPIOE ((GPIO_TypeDef *)0x40020800)
+#define GPIOF ((GPIO_TypeDef *)0x40020800)
+#define GPIOG ((GPIO_TypeDef *)0x40020800)
 
 #define osFlagsWaitAny 0x00000001U
+
+#define VOID                                    void
+typedef char                                    CHAR;
+typedef unsigned char                           UCHAR;
+typedef int                                     INT;
+typedef unsigned int                            UINT;
+typedef long                                    LONG;
+typedef unsigned long                           ULONG;
+typedef unsigned long long                      ULONG64;
+typedef short                                   SHORT;
+typedef unsigned short                          USHORT;
+#define ULONG64_DEFINED
+
+typedef struct {
+} TX_MUTEX;
+
+typedef struct {
+} TX_BYTE_POOL;
+
+typedef struct {
+} TX_QUEUE;
 
 // clang-format on
 
