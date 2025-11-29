@@ -24,7 +24,7 @@ typedef struct
 	uint32_t extended_filter_index;
 } can_t;
 
-HAL_StatusTypeDef can_init(can_t *can);
+HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2]);
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2]);
