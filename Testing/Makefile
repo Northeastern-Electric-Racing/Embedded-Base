@@ -19,6 +19,7 @@ TEST_FILE ?=
 TEST_PACKAGE ?=
 C_SOURCES ?=
 INCLUDE_DIRS ?=
+C_DEFINES ?=
 
 TEST_BUILD_OBJS := $(TEST_BUILD)/objs/$(TEST_PACKAGE)
 
@@ -41,14 +42,13 @@ TARGET := $(TEST_BUILD_BIN)/$(TEST_NAME)
 
 # Include dirs
 C_INCLUDES := \
-	-I$(EMEBEDDED_TESTING_DIR)/manual_mocks \
 	-I$(UNITY_SRC) \
  	-I$(CMOCK_SRC) \
 	$(addprefix -I,$(INCLUDE_DIRS)) \
 	-I$(MOCKS_DIR)/$(TEST_PACKAGE) \
 	-I$(TEST_DIR)/Inc 
 
-CFLAGS = -w -DTESTING $(C_INCLUDES)
+CFLAGS = -w $(C_DEFINES) $(C_INCLUDES)
 
 TEST_SOURCES = $(CMOCK_SRC)/cmock.c $(UNITY_SRC)/unity.c
 
