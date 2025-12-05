@@ -23,7 +23,7 @@ uint8_t flags_init();
 uint8_t set_flag(ULONG flag);
 
 /**
- * Blocks thread to receive a flag with the set timeout
+ * Blocks thread to receive a flag until set timeout
  * @param flag to wait for
  * @param timeout time to wait for flag
  * TX_NO_WAIT and TX_WAIT_FOREVER
