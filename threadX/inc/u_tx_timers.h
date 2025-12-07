@@ -69,4 +69,12 @@ int timer_restart(timer_t* timer);
  */
 int timer_getRemainingTicks(timer_t* timer, uint32_t *remaining);
 
+/**
+ * @brief Checks whether or not the timer is active.
+ * 
+ * @param timer Pointer to the timer.
+ * @param active Buffer to store the information.
+ */
+int timer_isActive(timer_t* timer, bool* active);
+
 // clang-format on
