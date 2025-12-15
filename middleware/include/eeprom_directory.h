@@ -1,5 +1,5 @@
 /**
- * @file eepromdirectory.h
+ * @file eeprom_directory.h
  * @brief EEPROM Directory Management
  * 
  * This file provides functions to initialize and manage an EEPROM directory with partitions.
