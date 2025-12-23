@@ -1,11 +1,12 @@
 #ifndef I2C_UTILITY_H
 #define I2C_UTILITY_H
 
-#include "serial_monitor.h"
-#include "stm32f4xx_hal.h"
+#include "stm32xx_hal.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "serial_monitor.h"
 
 #define HEX_LABELS "\t 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f\n"
 #define SPACING	   " " // Spacing in between each printed address

@@ -42,7 +42,7 @@ uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 	return U_SUCCESS;
 }
 
-uint8_t queue_send(queue_t *queue, void *message)
+uint8_t queue_send(queue_t *queue, void *message, uint32_t wait_time)
 {
 	UINT status;
 
@@ -54,7 +54,7 @@ uint8_t queue_send(queue_t *queue, void *message)
 	memcpy(buffer, message, queue->_bytes);
 
 	/* Send message (buffer) to the queue. */
-	status = tx_queue_send(&queue->_TX_QUEUE, buffer, QUEUE_WAIT_TIME);
+	status = tx_queue_send(&queue->_TX_QUEUE, buffer, (ULONG)wait_time);
 	if (status != TX_SUCCESS) {
 		PRINTLN_ERROR("Failed to send message to queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->_TX_QUEUE.tx_queue_name);
 		return U_ERROR;
@@ -63,7 +63,7 @@ uint8_t queue_send(queue_t *queue, void *message)
 	return U_SUCCESS;
 }
 
-uint8_t queue_receive(queue_t *queue, void *message)
+uint8_t queue_receive(queue_t *queue, void *message, uint32_t wait_time)
 {
 	UINT status;
 
@@ -72,7 +72,7 @@ uint8_t queue_receive(queue_t *queue, void *message)
 	memset(buffer, 0, sizeof(buffer)); // Initialize buffer to zero
 
 	/* Receive message from the queue. */
-	status = tx_queue_receive(&queue->_TX_QUEUE, buffer, QUEUE_WAIT_TIME);
+	status = tx_queue_receive(&queue->_TX_QUEUE, buffer, (ULONG)wait_time);
 	if (status == TX_QUEUE_EMPTY) {
 		return U_QUEUE_EMPTY;
 	}
