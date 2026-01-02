@@ -19,6 +19,7 @@ typedef enum {
 	EEPROM_ERROR_NULL_POINTER = -5,
 	EEPROM_ERROR_ALLOCATION = -6,
 	EEPROM_ERROR_COMMS = -7,
+	EEPROM_ERROR_TOO_BIG = -8
 
 } eeprom_status_t;
 
