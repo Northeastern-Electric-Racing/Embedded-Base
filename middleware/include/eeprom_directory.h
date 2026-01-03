@@ -66,8 +66,8 @@ eeprom_status_t directory_init(m24c32_t *device, eeprom_directory_t *directory);
  * @retval EEPROM_ERROR_ALLOCATION If memory allocation fails.
  */
 eeprom_status_t get_directory_value(eeprom_directory_t *directory,
-                                    const uint8_t *key, uint8_t **out,
-                                    uint16_t *out_size);
+				    const uint8_t *key, uint8_t **out,
+				    uint16_t *out_size);
 
 /**
  * @brief Store a value in the directory with the specified key.
@@ -91,8 +91,8 @@ eeprom_status_t get_directory_value(eeprom_directory_t *directory,
  * @retval EEPROM_ERROR_ALLOCATION If block allocation fails.
  */
 eeprom_status_t set_directory_value(eeprom_directory_t *directory,
-                                    const uint8_t *key, uint8_t *value,
-                                    const uint16_t value_size);
+				    const uint8_t *key, uint8_t *value,
+				    const uint16_t value_size);
 
 /**
  * @brief Delete a value from the directory by key.
@@ -110,6 +110,6 @@ eeprom_status_t set_directory_value(eeprom_directory_t *directory,
  * @retval EEPROM_ERROR_NOT_FOUND If the key does not exist in the directory.
  */
 eeprom_status_t delete_directory_value(eeprom_directory_t *directory,
-                                       const uint8_t *key);
+				       const uint8_t *key);
 
 #endif // EEPROM_DIRECTORY_H

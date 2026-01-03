@@ -89,9 +89,8 @@
  * to a BLOCK_SIZE-byte data block in the EEPROM data space.
  */
 typedef struct {
-  uint8_t key[4]; /** 4-byte key (not null-terminated). */
-  uint16_t
-      ids[4]; /** Array of up to 4 block IDs (BLOCK_COUNT indicates end). */
+	uint8_t key[4]; /** 4-byte key (not null-terminated). */
+	uint16_t ids[4]; /** Array of up to 4 block IDs (BLOCK_COUNT indicates end). */
 } directory_key_map_t;
 
 /**
@@ -101,11 +100,11 @@ typedef struct {
  * including the device interface, allocation table, and key map.
  */
 typedef struct {
-  m24c32_t *device; /** Pointer to the M24C32 device interface. */
-  uint8_t alloc_table[ALLOC_TABLE_SIZE]; /** Bit-vector allocation table (one
+	m24c32_t *device; /** Pointer to the M24C32 device interface. */
+	uint8_t alloc_table[ALLOC_TABLE_SIZE]; /** Bit-vector allocation table (one
                                             bit per block). */
-  directory_key_map_t
-      key_map[KEY_MAP_COUNT]; /** Array of key-value mappings. */
+	directory_key_map_t
+		key_map[KEY_MAP_COUNT]; /** Array of key-value mappings. */
 } eeprom_directory_t;
 
 #endif
