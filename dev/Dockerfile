@@ -26,6 +26,13 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     ruby
 
+# Install clang-format-18
+RUN apt-get update && apt-get install -y wget lsb-release software-properties-common
+RUN wget https://apt.llvm.org/llvm.sh
+RUN chmod +x llvm.sh
+RUN ./llvm.sh 18
+RUN apt-get install -y clang-format-18
+
 RUN wget https://github.com/renode/renode/releases/download/v1.15.3/renode-1.15.3.linux-portable.tar.gz
 RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1
 ENV PATH $PATH:/renode_portable

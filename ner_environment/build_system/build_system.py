@@ -88,6 +88,16 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
     run_command(command)
 
 # ==============================================================================
+# Format command
+# ==============================================================================
+
+@app.command(help="Format all C/C++ files in the Core directory using clang-format in Docker")
+def format():
+    command = "clang-format-18 --style=file -i Core/**/*.c Core/**/*.h"
+    run_command_docker(command, stream_output=True)
+    print("[#cccccc](ner format):[/#cccccc] [green]Formatted all files in Core/.[/green]")
+
+# ==============================================================================
 # Debug command
 # ==============================================================================
 
