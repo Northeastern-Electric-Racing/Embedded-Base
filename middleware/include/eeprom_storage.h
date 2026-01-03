@@ -51,7 +51,8 @@ eeprom_status_t init_storage(eeprom_directory_t *directory);
  */
 eeprom_status_t get_data(eeprom_directory_t *directory,
 			 const uint16_t *ids, uint8_t **out,
-			 uint16_t *out_size);
+			 uint16_t *out_size
+);
 
 /**
  * @brief Store data in EEPROM using block IDs.
@@ -71,7 +72,8 @@ eeprom_status_t get_data(eeprom_directory_t *directory,
  */
 eeprom_status_t put_data(eeprom_directory_t *directory,
 			const uint16_t *ids, uint8_t *value,
-			uint16_t value_size);
+			uint16_t value_size
+);
 
 /**
  * @brief Delete data blocks from EEPROM.

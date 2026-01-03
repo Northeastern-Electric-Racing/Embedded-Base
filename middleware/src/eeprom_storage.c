@@ -28,7 +28,8 @@ eeprom_status_t init_storage(eeprom_directory_t *directory)
 		return EEPROM_ERROR_ALLOCATION;
 	}
 
-	eeprom_status_t res = m24c32_read(device, KEY_MAP_BEGIN, data, KEY_MAP_SIZE);
+	eeprom_status_t res = m24c32_read(device, KEY_MAP_BEGIN, data,
+					  KEY_MAP_SIZE);
 	if (res != EEPROM_OK) {
 		free(data);
 		return res;
@@ -39,7 +40,7 @@ eeprom_status_t init_storage(eeprom_directory_t *directory)
 
 		// key[4]
 		memcpy(key_map[i].key, entry, 4);
-		
+
 		// ids[4]
 		for (int j = 0; j < 4; j++) {
 			key_map[i].ids[j] =
@@ -53,7 +54,8 @@ eeprom_status_t init_storage(eeprom_directory_t *directory)
 
 eeprom_status_t get_data(eeprom_directory_t *directory,
 			 const uint16_t *ids, uint8_t **out,
-			 uint16_t *out_size)
+			 uint16_t *out_size
+)
 {
 	uint8_t id_count = get_id_count(ids);
 	*out_size = BLOCK_SIZE * id_count;
@@ -95,7 +97,8 @@ eeprom_status_t get_data(eeprom_directory_t *directory,
 
 eeprom_status_t put_data(eeprom_directory_t *directory,
 			 const uint16_t *ids, uint8_t *value,
-			 uint16_t value_size)
+			 uint16_t value_size
+)
 {
 	uint8_t id_count = get_id_count(ids);
 	uint8_t *block_buffer = malloc(BLOCK_SIZE);

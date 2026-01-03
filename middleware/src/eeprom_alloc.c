@@ -1,7 +1,7 @@
 #include "eeprom_alloc.h"
 
-#define byte_index(n) ((n) / 8)
-#define bit_index(n) ((n) % 8)
+#define byte_index(n)	((n) / 8)
+#define bit_index(n)	((n) % 8)
 #define nth_bit_mask(n) (1 << (n))
 
 static int get_alloc_table(uint8_t *table, uint16_t id)
@@ -37,7 +37,8 @@ eeprom_status_t init_alloc_table(eeprom_directory_t *directory)
 	m24c32_t *device = directory->device;
 
 	return m24c32_read(device, ALLOC_TABLE_BEGIN,
-			   directory->alloc_table, ALLOC_TABLE_SIZE);
+			   directory->alloc_table, ALLOC_TABLE_SIZE
+);
 }
 
 void print_alloc_table(eeprom_directory_t *directory)
