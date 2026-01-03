@@ -1,0 +1,3 @@
+[submodule "dev/OpenOCD"]
+	path = dev/OpenOCD
+	url = https://github.com/STMicroelectronics/OpenOCD

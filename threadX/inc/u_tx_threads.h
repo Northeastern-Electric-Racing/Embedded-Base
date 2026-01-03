@@ -1,4 +1,4 @@
-#ifndef __U_TX_THEADS_H
+#ifndef __U_TX_THREADS_H
 #define __U_TX_THREADS_H
 
 #include "tx_api.h"

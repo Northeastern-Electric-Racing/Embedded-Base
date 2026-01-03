@@ -5,3 +5,5 @@ pyserial
 typer
 matplotlib
 rich
+requests
+jinja2
