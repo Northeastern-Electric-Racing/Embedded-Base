@@ -25,5 +25,7 @@ typedef struct {
 uint8_t create_mutex(mutex_t *mutex); // Create a mutex
 uint8_t mutex_get(mutex_t *mutex); // Gets a mutex.
 uint8_t mutex_put(mutex_t *mutex); // Puts a mutex.
+bool mutex_isOwned(
+	mutex_t *mutex); // Checks if a mutex is owned by the current thread.
 
 #endif /* u_tx_queues.h */
