@@ -4,12 +4,13 @@
 #define bit_index(n) ((n) % 8)
 #define nth_bit_mask(n) (1 << (n))
 
-
-static int get_alloc_table(uint8_t *table, uint16_t id) {
+static int get_alloc_table(uint8_t *table, uint16_t id)
+{
 	return (table[byte_index(id)] >> bit_index(id)) & 1;
 }
 
-static void put_alloc_table(uint8_t *table, uint16_t id, uint8_t val) {
+static void put_alloc_table(uint8_t *table, uint16_t id, uint8_t val)
+{
 	uint8_t bit_mask = nth_bit_mask(bit_index(id));
 
 	if (val) {
@@ -20,7 +21,9 @@ static void put_alloc_table(uint8_t *table, uint16_t id, uint8_t val) {
 	}
 }
 
-static eeprom_status_t update_eeprom_alloc_table(eeprom_directory_t *directory, uint16_t id) {
+static eeprom_status_t update_eeprom_alloc_table(eeprom_directory_t *directory,
+						 uint16_t id)
+{
 	uint16_t data_index = byte_index(id);
 	m24c32_t *device = directory->device;
 	uint16_t addr = ALLOC_TABLE_BEGIN + data_index;
@@ -29,16 +32,17 @@ static eeprom_status_t update_eeprom_alloc_table(eeprom_directory_t *directory, 
 	return m24c32_write(device, addr, data, 1);
 }
 
-
-eeprom_status_t init_alloc_table(eeprom_directory_t *directory) {
+eeprom_status_t init_alloc_table(eeprom_directory_t *directory)
+{
 	m24c32_t *device = directory->device;
 
-	return m24c32_read(device, ALLOC_TABLE_BEGIN, directory->alloc_table, ALLOC_TABLE_SIZE);
+	return m24c32_read(device, ALLOC_TABLE_BEGIN,
+			   directory->alloc_table, ALLOC_TABLE_SIZE);
 }
 
-void print_alloc_table(eeprom_directory_t *directory) {
+void print_alloc_table(eeprom_directory_t *directory)
+{
 	uint8_t *alloc_table = directory->alloc_table;
-	
 	for (int id = 0; id < BLOCK_COUNT; id++) {
 		putchar(get_alloc_table(alloc_table, id) ? '1' : '0');
 
@@ -51,13 +55,15 @@ void print_alloc_table(eeprom_directory_t *directory) {
 	putchar('\n');
 }
 
-uint16_t alloc_block(eeprom_directory_t *directory) {
+uint16_t alloc_block(eeprom_directory_t *directory)
+{
 	uint8_t *alloc_table = directory->alloc_table;
 
 	for (uint16_t id = 0; id < BLOCK_COUNT; id++) {
 		if (get_alloc_table(alloc_table, id) == 0) {
 			put_alloc_table(alloc_table, id, 1);
-			eeprom_status_t ret = update_eeprom_alloc_table(directory, id);
+			eeprom_status_t ret =
+				update_eeprom_alloc_table(directory, id);
 			if (ret != EEPROM_OK) {
 				printf("ERROR: failed to update eeprom alloc table.\n");
 				put_alloc_table(alloc_table, id, 0);
@@ -69,7 +75,8 @@ uint16_t alloc_block(eeprom_directory_t *directory) {
 	return BLOCK_COUNT;
 }
 
-void free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size) {
+void free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size)
+{
 	uint8_t *alloc_table = directory->alloc_table;
 
 	for (int i = 0; i < size; i++) {
@@ -82,7 +89,8 @@ void free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size) {
 	}
 }
 
-int is_allocated(eeprom_directory_t *directory, uint16_t id) {
+int is_allocated(eeprom_directory_t *directory, uint16_t id)
+{
 	uint8_t *alloc_table = directory->alloc_table;
 
 	return get_alloc_table(alloc_table, id);

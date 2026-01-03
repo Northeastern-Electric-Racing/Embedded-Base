@@ -40,10 +40,8 @@
  * @retval EEPROM_ERROR_NULL_POINTER If device or directory is NULL.
  * @retval EEPROM_ERROR If initialization of alloc table or storage fails.
  */
-eeprom_status_t directory_init(
-	m24c32_t *device,
-	eeprom_directory_t *directory
-);
+eeprom_status_t directory_init(m24c32_t *device,
+				eeprom_directory_t *directory);
 
 /**
  * @brief Retrieve a value from the directory by key.
@@ -63,12 +61,9 @@ eeprom_status_t directory_init(
  * @retval EEPROM_ERROR_NOT_FOUND If the key does not exist in the directory.
  * @retval EEPROM_ERROR_ALLOCATION If memory allocation fails.
  */
-eeprom_status_t get_directory_value(
-	eeprom_directory_t *directory,
-	const uint8_t *key,
-	uint8_t **out,
-	uint16_t *out_size
-);
+eeprom_status_t get_directory_value(eeprom_directory_t *directory,
+				    const uint8_t *key, uint8_t **out,
+				    uint16_t *out_size);
 
 /**
  * @brief Store a value in the directory with the specified key.
@@ -89,12 +84,9 @@ eeprom_status_t get_directory_value(
  * @retval EEPROM_ERROR_TOO_BIG If value_size exceeds 16 bytes (4 blocks).
  * @retval EEPROM_ERROR_ALLOCATION If block allocation fails.
  */
-eeprom_status_t set_directory_value(
-	eeprom_directory_t *directory,
-	const uint8_t *key,
-	uint8_t *value,
-	const uint16_t value_size
-);
+eeprom_status_t set_directory_value(eeprom_directory_t *directory,
+				    const uint8_t *key, uint8_t *value,
+				    const uint16_t value_size);
 
 /**
  * @brief Delete a value from the directory by key.
@@ -110,9 +102,7 @@ eeprom_status_t set_directory_value(
  * @retval EEPROM_ERROR_NULL_POINTER If directory or key is NULL.
  * @retval EEPROM_ERROR_NOT_FOUND If the key does not exist in the directory.
  */
-eeprom_status_t delete_directory_value(
-	eeprom_directory_t *directory,
-	const uint8_t *key
-);
+eeprom_status_t delete_directory_value(eeprom_directory_t *directory,
+					const uint8_t *key);
 
 #endif // EEPROM_DIRECTORY_H
