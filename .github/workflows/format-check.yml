@@ -7,9 +7,7 @@ jobs:
     name: Check format of C
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+    - uses: actions/checkout@v6
     - name: Run clang-format style check for C/C++ sources
       uses: Northeastern-Electric-Racing/clang-format-action@main
       with:
