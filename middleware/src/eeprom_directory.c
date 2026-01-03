@@ -27,16 +27,14 @@ static eeprom_status_t set_key(eeprom_directory_t *directory,
 			uint16_t addr = KEY_MAP_BEGIN + i * KEY_MAP_STRUCT_SIZE;
 			return m24c32_write(device, addr,
 					   (uint8_t *)&key_map[i],
-					   KEY_MAP_STRUCT_SIZE
-);
+					   KEY_MAP_STRUCT_SIZE);
 		}
 	}
 	return EEPROM_ERROR_ALLOCATION;
 }
 
 static eeprom_status_t delete_key(eeprom_directory_t *directory,
-				  const uint8_t *key
-)
+				  const uint8_t *key)
 {
 	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
@@ -49,16 +47,14 @@ static eeprom_status_t delete_key(eeprom_directory_t *directory,
 			uint16_t addr = KEY_MAP_BEGIN + i * KEY_MAP_STRUCT_SIZE;
 			return m24c32_write(device, addr,
 					   (uint8_t *)&key_map[i],
-					   KEY_MAP_STRUCT_SIZE
-);
+					   KEY_MAP_STRUCT_SIZE);
 		}
 	}
 	return EEPROM_ERROR_NOT_FOUND;
 }
 
 eeprom_status_t directory_init(m24c32_t *device,
-			       eeprom_directory_t *directory
-)
+			       eeprom_directory_t *directory)
 {
 	if (directory == NULL || device == NULL) {
 		return EEPROM_ERROR_NULL_POINTER;

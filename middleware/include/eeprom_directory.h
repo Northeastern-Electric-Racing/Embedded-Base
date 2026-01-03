@@ -41,8 +41,7 @@
  * @retval EEPROM_ERROR If initialization of alloc table or storage fails.
  */
 eeprom_status_t directory_init(m24c32_t *device,
-				eeprom_directory_t *directory
-);
+				eeprom_directory_t *directory);
 
 /**
  * @brief Retrieve a value from the directory by key.
@@ -104,7 +103,6 @@ eeprom_status_t set_directory_value(eeprom_directory_t *directory,
  * @retval EEPROM_ERROR_NOT_FOUND If the key does not exist in the directory.
  */
 eeprom_status_t delete_directory_value(eeprom_directory_t *directory,
-					const uint8_t *key
-);
+					const uint8_t *key);
 
 #endif // EEPROM_DIRECTORY_H
