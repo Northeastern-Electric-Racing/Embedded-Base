@@ -353,9 +353,9 @@ def fix_compile_commands():
     os_type = platform.system()
     toolchain_name = ""
     if os_type == "Linux":
-        toolchain_name = "arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi"
+        toolchain_name = "arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi"
     else:
-        toolchain_name = "arm-gnu-toolchain-14.3.rel1-darwin-arm64-arm-none-eabi"
+        toolchain_name = "arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi"
 
     toolchain_name_ext = toolchain_name + ".tar.xz"
 
