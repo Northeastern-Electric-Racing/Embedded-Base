@@ -74,7 +74,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
             run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
 
     if not clean:
-        fix_compile_commands()
+        #fix_compile_commands()
 
 # ==============================================================================
 # Clang command
