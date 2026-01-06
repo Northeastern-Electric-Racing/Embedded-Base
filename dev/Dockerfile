@@ -51,7 +51,7 @@ RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 # Install cross compiler
 RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv
 
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/bin
 
 # build and install customized openocd
 RUN apt-get install -y libtool libusb-1.0.0-dev
