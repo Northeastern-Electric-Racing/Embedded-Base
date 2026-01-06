@@ -49,7 +49,7 @@ RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
-RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv
+RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv
 
 ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
 
