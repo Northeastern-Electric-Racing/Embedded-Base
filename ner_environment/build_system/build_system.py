@@ -73,7 +73,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         else:
             run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
 
-    if not clean:
+    if not clean and is_cmake:
         fix_compile_commands()
 
 # ==============================================================================
