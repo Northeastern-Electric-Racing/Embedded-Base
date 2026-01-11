@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     ruby \
     protobuf-compiler
 
-RUN pip install grpcio-tools
+RUN pip install --break-system-packages grpcio-tools
 
 RUN wget https://github.com/renode/renode/releases/download/v1.15.3/renode-1.15.3.linux-portable.tar.gz
 RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1 && rm renode-*.linux-portable.tar.gz
