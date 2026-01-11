@@ -359,7 +359,7 @@ def fix_compile_commands():
 
     toolchain_name_ext = toolchain_name + ".tar.xz"
 
-    if os.path.exists(f'{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}'):
+    if os.path.exists(f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}"):
         pass
     else:
         # download the toolchain if it doesnt exist
@@ -385,10 +385,10 @@ def fix_compile_commands():
             item['file'] = item['file'].replace('/home/app', os.getcwd())
             item['output'] = item['output'].replace('/home/app', os.getcwd())
 
-            item['directory'] = item['directory'].replace(f'/home/dev/{docker_toolchain_name}', f'{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}')
-            item['command'] = item['command'].replace(f'/home/dev/{docker_toolchain_name}', f'{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}')
-            item['file'] = item['file'].replace(f'/home/dev/{docker_toolchain_name}', f'{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}')
-            item['output'] = item['output'].replace(f'/home/dev/{docker_toolchain_name}', f'{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}')
+            item['directory'] = item['directory'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['command'] = item['command'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['file'] = item['file'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['output'] = item['output'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
 
         with open(f'{os.getcwd()}/build/compile_commands.json', "w") as f:
             json.dump(jsf, f)
