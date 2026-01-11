@@ -23,7 +23,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     python3 \
     python3-pip \
-    ruby
+    ruby \
+    protobuf
 
 
 RUN wget https://github.com/renode/renode/releases/download/v1.15.3/renode-1.15.3.linux-portable.tar.gz
