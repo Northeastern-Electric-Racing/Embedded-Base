@@ -1,0 +1,11 @@
+
+:cmock:
+  :mock_prefix: mock_   
+  :includes:
+    - stubs.h
+  :plugins:
+    - :ignore
+    - :ignore_arg
+    - :callback
+    - :expect
+    - :expect_any_args

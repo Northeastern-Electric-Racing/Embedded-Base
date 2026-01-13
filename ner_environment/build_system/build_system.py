@@ -8,12 +8,14 @@
 # Provided here is a comprehensive set of commands that allow for the complete interaction with NERs toolset.
 # Each command is defined as a function and is called by the main function, and has help messages and configuration options.
 # Commands can be run with the virtual environment active by prefixing the command with `ner <command>`.
-# 
+#
 # See more documentation at https://nerdocs.atlassian.net/wiki/spaces/NER/pages/611516420/NER+Build+System
 #
 # To see a list of available commands and additional configuration options, run `ner --help`
 # ==============================================================================
+from enum import Enum
 import shutil
+import requests
 import typer
 from rich import print
 import platform
@@ -21,7 +23,9 @@ import subprocess
 import sys
 import os
 import glob
+import re
 import time
+import json
 from pathlib import Path
 
 # custom modules for functinality that is too large to be included in this script directly
@@ -31,19 +35,21 @@ from .serial2 import main as serial2_start
 # ==============================================================================
 # Typer application setup
 # ==============================================================================
-    
+
 app = typer.Typer(help="Northeastern Electric Racing Firmware Build System",
                   epilog="For more information, visit https://nerdocs.atlassian.net/wiki/spaces/NER/pages/524451844/2024+Firmware+Onboarding+Master",
                   add_completion=False)
-
-lp_app = typer.Typer(help="Install configure, and run launchpad environment items")
-app.add_typer(lp_app, name="lp")
 
 def unsupported_option_cb(value:bool):
     if value:
         print("[bold red] WARNING: the selected option is not currently implemented. This is either because is is an planned or deprecated feature")
         raise typer.Exit()
-      
+
+class OpenOCDLocation(str, Enum):
+    cube = "cube"
+    sys = "sys"
+    dl = "dl"
+
 # ==============================================================================
 # Build command
 # ==============================================================================
@@ -58,13 +64,17 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
             run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
             print("[#cccccc](ner build):[/#cccccc] [green]Ran build-cleaning command.[/green]")
         else:
-            run_command_docker("mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .", stream_output=True)
+            run_command_docker("mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake .. && cmake --build .", stream_output=True)
+            run_command_docker('chmod 777  -R ./build/*')
     else: # Repo uses Make, so execute Make commands.
         print("[#cccccc](ner build):[/#cccccc] [blue]Makefile-based project detected.[/blue]")
         if clean:
             run_command_docker("make clean", stream_output=True)
         else:
             run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
+
+    if not clean and is_cmake:
+        fix_compile_commands()
 
 # ==============================================================================
 # Clang command
@@ -74,7 +84,7 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
 def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable clang-format"),
           enable: bool = typer.Option(False, "--enable", "-e", help="Enable clang-format"),
           run: bool = typer.Option(False, "--run", "-r", help="Run clang-format")):
-    
+
     if disable:
         command = ["pre-commit", "uninstall"]
     elif enable:
@@ -84,7 +94,7 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
     else:
         print("[bold red] Error: No valid option specified")
         sys.exit(1)
-        
+
     run_command(command)
 
 # ==============================================================================
@@ -95,9 +105,11 @@ def clang(disable: bool = typer.Option(False, "--disable","-d", help="Disable cl
 def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default) Set this flag if the device uses an FTDI chip"),
         no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
-          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux")):
+          docker: bool = typer.Option(False, "--docker", callback=unsupported_option_cb, help="(deprecated) Use OpenOCD in the container instead of locally, requires linux"),
+          openocd_loc: OpenOCDLocation = typer.Option(OpenOCDLocation.dl, "--openocd-loc", help="Use the OpenOCD binary from where"),
+          ):
 
-    command = ["openocd"]
+    command = fetch_openocd_command(openocd_loc)
     current_directory = os.getcwd()
 
     if not no_ftdi:
@@ -117,10 +129,10 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 
     halt_command = command + ["-f", "flash.cfg", "-f", os.path.join(current_directory, "Drivers", "Embedded-Base", "openocd.cfg"),
                               "-c", "init", "-c", "reset halt"]
-    
+
     ocd = subprocess.Popen(halt_command)
     time.sleep(1)
-    
+
     # for some reason the host docker internal thing is broken on linux despite compose being set correctly, hence this hack
     # TODO: fix this properly
 
@@ -144,9 +156,11 @@ def debug(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 
 @app.command(help="Flash the firmware")
 def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by default): Set this flag if the device uses an FTDI chip"),
-        no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
+          no_ftdi: bool = typer.Option(False, "--no-ftdi", help="Set this flag if the device uses an CMSIS DAP chip"),
           custom: bool = typer.Option(False, "--custom", help="Set this flag if your flash.cfg has all definitions (LAUNCHPAD)."),
-          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux")):
+          docker: bool = typer.Option(False, "--docker", help="Use OpenOCD in the container instead of locally, requires linux"),
+          openocd_loc: OpenOCDLocation = typer.Option(OpenOCDLocation.dl, "--openocd-loc", help="Use the OpenOCD binary from where"),
+          ):
 
     command = []
 
@@ -156,8 +170,9 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
 
     if docker:
         command = ["docker", "compose", "run", "--rm", "ner-gcc-arm"]
-
-    command = command + ["openocd"]
+        command = command + ["openocd"]
+    else:
+        command = command + fetch_openocd_command(openocd_loc)
 
     if not no_ftdi:
         current_directory = os.getcwd()
@@ -165,7 +180,7 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
         command = command + ["-f", ftdi_path]
     elif not custom:
         command = command + ["-f", "interface/cmsis-dap.cfg"]
-    
+
 
     build_directory = os.path.join("build", "*.elf")
     elf_files = glob.glob(build_directory)
@@ -177,7 +192,7 @@ def flash(ftdi: bool = typer.Option(False, "--ftdi", help="DEPRECATED (On by def
     print(f"[bold blue] Found ELF file: [/bold blue] [blue] {elf_file}")
 
     command = command + ["-f", "flash.cfg", "-c", f"program {elf_file} verify reset exit"]
-    
+
     run_command(command, stream_output=True)
 
 # ==============================================================================
@@ -206,8 +221,26 @@ def serial2(
             graph: str = typer.Option(None, "--graph", help="Opens a live graph window of the specified title. (Note: A graph window can be created/configured using the serial_graph() function from serial.c)"),
             filter: str = typer.Option(None, "--filter", help="Only shows specific messages. Ex. 'ner serial2 --filter EXAMPLE' will only show printfs that contain the substring 'EXAMPLE'. ")):
     """Custom serial terminal."""
-    
+
     serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
+
+# ==============================================================================
+# Test command
+# ==============================================================================
+
+@app.command(help="Run Unity Test source file")
+def test(clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True),
+        tests: list[str] = typer.Argument(None, help="Specific test file to run (optional)")):
+
+    if (clean):
+        run_command_docker(f"rm -r Tests/Mocks/* Tests/build")
+        return
+
+    if tests == None:
+        run_command_docker("python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py", stream_output=True)
+    else:
+        run_command_docker(f"python3 Drivers/Embedded-Base/ner_environment/build_system/test_runner.py {' '.join(tests)}", stream_output=True)
+
 
 # ==============================================================================
 # Update command
@@ -220,8 +253,8 @@ def update():
     if "bedded" in dir:
         command = ["pip", "install", "-e", "ner_environment"]
 
-    else:  
-        # app folder - go up one level to root                                      
+    else:
+        # app folder - go up one level to root
         if os.path.exists(os.path.join(dir, "Drivers", "Embedded-Base")):
             os.chdir("..")
 
@@ -234,7 +267,7 @@ def update():
             sys.exit(1)
 
     run_command(command)
-    
+
 # ==============================================================================
 # USBIP command
 # ==============================================================================
@@ -247,9 +280,9 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
     if connect:
         if device is None:
             print("[bold red] Error --device must be specified when using --connect")
-        
+
         disconnect_usbip() # Disconnect the current USB device
-        
+
         if device == "shep" or device == "shepherd":
             commands = [
                 ["sudo", "modprobe", "vhci_hcd"],
@@ -261,14 +294,14 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
                  ["sudo", "modprobe", "vhci_hcd"],
                 ["sudo", "usbip", "attach", "-r", "192.168.100.12", "-b", "1-1.3"]
             ]
-        
+
         else:
             print("[bold red] Error: Invalid device name")
             sys.exit(1)
-        
+
         run_command(commands[0])
         run_command(commands[1])
-    
+
     elif disconnect:
         disconnect_usbip()
 
@@ -277,62 +310,6 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
 # ==============================================================================
 
 
-# ==============================================================================
-# init
-# ==============================================================================
-@lp_app.command(help="Initialize launchpad, run before any commands")
-def install():
-    """Install PlatformIO package."""
-    try:
-        # Install the platformio package
-        subprocess.check_call(['pip', 'install', 'platformio'])
-
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to install PlatformIO: {e}", file=sys.stderr)
-        sys.exit(1)
-
-# ==============================================================================
-# uninstall
-# ==============================================================================
-@lp_app.command(help="Remove launchpad")
-def uninstall():
-    """Uninstall PlatformIO package."""
-    try:
-        # Install the platformio package
-        subprocess.check_call(['pip', 'uninstall', '-y', 'platformio'])
-
-        platformio_dir = os.path.expanduser('~/.platformio')
-        if os.path.isdir(platformio_dir):
-            shutil.rmtree(platformio_dir)
-            print("PlatformIO directory removed.")
-        else:
-            print("PlatformIO directory does not exist.")
-
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to uninstall PlatformIO: {e}", file=sys.stderr)
-        sys.exit(1)
-
-# ==============================================================================
-# build
-# ==============================================================================
-@lp_app.command(help="Build your launchpad project")
-def build():
-    subprocess.run(['platformio', 'run'])
-
-# ==============================================================================
-# flash
-# ==============================================================================
-@lp_app.command(help="Flash your launchpad project to a board")
-def flash():
-    subprocess.run(['platformio', 'run', '--target', 'upload'])
-
-# ==============================================================================
-# serial
-# ==============================================================================
-@lp_app.command(help="View serial output from the device")
-def serial():
-    subprocess.run(['platformio', 'device', 'monitor'])
-    
 
 # ==============================================================================
 # ---- End Launchpad Section
@@ -343,19 +320,19 @@ def serial():
 # Helper functions - not direct commands
 # ==============================================================================
 
-def run_command(command, stream_output=False, exit_on_fail=True):
+def run_command(command, stream_output=False, exit_on_fail=False):
     """Run a shell command. Optionally stream the output in real-time."""
-    
+
     if stream_output:
-     
+
         process = subprocess.Popen(command, text=True)
-  
+
         returncode = process.wait()
         if returncode != 0:
             print(f"Error: Command exited with code {returncode}", file=sys.stderr)
             if exit_on_fail:
                 sys.exit(returncode)
-    
+
     else:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
@@ -367,11 +344,62 @@ def run_command(command, stream_output=False, exit_on_fail=True):
             if exit_on_fail:
                 sys.exit(e.returncode)
 
+def fix_compile_commands():
+    '''
+    Attempt to fix compile_commands.json so LSPs can read the project
+    If this command fails it should be ignored as compile_commands.json is only for user experience
+    '''
+    # download the toolchain if needed, we always need the toolchain name
+    os_type = platform.system()
+    toolchain_name = ""
+    if os_type == "Linux":
+        toolchain_name = "arm-gnu-toolchain-14.3.rel1-x86_64-arm-none-eabi"
+    else:
+        toolchain_name = "arm-gnu-toolchain-14.3.rel1-darwin-arm64-arm-none-eabi"
+
+    toolchain_name_ext = toolchain_name + ".tar.xz"
+
+    if os.path.exists(f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}"):
+        pass
+    else:
+        # download the toolchain if it doesnt exist
+        print('Downloading ', toolchain_name)
+        subprocess.run([
+            "wget",
+            f"https://developer.arm.com/-/media/Files/downloads/gnu/14.3.rel1/binrel/{toolchain_name_ext}",
+        ])
+        subprocess.run(["tar", "-xvf", toolchain_name_ext, "-C", os.environ.get('VIRTUAL_ENV')])
+        os.remove(toolchain_name_ext)
+
+    jsf = None
+    with open(f'{os.getcwd()}/build/compile_commands.json', "r") as f:
+        jsf = json.load(f)
+
+
+    if jsf is not None:
+        docker_toolchain_name = re.search(r"arm-gnu-toolchain.*?\/", jsf[0]['command']).group(0)[:-1]
+        print('Found docker toolchain ', docker_toolchain_name)
+        for item in jsf:
+            item['directory'] = item['directory'].replace('/home/app', os.getcwd())
+            item['command'] = item['command'].replace('/home/app', os.getcwd())
+            item['file'] = item['file'].replace('/home/app', os.getcwd())
+            item['output'] = item['output'].replace('/home/app', os.getcwd())
+
+            item['directory'] = item['directory'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['command'] = item['command'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['file'] = item['file'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+            item['output'] = item['output'].replace(f"/home/dev/{docker_toolchain_name}", f"{os.environ.get('VIRTUAL_ENV')}/{toolchain_name}")
+
+        with open(f'{os.getcwd()}/build/compile_commands.json', "w") as f:
+            json.dump(jsf, f)
+
+        print('Successfully patched compile_commands.json')
+
 def run_command_docker(command, stream_output=False):
     """Run a command in the Docker container."""
     docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
     print(f"[bold blue](ner-gcc-arm): Running command '{command}' in Docker container.")
-    run_command(docker_command, stream_output=stream_output, exit_on_fail=True)
+    run_command(docker_command, stream_output=stream_output)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""
@@ -391,12 +419,47 @@ def contains_subdir(base_path, search_str):
             return True
     return False
 
+def fetch_openocd_command(openocd_loc: OpenOCDLocation) -> list[str]:
+    '''
+    Creates an OpenOCD command
+    '''
+    command: list[str] = []
+    os_type = platform.system()
+
+    if openocd_loc.value == 'sys':
+        command.append('openocd')
+    elif openocd_loc.value == 'cube':
+        if os_type == "Darwin":
+            # for cubeIDE
+            command.append(os.path.normpath(glob.glob("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd")[0]))
+        elif os_type == "Linux":
+            # for cubeIDE
+            command.append(os.path.normpath(glob.glob(os.path.expanduser("~/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.openocd.**/tools/bin/openocd"))[0]))
+    else:
+        if os.path.exists(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner"):
+            pass
+        else:
+            # download the binary if it doesnt exist
+            # TODO make builds on ner repo, for now this is good enough
+            r: requests.Response
+            if os_type == "Linux":
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.4/openocd-linux-x64', allow_redirects=True)
+            else:
+                r = requests.get('https://github.com/bjackson312006/ner-openocd/releases/download/tools-v1.0.4/openocd-macos-arm64', allow_redirects=True)
+            print(r)
+            open(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner", 'wb').write(r.content)
+            os.chmod(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner", 0o777)
+
+        command.append(f"{os.environ.get('VIRTUAL_ENV')}/openocd_ner")
+
+    command.append("-s")
+    command.append("./Drivers/Embedded-Base/dev/OpenOCD/tcl")
+
+    return command
+
 # ==============================================================================
 # Entry
 # ==============================================================================
 
 if __name__ == "__main__":
     app(prog_name="ner")
-
-
- 
