@@ -16,7 +16,6 @@ static uint16_t *_get_ids(eeprom_directory_t *directory, const uint8_t *key)
 static eeprom_status_t _set_key(eeprom_directory_t *directory,
 				const uint8_t *key, uint16_t *ids)
 {
-	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
 
 	for (int i = 0; i < KEY_MAP_COUNT; i++) {
@@ -25,9 +24,9 @@ static eeprom_status_t _set_key(eeprom_directory_t *directory,
 			memcpy(key_map[i].ids, ids, 8);
 
 			uint16_t addr = KEY_MAP_BEGIN + i * KEY_MAP_STRUCT_SIZE;
-			return m24c32_write(device, addr,
-					    (uint8_t *)&key_map[i],
-					    KEY_MAP_STRUCT_SIZE);
+			return directory->device->write(addr,
+							(uint8_t *)&key_map[i],
+							KEY_MAP_STRUCT_SIZE);
 		}
 	}
 	return EEPROM_ERROR_ALLOCATION;
@@ -36,7 +35,6 @@ static eeprom_status_t _set_key(eeprom_directory_t *directory,
 static eeprom_status_t _delete_key(eeprom_directory_t *directory,
 				   const uint8_t *key)
 {
-	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
 
 	for (int i = 0; i < KEY_MAP_COUNT; i++) {
@@ -45,9 +43,9 @@ static eeprom_status_t _delete_key(eeprom_directory_t *directory,
 			memset(&key_map[i], 0, KEY_MAP_STRUCT_SIZE);
 
 			uint16_t addr = KEY_MAP_BEGIN + i * KEY_MAP_STRUCT_SIZE;
-			return m24c32_write(device, addr,
-					    (uint8_t *)&key_map[i],
-					    KEY_MAP_STRUCT_SIZE);
+			return directory->device->write(addr,
+							(uint8_t *)&key_map[i],
+							KEY_MAP_STRUCT_SIZE);
 		}
 	}
 	return EEPROM_ERROR_NOT_FOUND;

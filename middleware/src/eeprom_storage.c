@@ -21,7 +21,6 @@ static uint16_t _get_addr_for_data(const uint16_t id)
 
 eeprom_status_t _init_storage(eeprom_directory_t *directory)
 {
-	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
 	uint8_t *data = malloc(KEY_MAP_SIZE);
 	if (data == NULL) {
@@ -29,7 +28,7 @@ eeprom_status_t _init_storage(eeprom_directory_t *directory)
 	}
 
 	eeprom_status_t res =
-		m24c32_read(device, KEY_MAP_BEGIN, data, KEY_MAP_SIZE);
+		directory->device->read(KEY_MAP_BEGIN, data, KEY_MAP_SIZE);
 	if (res != EEPROM_OK) {
 		free(data);
 		return res;
@@ -82,8 +81,7 @@ eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
 		uint8_t *data_ptr = *out + BLOCK_SIZE * i;
 		eeprom_status_t res;
 
-		res = m24c32_read(directory->device, addr, data_ptr,
-				  BLOCK_SIZE);
+		res = directory->device->read(addr, data_ptr, BLOCK_SIZE);
 		if (res != EEPROM_OK) {
 			free(*out);
 			*out = NULL;
@@ -122,8 +120,8 @@ eeprom_status_t _put_data(eeprom_directory_t *directory, const uint16_t *ids,
 		}
 
 		// Write the entire block (BLOCK_SIZE bytes) to EEPROM
-		eeprom_status_t res = m24c32_write(directory->device, addr,
-						   block_buffer, BLOCK_SIZE);
+		eeprom_status_t res = directory->device->write(
+			addr, block_buffer, BLOCK_SIZE);
 		if (res != EEPROM_OK) {
 			free(block_buffer);
 			return res;

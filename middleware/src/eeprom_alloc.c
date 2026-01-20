@@ -25,19 +25,16 @@ static eeprom_status_t _update_eeprom_alloc_table(eeprom_directory_t *directory,
 						  uint16_t id)
 {
 	uint16_t data_index = byte_index(id);
-	m24c32_t *device = directory->device;
 	uint16_t addr = ALLOC_TABLE_BEGIN + data_index;
 	uint8_t *data = directory->alloc_table + data_index;
 
-	return m24c32_write(device, addr, data, 1);
+	return directory->device->write(addr, data, 1);
 }
 
 eeprom_status_t _init_alloc_table(eeprom_directory_t *directory)
 {
-	m24c32_t *device = directory->device;
-
-	return m24c32_read(device, ALLOC_TABLE_BEGIN, directory->alloc_table,
-			   ALLOC_TABLE_SIZE);
+	return directory->device->read(
+		ALLOC_TABLE_BEGIN, directory->alloc_table, ALLOC_TABLE_SIZE);
 }
 
 void _print_alloc_table(eeprom_directory_t *directory)
