@@ -1,6 +1,6 @@
 #include "eeprom_directory.h"
 
-static uint16_t *get_ids(eeprom_directory_t *directory, const uint8_t *key)
+static uint16_t *_get_ids(eeprom_directory_t *directory, const uint8_t *key)
 {
 	directory_key_map_t *key_map = directory->key_map;
 
@@ -13,7 +13,7 @@ static uint16_t *get_ids(eeprom_directory_t *directory, const uint8_t *key)
 	return NULL;
 }
 
-static eeprom_status_t set_key(eeprom_directory_t *directory,
+static eeprom_status_t _set_key(eeprom_directory_t *directory,
 			       const uint8_t *key, uint16_t *ids)
 {
 	m24c32_t *device = directory->device;
@@ -33,7 +33,7 @@ static eeprom_status_t set_key(eeprom_directory_t *directory,
 	return EEPROM_ERROR_ALLOCATION;
 }
 
-static eeprom_status_t delete_key(eeprom_directory_t *directory,
+static eeprom_status_t _delete_key(eeprom_directory_t *directory,
 				  const uint8_t *key)
 {
 	m24c32_t *device = directory->device;
@@ -61,11 +61,11 @@ eeprom_status_t directory_init(m24c32_t *device, eeprom_directory_t *directory)
 
 	directory->device = device;
 	eeprom_status_t res;
-	res = init_alloc_table(directory);
+	res = _init_alloc_table(directory);
 	if (res != EEPROM_OK) {
 		return res;
 	}
-	res = init_storage(directory);
+	res = _init_storage(directory);
 	if (res != EEPROM_OK) {
 		return res;
 	}
@@ -81,12 +81,12 @@ eeprom_status_t get_directory_value(eeprom_directory_t *directory,
 		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	uint16_t *ids = get_ids(directory, key);
+	uint16_t *ids = _get_ids(directory, key);
 	if (ids == NULL) {
 		return EEPROM_ERROR_NOT_FOUND;
 	}
 
-	return get_data(directory, ids, out, out_size);
+	return _get_data(directory, ids, out, out_size);
 }
 
 eeprom_status_t set_directory_value(eeprom_directory_t *directory,
@@ -100,7 +100,7 @@ eeprom_status_t set_directory_value(eeprom_directory_t *directory,
 		return EEPROM_ERROR;
 	}
 
-	uint16_t *existing_ids = get_ids(directory, key);
+	uint16_t *existing_ids = _get_ids(directory, key);
 
 	// If key already exists, delete it first
 	if (existing_ids != NULL) {
@@ -122,11 +122,11 @@ eeprom_status_t set_directory_value(eeprom_directory_t *directory,
 	}
 
 	for (int block_idx = 0; block_idx < block_count; block_idx++) {
-		uint16_t id = alloc_block(directory);
+		uint16_t id = _alloc_block(directory);
 		if (id == BLOCK_COUNT) {
 			// Free already allocated blocks on failure
 			for (int j = 0; j < block_idx; j++) {
-				free_block(directory, &ids[j], 1);
+				_free_block(directory, &ids[j], 1);
 			}
 			free(ids);
 			return EEPROM_ERROR_ALLOCATION;
@@ -138,19 +138,19 @@ eeprom_status_t set_directory_value(eeprom_directory_t *directory,
 	}
 
 	eeprom_status_t res;
-	res = set_key(directory, key, ids);
+	res = _set_key(directory, key, ids);
 	if (res != EEPROM_OK) {
 		// Free allocated blocks on failure
-		free_block(directory, ids, block_count);
+		_free_block(directory, ids, block_count);
 		free(ids);
 		return res;
 	}
 
-	res = put_data(directory, ids, value, value_size);
+	res = _put_data(directory, ids, value, value_size);
 	if (res != EEPROM_OK) {
 		// Free allocated blocks and remove key on failure
-		free_block(directory, ids, block_count);
-		delete_key(directory, key);
+		_free_block(directory, ids, block_count);
+		_delete_key(directory, key);
 		free(ids);
 		return res;
 	}
@@ -166,15 +166,15 @@ eeprom_status_t delete_directory_value(eeprom_directory_t *directory,
 		return EEPROM_ERROR_NULL_POINTER;
 	}
 
-	uint16_t *ids = get_ids(directory, key);
+	uint16_t *ids = _get_ids(directory, key);
 	if (ids == NULL) {
 		return EEPROM_ERROR_NOT_FOUND;
 	}
 
 	eeprom_status_t res;
-	res = delete_data(directory, ids);
+	res = _delete_data(directory, ids);
 	if (res != EEPROM_OK) {
 		return res;
 	}
-	return delete_key(directory, key);
+	return _delete_key(directory, key);
 }

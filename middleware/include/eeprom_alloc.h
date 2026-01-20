@@ -31,7 +31,7 @@
  *
  * @retval EEPROM_ERROR If EEPROM read operation fails.
  */
-eeprom_status_t init_alloc_table(eeprom_directory_t *directory);
+eeprom_status_t _init_alloc_table(eeprom_directory_t *directory);
 
 /**
  * @brief Print the allocation table in a human-readable format.
@@ -42,7 +42,7 @@ eeprom_status_t init_alloc_table(eeprom_directory_t *directory);
  *
  * @param directory Pointer to the initialized directory structure.
  */
-void print_alloc_table(eeprom_directory_t *directory);
+void _print_alloc_table(eeprom_directory_t *directory);
 
 /**
  * @brief Allocate a single block from the EEPROM.
@@ -57,7 +57,7 @@ void print_alloc_table(eeprom_directory_t *directory);
  *
  * @retval BLOCK_COUNT If no free blocks are available or EEPROM update fails.
  */
-uint16_t alloc_block(eeprom_directory_t *directory);
+uint16_t _alloc_block(eeprom_directory_t *directory);
 
 /**
  * @brief Free one or more blocks in the EEPROM.
@@ -70,7 +70,7 @@ uint16_t alloc_block(eeprom_directory_t *directory);
  * @param ids Array of block IDs to free.
  * @param size Number of block IDs in the array.
  */
-void free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size);
+void _free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size);
 
 /**
  * @brief Check if a block is allocated.
@@ -83,6 +83,6 @@ void free_block(eeprom_directory_t *directory, uint16_t *ids, uint8_t size);
  *
  * @return int Returns 1 if the block is allocated, 0 if it is free.
  */
-int is_allocated(eeprom_directory_t *directory, uint16_t id);
+int _is_allocated(eeprom_directory_t *directory, uint16_t id);
 
 #endif

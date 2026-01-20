@@ -1,7 +1,7 @@
 #include "eeprom_storage.h"
 #include <string.h>
 
-static uint8_t get_id_count(const uint16_t *ids)
+static uint8_t _get_id_count(const uint16_t *ids)
 {
 	uint8_t count = 0;
 
@@ -14,12 +14,12 @@ static uint8_t get_id_count(const uint16_t *ids)
 	return count;
 }
 
-static uint16_t get_addr_for_data(const uint16_t id)
+static uint16_t _get_addr_for_data(const uint16_t id)
 {
 	return DATA_SPACE_BEGIN + id * BLOCK_SIZE;
 }
 
-eeprom_status_t init_storage(eeprom_directory_t *directory)
+eeprom_status_t _init_storage(eeprom_directory_t *directory)
 {
 	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
@@ -52,10 +52,10 @@ eeprom_status_t init_storage(eeprom_directory_t *directory)
 	return EEPROM_OK;
 }
 
-eeprom_status_t get_data(eeprom_directory_t *directory, const uint16_t *ids,
+eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
 			 uint8_t **out, uint16_t *out_size)
 {
-	uint8_t id_count = get_id_count(ids);
+	uint8_t id_count = _get_id_count(ids);
 	*out_size = BLOCK_SIZE * id_count;
 
 	// Free existing buffer if provided
@@ -72,13 +72,13 @@ eeprom_status_t get_data(eeprom_directory_t *directory, const uint16_t *ids,
 
 	for (int i = 0; i < id_count; i++) {
 		uint16_t id = ids[i];
-		if (!is_allocated(directory, id)) {
+		if (!_is_allocated(directory, id)) {
 			free(*out);
 			*out = NULL;
 			return EEPROM_ERROR_NOT_FOUND;
 		}
 
-		uint16_t addr = get_addr_for_data(id);
+		uint16_t addr = _get_addr_for_data(id);
 		uint8_t *data_ptr = *out + BLOCK_SIZE * i;
 		eeprom_status_t res;
 
@@ -93,10 +93,10 @@ eeprom_status_t get_data(eeprom_directory_t *directory, const uint16_t *ids,
 	return EEPROM_OK;
 }
 
-eeprom_status_t put_data(eeprom_directory_t *directory, const uint16_t *ids,
+eeprom_status_t _put_data(eeprom_directory_t *directory, const uint16_t *ids,
 			 uint8_t *value, uint16_t value_size)
 {
-	uint8_t id_count = get_id_count(ids);
+	uint8_t id_count = _get_id_count(ids);
 	uint8_t *block_buffer = malloc(BLOCK_SIZE);
 	if (block_buffer == NULL) {
 		return EEPROM_ERROR_ALLOCATION;
@@ -104,7 +104,7 @@ eeprom_status_t put_data(eeprom_directory_t *directory, const uint16_t *ids,
 
 	for (int i = 0; i < id_count; i++) {
 		uint16_t id = ids[i];
-		uint16_t addr = get_addr_for_data(id);
+		uint16_t addr = _get_addr_for_data(id);
 
 		// Calculate how many bytes to copy for this block
 		uint16_t offset = i * BLOCK_SIZE;
@@ -134,10 +134,10 @@ eeprom_status_t put_data(eeprom_directory_t *directory, const uint16_t *ids,
 	return EEPROM_OK;
 }
 
-eeprom_status_t delete_data(eeprom_directory_t *directory, uint16_t *ids)
+eeprom_status_t _delete_data(eeprom_directory_t *directory, uint16_t *ids)
 {
-	uint8_t id_count = get_id_count(ids);
+	uint8_t id_count = _get_id_count(ids);
 
-	free_block(directory, ids, id_count);
+	_free_block(directory, ids, id_count);
 	return EEPROM_OK;
 }

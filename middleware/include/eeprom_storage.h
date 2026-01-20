@@ -31,7 +31,7 @@
  * @retval EEPROM_ERROR_ALLOCATION If memory allocation fails.
  * @retval EEPROM_ERROR If EEPROM read operation fails.
  */
-eeprom_status_t init_storage(eeprom_directory_t *directory);
+eeprom_status_t _init_storage(eeprom_directory_t *directory);
 
 /**
  * @brief Retrieve data from EEPROM using block IDs.
@@ -53,7 +53,7 @@ eeprom_status_t init_storage(eeprom_directory_t *directory);
  * @retval EEPROM_ERROR_NOT_FOUND If any block ID is not allocated.
  * @retval EEPROM_ERROR If EEPROM read operation fails.
  */
-eeprom_status_t get_data(eeprom_directory_t *directory, const uint16_t *ids,
+eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
 			 uint8_t **out, uint16_t *out_size);
 
 /**
@@ -74,7 +74,7 @@ eeprom_status_t get_data(eeprom_directory_t *directory, const uint16_t *ids,
  * @retval EEPROM_ERROR_ALLOCATION If memory allocation for block buffer fails.
  * @retval EEPROM_ERROR If EEPROM write operation fails.
  */
-eeprom_status_t put_data(eeprom_directory_t *directory, const uint16_t *ids,
+eeprom_status_t _put_data(eeprom_directory_t *directory, const uint16_t *ids,
 			 uint8_t *value, uint16_t value_size);
 
 /**
@@ -88,6 +88,6 @@ eeprom_status_t put_data(eeprom_directory_t *directory, const uint16_t *ids,
  *
  * @return eeprom_status_t Returns EEPROM_OK on success.
  */
-eeprom_status_t delete_data(eeprom_directory_t *directory, uint16_t *ids);
+eeprom_status_t _delete_data(eeprom_directory_t *directory, uint16_t *ids);
 
 #endif
