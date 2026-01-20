@@ -77,6 +77,32 @@ def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsuppor
         fix_compile_commands()
 
 # ==============================================================================
+# CGEN command
+# ==============================================================================
+
+@app.command(help="Generate CGEN code for your project")
+def cgen(path: Path = typer.Option(Path("./Core"), "--output-path","-o", help="Output path for generated files (must contain Inc and Src subdirectories"),
+         project: str | None = typer.Option(None, "--project", "-p", help="The project/node to generate for.  This will autodetect project if unset.")):
+    def generate_project() -> str:
+        curr_project = os.path.basename(os.getcwd())
+        if curr_project == "TSECU-Shepherd":
+            return "BMS"
+        if curr_project == "Cerberus-2.0":
+            return "VCU"
+        if curr_project == "Lightning":
+            return "Lightning"
+        if curr_project == "MSB-FW-2":
+            return "MSB"
+        print("[bold red] Error: No valid project found")
+        sys.exit(1)
+
+    if project is None:
+        project = generate_project()
+
+    run_command(["python3", "./Drivers/Odyssey-Definitions/code-gen/codegen.py", project, path], stream_output=True)
+
+
+# ==============================================================================
 # Clang command
 # ==============================================================================
 
