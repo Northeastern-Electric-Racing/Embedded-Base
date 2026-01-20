@@ -22,7 +22,7 @@ static void _put_alloc_table(uint8_t *table, uint16_t id, uint8_t val)
 }
 
 static eeprom_status_t _update_eeprom_alloc_table(eeprom_directory_t *directory,
-						 uint16_t id)
+						  uint16_t id)
 {
 	uint16_t data_index = byte_index(id);
 	m24c32_t *device = directory->device;

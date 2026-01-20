@@ -54,7 +54,7 @@ eeprom_status_t _init_storage(eeprom_directory_t *directory);
  * @retval EEPROM_ERROR If EEPROM read operation fails.
  */
 eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
-			 uint8_t **out, uint16_t *out_size);
+			  uint8_t **out, uint16_t *out_size);
 
 /**
  * @brief Store data in EEPROM using block IDs.
@@ -75,7 +75,7 @@ eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
  * @retval EEPROM_ERROR If EEPROM write operation fails.
  */
 eeprom_status_t _put_data(eeprom_directory_t *directory, const uint16_t *ids,
-			 uint8_t *value, uint16_t value_size);
+			  uint8_t *value, uint16_t value_size);
 
 /**
  * @brief Delete data blocks from EEPROM.
