@@ -14,7 +14,7 @@ static uint16_t *_get_ids(eeprom_directory_t *directory, const uint8_t *key)
 }
 
 static eeprom_status_t _set_key(eeprom_directory_t *directory,
-			       const uint8_t *key, uint16_t *ids)
+				const uint8_t *key, uint16_t *ids)
 {
 	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;
@@ -34,7 +34,7 @@ static eeprom_status_t _set_key(eeprom_directory_t *directory,
 }
 
 static eeprom_status_t _delete_key(eeprom_directory_t *directory,
-				  const uint8_t *key)
+				   const uint8_t *key)
 {
 	m24c32_t *device = directory->device;
 	directory_key_map_t *key_map = directory->key_map;

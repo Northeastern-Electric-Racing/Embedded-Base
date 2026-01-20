@@ -53,7 +53,7 @@ eeprom_status_t _init_storage(eeprom_directory_t *directory)
 }
 
 eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
-			 uint8_t **out, uint16_t *out_size)
+			  uint8_t **out, uint16_t *out_size)
 {
 	uint8_t id_count = _get_id_count(ids);
 	*out_size = BLOCK_SIZE * id_count;
@@ -94,7 +94,7 @@ eeprom_status_t _get_data(eeprom_directory_t *directory, const uint16_t *ids,
 }
 
 eeprom_status_t _put_data(eeprom_directory_t *directory, const uint16_t *ids,
-			 uint8_t *value, uint16_t value_size)
+			  uint8_t *value, uint16_t value_size)
 {
 	uint8_t id_count = _get_id_count(ids);
 	uint8_t *block_buffer = malloc(BLOCK_SIZE);
