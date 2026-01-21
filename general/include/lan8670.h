@@ -193,12 +193,21 @@ int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx);
 int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status);
 
 /**
- * @brief Reads the PLCA TOTMR (Transmit Opportunity Timer) setting.
+ * @brief Reads the PLCA TOTMR (Transmit Opportunity Timer) setting. Should be 32 bit-times by default.
  * 
  * @param lan Pointer to the lan8670_t instance.
  * @param buffer Buffer for the register value. The value has a unit of bit-times.
  * @return Status.
  */
 int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer);
+
+/**
+ * @brief Writes the PLCA TOTMR (Transmit Opportunity Timer) setting.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Setting to write to the register. Should be an integer with a unit of bit-times.
+ * @return Status.
+ */
+int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data);
 
 // clang-format on
