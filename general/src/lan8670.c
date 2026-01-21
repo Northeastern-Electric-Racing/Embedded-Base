@@ -506,28 +506,31 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id)
 /* false=The PLCA reconciliation sublayer is not regularly receiving or transmitting the BEACON, true=The PLCA reconciliation sublayer is regularly receiving or transmitting the BEACON. */
 int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status) {
     uint16_t reading = 0;
-    int status = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_STS, 15, 15, &reading);
-    if(status != LAN8670_STATUS_OK) {
-        PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", status);
-        return status;
+    int error = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_STS, 15, 15, &reading);
+    if(error != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", error);
+        return error;
     }
 
-    if(reading == 0) {
-        return false;
+    if(reading == 1) {
+        *status = true;
+    } else {
+        *status = false;
     }
-    return true;
+
+    return LAN8670_STATUS_OK;
 }
 
 /* Reads the value of the TOMTR register. Should be 32 bit-times by default. */
 int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, uint8_t *buffer) {
-    uint8_t reading = 0;
+    uint16_t reading = 0;
     int status = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_TOTMR, 0, 7, &reading);
     if(status != LAN8670_STATUS_OK) {
         PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", status);
         return status;
     }
 
-    *buffer = reading;
+    *buffer = (uint8_t)reading;
     return LAN8670_STATUS_OK;
 }
 
