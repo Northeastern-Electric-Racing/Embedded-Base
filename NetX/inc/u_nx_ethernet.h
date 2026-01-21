@@ -18,9 +18,9 @@
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
 
 typedef enum {
-	VCU = (1 << 0),     // 0b00000001
-	COMPUTE = (1 << 1), // 0b00000010
-	TPU = (1 << 2),     // 0b00000100
+	TPU = (1 << 0),     // 0b00000001
+	VCU = (1 << 1), 	// 0b00000010
+	COMPUTE = (1 << 2), // 0b00000100
 	MSB1 = (1 << 3),    // 0b00001000
 	MSB2 = (1 << 4),    // 0b00010000
 	MSB3 = (1 << 5),    // 0b00100000
@@ -38,9 +38,9 @@ typedef enum {
    LAN8670_PLCA_Set_Node_Id(&lan8670, PLCA_VCU) // replace 'PLCA_VCU' with whatever board it is		
    */
 typedef enum {
-	PLCA_VCU,		// 0. This is the PLCA coordinator node.
+	PLCA_TPU,		// 0. This is the PLCA coordinator node.
+	PLCA_VCU,
 	PLCA_COMPUTE,
-	PLCA_TPU,
 	PLCA_MSB1,
 	PLCA_MSB2,
 	PLCA_MSB3,
