@@ -10,6 +10,7 @@
 
 #include <stdio.h> // Used for debug()
 #include <stdarg.h> // Used for debug()
+#include "u_tx_debug.h"
 
 /* SMI Registers */
 #define REG_BASIC_CONTROL 		0x00 // Basic Control Register. (Datasheet pgs. 63-64)
@@ -317,9 +318,8 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
  * @param value Pointer to store the read value.
  * @return Status.
  */
-static int __attribute__((unused)) mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
+static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
 {
-    // NOTE: Remove the __attribute__((unused)) if this function gets used.
 
     /* Validate bit range */
     if (start > end) {
@@ -501,6 +501,21 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id)
 {
     // Modify bits 0-7 of the PLCA Control 1 Register to whatever 'id' is.
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
+}
+
+/* false=The PLCA reconciliation sublayer is not regularly receiving or transmitting the BEACON, true=The PLCA reconciliation sublayer is regularly receiving or transmitting the BEACON. */
+int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status) {
+    uint16_t reading = 0;
+    int status = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_STS, 15, 15, &reading);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    if(reading == 0) {
+        return false;
+    }
+    return true;
 }
 
 int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
