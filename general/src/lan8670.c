@@ -541,6 +541,8 @@ int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data) {
         PRINTLN_ERROR("Failed to call mmd_write_register_field() (Status: %d).", status);
         return status;
     }
+
+    return LAN8670_STATUS_OK;
 }
 
 int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
