@@ -522,7 +522,7 @@ int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status) {
 }
 
 /* Reads the value of the TOMTR register. Should be 32 bit-times by default. */
-int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, uint8_t *buffer) {
+int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer) {
     uint16_t reading = 0;
     int status = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_TOTMR, 0, 7, &reading);
     if(status != LAN8670_STATUS_OK) {
