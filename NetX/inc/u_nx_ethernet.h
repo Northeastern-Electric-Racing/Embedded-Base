@@ -27,7 +27,7 @@ typedef enum {
 	MSB4 = (1 << 6),    // 0b01000000
 	NODE8 = (1 << 7),   // 0b10000000
 } ethernet_node_t;
-#define ETH_IP(node) IP_ADDRESS(239, 0, 0, node)
+#define ETH_IP(node) IP_ADDRESS(224, 0, 0, node)
 
 /* These node ids are ONLY relavent to PLCA configuration.
    They are meant to be used when configuring a PHY. The IDs must be sequential, and the "0" id always indicates the network's coordinator node.
@@ -55,7 +55,7 @@ typedef struct {
 	uint8_t recipient_id;
 	uint8_t message_id;
 	uint8_t data_length;
-	uint8_t data[ETH_MESSAGE_SIZE];
+	uint8_t data[10]; // change back
 } ethernet_message_t;
 
 /* Function Pointers (for initialization). */

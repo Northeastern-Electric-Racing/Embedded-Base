@@ -8,7 +8,7 @@
 
 /* PRIVATE MACROS */
 #define _PACKET_POOL_SIZE \
-	((sizeof(ethernet_message_t) + sizeof(NX_PACKET)) * ETH_MAX_PACKETS)
+	((sizeof(ethernet_message_t) + sizeof(NX_PACKET)) * ETH_MAX_PACKETS * 100)
 #define _IP_THREAD_STACK_SIZE 2048
 #define _ARP_CACHE_SIZE	      1024
 #define _IP_THREAD_PRIORITY   1
@@ -109,7 +109,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     status = nx_packet_pool_create(
         &device.packet_pool,        // Pointer to the packet pool instance
         "Ethernet Packet Pool",     // Name
-        sizeof(ethernet_message_t), // Payload size (i.e. the size of each packet)
+        sizeof(ethernet_message_t) + 128, // Payload size (i.e. the size of each packet)
         device.packet_pool_memory,  // Pointer to the pool's memory area
         _PACKET_POOL_SIZE           // Size of the pool's memory area
     );
@@ -263,6 +263,18 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         return U_ERROR;
     }
 
+    PRINTLN_INFO("got to this part of ethernet_send_message()");
+
+    /* Make sure interface is up. */
+    ULONG actual_status = 0;
+    status = nx_ip_interface_status_check(&device.ip, 0, NX_IP_LINK_ENABLED, &actual_status, TX_WAIT_FOREVER);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_ip_interface_status_check() (Status: %d/%s).", status, nx_status_toString(status));
+        return U_ERROR;
+    } else {
+        PRINTLN_INFO("Succeeded calling nx_ip_interface_status_check() (Status: %d/%s).", status, nx_status_toString(status));
+    }
+
     /* Allocate a packet */
     status = nx_packet_allocate(
         &device.packet_pool,        // Packet pool
@@ -274,6 +286,8 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         PRINTLN_ERROR("Failed to allocate packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
         return U_ERROR;
     }
+
+    PRINTLN_INFO("got to nx_packet_allocate() part of send message");
 
     /* Append message data to packet */
     status = nx_packet_data_append(
@@ -289,6 +303,16 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         return U_ERROR;
     }
 
+    PRINTLN_INFO("got to nx_packet_data_append() part of send message");
+
+    ULONG length = 0;
+    status = nx_packet_length_get(packet, &length);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_packet_length_get() (Status: %d/%n).", status, nx_status_toString(status));
+    } else {
+        PRINTLN_INFO("Packet has length of %d!", length);
+    }
+
     /* Send message */
     status = nx_udp_socket_send(
         &device.socket,
@@ -297,12 +321,14 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         ETH_UDP_PORT
     );
     if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to send packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
+        PRINTLN_ERROR("Failed to send packet (Status: %d/%s, Message ID: %d, Recipient ID: %d, IP Address: %d, IP components: 224.0.0.%d).", status, nx_status_toString(status), message->message_id, message->recipient_id, ETH_IP(message->recipient_id), ETH_IP(message->recipient_id));
         nx_packet_release(packet);
         return U_ERROR;
     }
 
-    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
+    PRINTLN_INFO("got to nx_udp_socket_send() part of send message");
+
+    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d, Message Contents: %d).", message->recipient_id, message->message_id, message->data);
     return U_SUCCESS;
 }
 // clang-format on
