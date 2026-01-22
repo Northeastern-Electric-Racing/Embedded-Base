@@ -1,5 +1,6 @@
 // clang-format off
 #include "u_nx_ethernet.h"
+#include "nx_stm32_eth_driver.h"
 #include "u_nx_debug.h"
 #include "u_tx_debug.h"
 #include "nx_api.h"
@@ -267,7 +268,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
 
     /* Make sure interface is up. */
     ULONG actual_status = 0;
-    status = nx_ip_interface_status_check(&device.ip, 0, NX_IP_LINK_ENABLED, &actual_status, TX_WAIT_FOREVER);
+    status = nx_ip_interface_status_check(&device.ip, 0, NX_IP_LINK_ENABLED, &actual_status, 1000);
     if(status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to call nx_ip_interface_status_check() (Status: %d/%s).", status, nx_status_toString(status));
         return U_ERROR;
@@ -329,6 +330,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
     PRINTLN_INFO("got to nx_udp_socket_send() part of send message");
 
     PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d, Message Contents: %d).", message->recipient_id, message->message_id, message->data);
+    PRINTLN_INFO("TX complete count: %lu", tx_complete_count);
     return U_SUCCESS;
 }
 // clang-format on
