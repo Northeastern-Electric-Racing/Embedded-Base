@@ -18,3 +18,10 @@ unsigned char reverse_bits(unsigned char b)
 	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
 	return b;
 }
+
+float linear_interpolate(float x, float x1, float x2, float y1, float y2)
+{
+	assert(fabs(x2 - x1) > 0.0001f);
+
+	return y1 + ((x - x1) * (y2 - y1) / (x2 - x1));
+}
