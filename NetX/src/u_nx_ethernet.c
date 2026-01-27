@@ -9,14 +9,16 @@
 #include <stdio.h>
 
 /* PRIVATE MACROS */
-#define _PACKET_POOL_SIZE \
-	((sizeof(ethernet_message_t) + sizeof(NX_PACKET)) * ETH_MAX_PACKETS * 100)
 #define _IP_THREAD_STACK_SIZE 2048
 #define _ARP_CACHE_SIZE	      1024
 #define _IP_THREAD_PRIORITY   1
 #define _IP_NETWORK_MASK      IP_ADDRESS(255, 255, 255, 0)
 #define _UDP_QUEUE_MAXIMUM    12
 #define _PTP_THREAD_PRIORITY 2
+
+/* The DEFAULT_PAYLOAD_SIZE should match with RxBuffLen configured via MX_ETH_Init */
+#define DEFAULT_PAYLOAD_SIZE      1524
+#define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 10)
 
 /* DEVICE INFO */
 typedef struct {
@@ -28,7 +30,7 @@ typedef struct {
 	SHORT ptp_utc_offset;
 
 	/* Static memory for NetX stuff */
-	UCHAR packet_pool_memory[_PACKET_POOL_SIZE];
+	UCHAR packet_pool_memory[NX_APP_PACKET_POOL_SIZE];
 	UCHAR ip_memory[_IP_THREAD_STACK_SIZE];
 	UCHAR arp_cache_memory[_ARP_CACHE_SIZE];
 	ULONG ptp_stack[2048 / sizeof(ULONG)];
@@ -155,9 +157,9 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     status = nx_packet_pool_create(
         &device.packet_pool,        // Pointer to the packet pool instance
         "Ethernet Packet Pool",     // Name
-        sizeof(ethernet_message_t) + 128, // Payload size (i.e. the size of each packet)
+        DEFAULT_PAYLOAD_SIZE, // Payload size (i.e. the size of each packet)
         device.packet_pool_memory,  // Pointer to the pool's memory area
-        _PACKET_POOL_SIZE           // Size of the pool's memory area
+        NX_APP_PACKET_POOL_SIZE           // Size of the pool's memory area
     );
     if(status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to create packet pool (Status: %d/%s).", status, nx_status_toString(status));
@@ -236,7 +238,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     }
 
     /* start the PTP client */
-    status = nx_ptp_client_start(&device.ptp_client, NX_NULL, 0, 0, NX_PTP_TRANSPORT_SPECIFIC_NON_802, _ptp_event_callback, NX_NULL);
+    status = nx_ptp_client_start(&device.ptp_client, NX_NULL, 0, 0, 0, _ptp_event_callback, NX_NULL);
     if(status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to start PTP client (Status: %d/%s).", status, nx_status_toString(status));
         return status;
