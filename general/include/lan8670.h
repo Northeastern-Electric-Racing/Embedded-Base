@@ -182,4 +182,32 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state);
  * @return Status.
  */
 int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx);
+
+/**
+ * @brief Reads the PLCA status.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param status Buffer for the returned status value. false=The PLCA reconciliation sublayer is not regularly receiving or transmitting the BEACON, true=The PLCA reconciliation sublayer is regularly receiving or transmitting the BEACON
+ * @return Status (an error code, not related to the *status bool).
+ */
+int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status);
+
+/**
+ * @brief Reads the PLCA TOTMR (Transmit Opportunity Timer) setting. Should be 32 bit-times by default.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param buffer Buffer for the register value. The value has a unit of bit-times.
+ * @return Status.
+ */
+int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer);
+
+/**
+ * @brief Writes the PLCA TOTMR (Transmit Opportunity Timer) setting.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Setting to write to the register. Should be an integer with a unit of bit-times.
+ * @return Status.
+ */
+int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data);
+
 // clang-format on

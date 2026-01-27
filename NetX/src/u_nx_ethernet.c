@@ -1,5 +1,7 @@
 // clang-format off
 #include "u_nx_ethernet.h"
+#include "nx_stm32_eth_driver.h"
+#include "nxd_ptp_client.h"
 #include "u_nx_debug.h"
 #include "u_tx_debug.h"
 #include "nx_api.h"
@@ -7,13 +9,16 @@
 #include <stdio.h>
 
 /* PRIVATE MACROS */
-#define _PACKET_POOL_SIZE \
-	((sizeof(ethernet_message_t) + sizeof(NX_PACKET)) * ETH_MAX_PACKETS)
 #define _IP_THREAD_STACK_SIZE 2048
 #define _ARP_CACHE_SIZE	      1024
 #define _IP_THREAD_PRIORITY   1
 #define _IP_NETWORK_MASK      IP_ADDRESS(255, 255, 255, 0)
 #define _UDP_QUEUE_MAXIMUM    12
+#define _PTP_THREAD_PRIORITY 2
+
+/* The DEFAULT_PAYLOAD_SIZE should match with RxBuffLen configured via MX_ETH_Init */
+#define DEFAULT_PAYLOAD_SIZE      1524
+#define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 10)
 
 /* DEVICE INFO */
 typedef struct {
@@ -21,11 +26,14 @@ typedef struct {
 	NX_UDP_SOCKET socket;
 	NX_PACKET_POOL packet_pool;
 	NX_IP ip;
+	NX_PTP_CLIENT ptp_client;
+	SHORT ptp_utc_offset;
 
 	/* Static memory for NetX stuff */
-	UCHAR packet_pool_memory[_PACKET_POOL_SIZE];
+	UCHAR packet_pool_memory[NX_APP_PACKET_POOL_SIZE];
 	UCHAR ip_memory[_IP_THREAD_STACK_SIZE];
 	UCHAR arp_cache_memory[_ARP_CACHE_SIZE];
+	ULONG ptp_stack[2048 / sizeof(ULONG)];
 
 	/* Device config variables */
 	bool is_initialized;
@@ -35,6 +43,45 @@ typedef struct {
 	OnRecieve on_recieve; /* Set by the user. Called when a message is recieved. */
 } _ethernet_device_t;
 static _ethernet_device_t device = { 0 };
+
+/* Callback function. Called when a PTP event is processed. */
+// extern UINT ptp_clock_callback(NX_PTP_CLIENT *client_ptr, UINT operation,
+//         NX_PTP_TIME *time_ptr, NX_PACKET *packet_ptr,
+//         VOID *callback_data);
+
+/* Callback function. Called when a PTP event is processed. */
+static UINT _ptp_event_callback(NX_PTP_CLIENT *ptp_client_ptr, UINT event, VOID *event_data, VOID *callback_data)
+{
+  NX_PARAMETER_NOT_USED(callback_data);
+
+  switch (event)
+  {
+    case NX_PTP_CLIENT_EVENT_MASTER:
+    {
+      PRINTLN_WARNING("new MASTER clock!");
+      break;
+    }
+
+    case NX_PTP_CLIENT_EVENT_SYNC:
+    {
+      nx_ptp_client_sync_info_get((NX_PTP_CLIENT_SYNC *)event_data, NX_NULL, &device.ptp_utc_offset);
+      PRINTLN_INFO("SYNC event: utc offset=%d", device.ptp_utc_offset);
+      break;
+    }
+
+    case NX_PTP_CLIENT_EVENT_TIMEOUT:
+    {
+      PRINTLN_WARNING("Master clock TIMEOUT!");
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+
+  return 0;
+}
 
 /* Callback function. Called when an ethernet message is received. */
 static void _receive_message(NX_UDP_SOCKET *socket) {
@@ -91,8 +138,9 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
 /* API FUNCTIONS */
 
 uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve) {
-    
+
     uint8_t status;
+    device.ptp_utc_offset = 0; // no offset to start
 
     /* Make sure device isn't already initialized */
     if(device.is_initialized) {
@@ -109,9 +157,9 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     status = nx_packet_pool_create(
         &device.packet_pool,        // Pointer to the packet pool instance
         "Ethernet Packet Pool",     // Name
-        sizeof(ethernet_message_t), // Payload size (i.e. the size of each packet)
+        DEFAULT_PAYLOAD_SIZE, // Payload size (i.e. the size of each packet)
         device.packet_pool_memory,  // Pointer to the pool's memory area
-        _PACKET_POOL_SIZE           // Size of the pool's memory area
+        NX_APP_PACKET_POOL_SIZE           // Size of the pool's memory area
     );
     if(status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to create packet pool (Status: %d/%s).", status, nx_status_toString(status));
@@ -161,11 +209,11 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         return status;
     }
 
-    /* Set up multicast groups. 
+    /* Set up multicast groups.
     *  (This iterates through every possible node combination between 0b00000001 and 0b11111111.
     *  If any of the combinations include device.node_id, that combination gets added as a multicast group.
     *  This ensures that ethernet messages can be sent to all possible combinations of recipients.)
-    * 
+    *
     *  Note: This is probably pretty inefficient. I did it so you don't have to manually set up
     *        multicast groups any time you want to send a message to a new combination of nodes,
     *        but if this setup ends up being too slow or something, feel free to get rid of it.
@@ -178,6 +226,22 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
                 PRINTLN_ERROR("Failed to join multicast group (Status: %d/%s, Address: %lu).", status, nx_status_toString(status), address);
             }
         }
+    }
+
+    /* Create the PTP client instance */
+    status = nx_ptp_client_create(&device.ptp_client, &device.ip, 0, &device.packet_pool,
+                           _PTP_THREAD_PRIORITY, (UCHAR *)&device.ptp_stack, sizeof(device.ptp_stack),
+                           _nx_ptp_client_soft_clock_callback, NX_NULL);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to create PTP client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    /* start the PTP client */
+    status = nx_ptp_client_start(&device.ptp_client, NX_NULL, 0, 0, 0, _ptp_event_callback, NX_NULL);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to start PTP client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
     }
 
     /* Create UDP socket for broadcasting */
@@ -263,6 +327,18 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         return U_ERROR;
     }
 
+    PRINTLN_INFO("got to this part of ethernet_send_message()");
+
+    /* Make sure interface is up. */
+    ULONG actual_status = 0;
+    status = nx_ip_interface_status_check(&device.ip, 0, NX_IP_LINK_ENABLED, &actual_status, 1000);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_ip_interface_status_check() (Status: %d/%s).", status, nx_status_toString(status));
+        return U_ERROR;
+    } else {
+        PRINTLN_INFO("Succeeded calling nx_ip_interface_status_check() (Status: %d/%s).", status, nx_status_toString(status));
+    }
+
     /* Allocate a packet */
     status = nx_packet_allocate(
         &device.packet_pool,        // Packet pool
@@ -274,6 +350,8 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         PRINTLN_ERROR("Failed to allocate packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
         return U_ERROR;
     }
+
+    PRINTLN_INFO("got to nx_packet_allocate() part of send message");
 
     /* Append message data to packet */
     status = nx_packet_data_append(
@@ -289,6 +367,16 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         return U_ERROR;
     }
 
+    PRINTLN_INFO("got to nx_packet_data_append() part of send message");
+
+    ULONG length = 0;
+    status = nx_packet_length_get(packet, &length);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_packet_length_get() (Status: %d/%n).", status, nx_status_toString(status));
+    } else {
+        PRINTLN_INFO("Packet has length of %d!", length);
+    }
+
     /* Send message */
     status = nx_udp_socket_send(
         &device.socket,
@@ -297,12 +385,27 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
         ETH_UDP_PORT
     );
     if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to send packet (Status: %d/%s, Message ID: %d).", status, nx_status_toString(status), message->message_id);
+        PRINTLN_ERROR("Failed to send packet (Status: %d/%s, Message ID: %d, Recipient ID: %d, IP Address: %d, IP components: 224.0.0.%d).", status, nx_status_toString(status), message->message_id, message->recipient_id, ETH_IP(message->recipient_id), ETH_IP(message->recipient_id));
         nx_packet_release(packet);
         return U_ERROR;
     }
 
-    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d).", message->recipient_id, message->message_id);
+    PRINTLN_INFO("got to nx_udp_socket_send() part of send message");
+
+    PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d, Message Contents: %d).", message->recipient_id, message->message_id, message->data);
     return U_SUCCESS;
 }
+
+NX_PTP_DATE_TIME ethernet_get_time(void) {
+    NX_PTP_TIME tm;
+    NX_PTP_DATE_TIME date;
+    /* read the PTP clock */
+    nx_ptp_client_time_get(&device.ptp_client, &tm);
+
+    /* convert PTP time to UTC date and time */
+    nx_ptp_client_utility_convert_time_to_date(&tm, 0, &date);
+
+    return date;
+}
+
 // clang-format on
