@@ -1,4 +1,6 @@
 #include "c_utils.h"
+#include <assert.h>
+#include <math.h>
 
 void endian_swap(void *ptr, int size)
 {
