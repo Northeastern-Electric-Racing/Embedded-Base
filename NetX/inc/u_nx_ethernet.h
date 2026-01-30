@@ -56,7 +56,7 @@ typedef struct {
 	uint8_t recipient_id;
 	uint8_t message_id;
 	uint8_t data_length;
-	uint8_t data[10]; // change back
+	uint8_t data[ETH_MESSAGE_SIZE];
 } ethernet_message_t;
 
 /* Function Pointers (for initialization). */
