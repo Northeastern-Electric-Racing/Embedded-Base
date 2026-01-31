@@ -6155,4 +6155,4 @@ LONG  ns;
     time_ptr -> nanosecond  = ns;
 }
 
-// clang-format on
+    // clang-format on
