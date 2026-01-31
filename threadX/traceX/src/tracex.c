@@ -21,31 +21,40 @@ static UCHAR *s_trace_buffer = NULL;
 static uint32_t s_trace_size = 0U;
 static bool s_tracex_started = false;
 
-void tracex_init(UCHAR *buffer, uint32_t size) {
-  s_trace_buffer = buffer;
-  s_trace_size = size;
+void tracex_init(UCHAR *buffer, uint32_t size)
+{
+	s_trace_buffer = buffer;
+	s_trace_size = size;
 }
 
-UCHAR *tracex_get_buffer(void) { return s_trace_buffer; }
-
-uint32_t tracex_get_buffer_size(void) { return s_trace_size; }
-
-void tracex_start(void) {
-  if ((s_tracex_started == true) || (s_trace_buffer == NULL) ||
-      (s_trace_size == 0U)) {
-    return;
-  }
-
-  tracex_enable_cycle_counter();
-  tx_trace_enable(s_trace_buffer, s_trace_size, 32U);
-  s_tracex_started = true;
+UCHAR *tracex_get_buffer(void)
+{
+	return s_trace_buffer;
 }
 
-void tracex_stop(void) {
-  if (s_tracex_started == false) {
-    return;
-  }
+uint32_t tracex_get_buffer_size(void)
+{
+	return s_trace_size;
+}
 
-  tx_trace_disable();
-  s_tracex_started = false;
+void tracex_start(void)
+{
+	if ((s_tracex_started == true) || (s_trace_buffer == NULL) ||
+	    (s_trace_size == 0U)) {
+		return;
+	}
+
+	tracex_enable_cycle_counter();
+	tx_trace_enable(s_trace_buffer, s_trace_size, 32U);
+	s_tracex_started = true;
+}
+
+void tracex_stop(void)
+{
+	if (s_tracex_started == false) {
+		return;
+	}
+
+	tx_trace_disable();
+	s_tracex_started = false;
 }
