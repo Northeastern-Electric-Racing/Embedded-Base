@@ -72,7 +72,7 @@ int32_t LAN8670_Reset(lan8670_t *lan); // Performs a software reset of the LAN86
  * @param setting true to enable loopback mode, false to disable it.
  * @return Status.
  */
-int32_t LAN8670_Loopback(lan8670_t *lan, bool setting); // Enables or disables loopback mode on the LAN8670.
+int32_t LAN8670_Loopback(lan8670_t *lan, bool setting); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
 /**
  * @brief Enables or disables the LAN8670's low power mode.
@@ -84,7 +84,7 @@ int32_t LAN8670_Loopback(lan8670_t *lan, bool setting); // Enables or disables l
  * @param setting true to enable low power mode, false to disable it.
  * @return Status.
  */
-int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's low power mode.
+int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
 /**
  * @brief Electrically isolates the LAN8670 from MII/RMII.
@@ -92,7 +92,7 @@ int32_t LAN8670_Low_Power_Mode(lan8670_t *lan, bool setting); // Enables or disa
  * @param setting true to isolate the device, false for normal operation.
  * @return Status.
  */
-int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // Electrically isolates the LAN8670 from MII/RMII.
+int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
 /**
  * @brief Enables or disables the LAN8670's collision test mode.
@@ -105,7 +105,7 @@ int32_t LAN8670_Isolate(lan8670_t *lan, bool setting); // Electrically isolates 
  * @param setting true to enable collision test mode, false to disable it.
  * @return Status.
  */
-int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting); // Enables or disables the LAN8670's collision test mode.
+int32_t LAN8670_Collision_Test(lan8670_t *lan, bool setting); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
 /**
  * @brief Enables or disables collision detection on the LAN8670.
@@ -134,7 +134,7 @@ int32_t LAN8670_PLCA_On(lan8670_t *lan, bool setting);
  * @param lan Pointer to the lan8670_t instance.
  * @return Status.
  */
-int32_t LAN8670_PLCA_Reset(lan8670_t *lan);
+int32_t LAN8670_PLCA_Reset(lan8670_t *lan); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
 /**
  * @brief Configures the maximum number of nodes supported on the multidrop network.
@@ -182,4 +182,32 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state);
  * @return Status.
  */
 int32_t LAN8670_RegisterBusIO(lan8670_t *lan, lan8670_IOCtx_t *ioctx);
+
+/**
+ * @brief Reads the PLCA status.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param status Buffer for the returned status value. false=The PLCA reconciliation sublayer is not regularly receiving or transmitting the BEACON, true=The PLCA reconciliation sublayer is regularly receiving or transmitting the BEACON
+ * @return Status (an error code, not related to the *status bool).
+ */
+int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status); // NOTE: This function has not been tested yet (as of 01/31/2026).
+
+/**
+ * @brief Reads the PLCA TOTMR (Transmit Opportunity Timer) setting. Should be 32 bit-times by default.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param buffer Buffer for the register value. The value has a unit of bit-times.
+ * @return Status.
+ */
+int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer); // NOTE: This function has not been tested yet (as of 01/31/2026).
+
+/**
+ * @brief Writes the PLCA TOTMR (Transmit Opportunity Timer) setting.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Setting to write to the register. Should be an integer with a unit of bit-times.
+ * @return Status.
+ */
+int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data); // NOTE: This function has not been tested yet (as of 01/31/2026).
+
 // clang-format on
