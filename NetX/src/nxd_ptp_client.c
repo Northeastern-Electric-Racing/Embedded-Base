@@ -6154,4 +6154,5 @@ LONG  ns;
     time_ptr -> second_low  = sec_lo;
     time_ptr -> nanosecond  = ns;
 }
+
 // clang-format on
