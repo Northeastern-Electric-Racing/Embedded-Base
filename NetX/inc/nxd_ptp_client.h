@@ -1,3 +1,5 @@
+// clang-format off
+
 /**************************************************************************/
 /*                                                                        */
 /*       Copyright (c) Microsoft Corporation. All rights reserved.        */
@@ -777,3 +779,4 @@ VOID _nx_ptp_client_utility_neg64(LONG *a_hi, ULONG *a_lo);
 #endif
 
 #endif  /* NX_PTP_CLIENT_H */
+// clang-format on

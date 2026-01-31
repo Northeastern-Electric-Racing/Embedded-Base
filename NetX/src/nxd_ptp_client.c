@@ -1,3 +1,5 @@
+// clang-format off
+
 /**************************************************************************/
 /*                                                                        */
 /*       Copyright (c) Microsoft Corporation. All rights reserved.        */
@@ -6152,3 +6154,4 @@ LONG  ns;
     time_ptr -> second_low  = sec_lo;
     time_ptr -> nanosecond  = ns;
 }
+// clang-format on
