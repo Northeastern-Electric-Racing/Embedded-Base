@@ -7,16 +7,6 @@
 #include "tracex.h"
 #include <stdbool.h>
 
-/**
- * @brief Enable the CPU cycle counter used by TraceX timestamps.
- *
- * This function is implemented by the application or platform layer.
- * It must enable a free-running CPU cycle counter before TraceX is started.
- *
- * It is called once from tracex_start().
- */
-void tracex_enable_cycle_counter(void);
-
 static UCHAR *s_trace_buffer = NULL;
 static uint32_t s_trace_size = 0U;
 static bool s_tracex_started = false;
@@ -44,7 +34,6 @@ void tracex_start(void)
 		return;
 	}
 
-	tracex_enable_cycle_counter();
 	tx_trace_enable(s_trace_buffer, s_trace_size, 32U);
 	s_tracex_started = true;
 }
