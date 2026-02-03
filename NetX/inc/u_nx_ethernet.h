@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "nx_api.h"
+#include "nxd_ptp_client.h"
 
 /* CONFIG */
 #define ETH_UDP_PORT	    2006 /* UDP port for communication */
@@ -18,29 +19,29 @@
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
 
 typedef enum {
-	VCU = (1 << 0),     // 0b00000001
-	COMPUTE = (1 << 1), // 0b00000010
-	TPU = (1 << 2),     // 0b00000100
+	TPU = (1 << 0),     // 0b00000001
+	VCU = (1 << 1), 	// 0b00000010
+	COMPUTE = (1 << 2), // 0b00000100
 	MSB1 = (1 << 3),    // 0b00001000
 	MSB2 = (1 << 4),    // 0b00010000
 	MSB3 = (1 << 5),    // 0b00100000
 	MSB4 = (1 << 6),    // 0b01000000
 	NODE8 = (1 << 7),   // 0b10000000
 } ethernet_node_t;
-#define ETH_IP(node) IP_ADDRESS(239, 0, 0, node)
+#define ETH_IP(node) IP_ADDRESS(224, 0, 0, node)
 
 /* These node ids are ONLY relavent to PLCA configuration.
    They are meant to be used when configuring a PHY. The IDs must be sequential, and the "0" id always indicates the network's coordinator node.
-   They have no impact on application-level IP addresses or message processing. 
-   
+   They have no impact on application-level IP addresses or message processing.
+
    For example, if you're using the LAN8670 PHY driver, you'd probably use these enum values like this:
    LAN8670_PLCA_Set_Node_Count(&lan8670, PLCA_NUM_NODES);
-   LAN8670_PLCA_Set_Node_Id(&lan8670, PLCA_VCU) // replace 'PLCA_VCU' with whatever board it is		
+   LAN8670_PLCA_Set_Node_Id(&lan8670, PLCA_VCU) // replace 'PLCA_VCU' with whatever board it is
    */
 typedef enum {
-	PLCA_VCU,		// 0. This is the PLCA coordinator node.
+	PLCA_TPU,		// 0. This is the PLCA coordinator node.
+	PLCA_VCU,
 	PLCA_COMPUTE,
-	PLCA_TPU,
 	PLCA_MSB1,
 	PLCA_MSB2,
 	PLCA_MSB3,
@@ -87,6 +88,12 @@ ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t r
  * @return Status.
  */
 uint8_t ethernet_send_message(ethernet_message_t *message);
+
+/**
+ * @brief Retrieves the time from PTP stack.
+ * @return The UTC time
+ */
+NX_PTP_DATE_TIME ethernet_get_time(void);
 
 // clang-format on
 #endif /* u_nx_ethernet.h */
