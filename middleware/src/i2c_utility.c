@@ -38,20 +38,20 @@ int i2cdetect(I2C_HandleTypeDef *hi2c, char **buffer, int mode, uint8_t start,
 
 				// Device status case
 				switch (ret) {
-				case HAL_BUSY:
-					strcpy(status,
-					       "UU"); // the bus is considered busy
-					break;
-				case HAL_OK:
-					utoa(devAddr, status,
-					     HEX); // reads the hexadecimal address and turns it into a string
-					break;
-				case HAL_ERROR:
-				case HAL_TIMEOUT:
-				default:
-					strcpy(status,
-					       "--"); // no response from device or not found
-					break;
+					case HAL_BUSY:
+						strcpy(status,
+						       "UU"); // the bus is considered busy
+						break;
+					case HAL_OK:
+						utoa(devAddr, status,
+						     HEX); // reads the hexadecimal address and turns it into a string
+						break;
+					case HAL_ERROR:
+					case HAL_TIMEOUT:
+					default:
+						strcpy(status,
+						       "--"); // no response from device or not found
+						break;
 				}
 			}
 
@@ -85,81 +85,85 @@ int i2cdump(I2C_HandleTypeDef *hi2c, uint16_t devAddress, char **buffer,
 
 	// need to read from the given address of a I2C Bus.
 	switch (mode) {
-	case 'w': // A word (4 bytes or 32-bit)
-		buffer[row] = "\t\t0    4    8    b";
-		row++;
-
-		uint8_t data1 = 0;
-		for (unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
-			buffer[row] = hex_labels[row - 1];
-			char data_str[sizeof(char) * 4 + 1];
-
-			for (unsigned int j = 0x00U; j <= 0x0fU; j += 0x04U) {
-				uint16_t reg = i + j;
-				// read memory address
-				if (HAL_I2C_Mem_Read(hi2c, (devAddress << 1),
-						     reg, I2C_MEMADD_SIZE_8BIT,
-						     &data1, 4,
-						     HAL_MAX_DELAY) != HAL_OK) {
-					// error
-					return HAL_ERROR;
-				}
-
-				// convert data into char text
-				utoa(data1, data_str, HEX);
-
-				// display the value from the memory address
-				strcat(buffer[row], SPACING);
-				strcat(buffer[row], data_str);
-
-				// reset the string array
-				memset(data_str, 0, strlen(data_str));
-			}
-			strcat(buffer[row], "\n");
+		case 'w': // A word (4 bytes or 32-bit)
+			buffer[row] = "\t\t0    4    8    b";
 			row++;
-		}
-		break;
-	case 's': // A SMBus Block
-		break;
-	case 'i': // I2C Block
-		break;
-	case 'b': // Byte sized (default)
-	default:
-		// Add the labels to the first row
-		buffer[row] = HEX_LABELS;
-		row++;
 
-		uint8_t data = 0;
-		for (unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
-			// add the vertical labels
-			buffer[row] = hex_labels[row - 1];
-			char data_str[sizeof(char) * 2 + 1];
+			uint8_t data1 = 0;
+			for (unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
+				buffer[row] = hex_labels[row - 1];
+				char data_str[sizeof(char) * 4 + 1];
 
-			for (unsigned int j = 0x00U; j <= 0x0fU; j++) {
-				uint16_t reg = i + j; // get the memory address
-				// read memory address
-				if (HAL_I2C_Mem_Read(hi2c, (devAddress << 1),
-						     reg, I2C_MEMADD_SIZE_8BIT,
-						     &data, 1,
-						     HAL_MAX_DELAY) != HAL_OK) {
-					// error
-					return HAL_ERROR;
+				for (unsigned int j = 0x00U; j <= 0x0fU;
+				     j += 0x04U) {
+					uint16_t reg = i + j;
+					// read memory address
+					if (HAL_I2C_Mem_Read(
+						    hi2c, (devAddress << 1),
+						    reg, I2C_MEMADD_SIZE_8BIT,
+						    &data1, 4,
+						    HAL_MAX_DELAY) != HAL_OK) {
+						// error
+						return HAL_ERROR;
+					}
+
+					// convert data into char text
+					utoa(data1, data_str, HEX);
+
+					// display the value from the memory address
+					strcat(buffer[row], SPACING);
+					strcat(buffer[row], data_str);
+
+					// reset the string array
+					memset(data_str, 0, strlen(data_str));
 				}
-
-				// Convert data buffer into the char buffer
-				utoa(data, data_str, HEX);
-
-				// display the value from the memory address
-				strcat(buffer[row], SPACING);
-				strcat(buffer[row], data_str);
-
-				// reset the string array
-				memset(data_str, 0, strlen(data_str));
+				strcat(buffer[row], "\n");
+				row++;
 			}
-			strcat(buffer[row], "\n");
+			break;
+		case 's': // A SMBus Block
+			break;
+		case 'i': // I2C Block
+			break;
+		case 'b': // Byte sized (default)
+		default:
+			// Add the labels to the first row
+			buffer[row] = HEX_LABELS;
 			row++;
-		}
-		break;
+
+			uint8_t data = 0;
+			for (unsigned int i = 0x00U; i <= 0xf0U; i += 0x10U) {
+				// add the vertical labels
+				buffer[row] = hex_labels[row - 1];
+				char data_str[sizeof(char) * 2 + 1];
+
+				for (unsigned int j = 0x00U; j <= 0x0fU; j++) {
+					uint16_t reg =
+						i + j; // get the memory address
+					// read memory address
+					if (HAL_I2C_Mem_Read(
+						    hi2c, (devAddress << 1),
+						    reg, I2C_MEMADD_SIZE_8BIT,
+						    &data, 1,
+						    HAL_MAX_DELAY) != HAL_OK) {
+						// error
+						return HAL_ERROR;
+					}
+
+					// Convert data buffer into the char buffer
+					utoa(data, data_str, HEX);
+
+					// display the value from the memory address
+					strcat(buffer[row], SPACING);
+					strcat(buffer[row], data_str);
+
+					// reset the string array
+					memset(data_str, 0, strlen(data_str));
+				}
+				strcat(buffer[row], "\n");
+				row++;
+			}
+			break;
 	}
 	// nominal return
 	return HAL_OK;
