@@ -560,4 +560,34 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
     return LAN8670_STATUS_OK;
 }
 
+/* Returns the value of the PHY_ID1 register. This register contains the first 16 bits of the OUI (Organizationally Unique Identifier). Should be: 0b0000000000000111 in reset according to the datasheet. */
+int32_t LAN8670_Read_PHY_ID1(lan8670_t *lan, uint16_t *data) {
+    // Read all 16 bits of the PHY Identifier 1 register.
+    uint32_t value = 0;
+    int status = read_register_field(lan, REG_PHY_ID1, 0, 15, &value);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    // Store the value
+    *data = (uint16_t)value;
+    return LAN8670_STATUS_OK;
+}
+
+/* Returns the PHY manufacturer's model number. Should be 0b00010110 for the LAN8670. */
+int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data) {
+    // Read bits 9:4 of the PHY Identifier 2 Register.
+    uint32_t value = 0;
+    int status = read_register_field(lan, REG_PHY_ID2, 4, 9, &value);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    // Store the value
+    *data = (uint8_t)value;
+    return LAN8670_STATUS_OK;
+}
+
 // clang-format on
