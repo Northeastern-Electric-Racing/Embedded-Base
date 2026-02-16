@@ -1,9 +1,8 @@
 #include "rtc.h"
 #include <stdio.h>
-#include <stdint.h>
 #include "stm32h5xx_hal_rtc.h"
 
-#define ptp_utc_offset 0 // UTC 0
+#define PTP_UTC_OFFSET 0 // UTC 0
 extern RTC_HandleTypeDef hrtc1;
 
 NX_PTP_TIME *ptp_time;
@@ -30,11 +29,11 @@ static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions)
 		ptp_date_time->nanosecond / 1000, second_fractions);
 
 	UINT offset_tick = 0; // ticks to go backwards
-	UINT offset_ahead_1s = 0;
+	UINT offset_ahead_1s = RTC_SHIFTADD1S_RESET;
 	if (rtc_sub_second_tick > rtp_sub_second_tick) { // local ahead
 		offset_tick = rtc_sub_second_tick - rtp_sub_second_tick;
 	} else { // local behind
-		offset_ahead_1s = 1;
+		offset_ahead_1s = RTC_SHIFTADD1S_SET;
 		offset_tick = second_fractions + rtc_sub_second_tick -
 			      rtp_sub_second_tick;
 	}
@@ -76,7 +75,7 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			ptp_time = time_ptr;
 
 			nx_ptp_client_utility_convert_time_to_date(
-				ptp_time, -ptp_utc_offset, ptp_date_time);
+				ptp_time, -PTP_UTC_OFFSET, ptp_date_time);
 
 			RTC_TimeTypeDef rtp_time = {
 				.Hours = ptp_date_time->hour,
@@ -160,7 +159,7 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			ptp_time = time_ptr;
 
 			nx_ptp_client_utility_convert_time_to_date(
-				ptp_time, -ptp_utc_offset, ptp_date_time);
+				ptp_time, -PTP_UTC_OFFSET, ptp_date_time);
 
 			HAL_RTC_GetTime(&hrtc1, &rtc_time, RTC_FORMAT_BCD);
 
