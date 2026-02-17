@@ -226,4 +226,12 @@ int32_t LAN8670_Read_PHY_ID1(lan8670_t *lan, uint16_t *data);
  */
 int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data);
 
+/**
+ * @brief Returns the PHY's device address according to the STRAP_CTRL0 register. This is a 5-bit value and should be consistent with how the device address is configured via the hardware pins.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Buffer for the value.
+ * @return Status.
+ */
+int32_t LAN8670_Read_PHY_DevAddr(lan8670_t *lan, uint8_t *data);
 // clang-format on

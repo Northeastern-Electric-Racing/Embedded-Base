@@ -595,4 +595,19 @@ int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data) {
     return LAN8670_STATUS_OK;
 }
 
+/* Returns the 5-bit PHY device address. */
+int32_t LAN8670_Read_PHY_DevAddr(lan8670_t *lan, uint8_t *data) {
+    // Read bits 4:0 of the STRAP_CTRL0 register (containing the DevAddr configured by the hardware pins).
+    uint32_t buffer = 0;
+	int32_t status = read_register_field(lan, REG_STRAP_CTRL0, 0, 4, &buffer);
+    if(status != 0) {
+        PRINTLN_ERROR("Failed to call read_register_field() to read the STRAP_CTRL0 register (Status: %d).", status);
+        return LAN8670_STATUS_READ_ERROR;
+    }
+
+    // Store the value
+    *data = (uint8_t)buffer;
+    return LAN8670_STATUS_OK;
+}
+
 // clang-format on
