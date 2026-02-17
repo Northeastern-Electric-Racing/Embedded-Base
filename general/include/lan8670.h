@@ -47,12 +47,10 @@ typedef struct {
 /**
  * @brief Initializes a LAN8670 instance.
  * @param lan Pointer to the lan8670_t instance.
- * @param device_address The address of the LAN8670.
- * @param read Function pointer for reading data from the LAN8670.
- * @param write Function pointer for writing data to the LAN8670.
+ * @param DevAddr The device address of the LAN8670. This is a 5-bit value indicated by the PHYAD0-PHYAD4 pins and their pull-up/pull-down configuration.
  * @return Status.
  */
-int32_t LAN8670_Init(lan8670_t *lan); // Initializes a LAN8670 instance.
+int32_t LAN8670_Init(lan8670_t *lan, uint32_t DevAddr); // Initializes a LAN8670 instance.
 
 /**
  * @brief Performs a software reset of the LAN8670 Ethernet PHY.
