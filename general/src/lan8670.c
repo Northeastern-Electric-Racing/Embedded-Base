@@ -411,16 +411,21 @@ static int mmd_write_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t 
 
 /**** API FUNCTIONS ****/
 
-int32_t LAN8670_Init(lan8670_t *lan)
+int32_t LAN8670_Init(lan8670_t *lan, uint32_t DevAddr)
 {
-    // Set the device address to the SMIADR[4:0] field of the Strap Control 0 Register.
+    // Store the DevAddr
+    lan->DevAddr = DevAddr;
+    
+    // Double-check that DevAddr is the same as what's stored in the SMIADR[4:0] field of the Strap Control 0 Register.
     uint32_t buffer = 0;
 	int32_t status = read_register_field(lan, REG_STRAP_CTRL0, 0, 4, &buffer);
     if(status != 0) {
         debug(lan, "ERROR 0000: LAN8670_Init() failed to read Strap Control Register 0 (Status: %d)\n", status);
         return LAN8670_STATUS_READ_ERROR;
     }
-    lan->DevAddr = buffer;
+    if(lan->DevAddr != buffer) {
+        PRINTLN_WARNING("The hardcoded DevAddr value isn't the same as what's stored in SMIADR[4:0]. Something weird is probably going on (how did it even read the register in the first place)? (DevAddr=%d, SMIADR[4:0]=%d).", lan->DevAddr, buffer);
+    }
 
 	lan->debug = false; // Default to no debugging.
 
@@ -587,6 +592,21 @@ int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data) {
 
     // Store the value
     *data = (uint8_t)value;
+    return LAN8670_STATUS_OK;
+}
+
+/* Returns the 5-bit PHY device address. */
+int32_t LAN8670_Read_PHY_DevAddr(lan8670_t *lan, uint8_t *data) {
+    // Read bits 4:0 of the STRAP_CTRL0 register (containing the DevAddr configured by the hardware pins).
+    uint32_t buffer = 0;
+	int32_t status = read_register_field(lan, REG_STRAP_CTRL0, 0, 4, &buffer);
+    if(status != 0) {
+        PRINTLN_ERROR("Failed to call read_register_field() to read the STRAP_CTRL0 register (Status: %d).", status);
+        return LAN8670_STATUS_READ_ERROR;
+    }
+
+    // Store the value
+    *data = (uint8_t)buffer;
     return LAN8670_STATUS_OK;
 }
 
