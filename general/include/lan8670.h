@@ -210,4 +210,22 @@ int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer); // NOTE: This func
  */
 int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data); // NOTE: This function has not been tested yet (as of 01/31/2026).
 
+/**
+ * @brief Returns the value of the PHY_ID1 register. This register contains the first 16 bits of the OUI (Organizationally Unique Identifier). Should be: 0b0000000000000111 in reset according to the datasheet.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Buffer for the register value.
+ * @return Status.
+ */
+int32_t LAN8670_Read_PHY_ID1(lan8670_t *lan, uint16_t *data);
+
+/**
+ * @brief Returns the PHY manufacturer's model number. Should be 0b00010110 for the LAN8670.
+ * 
+ * @param lan Pointer to the lan8670_t instance.
+ * @param data Buffer for the value.
+ * @return Status.
+ */
+int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data);
+
 // clang-format on
