@@ -55,23 +55,35 @@ class OpenOCDLocation(str, Enum):
 # ==============================================================================
 
 @app.command(help="Build the project with GCC ARM Toolchain and Make/CMake")
-def build(profile: str = typer.Option(None, "--profile", "-p", callback=unsupported_option_cb, help="(planned) Specify the build profile (e.g., debug, release)", show_default=True),
+def build(profile: str = typer.Option("release", "--profile", "-p", help="Specify the build profile (e.g., debug, release)", show_default=True),
           clean: bool = typer.Option(False, "--clean", help="Clean the build directory before building", show_default=True)):
     is_cmake = os.path.exists("CMakeLists.txt")
     if is_cmake: # Repo uses CMake, so execute CMake commands.
         print("[#cccccc](ner build):[/#cccccc] [blue]CMake-based project detected.[/blue]")
         if clean:
-            run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
+            returncode = run_command_docker('cmake --build build --target clean ; find . -type d -name "build" -exec rm -rf {} +')
             print("[#cccccc](ner build):[/#cccccc] [green]Ran build-cleaning command.[/green]")
+            if returncode != 0:
+                sys.exit(returncode)
         else:
-            run_command_docker("mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake .. && cmake --build .", stream_output=True)
-            run_command_docker('chmod 777  -R ./build/*')
+            returncode = run_command_docker(f"mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE={profile.capitalize()} -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake .. && cmake --build .", stream_output=True)
+            if returncode != 0:
+                sys.exit(returncode)
+            returncode = run_command_docker('chmod 777  -R ./build/*')
+            if returncode != 0:
+                sys.exit(returncode)
     else: # Repo uses Make, so execute Make commands.
         print("[#cccccc](ner build):[/#cccccc] [blue]Makefile-based project detected.[/blue]")
         if clean:
-            run_command_docker("make clean", stream_output=True)
+            returncode = run_command_docker("make clean", stream_output=True)
+            if returncode != 0:
+                sys.exit(returncode)
+
         else:
-            run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
+            returncode = run_command_docker(f"make -j{os.cpu_count()}", stream_output=True)
+            if returncode != 0:
+                sys.exit(returncode)
+
 
     if not clean and is_cmake:
         fix_compile_commands()
@@ -346,9 +358,8 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
 # Helper functions - not direct commands
 # ==============================================================================
 
-def run_command(command, stream_output=False, exit_on_fail=False):
-    """Run a shell command. Optionally stream the output in real-time."""
-
+def run_command(command, stream_output=False, exit_on_fail=False) -> int:
+    """Run a shell command. Optionally stream the output in real-time. Returns the returncode of the command called"""
     if stream_output:
 
         process = subprocess.Popen(command, text=True)
@@ -358,17 +369,23 @@ def run_command(command, stream_output=False, exit_on_fail=False):
             print(f"Error: Command exited with code {returncode}", file=sys.stderr)
             if exit_on_fail:
                 sys.exit(returncode)
+            else:
+                return returncode
 
+        return 0
     else:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
             if result.stdout and result.stdout.strip():  # Only print if stdout is not empty or just whitespace
                 print(result.stdout)
+            return 0 # Code should be zero if it reaches this point
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {e}", file=sys.stderr)
             print(e.stderr, file=sys.stderr)
             if exit_on_fail:
                 sys.exit(e.returncode)
+            return e.returncode
+
 
 def fix_compile_commands():
     '''
@@ -421,11 +438,11 @@ def fix_compile_commands():
 
         print('Successfully patched compile_commands.json')
 
-def run_command_docker(command, stream_output=False):
+def run_command_docker(command, stream_output=False) -> int:
     """Run a command in the Docker container."""
     docker_command = ["docker", "compose", "run", "--rm", "ner-gcc-arm", "sh", "-c", command]
     print(f"[bold blue](ner-gcc-arm): Running command '{command}' in Docker container.")
-    run_command(docker_command, stream_output=stream_output)
+    return run_command(docker_command, stream_output=stream_output)
 
 def disconnect_usbip():
     """Disconnect the current USB device."""

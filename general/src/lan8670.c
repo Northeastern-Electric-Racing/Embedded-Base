@@ -10,6 +10,7 @@
 
 #include <stdio.h> // Used for debug()
 #include <stdarg.h> // Used for debug()
+#include "u_tx_debug.h"
 
 /* SMI Registers */
 #define REG_BASIC_CONTROL 		0x00 // Basic Control Register. (Datasheet pgs. 63-64)
@@ -317,9 +318,8 @@ static int mmd_write_register(lan8670_t *lan, uint16_t mmd_addr, uint16_t regist
  * @param value Pointer to store the read value.
  * @return Status.
  */
-static int __attribute__((unused)) mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
+static int mmd_read_register_field(lan8670_t *lan, uint16_t mmd_addr, uint16_t register_offset, int start, int end, uint16_t *value)
 {
-    // NOTE: Remove the __attribute__((unused)) if this function gets used.
 
     /* Validate bit range */
     if (start > end) {
@@ -503,6 +503,48 @@ int32_t LAN8670_PLCA_Set_Node_Id(lan8670_t *lan, uint8_t id)
     return mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_CTRL1, 0, 7, id);
 }
 
+/* false=The PLCA reconciliation sublayer is not regularly receiving or transmitting the BEACON, true=The PLCA reconciliation sublayer is regularly receiving or transmitting the BEACON. */
+int32_t LAN8670_PLCA_Get_Status(lan8670_t *lan, bool *status) {
+    uint16_t reading = 0;
+    int error = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_STS, 15, 15, &reading);
+    if(error != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", error);
+        return error;
+    }
+
+    if(reading == 1) {
+        *status = true;
+    } else {
+        *status = false;
+    }
+
+    return LAN8670_STATUS_OK;
+}
+
+/* Reads the value of the TOMTR register. Should be 32 bit-times by default. */
+int32_t LAN8670_PLCA_ReadTOTMR(lan8670_t *lan, bool *buffer) {
+    uint16_t reading = 0;
+    int status = mmd_read_register_field(lan, MMD_MISC, MISC_PLCA_TOTMR, 0, 7, &reading);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call mmd_read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    *buffer = (uint8_t)reading;
+    return LAN8670_STATUS_OK;
+}
+
+/* Writes the value of the TOMTOR register. */
+int32_t LAN8670_PLCA_WriteTOTMR(lan8670_t *lan, uint8_t data) {
+    int status = mmd_write_register_field(lan, MMD_MISC, MISC_PLCA_TOTMR, 0, 7, (uint16_t)data);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call mmd_write_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    return LAN8670_STATUS_OK;
+}
+
 int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
 {   
     // Read bit 2 of the Basic Status register. (Note: For the LAN8670, this will always be 1.)
@@ -515,6 +557,36 @@ int32_t LAN8670_Get_Link_State(lan8670_t *lan, uint8_t *state)
 
     // Store the link state in the provided pointer.
     *state = (uint8_t)value;
+    return LAN8670_STATUS_OK;
+}
+
+/* Returns the value of the PHY_ID1 register. This register contains the first 16 bits of the OUI (Organizationally Unique Identifier). Should be: 0b0000000000000111 in reset according to the datasheet. */
+int32_t LAN8670_Read_PHY_ID1(lan8670_t *lan, uint16_t *data) {
+    // Read all 16 bits of the PHY Identifier 1 register.
+    uint32_t value = 0;
+    int status = read_register_field(lan, REG_PHY_ID1, 0, 15, &value);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    // Store the value
+    *data = (uint16_t)value;
+    return LAN8670_STATUS_OK;
+}
+
+/* Returns the PHY manufacturer's model number. Should be 0b00010110 for the LAN8670. */
+int32_t LAN8670_Read_Model_Number(lan8670_t *lan, uint8_t *data) {
+    // Read bits 9:4 of the PHY Identifier 2 Register.
+    uint32_t value = 0;
+    int status = read_register_field(lan, REG_PHY_ID2, 4, 9, &value);
+    if(status != LAN8670_STATUS_OK) {
+        PRINTLN_ERROR("Failed to call read_register_field() (Status: %d).", status);
+        return status;
+    }
+
+    // Store the value
+    *data = (uint8_t)value;
     return LAN8670_STATUS_OK;
 }
 
