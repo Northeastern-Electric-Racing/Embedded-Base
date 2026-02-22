@@ -359,7 +359,6 @@ def usbip(connect: bool = typer.Option(False, "--connect", help="Connect to a US
 # ==============================================================================
 
 def run_command(command, stream_output=False, exit_on_fail=False) -> int:
-    # print("guess who isn't fucked rn") # REMOVEME
     """Run a shell command. Optionally stream the output in real-time. Returns the returncode of the command called"""
     if stream_output:
 
