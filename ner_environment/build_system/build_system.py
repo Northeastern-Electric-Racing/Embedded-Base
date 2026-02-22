@@ -373,6 +373,7 @@ def run_command(command, stream_output=False, exit_on_fail=False) -> int:
             else:
                 return returncode
 
+        return 0
     else:
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
