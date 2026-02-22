@@ -370,8 +370,6 @@ def run_command(command, stream_output=False, exit_on_fail=False) -> int:
             print(f"Error: Command exited with code {returncode}", file=sys.stderr)
             if exit_on_fail:
                 sys.exit(returncode)
-                # return returncode
-
             else:
                 return returncode
 
@@ -380,7 +378,7 @@ def run_command(command, stream_output=False, exit_on_fail=False) -> int:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
             if result.stdout and result.stdout.strip():  # Only print if stdout is not empty or just whitespace
                 print(result.stdout)
-                return 0 # Code should be zero if it reaches this point         
+            return 0 # Code should be zero if it reaches this point
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {e}", file=sys.stderr)
             print(e.stderr, file=sys.stderr)
