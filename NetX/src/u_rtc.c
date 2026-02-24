@@ -39,7 +39,7 @@ static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions)
 		offset_tick = second_fractions -
 			      (rtc_sub_second_tick - rtp_sub_second_tick);
 	}
-	HAL_RTCEx_SetSynchroShift(&hrtc1, offset_tick, offset_ahead_1s);
+	HAL_RTCEx_SetSynchroShift(&hrtc, offset_tick, offset_ahead_1s);
 }
 
 static LONG diff_ptp_date_time(NX_PTP_DATE_TIME *time1, NX_PTP_DATE_TIME *time2)
@@ -94,12 +94,12 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			// NOTE: 24 hours RTC assumed.
 			RTC_TimeTypeDef rtc_sub_seconds = {};
 
-			HAL_RTC_GetTime(&hrtc1, &rtc_sub_seconds,
+			HAL_RTC_GetTime(&hrtc, &rtc_sub_seconds,
 					RTC_FORMAT_BCD);
 
-			HAL_RTC_SetTime(&hrtc1, &rtp_time, RTC_FORMAT_BCD);
+			HAL_RTC_SetTime(&hrtc, &rtp_time, RTC_FORMAT_BCD);
 
-			HAL_RTC_SetDate(&hrtc1, &rtp_date, RTC_FORMAT_BCD);
+			HAL_RTC_SetDate(&hrtc, &rtp_date, RTC_FORMAT_BCD);
 
 			set_subsecond(rtc_sub_seconds.SecondFraction -
 					      rtc_sub_seconds.SubSeconds,
@@ -111,8 +111,8 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			RTC_TimeTypeDef rtc_time = {};
 			RTC_DateTypeDef rtc_date = {};
 
-			HAL_RTC_GetTime(&hrtc1, &rtc_time, RTC_FORMAT_BCD);
-			HAL_RTCEx_GetTimeStamp(&hrtc1, &rtc_time, &rtc_date,
+			HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BCD);
+			HAL_RTCEx_GetTimeStamp(&hrtc, &rtc_time, &rtc_date,
 					       RTC_FORMAT_BCD);
 
 			NX_PTP_DATE_TIME rtc_ptp_date_time = {
@@ -166,7 +166,7 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			nx_ptp_client_utility_convert_time_to_date(
 				ptp_time, -PTP_UTC_OFFSET, ptp_date_time);
 
-			HAL_RTC_GetTime(&hrtc1, &rtc_time, RTC_FORMAT_BCD);
+			HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BCD);
 
 			set_subsecond(
 				rtc_time.SecondFraction - rtc_time.SubSeconds,
