@@ -13,29 +13,31 @@ UINT interrupt_save;
 static UINT us_to_second_ticks(ULONG us, UINT second_fractions)
 {
 	// Second fraction = SS / (PREDIV_S + 1)
-	return (uint64_t)us * (second_fractions + 1L) /
-	       1000000L; // TODO: double check overflow issues
+	return (uint64_t)us * (second_fractions + 1) / 1000000L;
 }
 
 static ULONG second_ticks_to_us(UINT second_ticks, UINT second_fractions)
 {
-	return (uint64_t)1000000L * second_ticks /
-	       (second_fractions + 1); // TODO: double check overflow issues
+	return (uint64_t)1000000L * second_ticks / (second_fractions + 1);
 }
 
 static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions)
 {
+	if (~(rtc_sub_second_tick >> 15 & 0b1)) {
+		printf("rtc SS overflow ig");
+	}
+
 	UINT rtp_sub_second_tick = us_to_second_ticks(
 		ptp_date_time->nanosecond / 1000, second_fractions);
 
 	UINT offset_tick = 0; // ticks to go backwards
 	UINT offset_ahead_1s = RTC_SHIFTADD1S_RESET;
-	if (rtc_sub_second_tick > rtp_sub_second_tick) { // local ahead
+	if (rtc_sub_second_tick >= rtp_sub_second_tick) { // local ahead
 		offset_tick = rtc_sub_second_tick - rtp_sub_second_tick;
 	} else { // local behind
 		offset_ahead_1s = RTC_SHIFTADD1S_SET;
-		offset_tick = second_fractions + rtc_sub_second_tick -
-			      rtp_sub_second_tick;
+		offset_tick = second_fractions -
+			      (rtc_sub_second_tick - rtp_sub_second_tick);
 	}
 	HAL_RTCEx_SetSynchroShift(&hrtc1, offset_tick, offset_ahead_1s);
 }
