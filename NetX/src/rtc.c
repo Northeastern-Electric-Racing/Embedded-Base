@@ -10,16 +10,16 @@ NX_PTP_DATE_TIME *ptp_date_time;
 
 UINT interrupt_save;
 
-static UINT us_to_second_ticks(ULONG ns, UINT second_fractions)
+static UINT us_to_second_ticks(ULONG us, UINT second_fractions)
 {
 	// Second fraction = SS / (PREDIV_S + 1)
-	return ns * (second_fractions + 1L) /
+	return (uint64_t)us * (second_fractions + 1L) /
 	       1000000L; // TODO: double check overflow issues
 }
 
 static ULONG second_ticks_to_us(UINT second_ticks, UINT second_fractions)
 {
-	return 1000000L * second_ticks /
+	return (uint64_t)1000000L * second_ticks /
 	       (second_fractions + 1); // TODO: double check overflow issues
 }
 
@@ -47,7 +47,7 @@ static LONG diff_ptp_date_time(NX_PTP_DATE_TIME *time1, NX_PTP_DATE_TIME *time2)
 #define SECS_PER_DAY	(24 * SECS_PER_HOUR)
 #define SECS_PER_YEAR	(365 * SECS_PER_DAY)
 
-	LONG seconds_diff = 0;
+	int64_t seconds_diff = 0;
 
 	seconds_diff += (time2->year - time1->year) * SECS_PER_YEAR;
 	seconds_diff += (time2->day - time1->day) * SECS_PER_DAY;
@@ -65,8 +65,6 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 {
 	switch (operation) {
 		case NX_PTP_CLIENT_CLOCK_INIT:
-			HAL_RTC_Init(
-				&hrtc1); // do I have to or is this done elsewhere?
 			break;
 
 		case NX_PTP_CLIENT_CLOCK_SET:
@@ -99,6 +97,8 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 
 			HAL_RTC_SetTime(&hrtc1, &rtp_time, RTC_FORMAT_BCD);
 
+			HAL_RTC_SetDate(&hrtc1, &rtp_date, RTC_FORMAT_BCD);
+
 			set_subsecond(rtc_sub_seconds.SecondFraction -
 					      rtc_sub_seconds.SubSeconds,
 				      rtc_sub_seconds.SubSeconds);
@@ -110,7 +110,8 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			RTC_DateTypeDef rtc_date = {};
 
 			HAL_RTC_GetTime(&hrtc1, &rtc_time, RTC_FORMAT_BCD);
-			HAL_RTC_GetDate(&hrtc1, &rtc_date, RTC_FORMAT_BCD);
+			HAL_RTCEx_GetTimeStamp(&hrtc1, &rtc_time, &rtc_date,
+					       RTC_FORMAT_BCD);
 
 			NX_PTP_DATE_TIME rtc_ptp_date_time = {
 				.year = rtp_date.Year,
@@ -126,13 +127,13 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 						       rtc_time.SecondFraction)
 			};
 
-			LONG secondsDiff = diff_ptp_date_time(
+			int64_t secondsDiff = diff_ptp_date_time(
 				ptp_date_time, &rtc_ptp_date_time);
 
 			NX_PTP_TIME current_ptp_time = {
 				.second_high = ptp_time->second_high,
 				.second_low = ptp_time->second_low,
-				.nanosecond = rtc_ptp_date_time.nanosecond
+				.nanosecond = 0
 			};
 
 			if (secondsDiff >
@@ -150,7 +151,9 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 
 			time_ptr->second_high = current_ptp_time.second_high;
 			time_ptr->second_low = current_ptp_time.second_low;
-			time_ptr->nanosecond = current_ptp_time.nanosecond;
+			time_ptr->nanosecond =
+				rtc_ptp_date_time
+					.nanosecond; // pull directly from rtc
 
 			TX_RESTORE
 			break;
