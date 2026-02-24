@@ -23,7 +23,7 @@ static ULONG second_ticks_to_us(UINT second_ticks, UINT second_fractions)
 
 static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions)
 {
-	if (~(rtc_sub_second_tick >> 15 & 0b1)) {
+	if (~(rtc_sub_second_tick >> 15 & 1)) {
 		printf("rtc SS overflow ig");
 	}
 
