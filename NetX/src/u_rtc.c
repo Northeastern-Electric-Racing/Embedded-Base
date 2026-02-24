@@ -3,7 +3,7 @@
 #include "stm32h5xx_hal_rtc.h"
 
 #define PTP_UTC_OFFSET 0 // UTC 0
-extern RTC_HandleTypeDef hrtc1;
+extern RTC_HandleTypeDef hrtc;
 
 NX_PTP_TIME *ptp_time;
 NX_PTP_DATE_TIME *ptp_date_time;
