@@ -1,6 +1,6 @@
 #include "rtc.h"
 #include <stdio.h>
-#include "stm32h5xx_hal_rtc.h"
+#include "stm32h5xx_hal.h"
 
 #define PTP_UTC_OFFSET 0 // UTC 0
 extern RTC_HandleTypeDef hrtc;
