@@ -14,7 +14,7 @@
 
 /* CONFIG */
 #define ETH_UDP_PORT	    2006 /* UDP port for communication */
-#define ETH_MESSAGE_SIZE    8    /* Maximum ethernet message size in bytes. */
+#define ETH_MESSAGE_SIZE    60 	 /* Maximum ethernet message size in bytes. */
 #define ETH_MAX_PACKETS     10   /* Maximum number of packets we wanna handle simultaneously */
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
 
@@ -51,7 +51,7 @@ typedef enum {
 } plca_node_id_t;
 /* END CONFIG */
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
 	uint8_t sender_id;
 	uint8_t recipient_id;
 	uint8_t message_id;

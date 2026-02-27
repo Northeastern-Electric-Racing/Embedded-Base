@@ -356,7 +356,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
     /* Append message data to packet */
     status = nx_packet_data_append(
         packet,                     // Packet
-        &message,                   // Data to append
+        message,                    // Data to append
         sizeof(ethernet_message_t), // Size of data
         &device.packet_pool,        // Packet pool
         TX_WAIT_FOREVER             // Wait indefinitely
