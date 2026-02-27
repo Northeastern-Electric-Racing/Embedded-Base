@@ -4,6 +4,7 @@
 #include "nxd_ptp_client.h"
 #include "u_nx_debug.h"
 #include "u_tx_debug.h"
+#include "c_utils.h"
 #include "nx_api.h"
 #include <string.h>
 #include <stdio.h>
@@ -113,20 +114,15 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
         }
 
         /* Extract message from packet */
-        status = nx_packet_data_extract_offset(
-            packet,                         // Packet to extract from
-            0,                              // Offset (start of packet)
-            &message,                       // Message buffer
-            sizeof(ethernet_message_t),     // Size to extract
-            &bytes_copied                   // Stores how many bytes were actually copied to &message
-        );
-        if(bytes_copied < sizeof(ethernet_message_t)) {
-            PRINTLN_WARNING("Received ethernet message was smaller than expected (only received %lu of %u expected bytes).", bytes_copied, sizeof(ethernet_message_t));
+        ULONG bytes_copied = 0;
+        status = nx_packet_data_retrieve(packet, &message, &bytes_copied);
+        if(status != NX_SUCCESS) {
+            PRINTLN_ERROR("Failed to call nx_packet_data_retrieve() (Status: %d/%s).", status, nx_status_toString(status));
         }
 
         /* Process received message */
         if(status == NX_SUCCESS) {
-            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d).", message.sender_id, message.message_id);
+            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d, bytes_copied: %d).", message.sender_id, message.message_id, bytes_copied);
             device.on_recieve(message);
         }
     }
@@ -356,7 +352,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
     /* Append message data to packet */
     status = nx_packet_data_append(
         packet,                     // Packet
-        &message,                   // Data to append
+        message,                    // Data to append
         sizeof(ethernet_message_t), // Size of data
         &device.packet_pool,        // Packet pool
         TX_WAIT_FOREVER             // Wait indefinitely
