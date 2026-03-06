@@ -38,6 +38,6 @@ uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 
 void uint16_to_uint8(uint16_t value, uint8_t arr[2])
 {
-	arr[0] = (uint8_t)value;	
-	arr[1] = (uint8_t)(value >> 8);		
+	arr[0] = (uint8_t)value;
+	arr[1] = (uint8_t)(value >> 8);
 }

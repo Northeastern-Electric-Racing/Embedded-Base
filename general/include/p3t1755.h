@@ -50,8 +50,10 @@
 #define p3t1755_220MS_CONVERSION_TIME  0x60
 
 // Function Pointers
-typedef int32_t (*WritePtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data, uint8_t length);
-typedef int32_t (*ReadPtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data, uint8_t length);
+typedef int32_t (*WritePtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data,
+			    uint8_t length);
+typedef int32_t (*ReadPtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data,
+			   uint8_t length);
 
 typedef struct {
 	uint16_t dev_addr;
@@ -62,8 +64,10 @@ typedef struct {
 void p3t1755_init(p3t1755_t *p3t, WritePtr write, ReadPtr read,
 		  uint16_t dev_addr);
 
-int p3t1755_read_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data, uint8_t length);
-int p3t1755_write_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data, uint8_t length);
+int p3t1755_read_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
+		     uint8_t length);
+int p3t1755_write_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
+		      uint8_t length);
 
 // Reads current temp in celcius
 int p3t1755_read_temperature(p3t1755_t *p3t, float *temp_c);
