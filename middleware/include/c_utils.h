@@ -84,7 +84,7 @@ uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb);
  * sseparates a uint16_t into two uint8_t
  * 
  * @param value uint16_t to separate
- * @param arr resulting array of 2 uint8_t
+ * @param arr resulting array of 2 uint8_t (MSB is first)
  * 
  */
 void uint16_to_uint8(uint16_t value, uint8_t arr[2]);
