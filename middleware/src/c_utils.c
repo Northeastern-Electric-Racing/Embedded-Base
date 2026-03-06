@@ -30,3 +30,14 @@ float linear_interpolate(float x, float x1, float x2, float y1, float y2)
 
 	return y1 + ((x - x1) * (y2 - y1) / (x2 - x1));
 }
+
+uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
+{
+	return ((uint16_t)msb << 8) | ((uint16_t)lsb);
+}
+
+void uint16_to_uint8(uint16_t value, uint8_t arr[2])
+{
+	arr[0] = (uint8_t)(value >> 8);	/* MSB */
+	arr[1] = (uint8_t)value;		/* LSB */
+}

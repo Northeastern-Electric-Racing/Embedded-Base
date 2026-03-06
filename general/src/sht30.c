@@ -1,6 +1,7 @@
 #include "sht30.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "c_utils.h"
 
 //ner flash --ftdi for msb
 static int sht30_write_reg(sht30_t *sht30, uint16_t command)
@@ -40,10 +41,7 @@ static uint8_t calculate_crc(const uint8_t *data, size_t length)
 	}
 	return crc;
 }
-static uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
-{
-	return ((uint16_t)msb << 8) | ((uint16_t)lsb);
-}
+
 uint8_t sht30_init(sht30_t *sht30, Write_ptr write_reg, Read_ptr read_reg,
 		   Read_ptr blocking_read_reg, uint8_t dev_address)
 {
