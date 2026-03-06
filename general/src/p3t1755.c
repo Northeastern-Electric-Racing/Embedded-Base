@@ -60,7 +60,7 @@ int p3t1755_configure(p3t1755_t *p3t, uint8_t shutdown, uint8_t thermostat,
 	config |= (conversion_time & p3t1755_CONVERSION_TIME_MASK);
 
 	return p3t1755_write_reg(p3t, p3t1755_CONFIGURATION, &config,
-				 sizeof(int));
+				 sizeof(config));
 }
 
 int p3t1755_set_shutdown_mode(p3t1755_t *p3t, uint8_t enable)
