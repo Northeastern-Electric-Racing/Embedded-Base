@@ -8,14 +8,11 @@ uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 	uint8_t status;
 	void *pointer;
 
-	/* Calculate message size in 32-bit words (round up), and then validate it. */
-	/* According to the Azure RTOS ThreadX Docs, "message sizes range from 1 32-bit word to 16 32-bit words". */
+	/* Calculate message size in 32-bit words (round up). */
+	/* According to the Azure RTOS ThreadX Docs, message sizes have to be given in 32-bit words. */
 	/* Basically, queue messages have to be a multiple of 4 bytes? Kinda weird but this should handle it. */
 	UINT message_size_words = (queue->message_size + 3) / 4;
-	if (message_size_words < 1 || message_size_words > 16) {
-		PRINTLN_ERROR("Invalid message size %d bytes (must be 1-64 bytes). Queue: %s", queue->message_size, queue->name);
-		return U_ERROR;
-	}
+	// Not going to validate the size of message_size_words, because if it's invalid, ThreadX should return a TX_SIZE_ERROR.
 
 	/* Store metadata */
 	queue->_bytes = queue->message_size;
@@ -27,14 +24,14 @@ uint8_t create_queue(TX_BYTE_POOL *byte_pool, queue_t *queue)
 	/* Allocate the stack for the queue. */
 	status = tx_byte_allocate(byte_pool, (VOID **)&pointer, queue_size_bytes, TX_NO_WAIT);
 	if (status != TX_SUCCESS) {
-		PRINTLN_ERROR("Failed to allocate memory before creating queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->name);
+		PRINTLN_ERROR("Failed to allocate memory before creating queue (Status: %d/%s, Queue: %s, queue_size_bytes: %d).", status, tx_status_toString(status), queue->name, queue_size_bytes);
 		return U_ERROR;
 	}
 
 	/* Create the queue */
 	status = tx_queue_create(&queue->_TX_QUEUE, (CHAR *)queue->name, message_size_words, pointer, queue_size_bytes);
 	if (status != TX_SUCCESS) {
-		PRINTLN_ERROR("Failed to create queue (Status: %d/%s, Queue: %s).", status, tx_status_toString(status), queue->name);
+		PRINTLN_ERROR("Failed to create queue (Status: %d/%s, Queue: %s, message_size_words: %d, queue_size_bytes: %d).", status, tx_status_toString(status), queue->name, message_size_words, queue_size_bytes);
 		tx_byte_release(pointer); // Free allocated memory if queue creation fails
 		return U_ERROR;
 	}
