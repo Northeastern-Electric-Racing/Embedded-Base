@@ -5,6 +5,8 @@
 
 #include "p3t1755.h"
 #include "c_utils.h"
+#include "u_tx_debug.h"
+#include <stdint.h>
 
 void p3t1755_init(p3t1755_t *p3t, WritePtr write, ReadPtr read,
                   uint16_t dev_addr) {
@@ -23,6 +25,14 @@ int p3t1755_read_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
   return p3t->read(p3t->dev_addr, reg, data, length);
 }
 
+inline int16_t p3t1755_raw_to_celsius(uint16_t raw) {
+  PRINTLN_INFO("raw temp: %d", raw);
+  if (raw & 1 << 11) { // Check if sign bit is set |-> t<0
+    return -(int16_t)(raw * p3t1755_TEMP_RESOLUTION);
+  } else
+    return (int16_t)(raw * p3t1755_TEMP_RESOLUTION);
+}
+
 int p3t1755_read_temperature(p3t1755_t *p3t, float *temp_c) {
   uint8_t temp_reg[2];
 
@@ -32,7 +42,8 @@ int p3t1755_read_temperature(p3t1755_t *p3t, float *temp_c) {
     return status;
   }
 
-  *temp_c = p3t1755_RAW_TO_CELSIUS(uint8_to_uint16(temp_reg[0], temp_reg[1]));
+  *temp_c = p3t1755_raw_to_celsius(
+      uint8_to_uint16(temp_reg[0] >> 4, temp_reg[1] >> 4));
   return status;
 }
 
