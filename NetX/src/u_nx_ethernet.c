@@ -6,8 +6,12 @@
 #include "u_tx_debug.h"
 #include "c_utils.h"
 #include "nx_api.h"
+#include "u_tx_general.h"
 #include <string.h>
 #include <stdio.h>
+#if ETH_ENABLE_MQTT
+#include "nxd_mqtt_client.h"
+#endif
 
 /* PRIVATE MACROS */
 #define _IP_THREAD_STACK_SIZE 2048
@@ -16,15 +20,23 @@
 #define _IP_NETWORK_MASK      IP_ADDRESS(255, 255, 255, 0)
 #define _UDP_QUEUE_MAXIMUM    12
 #define _PTP_THREAD_PRIORITY 2
+#define _MQTT_THREAD_PRIORITY 2
 
 /* The DEFAULT_PAYLOAD_SIZE should match with RxBuffLen configured via MX_ETH_Init */
 #define DEFAULT_PAYLOAD_SIZE      1524
 #define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 10)
+#define MQTT_CLIENT_STACK_SIZE 4096
 
 /* DEVICE INFO */
 typedef struct {
 	/* NetX Objects */
+	#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 	NX_UDP_SOCKET socket;
+	#endif
+	#if ETH_ENABLE_MQTT
+	NXD_MQTT_CLIENT mqtt_client;
+	UCHAR mqtt_thread_stack[MQTT_CLIENT_STACK_SIZE / sizeof(ULONG)];
+	#endif
 	NX_PACKET_POOL packet_pool;
 	NX_IP ip;
 	NX_PTP_CLIENT ptp_client;
@@ -44,6 +56,21 @@ typedef struct {
 	OnRecieve on_recieve; /* Set by the user. Called when a message is recieved. */
 } _ethernet_device_t;
 static _ethernet_device_t device = { 0 };
+
+/* CALLBACK FUNCTIONS */
+#if ETH_ENABLE_MQTT
+static VOID _mqtt_disconnect_callback(NXD_MQTT_CLIENT *client_ptr)
+{
+    printf("client disconnected from server\n");
+}
+
+static VOID _mqtt_recieve_callback(NXD_MQTT_CLIENT* client_ptr, UINT number_of_messages)
+{
+    //tx_event_flags_set(&mqtt_app_flag, DEMO_MESSAGE_EVENT, TX_OR);
+    return;
+}
+#endif
+
 
 /* Callback function. Called when a PTP event is processed. */
 // extern UINT ptp_clock_callback(NX_PTP_CLIENT *client_ptr, UINT operation,
@@ -85,6 +112,7 @@ static UINT _ptp_event_callback(NX_PTP_CLIENT *ptp_client_ptr, UINT event, VOID 
 }
 
 /* Callback function. Called when an ethernet message is received. */
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 static void _receive_message(NX_UDP_SOCKET *socket) {
     NX_PACKET *packet;
     ULONG bytes_copied;
@@ -130,6 +158,7 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
     /* Release the packet */
     nx_packet_release(packet);
 }
+#endif
 
 /* API FUNCTIONS */
 
@@ -166,8 +195,8 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     status = nx_ip_create(
         &device.ip,                          // Pointer to the IP instance
         "Ethernet IP Instance",              // Name
-        IP_ADDRESS(5, 5, 5, device.node_id), // Dummy unicast IP (we shouldn't have to use this if we're just using multicast for everything)
-        _IP_NETWORK_MASK,                    // Network mask
+        IP_ADDRESS(10, 0, 0, device.node_id), // Unicast IP derived from node_id, 10.0.0.0/24
+        _IP_NETWORK_MASK,                    // Network mask /24
         &device.packet_pool,                 // Pointer to the packet pool
         device.driver,                       // Pointer to the Ethernet driver function
         device.ip_memory,                    // Pointer to the memory for the IP instance
@@ -190,6 +219,14 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         return status;
     }
 
+    /* Enable igmp */
+#if ETH_ENABLE_IGMP || ETH_ENABLE_MANUAL_UDP_MULTICAST
+    status = nx_igmp_enable(&device.ip);
+    if (status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to enable igmp (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+#endif
 
     /* Enable UDP */
     status = nx_udp_enable(&device.ip);
@@ -198,13 +235,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         return status;
     }
 
-    /* Enable igmp */
-    status = nx_igmp_enable(&device.ip);
-    if (status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to enable igmp (Status: %d/%s).", status, nx_status_toString(status));
-        return status;
-    }
-
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
     /* Set up multicast groups.
     *  (This iterates through every possible node combination between 0b00000001 and 0b11111111.
     *  If any of the combinations include device.node_id, that combination gets added as a multicast group.
@@ -222,22 +253,6 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
                 PRINTLN_ERROR("Failed to join multicast group (Status: %d/%s, Address: %lu).", status, nx_status_toString(status), address);
             }
         }
-    }
-
-    /* Create the PTP client instance */
-    status = nx_ptp_client_create(&device.ptp_client, &device.ip, 0, &device.packet_pool,
-                           _PTP_THREAD_PRIORITY, (UCHAR *)&device.ptp_stack, sizeof(device.ptp_stack),
-                           _nx_ptp_client_soft_clock_callback, NX_NULL);
-    if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to create PTP client (Status: %d/%s).", status, nx_status_toString(status));
-        return status;
-    }
-
-    /* start the PTP client */
-    status = nx_ptp_client_start(&device.ptp_client, NX_NULL, 0, 0, 0, _ptp_event_callback, NX_NULL);
-    if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to start PTP client (Status: %d/%s).", status, nx_status_toString(status));
-        return status;
     }
 
     /* Create UDP socket for broadcasting */
@@ -278,7 +293,55 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         nx_udp_socket_delete(&device.socket);
         return status;
     }
+#endif
 
+    /* Create the PTP client instance */
+    status = nx_ptp_client_create(&device.ptp_client, &device.ip, 0, &device.packet_pool,
+                           _PTP_THREAD_PRIORITY, (UCHAR *)&device.ptp_stack, sizeof(device.ptp_stack),
+                           _nx_ptp_client_soft_clock_callback, NX_NULL);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to create PTP client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    /* start the PTP client */
+    status = nx_ptp_client_start(&device.ptp_client, NX_NULL, 0, 0, 0, _ptp_event_callback, NX_NULL);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to start PTP client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+#if ETH_ENABLE_MQTT
+/* Create MQTT client instance. */
+    char* client_id;
+    UINT client_id_size = sprintf(client_id, "FW-%d", device.node_id);
+
+    status = nxd_mqtt_client_create(&device.mqtt_client, client_id,
+        client_id, client_id_size, &device.ip, &device.packet_pool,
+        (VOID*)device.mqtt_thread_stack, sizeof(device.mqtt_thread_stack),
+        _MQTT_THREAD_PRIORITY, NX_NULL, 0);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to create MQTT client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    /* Register the disconnect notification function. */
+    status = nxd_mqtt_client_disconnect_notify_set(&device.mqtt_client, _mqtt_disconnect_callback);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to create MQTT disconnect notification (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    NXD_ADDRESS server_ip;
+    server_ip.nxd_ip_version = 4;
+    server_ip.nxd_ip_address.v4 = ETH_MQTT_SERVER_IP;
+    /* Start the connection to the server. */
+    nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
+        300, NX_TRUE, NX_WAIT_FOREVER);
+
+    /* Set the receive notify function. */
+    nxd_mqtt_client_receive_notify_set(&device.mqtt_client, _mqtt_recieve_callback);
+#endif
     /* Mark device as initialized. */
     device.is_initialized = true;
 
@@ -287,6 +350,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
 }
 
 /* Creates an ethernet message (i.e. returns an ethernet_message_t instance). */
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t recipient_id, uint8_t *data, uint8_t data_length) {
     ethernet_message_t message = {0};
 
@@ -391,6 +455,13 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
     PRINTLN_INFO("Sent ethernet message (Recipient ID: %d, Message ID: %d, Message Contents: %d).", message->recipient_id, message->message_id, message->data);
     return U_SUCCESS;
 }
+#endif
+
+#if ETH_ENABLE_MQTT
+uint8_t ethernet_mqtt_publish(char *topic_name, UINT topic_size, char *message, UINT message_size) {
+    return nxd_mqtt_client_publish(&device.mqtt_client, topic_name, topic_size, message, message_size, NX_FALSE, 0, MS_TO_TICKS(100));
+}
+#endif
 
 NX_PTP_DATE_TIME ethernet_get_time(void) {
     NX_PTP_TIME tm;

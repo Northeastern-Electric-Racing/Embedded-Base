@@ -17,6 +17,11 @@
 #define ETH_MESSAGE_SIZE    128  /* Maximum ethernet message size in bytes. */
 #define ETH_MAX_PACKETS     10   /* Maximum number of packets we wanna handle simultaneously */
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
+#define ETH_ENABLE_MANUAL_UDP_MULTICAST 0 // whether to enable UDP multicast
+#define ETH_ENABLE_IGMP 0 // whether to enable IGMP
+#define ETH_ENABLE_MQTT 1 // whether to use a MQTT connection
+#define ETH_MQTT_SERVER_IP IP_ADDRESS(10,0,0,1) // the server address of the broker (TPU usually)
+#define ETH_MQTT_SERVER_PORT 1883
 
 typedef enum {
 	TPU = (1 << 0),     // 0b00000001
@@ -72,6 +77,7 @@ typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function
  */
 uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve);
 
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 /**
  * @brief Creates an ethernet message. Can be send with ethernet_send_message(), or added to a queue.
  * @param recipient_id The ID of the recipient node.
@@ -88,6 +94,29 @@ ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t r
  * @return Status.
  */
 uint8_t ethernet_send_message(ethernet_message_t *message);
+#endif
+
+#if ETH_ENABLE_MQTT
+/**
+ * @brief Sends a MQTT message to outgoing queue
+ * @param topic_name The topic name
+ * @param topic_size The topic size in bytes
+ * @param message The data to send
+ * @param message_size The message size in bytes
+ * @return The error code.
+ */
+uint8_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
+
+/**
+ *
+ */
+//ethernet_mqtt_subscribe();
+
+/**
+ *
+ */
+
+#endif
 
 /**
  * @brief Retrieves the time from PTP stack.
