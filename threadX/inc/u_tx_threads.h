@@ -24,6 +24,17 @@ typedef struct {
 	TX_THREAD _TX_THREAD;
 } thread_t;
 
+/* Creates a thread based on the provided configuration.
+ *
+ * @param byte_pool Pointer to the byte pool to allocate the thread's stack from.
+ * @param thread Pointer to a thread_t struct containing the thread's configuration.
+ * @return U_SUCCESS if the thread was created successfully, U_ERROR otherwise.
+ */
 uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread);
+
+/**
+ * Sleeps the current thread for the specified number of milliseconds.
+ */
+uint8_t thread_sleep_ms(uint32_t ms);
 
 #endif
