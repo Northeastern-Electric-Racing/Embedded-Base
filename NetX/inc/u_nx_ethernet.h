@@ -18,7 +18,7 @@
 #define ETH_MAX_PACKETS     10   /* Maximum number of packets we wanna handle simultaneously */
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
 #define ETH_ENABLE_MANUAL_UDP_MULTICAST 0 // whether to enable UDP multicast
-#define ETH_ENABLE_IGMP 0 // whether to enable IGMP
+#define ETH_ENABLE_IGMP 1 // whether to enable IGMP
 #define ETH_ENABLE_MQTT 1 // whether to use a MQTT connection
 #define ETH_MQTT_SERVER_IP IP_ADDRESS(10,0,0,1) // the server address of the broker (TPU usually)
 #define ETH_MQTT_SERVER_PORT 1883

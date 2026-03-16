@@ -313,7 +313,7 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
 
 #if ETH_ENABLE_MQTT
 /* Create MQTT client instance. */
-    char* client_id;
+    char* client_id = "";
     UINT client_id_size = sprintf(client_id, "FW-%d", device.node_id);
 
     status = nxd_mqtt_client_create(&device.mqtt_client, client_id,
