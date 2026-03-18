@@ -27,6 +27,8 @@
 #define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 10)
 #define MQTT_CLIENT_STACK_SIZE 4096
 
+extern ETH_HandleTypeDef heth;
+
 /* DEVICE INFO */
 typedef struct {
 	/* NetX Objects */
@@ -162,9 +164,9 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
 
 /* API FUNCTIONS */
 
-uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve) {
+UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve) {
 
-    uint8_t status;
+    UINT status;
     device.ptp_utc_offset = 0; // no offset to start
 
     /* Make sure device isn't already initialized */
@@ -219,6 +221,17 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         return status;
     }
 
+    status = nx_arp_gratuitous_send(
+        &device.ip,                // IP instance
+        NX_NULL
+    );
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to enable ARP (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+
+
     /* Enable igmp */
 #if ETH_ENABLE_IGMP || ETH_ENABLE_MANUAL_UDP_MULTICAST
     status = nx_igmp_enable(&device.ip);
@@ -227,6 +240,12 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
         return status;
     }
 #endif
+
+    status = nx_icmp_enable(&device.ip);
+    if (status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to enable icmp (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
 
     /* Enable UDP */
     status = nx_udp_enable(&device.ip);
@@ -336,14 +355,27 @@ uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve 
     server_ip.nxd_ip_version = 4;
     server_ip.nxd_ip_address.v4 = ETH_MQTT_SERVER_IP;
     /* Start the connection to the server. */
-    nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
+    status = nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
         300, NX_TRUE, NX_WAIT_FOREVER);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to connect to MQTT client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
 
     /* Set the receive notify function. */
-    nxd_mqtt_client_receive_notify_set(&device.mqtt_client, _mqtt_recieve_callback);
+    status = nxd_mqtt_client_receive_notify_set(&device.mqtt_client, _mqtt_recieve_callback);
+    if (status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to set mqtt recv notification (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
 #endif
     /* Mark device as initialized. */
     device.is_initialized = true;
+
+    ETH_MACFilterConfigTypeDef filter;
+    HAL_ETH_GetMACFilterConfig(&heth, &filter);
+    filter.BroadcastFilter = DISABLE;
+    HAL_ETH_SetMACFilterConfig(&heth, &filter);
 
     PRINTLN_INFO("Ran ethernet_init().");
     return NX_SUCCESS;
@@ -458,7 +490,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
 #endif
 
 #if ETH_ENABLE_MQTT
-uint8_t ethernet_mqtt_publish(char *topic_name, UINT topic_size, char *message, UINT message_size) {
+uint32_t ethernet_mqtt_publish(char *topic_name, UINT topic_size, char *message, UINT message_size) {
     return nxd_mqtt_client_publish(&device.mqtt_client, topic_name, topic_size, message, message_size, NX_FALSE, 0, MS_TO_TICKS(100));
 }
 #endif

@@ -75,7 +75,7 @@ typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function
  * @param on_recieve User-supplied function to be called whenever an ethernet message is recieved. The function's only parameter is an ethernet_message_t instance containing the recieved message.
  * @return Status.
  */
-uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve);
+UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve);
 
 #if ETH_ENABLE_MANUAL_UDP_MULTICAST
 /**
@@ -105,7 +105,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message);
  * @param message_size The message size in bytes
  * @return The error code.
  */
-uint8_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
+uint32_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
 
 /**
  *
