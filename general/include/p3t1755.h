@@ -65,7 +65,7 @@ typedef struct {
   ReadPtr read;
 } p3t1755_t;
 
-static inline int16_t p3t1755_raw_to_celsius(uint16_t raw);
+static inline float p3t1755_raw_to_celsius(uint16_t raw);
 
 void p3t1755_init(p3t1755_t *p3t, WritePtr write, ReadPtr read,
                   uint16_t dev_addr);

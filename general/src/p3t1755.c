@@ -25,12 +25,12 @@ int p3t1755_read_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
   return p3t->read(p3t->dev_addr, reg, data, length);
 }
 
-inline int16_t p3t1755_raw_to_celsius(uint16_t raw) {
+inline float p3t1755_raw_to_celsius(uint16_t raw) {
   PRINTLN_INFO("raw temp: %d", raw);
   if (raw & 1 << 11) { // Check if sign bit is set |-> t<0
-    return -(int16_t)(raw * p3t1755_TEMP_RESOLUTION);
+    return -(raw * p3t1755_TEMP_RESOLUTION);
   } else
-    return (int16_t)(raw * p3t1755_TEMP_RESOLUTION);
+    return (raw * p3t1755_TEMP_RESOLUTION);
 }
 
 int p3t1755_read_temperature(p3t1755_t *p3t, float *temp_c) {
