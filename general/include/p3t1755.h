@@ -5,18 +5,22 @@
 
 #ifndef p3t1755_H
 #define p3t1755_H
-#include <stdint.h>
 #include <math.h>
+#include <stdint.h>
 
 // REGISTERS
-// Temperature register: contains two 8-bit data bytes; to store the measured Temp data.
+// Temperature register: contains two 8-bit data bytes; to store the measured
+// Temp data.
 #define p3t1755_TEMPERATURE 0x00 // read only
-// Configuration register: contains a single 8-bit data byte; to set the device operating condition
+// Configuration register: contains a single 8-bit data byte; to set the device
+// operating condition
 #define p3t1755_CONFIGURATION 0x01
-// T_low register: Hysteresis register, it contains two 8-bit data bytes to store the hysteresis T_low limit; default = 75 °C.
+// T_low register: Hysteresis register, it contains two 8-bit data bytes to
+// store the hysteresis T_low limit; default = 75 °C.
 #define p3t1755_T_LOW 0x02
-// T_high register: Overtemperature shut down threshold register, it contains two 8-bit data bytes to
-// store the overtemperature shutdown T_high limit; default = 80 °C.
+// T_high register: Overtemperature shut down threshold register, it contains
+// two 8-bit data bytes to store the overtemperature shutdown T_high limit;
+// default = 80 °C.
 #define p3t1755_T_HIGH 0x03
 
 // TEMPERATURE REGISTER FORMAT
@@ -60,6 +64,8 @@ typedef struct {
 	WritePtr write;
 	ReadPtr read;
 } p3t1755_t;
+
+float p3t1755_raw_to_celsius(uint16_t raw);
 
 void p3t1755_init(p3t1755_t *p3t, WritePtr write, ReadPtr read,
 		  uint16_t dev_addr);
