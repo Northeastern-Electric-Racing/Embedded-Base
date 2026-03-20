@@ -30,58 +30,58 @@
 #define p3t1755_TEMP_MAX 125.0f
 
 #define p3t1755_RAW_TO_CELSIUS(raw) (((int16_t)(raw)) * p3t1755_TEMP_RESOLUTION)
-#define p3t1755_CELSIUS_TO_RAW(temp)                                           \
-  ((uint16_t)((int16_t)((temp) / p3t1755_TEMP_RESOLUTION)))
+#define p3t1755_CELSIUS_TO_RAW(temp) \
+	((uint16_t)((int16_t)((temp) / p3t1755_TEMP_RESOLUTION)))
 
 // CONFIGURATION MASKS
-#define p3t1755_SHUTDOWN_MODE_MASK 0x01   // Bit 0
+#define p3t1755_SHUTDOWN_MODE_MASK   0x01 // Bit 0
 #define p3t1755_THERMOSTAT_MODE_MASK 0x02 // Bit 1
-#define p3t1755_POLARITY_MASK 0x04        // Bit 2
-#define p3t1755_FAULT_QUEUE_MASK 0x18     // Bits 4-3
+#define p3t1755_POLARITY_MASK	     0x04 // Bit 2
+#define p3t1755_FAULT_QUEUE_MASK     0x18 // Bits 4-3
 #define p3t1755_CONVERSION_TIME_MASK 0x60 // Bits 6-5
-#define p3t1755_ONE_SHOT_MASK 0x80        // Bit 7
+#define p3t1755_ONE_SHOT_MASK	     0x80 // Bit 7
 
 // FAULT QUEUE SETTINGS
-#define p3t1755_1_CONSECUTIVE_FAULT 0x00
+#define p3t1755_1_CONSECUTIVE_FAULT  0x00
 #define p3t1755_2_CONSECUTIVE_FAULTS 0x08 // default
 #define p3t1755_4_CONSECUTIVE_FAULTS 0x10
 #define p3t1755_6_CONSECUTIVE_FAULTS 0x18
 
 // CONVERSION TIME SETTINGS
 #define p3t1755_27_5MS_CONVERSION_TIME 0x00
-#define p3t1755_55MS_CONVERSION_TIME 0x20 // default
-#define p3t1755_110MS_CONVERSION_TIME 0x40
-#define p3t1755_220MS_CONVERSION_TIME 0x60
+#define p3t1755_55MS_CONVERSION_TIME   0x20 // default
+#define p3t1755_110MS_CONVERSION_TIME  0x40
+#define p3t1755_220MS_CONVERSION_TIME  0x60
 
 // Function Pointers
 typedef int32_t (*WritePtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data,
-                            uint8_t length);
+			    uint8_t length);
 typedef int32_t (*ReadPtr)(uint16_t dev_addr, uint16_t reg, uint8_t *data,
-                           uint8_t length);
+			   uint8_t length);
 
 typedef struct {
-  uint16_t dev_addr;
-  WritePtr write;
-  ReadPtr read;
+	uint16_t dev_addr;
+	WritePtr write;
+	ReadPtr read;
 } p3t1755_t;
 
 float p3t1755_raw_to_celsius(uint16_t raw);
 
 void p3t1755_init(p3t1755_t *p3t, WritePtr write, ReadPtr read,
-                  uint16_t dev_addr);
+		  uint16_t dev_addr);
 
 int p3t1755_read_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
-                     uint8_t length);
+		     uint8_t length);
 int p3t1755_write_reg(p3t1755_t *p3t, uint16_t reg, uint8_t *data,
-                      uint8_t length);
+		      uint8_t length);
 
 // Reads current temp in celcius
 int p3t1755_read_temperature(p3t1755_t *p3t, float *temp_c);
 
 // Config functions
 int p3t1755_configure(p3t1755_t *p3t, uint8_t shutdown, uint8_t thermostat,
-                      uint8_t polarity, uint8_t fault_queue,
-                      uint8_t conversion_time);
+		      uint8_t polarity, uint8_t fault_queue,
+		      uint8_t conversion_time);
 int p3t1755_set_shutdown_mode(p3t1755_t *p3t, uint8_t enable);
 int p3t1755_set_thermostat_mode(p3t1755_t *p3t, uint8_t enable);
 int p3t1755_set_one_shot_mode(p3t1755_t *p3t, uint8_t enable);
