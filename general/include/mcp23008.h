@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef int (*write_ptr)(uint8_t addr, const uint8_t *data, uint8_t len);
+typedef int (*write_ptr)(uint8_t addr, uint8_t *data, uint8_t len);
 typedef int (*read_ptr)(uint8_t addr, uint8_t *data, uint8_t len);
 typedef struct {
 	write_ptr write;
