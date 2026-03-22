@@ -8,8 +8,7 @@
  * 
  */
 
-#define HDC2021_I2C_ADDR \
-	0x40 /* If ADDR is connected to VDD, 0x41  This is shifted left as it is required to be read as a dev address.*/
+#define HDC2021_I2C_ADDR 0x40
 
 typedef enum {
     REG_TEMP_LOW = 0x00,
