@@ -22,13 +22,13 @@ typedef enum {
 } HDC2021_REG_ADDR_t;
 
 /** Function Pointers */
-typedef int (*Write_ptr)(uint8_t *data, uint8_t dev_address, uint8_t length);
-typedef int (*Read_ptr)(uint8_t *data, uint8_t reg, uint8_t dev_address,
+typedef int (*Write_ptr_hdc)(uint8_t *data, uint8_t dev_address, uint8_t length);
+typedef int (*Read_ptr_hdc)(uint8_t *data, uint8_t reg, uint8_t dev_address,
 			uint8_t length);
 
 typedef struct {
-	Write_ptr write_reg;
-	Read_ptr read_reg;
+	Write_ptr_hdc write_reg;
+	Read_ptr_hdc read_reg;
 	float temp;
 	float humidity;
 	bool is_heater_enabled;
@@ -41,8 +41,9 @@ typedef struct {
  * @param hdc2021 - hdc2021debr driver
  * @return int - Status code
  */
-int hdc2021_init(hdc2021debr_t *hdc2021, Write_ptr write_reg, Read_ptr read_reg,
+int hdc2021_init(hdc2021debr_t *hdc2021, Write_ptr_hdc write_reg, Read_ptr_hdc read_reg,
 		   uint8_t dev_address);
+
 /**
  * @brief Toggles the status of the internal heater
  *
@@ -51,6 +52,15 @@ int hdc2021_init(hdc2021debr_t *hdc2021, Write_ptr write_reg, Read_ptr read_reg,
  * @return int - Status code
  */
 int hdc2021_toggle_heater(hdc2021debr_t *hdc2021, bool enable);
+
+/**
+ * @brief triggers oneshot measurement
+ *
+ * @param hdc2021 - hdc2021debr driver
+ * @return int - Status code
+ */
+int hdc2021_trigger_oneshot(hdc2021debr_t *hdc2021);
+
 /**
  * @brief Retrieves the temperature and humidity
  * @note Call hdc2021_trigger_oneshot() and wait a couple ms before calling this
@@ -58,4 +68,5 @@ int hdc2021_toggle_heater(hdc2021debr_t *hdc2021, bool enable);
  * @return int - Status code
  */
 int hdc2021_get_temp_humid(hdc2021debr_t *hdc2021);
+
 #endif
