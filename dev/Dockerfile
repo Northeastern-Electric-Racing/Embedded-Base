@@ -64,10 +64,13 @@ ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/bin
 
 # build and install customized openocd
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-  apt-get install -y libtool libusb-1.0.0-dev \
-  git clone https://github.com/STMicroelectronics/OpenOCD \
-  cd ./OpenOCD && ./bootstrap && ./configure --enable-stlink \
-  cd ./OpenOCD && make && make install \
+  apt-get install -y libtool libusb-1.0.0-dev && \
+  git clone https://github.com/STMicroelectronics/OpenOCD && \
+  cd ./OpenOCD && \
+  ./bootstrap && \
+  ./configure --enable-stlink && \
+  make && \
+  make install && \
   rm -r ./OpenOCD; \
 fi
 
