@@ -71,6 +71,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
   ./configure --enable-stlink && \
   make && \
   make install && \
+  cd .. && \
   rm -r ./OpenOCD; \
 fi
 
