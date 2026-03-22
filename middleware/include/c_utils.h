@@ -1,6 +1,8 @@
 #ifndef C_UTILS
 #define C_UTILS
 
+#include <stdint.h>
+
 /*
  * Will retrieve the container of a certain pointer given the container type and
  * its pointer Trick pulled from Linux Kernel
@@ -67,5 +69,24 @@ unsigned char reverse_bits(unsigned char b);
  * @return Interpolated y-value.
  */
 float linear_interpolate(float x, float x1, float x2, float y1, float y2);
+
+/**
+ * combines two uint8_t into a uint16_t
+ * 
+ * @param msb most significant byte
+ * @param lsb least significant byte
+ * 
+ * @return combined uint16_t
+ */
+uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb);
+
+/**
+ * sseparates a uint16_t into two uint8_t
+ * 
+ * @param value uint16_t to separate
+ * @param arr resulting array of 2 uint8_t (MSB is first)
+ * 
+ */
+void uint16_to_uint8(uint16_t value, uint8_t arr[2]);
 
 #endif /* C_UTILS */
