@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+ARG TARGETPLATFORM
+
 # Set up container and time zones
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive TZ="America/New_York" \
@@ -51,16 +53,23 @@ RUN echo "source /home/dev/scripts/alias.sh" >> ~/.bashrc
 RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
-RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-aarch64-arm-none-eabi.tar.xz | tar -xJv; \
+else \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
+fi
 
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-aarch64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/bin
 
 # build and install customized openocd
-RUN apt-get install -y libtool libusb-1.0.0-dev
-RUN git clone https://github.com/STMicroelectronics/OpenOCD
-RUN cd ./OpenOCD && ./bootstrap && ./configure --enable-stlink
-RUN cd ./OpenOCD && make && make install
-RUN rm -r ./OpenOCD
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+  apt-get install -y libtool libusb-1.0.0-dev \
+  git clone https://github.com/STMicroelectronics/OpenOCD \
+  cd ./OpenOCD && ./bootstrap && ./configure --enable-stlink \
+  cd ./OpenOCD && make && make install \
+  rm -r ./OpenOCD; \
+fi
 
 WORKDIR /home/app
 
