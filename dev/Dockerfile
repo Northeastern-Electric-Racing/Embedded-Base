@@ -32,13 +32,13 @@ RUN pip install --break-system-packages grpcio-tools
 
 RUN wget https://github.com/renode/renode/releases/download/v1.15.3/renode-1.15.3.linux-portable.tar.gz
 RUN mkdir renode_portable && tar -xvf renode-*.linux-portable.tar.gz -C renode_portable --strip-components=1 && rm renode-*.linux-portable.tar.gz
-ENV PATH $PATH:/renode_portable
+ENV PATH=$PATH:/renode_portable
 
 RUN wget https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v2.6.0.tar.gz -O cmock.tar.gz
 RUN mkdir cmock_portable && tar -xvf cmock.tar.gz -C cmock_portable --strip-components=1 && rm cmock.tar.gz
-ENV PATH $PATH:/cmock_portable
+ENV PATH=$PATH:/cmock_portable
 
-RUN wget https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v2.6.1.tar.gz -O unity.tar.gz 
+RUN wget https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v2.6.1.tar.gz -O unity.tar.gz
 RUN mkdir -p /cmock_portable/vendor/unity && tar -xvf unity.tar.gz -C /cmock_portable/vendor/unity --strip-components=1 && rm unity.tar.gz
 
 # Set up a development tools directory
@@ -54,13 +54,13 @@ RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-aarch64-arm-none-eabi.tar.xz | tar -xJv; \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-eabi.tar.xz | tar -xJv; \
 else \
-  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
 fi
 
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-aarch64-arm-none-eabi/bin
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
 
 # build and install customized openocd
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
