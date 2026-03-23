@@ -102,4 +102,9 @@ int honeywellSSC_read_pressure(honeywellSSC_t *ssc, float *result);
 // Reads the temperature in celcius
 int honeywellSSC_read_temp(honeywellSSC_t *ssc, float *result);
 
+// Reads the pressure and temperature in psi and Celsius respectively
+int honeywellSSC_read_pressure_and_temp(honeywellSSC_t *ssc,
+                                         float *pressure_result,
+                                         float *temp_result);
+
 #endif
