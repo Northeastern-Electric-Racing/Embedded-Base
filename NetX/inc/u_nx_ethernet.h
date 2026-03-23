@@ -124,5 +124,7 @@ uint32_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message,
  */
 NX_PTP_DATE_TIME ethernet_get_time(void);
 
+UINT ethernent_print_arp_status(void);
+
 // clang-format on
 #endif /* u_nx_ethernet.h */

@@ -2,6 +2,7 @@
 #include "u_nx_ethernet.h"
 #include "nx_stm32_eth_driver.h"
 #include "nxd_ptp_client.h"
+#include "tx_api.h"
 #include "u_nx_debug.h"
 #include "u_tx_debug.h"
 #include "c_utils.h"
@@ -14,8 +15,8 @@
 #endif
 
 /* PRIVATE MACROS */
-#define _IP_THREAD_STACK_SIZE 2048
-#define _ARP_CACHE_SIZE	      1024
+#define _IP_THREAD_STACK_SIZE 4096
+#define _ARP_CACHE_SIZE	      2048
 #define _IP_THREAD_PRIORITY   1
 #define _IP_NETWORK_MASK      IP_ADDRESS(255, 255, 255, 0)
 #define _UDP_QUEUE_MAXIMUM    12
@@ -210,6 +211,15 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
         return status;
     }
 
+    // behold the magic
+    // this is a poll function to wait until the driver has completely initialized
+    // without it the arp module and the TCP module fail silently and confusingly
+    ULONG current_status;
+    do {
+        nx_ip_driver_direct_command(&device.ip, 51, &current_status);
+        tx_thread_sleep(100);
+    } while (current_status != 4);// NX_DRIVER_STATE_LINK_ENABLED
+
     /* Enable ARP */
     status = nx_arp_enable(
         &device.ip,                // IP instance
@@ -372,11 +382,6 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
     /* Mark device as initialized. */
     device.is_initialized = true;
 
-    ETH_MACFilterConfigTypeDef filter;
-    HAL_ETH_GetMACFilterConfig(&heth, &filter);
-    filter.BroadcastFilter = DISABLE;
-    HAL_ETH_SetMACFilterConfig(&heth, &filter);
-
     PRINTLN_INFO("Ran ethernet_init().");
     return NX_SUCCESS;
 }
@@ -506,5 +511,32 @@ NX_PTP_DATE_TIME ethernet_get_time(void) {
 
     return date;
 }
+
+UINT ethernet_print_arp_status(void) {
+    ULONG arp_requests_sent = 100;
+    ULONG arp_requests_received = 100;
+
+    ULONG arp_responses_sent = 100;
+    ULONG arp_responses_received;
+                            ULONG arp_dynamic_entries= 100;
+                            ULONG arp_static_entries= 100;
+                            ULONG arp_aged_entries= 100;
+                            ULONG arp_invalid_messages= 100;
+    UINT status = nx_arp_info_get(&device.ip,  &arp_requests_sent, &arp_requests_received,
+                             &arp_responses_sent,  &arp_responses_received,
+                             &arp_dynamic_entries,  &arp_static_entries,
+                             &arp_aged_entries,  &arp_invalid_messages);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to retrieve ARP info (Status: %d/%s)", status, nx_status_toString(status));
+        return status;
+    }
+    PRINTLN_INFO("ARP info REQ SENT %lu, REQ RECV %lu, RESP SENT %lu, RESP RECV %lu, DYN ENTRY %lu, S ENTRY %lu, AGED %lu, INVALID %lu",  arp_requests_sent,  arp_requests_received,
+                             arp_responses_sent,  arp_responses_received,
+                             arp_dynamic_entries,  arp_static_entries,
+                             arp_aged_entries,  arp_invalid_messages);
+
+    return status;
+}
+
 
 // clang-format on
