@@ -66,7 +66,12 @@ typedef struct __attribute__((__packed__)) {
 
 /* Function Pointers (for initialization). */
 typedef void (*DriverFunction)(NX_IP_DRIVER *); /* User-supplied network driver used to send and receive IP packets. */
+
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function that will be called whenever an ethernet message is recieved. */
+#else
+typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function that will be called whenever an ethernet message is recieved. */
+#endif
 
 /**
  * @brief Initializes the NetX ethernet system in a repo.
@@ -105,7 +110,13 @@ uint8_t ethernet_send_message(ethernet_message_t *message);
  * @param message_size The message size in bytes
  * @return The error code.
  */
-uint32_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
+UINT ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
+
+/**
+ * Connect to a disconnected MQTT server (NX_MQTT_NOT_CONNECTED)
+ * Will yield while trying to connect
+ */
+UINT ethernet_mqtt_reconnect(void);
 
 /**
  *
@@ -124,6 +135,9 @@ uint32_t ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message,
  */
 NX_PTP_DATE_TIME ethernet_get_time(void);
 
+/**
+ * Debugging, print the status of ARP statistics
+ */
 UINT ethernent_print_arp_status(void);
 
 // clang-format on

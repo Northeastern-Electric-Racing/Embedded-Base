@@ -10,6 +10,7 @@
 #include "u_tx_general.h"
 #include <string.h>
 #include <stdio.h>
+#include <sys/_types.h>
 #if ETH_ENABLE_MQTT
 #include "nxd_mqtt_client.h"
 #endif
@@ -25,38 +26,41 @@
 
 /* The DEFAULT_PAYLOAD_SIZE should match with RxBuffLen configured via MX_ETH_Init */
 #define DEFAULT_PAYLOAD_SIZE      1524
-#define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 10)
-#define MQTT_CLIENT_STACK_SIZE 4096
+#define NX_APP_PACKET_POOL_SIZE              ((DEFAULT_PAYLOAD_SIZE + sizeof(NX_PACKET)) * 100)
+#define MQTT_CLIENT_STACK_SIZE 8192
 
 extern ETH_HandleTypeDef heth;
 
 /* DEVICE INFO */
 typedef struct {
-	/* NetX Objects */
+   	uint8_t node_id;
+
+	NX_IP ip;
+	UCHAR ip_memory[_IP_THREAD_STACK_SIZE];
+	DriverFunction
+		driver; /* Set by the user. Used to communicate with the driver layer. */
+	OnRecieve on_recieve; /* Set by the user. Called when a message is recieved. */
+
+	NX_PACKET_POOL packet_pool;
+	UCHAR packet_pool_memory[NX_APP_PACKET_POOL_SIZE];
+
+	UCHAR arp_cache_memory[_ARP_CACHE_SIZE];
+
 	#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 	NX_UDP_SOCKET socket;
 	#endif
+
 	#if ETH_ENABLE_MQTT
 	NXD_MQTT_CLIENT mqtt_client;
 	UCHAR mqtt_thread_stack[MQTT_CLIENT_STACK_SIZE / sizeof(ULONG)];
 	#endif
-	NX_PACKET_POOL packet_pool;
-	NX_IP ip;
+
+
 	NX_PTP_CLIENT ptp_client;
 	SHORT ptp_utc_offset;
-
-	/* Static memory for NetX stuff */
-	UCHAR packet_pool_memory[NX_APP_PACKET_POOL_SIZE];
-	UCHAR ip_memory[_IP_THREAD_STACK_SIZE];
-	UCHAR arp_cache_memory[_ARP_CACHE_SIZE];
 	ULONG ptp_stack[2048 / sizeof(ULONG)];
 
-	/* Device config variables */
 	bool is_initialized;
-	uint8_t node_id;
-	DriverFunction
-		driver; /* Set by the user. Used to communicate with the driver layer. */
-	OnRecieve on_recieve; /* Set by the user. Called when a message is recieved. */
 } _ethernet_device_t;
 static _ethernet_device_t device = { 0 };
 
@@ -64,7 +68,7 @@ static _ethernet_device_t device = { 0 };
 #if ETH_ENABLE_MQTT
 static VOID _mqtt_disconnect_callback(NXD_MQTT_CLIENT *client_ptr)
 {
-    printf("client disconnected from server\n");
+    PRINTLN_WARNING("client disconnected from server\n");
 }
 
 static VOID _mqtt_recieve_callback(NXD_MQTT_CLIENT* client_ptr, UINT number_of_messages)
@@ -231,16 +235,6 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
         return status;
     }
 
-    status = nx_arp_gratuitous_send(
-        &device.ip,                // IP instance
-        NX_NULL
-    );
-    if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to enable ARP (Status: %d/%s).", status, nx_status_toString(status));
-        return status;
-    }
-
-
 
     /* Enable igmp */
 #if ETH_ENABLE_IGMP || ETH_ENABLE_MANUAL_UDP_MULTICAST
@@ -261,6 +255,12 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
     status = nx_udp_enable(&device.ip);
     if (status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to enable UDP (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    status = nx_tcp_enable(&device.ip);
+    if (status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to enable TCP (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
 
@@ -342,10 +342,10 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
 
 #if ETH_ENABLE_MQTT
 /* Create MQTT client instance. */
-    char* client_id = "";
-    UINT client_id_size = sprintf(client_id, "FW-%d", device.node_id);
+    char client_id[8] = "";
+    UINT client_id_size = sprintf(client_id, "FWD-%d", device.node_id);
 
-    status = nxd_mqtt_client_create(&device.mqtt_client, client_id,
+    status = nxd_mqtt_client_create(&device.mqtt_client, "MQTT client",
         client_id, client_id_size, &device.ip, &device.packet_pool,
         (VOID*)device.mqtt_thread_stack, sizeof(device.mqtt_thread_stack),
         _MQTT_THREAD_PRIORITY, NX_NULL, 0);
@@ -361,28 +361,27 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
         return status;
     }
 
-    NXD_ADDRESS server_ip;
-    server_ip.nxd_ip_version = 4;
-    server_ip.nxd_ip_address.v4 = ETH_MQTT_SERVER_IP;
-    /* Start the connection to the server. */
-    status = nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
-        300, NX_TRUE, NX_WAIT_FOREVER);
-    if(status != NX_SUCCESS) {
-        PRINTLN_ERROR("Failed to connect to MQTT client (Status: %d/%s).", status, nx_status_toString(status));
-        return status;
-    }
-
     /* Set the receive notify function. */
     status = nxd_mqtt_client_receive_notify_set(&device.mqtt_client, _mqtt_recieve_callback);
     if (status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to set mqtt recv notification (Status: %d/%s).", status, nx_status_toString(status));
         return status;
     }
+
+    NXD_ADDRESS server_ip;
+    server_ip.nxd_ip_version = 4;
+    server_ip.nxd_ip_address.v4 = ETH_MQTT_SERVER_IP;
+    /* Start the connection to the server. */
+    status = nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
+        1000, NX_TRUE, NX_WAIT_FOREVER);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to connect to MQTT client (Status: %d/%s).", status, nx_status_toString(status));
+    } else {
+    }
 #endif
     /* Mark device as initialized. */
     device.is_initialized = true;
 
-    PRINTLN_INFO("Ran ethernet_init().");
     return NX_SUCCESS;
 }
 
@@ -495,8 +494,32 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
 #endif
 
 #if ETH_ENABLE_MQTT
-uint32_t ethernet_mqtt_publish(char *topic_name, UINT topic_size, char *message, UINT message_size) {
-    return nxd_mqtt_client_publish(&device.mqtt_client, topic_name, topic_size, message, message_size, NX_FALSE, 0, MS_TO_TICKS(100));
+UINT ethernet_mqtt_publish(char *topic_name, UINT topic_size, char *message, UINT message_size) {
+    return nxd_mqtt_client_publish(&device.mqtt_client, topic_name, topic_size-1, message, message_size, NX_FALSE, 0, MS_TO_TICKS(100));
+}
+
+UINT ethernet_mqtt_reconnect(void) {
+    NXD_ADDRESS server_ip;
+    server_ip.nxd_ip_version = 4;
+    server_ip.nxd_ip_address.v4 = ETH_MQTT_SERVER_IP;
+    // TODO fix bug that breaks reconnection with 0x10007
+    nxd_mqtt_client_delete(&device.mqtt_client);
+
+    char client_id[8] = "";
+    UINT client_id_size = sprintf(client_id, "FWD-%d", device.node_id);
+
+    UINT status = nxd_mqtt_client_create(&device.mqtt_client, "MQTT client",
+        client_id, client_id_size, &device.ip, &device.packet_pool,
+        (VOID*)device.mqtt_thread_stack, sizeof(device.mqtt_thread_stack),
+        _MQTT_THREAD_PRIORITY, NX_NULL, 0);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to create MQTT client (Status: %d/%s).", status, nx_status_toString(status));
+        return status;
+    }
+
+    /* Start the connection to the server. */
+    return nxd_mqtt_client_connect(&device.mqtt_client, &server_ip, ETH_MQTT_SERVER_PORT,
+        1000, NX_TRUE, NX_WAIT_FOREVER);
 }
 #endif
 

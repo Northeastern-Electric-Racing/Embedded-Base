@@ -1,0 +1,30 @@
+diff --git a/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c b/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c
+index d93161a..4e35bca 100644
+--- a/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c
++++ b/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c
+@@ -265,6 +265,12 @@ NX_INTERFACE *interface_ptr;
+     }
+ #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
+ 
++  case NX_DRIVER_GET_STATE:
++    {
++      *(driver_req_ptr->nx_ip_driver_return_ptr) = nx_driver_information.nx_driver_information_state;
++      break;
++    }
++
+   default:
+ 
+ 
+diff --git a/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.h b/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.h
+index 0198ed9..a94fa14 100644
+--- a/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.h
++++ b/Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.h
+@@ -72,6 +72,8 @@ extern   "C" {
+ #define NX_DRIVER_STATE_INITIALIZED             3
+ #define NX_DRIVER_STATE_LINK_ENABLED            4
+ 
++#define NX_DRIVER_GET_STATE                     51
++
+ #define NX_DRIVER_ERROR                         90
+ 
+ 
