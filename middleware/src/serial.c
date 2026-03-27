@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "stm32xx_hal.h"
 
 // TLDR: Serial printfs a line with the format: mtr/<Title>/<Data Label>/[Data]
 void serial_monitor(const char *title, const char *data_label,
