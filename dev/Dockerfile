@@ -54,9 +54,9 @@ RUN ln -sf /usr/lib/linux-tools-*/* /usr/bin/
 
 # Install cross compiler
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-eabi.tar.xz | tar -xJv; \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-aarch64-arm-none-eabi.tar.xz | tar -xJv; \
 else \
-  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
+  wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
 fi
 
 ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-eabi/bin
