@@ -59,8 +59,8 @@ else \
   wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz | tar -xJv; \
 fi
 
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-eabi/bin
-ENV PATH $PATH:/home/dev/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-14.2.rel1-aarch64-arm-none-eabi/bin
+ENV PATH $PATH:/home/dev/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin
 
 # build and install customized openocd
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
