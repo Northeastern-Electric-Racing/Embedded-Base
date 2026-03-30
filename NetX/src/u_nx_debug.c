@@ -75,7 +75,6 @@ const char* nx_status_toString(UINT status) {
         case NX_TCPIP_OFFLOAD_ERROR: return "NX_TCPIP_OFFLOAD_ERROR";
 
         /* MQTT-specific stuff. */
-        #ifdef NXD_MQTT_SUCCESS
         case NXD_MQTT_SUCCESS: return "NXD_MQTT_SUCCESS";
         case NXD_MQTT_ALREADY_CONNECTED: return "NXD_MQTT_ALREADY_CONNECTED";
         case NXD_MQTT_NOT_CONNECTED: return "NXD_MQTT_NOT_CONNECTED";
@@ -101,16 +100,13 @@ const char* nx_status_toString(UINT status) {
         case NXD_MQTT_ERROR_SERVER_UNAVAILABLE: return "NXD_MQTT_ERROR_SERVER_UNAVAILABLE";
         case NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD: return "NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD";
         case NXD_MQTT_ERROR_NOT_AUTHORIZED: return "NXD_MQTT_ERROR_NOT_AUTHORIZED";
-        #endif
 
         /* PTP-specific stuff. */
-        #ifdef NX_PTP_CLIENT_NOT_STARTED
         case NX_PTP_CLIENT_NOT_STARTED: return "NX_PTP_CLIENT_NOT_STARTED";
         case NX_PTP_CLIENT_ALREADY_STARTED: return "NX_PTP_CLIENT_ALREADY_STARTED";
         case NX_PTP_PARAM_ERROR: return "NX_PTP_PARAM_ERROR";
         case NX_PTP_CLIENT_INSUFFICIENT_PACKET_PAYLOAD: return "NX_PTP_CLIENT_INSUFFICIENT_PACKET_PAYLOAD";
         case NX_PTP_CLIENT_CLOCK_CALLBACK_FAILURE: return "NX_PTP_CLIENT_CLOCK_CALLBACK_FAILURE";
-        #endif
         
         default: return "UNKNOWN_STATUS";
     }
