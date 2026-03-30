@@ -72,6 +72,8 @@ const char* nx_status_toString(UINT status) {
         case NX_OPTION_HEADER_ERROR: return "NX_OPTION_HEADER_ERROR";
         case NX_CONTINUE: return "NX_CONTINUE";
         case NX_TCPIP_OFFLOAD_ERROR: return "NX_TCPIP_OFFLOAD_ERROR";
+
+        /* MQTT-specific stuff. Might want to put a include gaurd here? */
         case NXD_MQTT_SUCCESS: return "NXD_MQTT_SUCCESS";
         case NXD_MQTT_ALREADY_CONNECTED: return "NXD_MQTT_ALREADY_CONNECTED";
         case NXD_MQTT_NOT_CONNECTED: return "NXD_MQTT_NOT_CONNECTED";
