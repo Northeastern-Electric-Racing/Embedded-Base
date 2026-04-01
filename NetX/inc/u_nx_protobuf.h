@@ -11,9 +11,11 @@
 #include <stdbool.h>
 #include "serverdata.pb.h"
 
-/* Stringification macros. */
+/* Helper macros. */
 #define PB_STR_HELPER(x) #x                                                   // Helper for PB_TOSTR(). Probably should never use directly.
 #define PB_TOSTR(x) PB_STR_HELPER(x)                                          // Converts a macro's value into a string.
+#define PB_COUNT_ARGS(...) (sizeof((float[]){ __VA_ARGS__ }) / sizeof(float)) // Returns the number of arguments passed into it.
+#define PB_STR_LEN(s) (sizeof(s) - 1)                                         // Returns the length of a string literal.
 
 /* CONFIG: Compile-time validation of topic size, unit size, and number of values. */
 #define PB_MAX_TOPIC_LENGTH 100 // Maximum
@@ -23,11 +25,11 @@
 #define PB_VALIDATE_ARGS(topic, unit, num_values)                                                                                             \
     do {                                                                                                                                      \
         _Static_assert(                                                                                                                       \
-            sizeof(topic) <= PB_MAX_TOPIC_LENGTH,                                                                                             \
+            PB_STR_LEN(topic) <= PB_MAX_TOPIC_LENGTH,                                                                                         \
             "MQTT topic parameter exceeds maximum length of " PB_TOSTR(PB_MAX_TOPIC_LENGTH) " allowed by `nx_protobuf_mqtt_message_create()`."\
         );                                                                                                                                    \
         _Static_assert(                                                                                                                       \
-            sizeof(unit) <= PB_MAX_UNIT_LENGTH,                                                                                               \
+            PB_STR_LEN(unit) <= PB_MAX_UNIT_LENGTH,                                                                                           \
             "MQTT unit parameter exceeds maximum length of " PB_TOSTR(PB_MAX_UNIT_LENGTH) " allowed by `nx_protobuf_mqtt_message_create()`."  \
         );                                                                                                                                    \
         _Static_assert(                                                                                                                       \
@@ -39,11 +41,6 @@
             "Cannot pass more than " PB_TOSTR(PB_MAX_DATAPOINTS) " values into the variable argument of `nx_protobuf_mqtt_message_create()`." \
         );                                                                                                                                    \
     } while (0)
-
-
-/* Helper macros. */
-#define PB_COUNT_ARGS(...) (sizeof((float[]){ __VA_ARGS__ }) / sizeof(float)) // Returns the number of arguments passed into it.
-#define PB_STR_LEN(s) (sizeof(s) - 1)                                         // Returns the length of a string literal.
 
     /**
  * @brief Creates and formats a `ethernet_mqtt_message_t` object, and returns it to the caller.
@@ -69,11 +66,11 @@
 typedef struct {
     const char* topic;
     int topic_size;
-    serverdata_v2_ServerData msg;
+    serverdata_v2_ServerData protobuf;
     bool initialized;
 } ethernet_mqtt_message_t;
 
 /* MACRO IMPLEMENTATIONS */
-ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size_t topic_len, const char* unit,  size_t unit_len, const float values[], int values_size);
+ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size_t topic_size, const char* unit,  size_t unit_len, const float values[], int values_count);
 
 // clang-format on
