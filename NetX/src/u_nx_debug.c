@@ -1,6 +1,17 @@
 #include "u_nx_debug.h"
 #include "nxd_ptp_client.h"
 
+#if defined(__has_include)
+#if __has_include("nxd_mqtt_client.h")
+#include "nxd_mqtt_client.h"
+#define U_NX_DEBUG_HAS_MQTT 1
+#endif
+#endif
+
+#ifndef U_NX_DEBUG_HAS_MQTT
+#define U_NX_DEBUG_HAS_MQTT 0
+#endif
+
 // clang-format off
 
 /* Converts a NetX status macro to a printable string. */
@@ -74,8 +85,11 @@ const char* nx_status_toString(UINT status) {
         case NX_CONTINUE: return "NX_CONTINUE";
         case NX_TCPIP_OFFLOAD_ERROR: return "NX_TCPIP_OFFLOAD_ERROR";
 
-        /* MQTT-specific stuff. */
+    /* MQTT-specific stuff. */
+#if U_NX_DEBUG_HAS_MQTT
+#if (NXD_MQTT_SUCCESS != NX_SUCCESS)
         case NXD_MQTT_SUCCESS: return "NXD_MQTT_SUCCESS";
+#endif
         case NXD_MQTT_ALREADY_CONNECTED: return "NXD_MQTT_ALREADY_CONNECTED";
         case NXD_MQTT_NOT_CONNECTED: return "NXD_MQTT_NOT_CONNECTED";
         case NXD_MQTT_MUTEX_FAILURE: return "NXD_MQTT_MUTEX_FAILURE";
@@ -100,6 +114,7 @@ const char* nx_status_toString(UINT status) {
         case NXD_MQTT_ERROR_SERVER_UNAVAILABLE: return "NXD_MQTT_ERROR_SERVER_UNAVAILABLE";
         case NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD: return "NXD_MQTT_ERROR_BAD_USERNAME_PASSWORD";
         case NXD_MQTT_ERROR_NOT_AUTHORIZED: return "NXD_MQTT_ERROR_NOT_AUTHORIZED";
+#endif
 
         /* PTP-specific stuff. */
         case NX_PTP_CLIENT_NOT_STARTED: return "NX_PTP_CLIENT_NOT_STARTED";
