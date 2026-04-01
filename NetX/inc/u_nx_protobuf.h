@@ -42,7 +42,7 @@
         );                                                                                                                                    \
     } while (0)
 
-    /**
+/**
  * @brief Creates and formats a `ethernet_mqtt_message_t` object, and returns it to the caller.
  * @param topic (const char*) String literal representing the message's MQTT topic name.
  * @param unit (const char*) String literal representing the unit of the message's data.
@@ -69,6 +69,13 @@ typedef struct {
     serverdata_v2_ServerData protobuf;
     bool initialized;
 } ethernet_mqtt_message_t;
+
+/**
+ * @brief Dispatches a `ethernet_mqtt_message_t` message over MQTT.
+ * @param message The message to send.
+ * @return U_SUCCESS if successful, U_ERROR is not successful.
+ */
+int nx_protobuf_mqtt_message_send(ethernet_mqtt_message_t* message);
 
 /* MACRO IMPLEMENTATIONS */
 ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size_t topic_size, const char* unit,  size_t unit_len, const float values[], int values_count);
