@@ -11,25 +11,33 @@
 #include <stdbool.h>
 #include "serverdata.pb.h"
 
+/* Stringification macros. */
+#define PB_STR_HELPER(x) #x                                                   // Helper for PB_TOSTR(). Probably should never use directly.
+#define PB_TOSTR(x) PB_STR_HELPER(x)                                          // Converts a macro's value into a string.
+
 /* CONFIG: Compile-time validation of topic size, unit size, and number of values. */
-#define PB_VALIDATE_ARGS(topic, unit, num_values)                                                               \
-    do {                                                                                                        \
-        _Static_assert(                                                                                         \
-            sizeof(topic) <= 100,                                                                               \
-            "MQTT topic parameter exceeds maximum length of 100 allowed by `nx_protobuf_mqtt_message_create()`."\
-        );                                                                                                      \
-        _Static_assert(                                                                                         \
-            sizeof(unit) <= 15,                                                                                 \
-            "MQTT unit parameter exceeds maximum length of 15 allowed by `nx_protobuf_mqtt_message_create()`."  \
-        );                                                                                                      \
-        _Static_assert(                                                                                         \
-            (num_values) >= 1,                                                                                  \
-            "Must pass at least 1 value into the variable argument of `nx_protobuf_mqtt_message_create()`."     \
-        );                                                                                                      \
-        _Static_assert(                                                                                         \
-            (num_values) <= 5,                                                                                  \
-            "Cannot pass more than 5 values into the variable argument of `nx_protobuf_mqtt_message_create()`." \
-        );                                                                                                      \
+#define PB_MAX_TOPIC_LENGTH 100 // Maximum
+#define PB_MAX_UNIT_LENGTH  15
+#define PB_MIN_DATAPOINTS   1
+#define PB_MAX_DATAPOINTS   5
+#define PB_VALIDATE_ARGS(topic, unit, num_values)                                                                                             \
+    do {                                                                                                                                      \
+        _Static_assert(                                                                                                                       \
+            sizeof(topic) <= PB_MAX_TOPIC_LENGTH,                                                                                             \
+            "MQTT topic parameter exceeds maximum length of " PB_TOSTR(PB_MAX_TOPIC_LENGTH) " allowed by `nx_protobuf_mqtt_message_create()`."\
+        );                                                                                                                                    \
+        _Static_assert(                                                                                                                       \
+            sizeof(unit) <= PB_MAX_UNIT_LENGTH,                                                                                               \
+            "MQTT unit parameter exceeds maximum length of " PB_TOSTR(PB_MAX_UNIT_LENGTH) " allowed by `nx_protobuf_mqtt_message_create()`."  \
+        );                                                                                                                                    \
+        _Static_assert(                                                                                                                       \
+            (num_values) >= PB_MIN_DATAPOINTS,                                                                                                \
+            "Must pass at least " PB_TOSTR(PB_MIN_DATAPOINTS) " value into the variable argument of `nx_protobuf_mqtt_message_create()`."     \
+        );                                                                                                                                    \
+        _Static_assert(                                                                                                                       \
+            (num_values) <= PB_MAX_DATAPOINTS,                                                                                                \
+            "Cannot pass more than " PB_TOSTR(PB_MAX_DATAPOINTS) " values into the variable argument of `nx_protobuf_mqtt_message_create()`." \
+        );                                                                                                                                    \
     } while (0)
 
 
@@ -37,7 +45,7 @@
 #define PB_COUNT_ARGS(...) (sizeof((float[]){ __VA_ARGS__ }) / sizeof(float)) // Returns the number of arguments passed into it.
 #define PB_STR_LEN(s) (sizeof(s) - 1)                                         // Returns the length of a string literal.
 
-/**
+    /**
  * @brief Creates and formats a `ethernet_mqtt_message_t` object, and returns it to the caller.
  * @param topic (const char*) String literal representing the message's MQTT topic name.
  * @param unit (const char*) String literal representing the unit of the message's data.

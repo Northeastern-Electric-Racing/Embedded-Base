@@ -3,14 +3,13 @@
 #include "u_nx_protobuf.h"
 #include "u_nx_ethernet.h"
 
-ethernet_mqtt_message_t _nx_protobuf_create_mqtt_message(const char* topic, const char* unit, float[] values, int values_size) {
+ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size_t topic_len, const char* unit,  size_t unit_len, const float values[], int values_size) {
     /* Zero-initialize the protobuf struct and the sendable ethernet_mqtt_message_t message. */
     serverdata_v2_ServerData protobuf =  serverdata_v2_ServerData_init_zero;
     ethernet_mqtt_message_t message = { 0 };
     message.initialized = false;
 
-    /* Calculate topic size. */
-    int topic_size = strlen(topic);
+    /* Enforce topic size. */
     if(topic_size > ETH_MAX_TOPIC_SIZE) {
         PRINTLN_ERROR("MQTT Message topic exceeds maximum length (Topic: %s).", topic);
         return message; // Return empty, uninitialized message.
