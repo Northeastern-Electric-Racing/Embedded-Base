@@ -382,6 +382,7 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
     /* Mark device as initialized. */
     device.is_initialized = true;
 
+    PRINTLN_INFO("Ran ethernet_init()");
     return NX_SUCCESS;
 }
 
