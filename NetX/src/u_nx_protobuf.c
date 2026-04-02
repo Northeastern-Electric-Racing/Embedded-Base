@@ -1,5 +1,6 @@
 #include <string.h>
 #include "u_tx_debug.h"
+#include "u_nx_debug.h"
 #include "u_nx_protobuf.h"
 #include "u_nx_ethernet.h"
 #include "pb.h"
@@ -61,7 +62,7 @@ ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size
 
     /* Pack the `ethernet_mqtt_message_t` object and return it as successfully initialized. */
     message.topic = topic;
-    message.topic_size = topic_len;
+    message.topic_size = topic_len + 1; // u_TODO - for some reason you need to do + 1 here or else it will cut the last letter off of the topic in MQTT ui. The macro probably just calculates the topic length with one less than it should or something
     message.protobuf = protobuf;
     message.initialized = true;
     return message;
@@ -102,7 +103,7 @@ int nx_protobuf_mqtt_message_send(ethernet_mqtt_message_t* message) {
             do {
                 tx_thread_sleep(1000);
                 status = ethernet_mqtt_reconnect();
-                PRINTLN_WARNING("Attempting MQTT reconnection (Status: %d).", status);
+                PRINTLN_WARNING("Attempting MQTT reconnection (Status: %d/%s).", status, nx_status_toString(status));
             } while ((status != NXD_MQTT_SUCCESS) && (status != NXD_MQTT_ALREADY_CONNECTED));
             PRINTLN_WARNING("MQTT reconnection successful.");
         }
