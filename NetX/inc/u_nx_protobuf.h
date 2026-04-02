@@ -18,10 +18,10 @@
 #define PB_STR_LEN(s) (sizeof(s) - 1)                                         // Returns the length of a string literal.
 
 /* CONFIG: Compile-time validation of topic size, unit size, and number of values. */
-#define PB_MAX_TOPIC_LENGTH 100 // Maximum
-#define PB_MAX_UNIT_LENGTH  15
-#define PB_MIN_DATAPOINTS   1
-#define PB_MAX_DATAPOINTS   5
+#define PB_MAX_TOPIC_LENGTH 100 // Maximum length of topic string literal (in characters).
+#define PB_MAX_UNIT_LENGTH  15  // Maximum length of unit string literal (in characters).
+#define PB_MIN_DATAPOINTS   1   // Minimum number of datapoints (i.e., variable `...` arguments passed into `nx_protobuf_mqtt_message_create()`).
+#define PB_MAX_DATAPOINTS   5   // Maximum number of datapoints (i.e., variable `...` arguments passed into `nx_protobuf_mqtt_message_create()`).
 #define PB_VALIDATE_ARGS(topic, unit, num_values)                                                                                             \
     do {                                                                                                                                      \
         _Static_assert(                                                                                                                       \
