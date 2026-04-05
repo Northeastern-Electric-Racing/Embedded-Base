@@ -131,9 +131,17 @@ UINT ethernet_mqtt_reconnect(void);
 
 /**
  * @brief Retrieves the time from PTP stack.
- * @return The UTC time
+ * @param datetime Buffer for the retrieved datetime info.
+ * @return U_SUCCESS if successful, U_ERROR is not successful.
  */
-NX_PTP_DATE_TIME ethernet_get_time(void);
+int ethernet_get_time(NX_PTP_DATE_TIME* datetime);
+
+/**
+ * @brief Gets the number of microseconds since the Unix epoch (1970-01-01 00:00:00 UTC), using the PTP stack.
+ * @param buffer The buffer for the retrieved time.
+ * @return U_SUCCESS if successful, U_ERROR is not successful.
+ */
+int ethernet_ptp_get_unix_microseconds(uint64_t* buffer);
 
 /**
  * Debugging, print the status of ARP statistics
