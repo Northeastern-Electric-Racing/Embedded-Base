@@ -525,8 +525,15 @@ UINT ethernet_mqtt_reconnect(void) {
 #endif
 
 NX_PTP_DATE_TIME ethernet_get_time(void) {
-    NX_PTP_TIME tm;
-    NX_PTP_DATE_TIME date;
+    NX_PTP_TIME tm = { 0 };
+    NX_PTP_DATE_TIME date = { 0 };
+
+    /* If not initialized, don't try to read PTP yet. */
+    if(!device.is_initialized) {
+        PRINTLN_ERROR("Tried getting PTP time before device has been initialized.");
+        return date;
+    }
+
     /* read the PTP clock */
     nx_ptp_client_time_get(&device.ptp_client, &tm);
 
