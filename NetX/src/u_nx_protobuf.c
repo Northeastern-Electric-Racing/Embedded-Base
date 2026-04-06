@@ -43,8 +43,6 @@ ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size
     // NOTE: If using the `nx_protobuf_mqtt_message_create()` macro (as intended), the static asserts should catch this. This is just an extra check in case a caller uses this function directly for whatever reason.
 
     /* Get the PTP time and convert to appropriate protobuf time. */
-    //NX_PTP_DATE_TIME datetime = ethernet_get_time(); //u_TODO - for some reason ethernet_get_time() is blocking! kind of weird. it doesn't always block either, just when called from certain areas.
-    //uint64_t time_us = 10; // u_TODO - obviously this is temporary, but can't use ethernet_get_time() since it's blocking
     uint64_t datetime = 0;
     int status = ethernet_ptp_get_unix_microseconds(&datetime);
     if(status != U_SUCCESS) {
