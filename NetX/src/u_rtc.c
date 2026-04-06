@@ -2,6 +2,7 @@
 #include "rtc.h"
 #include <stdio.h>
 #include "stm32h5xx_hal.h"
+#include "stm32h5xx_hal_rtc.h"
 #include "u_tx_debug.h"
 #include <time.h>
 
@@ -42,12 +43,33 @@ static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions, NX_PT
 	HAL_RTCEx_SetSynchroShift(&hrtc, offset_tick, offset_ahead_1s);
 }
 
+static UINT rtc_to_nx_time(RTC_TimeTypeDef *rtc_time, RTC_DateTypeDef *rtc_date, NX_PTP_TIME *time_ptr) {
+    // helpful way to get UNIX time from RTC so we can give it to NetX layer
+	time_t current_time_unix = { 0 };
+	struct tm tim = {0};
+	tim.tm_year = rtc_date->Year + 100;
+	tim.tm_mon = rtc_date->Month - 1;
+	tim.tm_mday = rtc_date->Date;
+	tim.tm_hour = rtc_time->Hours;
+	tim.tm_min = rtc_time->Minutes;
+	tim.tm_sec = rtc_time->Seconds;
+	current_time_unix = mktime(&tim);
+
+	time_ptr->second_high = 0; // todo fix by 2038
+	time_ptr->second_low = (ULONG) current_time_unix;
+	time_ptr->nanosecond = 1000 * second_ticks_to_us(
+		rtc_time->SecondFraction - rtc_time->SubSeconds,
+		rtc_time->SecondFraction); // pull directly from rtc
+
+	return 0;
+}
+
 UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 				       UINT operation, NX_PTP_TIME *time_ptr,
 				       NX_PACKET *packet_ptr,
 				       VOID *callback_data)
 {
-	NX_PTP_DATE_TIME *current_date_time;
+	NX_PTP_DATE_TIME current_date_time = { 0 };
 	RTC_TimeTypeDef rtc_time = {0};
 	RTC_DateTypeDef rtc_date = {0};
 
@@ -58,32 +80,39 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 		case NX_PTP_CLIENT_CLOCK_SET:
 			TX_DISABLE
 
-			nx_ptp_client_utility_convert_time_to_date(
-				time_ptr, -PTP_UTC_OFFSET, current_date_time);
+			UINT status = nx_ptp_client_utility_convert_time_to_date(
+				time_ptr, -PTP_UTC_OFFSET, &current_date_time);
 
 			rtc_time = (RTC_TimeTypeDef) {
-				.Hours = current_date_time->hour,
-				.Minutes = current_date_time->minute,
-				.Seconds = current_date_time->second,
+				.Hours = current_date_time.hour,
+				.Minutes = current_date_time.minute,
+				.Seconds = current_date_time.second,
 				.TimeFormat = 0,
 			};
 
 			rtc_date = (RTC_DateTypeDef) {
-				.Year = current_date_time->year % 100,
-				.Month = current_date_time->month,
-				.Date = current_date_time->day,
-				.WeekDay = current_date_time->weekday,
+				.Year = current_date_time.year % 100,
+				.Month = current_date_time.month,
+				.Date = current_date_time.day,
+				.WeekDay = current_date_time.weekday,
 			};
+
+			// PRINTLN_INFO("GOT TIME SET: %d, sending NX time (%lu, %lu) from year %d, month %d, day %d, hour %d, minute %d, second %d",
+			//         status,
+			//         time_ptr->second_high, time_ptr->second_low,
+			//         current_date_time.year, current_date_time.month, current_date_time.day, current_date_time.hour, current_date_time.minute, current_date_time.second);
+			// PRINTLN_INFO("GOT TIME SET, sending  RTC from year %d, month %d, day %d, hour %d, minute %d, second %d",
+			//         rtc_date.Year, rtc_date.Month, rtc_date.Date, rtc_time.Hours, rtc_time.Minutes, rtc_time.Seconds);
 
 			HAL_RTC_SetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
 			HAL_RTC_SetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
 
 			// After SetTime, SubSeconds is reset to SecondFraction (0 elapsed).
 			// Shift from 0 elapsed ticks to wherever PTP nanosecond says we should be.
-			RTC_TimeTypeDef after_set = {};
+			RTC_TimeTypeDef after_set = { 0 };
 			HAL_RTC_GetTime(&hrtc, &after_set, RTC_FORMAT_BIN); // to get a valid SecondFraction
-			set_subsecond(0, after_set.SecondFraction, current_date_time);
-			
+			set_subsecond(0, after_set.SecondFraction, &current_date_time);
+
 			// dummy get date
 			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
 			TX_RESTORE
@@ -95,37 +124,10 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
 			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
 
-			NX_PTP_DATE_TIME rtc_ptp_date_time = {
-				.year = rtc_date.Year,
-				.month = rtc_date.Month,
-				.weekday = rtc_date.WeekDay,
-				.day = rtc_date.Date,
-				.hour = rtc_time.Hours,
-				.minute = rtc_time.Minutes,
-				.second = rtc_time.Seconds,
-				.nanosecond =
-					1000 * second_ticks_to_us(
-						rtc_time.SecondFraction - rtc_time.SubSeconds,						       
-						rtc_time.SecondFraction)
-			};
+			rtc_to_nx_time(&rtc_time, &rtc_date, time_ptr);
 
-			// helpful way to get UNIX time from RTC so we can give it to NetX layer
-			time_t current_time_unix = { 0 };
-			struct tm tim = {0};
-			tim.tm_year = rtc_date.Year + 100;
-			tim.tm_mon = rtc_date.Month - 1;
-			tim.tm_mday = rtc_date.Date;
-			tim.tm_hour = rtc_time.Hours;
-			tim.tm_min = rtc_time.Minutes;
-			tim.tm_sec = rtc_time.Seconds;
-			current_time_unix = mktime(&tim);
-
-
-			time_ptr->second_high = 0; // todo fix by 2038
-			time_ptr->second_low = (ULONG) current_time_unix;
-			time_ptr->nanosecond =
-				rtc_ptp_date_time
-					.nanosecond; // pull directly from rtc
+			// PRINTLN_INFO("GOT TIME REQ, recv NX from year %d, month %d, day %d, hour %d, minute %d, second %d",
+			//         rtc_date.Year, rtc_date.Month, rtc_date.Date, rtc_time.Hours, rtc_time.Minutes, rtc_time.Seconds);
 
 			TX_RESTORE
 			break;
@@ -133,13 +135,13 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			TX_DISABLE
 
 			nx_ptp_client_utility_convert_time_to_date(
-				time_ptr, -PTP_UTC_OFFSET, current_date_time);
+				time_ptr, -PTP_UTC_OFFSET, &current_date_time);
 
 			HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
 
 			set_subsecond(
 				rtc_time.SecondFraction - rtc_time.SubSeconds,
-				rtc_time.SecondFraction, current_date_time); // (between 0 and PREDIV_S (aka SecondFraction), counting up)
+				rtc_time.SecondFraction, &current_date_time); // (between 0 and PREDIV_S (aka SecondFraction), counting up)
 
 			TX_RESTORE
 
@@ -147,8 +149,15 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
 			break;
 		case NX_PTP_CLIENT_CLOCK_PACKET_TS_PREPARE:
-			nx_ptp_client_packet_timestamp_notify(
-				client_ptr, packet_ptr, time_ptr); // this is probably wrong, instead we need to fetch the time via RTC
+		    HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
+
+			rtc_to_nx_time(&rtc_time, &rtc_date, time_ptr);
+
+			// PRINTLN_INFO("GOT TIME REQ, recv NX from year %d, month %d, day %d, hour %d, minute %d, second %d",
+			//         rtc_date.Year, rtc_date.Month, rtc_date.Date, rtc_time.Hours, rtc_time.Minutes, rtc_time.Seconds);
+
+			nx_ptp_client_packet_timestamp_notify(client_ptr, packet_ptr, time_ptr);
 			break;
 		case NX_PTP_CLIENT_CLOCK_SOFT_TIMER_UPDATE: // do nothing
 			break;
