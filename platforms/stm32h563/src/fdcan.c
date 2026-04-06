@@ -29,6 +29,15 @@ HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 		return status;
 	}
 
+	/* Set up the global filter to reject all messages by default. You must explicitly add messages to your filters in the app layer to receive them. */
+	status = HAL_FDCAN_ConfigGlobalFilter(hcan, FDCAN_REJECT, FDCAN_REJECT, FDCAN_REJECT_REMOTE, FDCAN_REJECT_REMOTE);
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigGlobalFilter() (Status: %d).\n", status);
+		return status;
+	} else {
+		printf("[fdcan.c/can_init()] Ran HAL_FDCAN_ConfigGlobalFilter()!\n");
+	}
+
 	/* Start FDCAN */
 	status = HAL_FDCAN_Start(can->hcan);
 	if (status != HAL_OK)
