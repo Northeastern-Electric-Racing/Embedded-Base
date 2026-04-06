@@ -1,8 +1,6 @@
 #include "nxd_ptp_client.h"
 #include "rtc.h"
-#include <stdio.h>
 #include "stm32h5xx_hal.h"
-#include "stm32h5xx_hal_rtc.h"
 #include "u_tx_debug.h"
 #include <time.h>
 
@@ -22,14 +20,14 @@ static ULONG second_ticks_to_us(UINT second_ticks, UINT second_fractions)
 	return (uint64_t)1000000L * second_ticks / (second_fractions + 1);
 }
 
-static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions, NX_PTP_DATE_TIME *current_time)
+static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions, ULONG nanoseconds)
 {
 	if (rtc_sub_second_tick > second_fractions) {
 		PRINTLN_ERROR("rtc SS overflow");
 	}
 
 	UINT rtp_sub_second_tick = us_to_second_ticks(
-		current_time->nanosecond / 1000, second_fractions);
+		nanoseconds / 1000, second_fractions);
 
 	UINT offset_tick = 0; // ticks to go backwards
 	UINT offset_ahead_1s = RTC_SHIFTADD1S_RESET;
@@ -40,7 +38,7 @@ static void set_subsecond(UINT rtc_sub_second_tick, UINT second_fractions, NX_PT
 		UINT delta = rtp_sub_second_tick - rtc_sub_second_tick;
 		offset_tick = (second_fractions + 1) - delta;
 	}
-	HAL_RTCEx_SetSynchroShift(&hrtc, offset_tick, offset_ahead_1s);
+	HAL_RTCEx_SetSynchroShift(&hrtc, offset_ahead_1s, offset_tick);
 }
 
 static UINT rtc_to_nx_time(RTC_TimeTypeDef *rtc_time, RTC_DateTypeDef *rtc_date, NX_PTP_TIME *time_ptr) {
@@ -111,7 +109,7 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			// Shift from 0 elapsed ticks to wherever PTP nanosecond says we should be.
 			RTC_TimeTypeDef after_set = { 0 };
 			HAL_RTC_GetTime(&hrtc, &after_set, RTC_FORMAT_BIN); // to get a valid SecondFraction
-			set_subsecond(0, after_set.SecondFraction, &current_date_time);
+			set_subsecond(0, after_set.SecondFraction, time_ptr->nanosecond);
 
 			// dummy get date
 			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
@@ -134,19 +132,17 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 		case NX_PTP_CLIENT_CLOCK_ADJUST:
 			TX_DISABLE
 
-			nx_ptp_client_utility_convert_time_to_date(
-				time_ptr, -PTP_UTC_OFFSET, &current_date_time);
-
 			HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
 
 			set_subsecond(
 				rtc_time.SecondFraction - rtc_time.SubSeconds,
-				rtc_time.SecondFraction, &current_date_time); // (between 0 and PREDIV_S (aka SecondFraction), counting up)
+				rtc_time.SecondFraction, time_ptr->nanosecond); // (between 0 and PREDIV_S (aka SecondFraction), counting up)
 
-			TX_RESTORE
 
 			// dummy get date
 			HAL_RTC_GetDate(&hrtc, &rtc_date, RTC_FORMAT_BIN);
+
+			TX_RESTORE
 			break;
 		case NX_PTP_CLIENT_CLOCK_PACKET_TS_PREPARE:
 		    HAL_RTC_GetTime(&hrtc, &rtc_time, RTC_FORMAT_BIN);
