@@ -122,7 +122,7 @@ static void _receive_message(NX_UDP_SOCKET *socket) {
 
         /* Process received message */
         if(status == NX_SUCCESS) {
-            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d, bytes_copied: %d).", message.sender_id, message.message_id, bytes_copied);
+            PRINTLN_INFO("Received ethernet message! (Sender ID: %d, Message ID: %d, bytes_copied: %ld).", message.sender_id, message.message_id, bytes_copied);
             device.on_recieve(message);
         }
     }
