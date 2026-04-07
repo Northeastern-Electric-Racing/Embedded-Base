@@ -2,3 +2,6 @@
 [submodule "dev/OpenOCD"]
 	path = dev/OpenOCD
 	url = https://github.com/STMicroelectronics/OpenOCD.git
+[submodule "dev/nanopb/nanopb"]
+	path = dev/nanopb/nanopb
+	url = https://github.com/nanopb/nanopb.git
