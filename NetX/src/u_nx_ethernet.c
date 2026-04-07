@@ -8,6 +8,8 @@
 #include "c_utils.h"
 #include "nx_api.h"
 #include "u_tx_general.h"
+#include <inttypes.h>
+#include "serial.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/_types.h>
@@ -382,6 +384,7 @@ UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_
     /* Mark device as initialized. */
     device.is_initialized = true;
 
+    PRINTLN_INFO("Ran ethernet_init()");
     return NX_SUCCESS;
 }
 
@@ -523,16 +526,84 @@ UINT ethernet_mqtt_reconnect(void) {
 }
 #endif
 
-NX_PTP_DATE_TIME ethernet_get_time(void) {
-    NX_PTP_TIME tm;
-    NX_PTP_DATE_TIME date;
+int ethernet_get_time(NX_PTP_DATE_TIME* datetime) {
+    NX_PTP_TIME tm = { 0 };
+    NX_PTP_DATE_TIME dt = { 0 };
+    NX_PTP_CLIENT_SYNC sync = { 0 };
+    USHORT flags;
+
+    /* If not initialized, don't try to read PTP yet. */
+    if(!device.is_initialized) {
+        PRINTLN_ERROR("Tried getting PTP time before device has been initialized.");
+        return U_ERROR;
+    }
+
     /* read the PTP clock */
-    nx_ptp_client_time_get(&device.ptp_client, &tm);
+    int status = nx_ptp_client_time_get(&device.ptp_client, &tm);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_ptp_client_time_get() (Status: %d/%s).", status, nx_status_toString(status));
+        return U_ERROR;
+    }
+
+    PRINTLN_INFO("ptp nanoseconds: %ld", tm.nanosecond);
+
+    /* Set utc_offset. */
+    const SHORT utc_offset = 0;
+    PRINTLN_INFO("utc offset: %d", utc_offset);
 
     /* convert PTP time to UTC date and time */
-    nx_ptp_client_utility_convert_time_to_date(&tm, 0, &date);
+    status = nx_ptp_client_utility_convert_time_to_date(&tm, utc_offset, &dt);
+    if(status != NX_SUCCESS) {
+        PRINTLN_ERROR("Failed to call nx_ptp_client_utility_convert_time_to_date() (Status: %d/%s).", status, nx_status_toString(status));
+        return U_ERROR;
+    }
 
-    return date;
+    *datetime = dt;
+    return U_SUCCESS;
+}
+
+/* Gets the number of microseconds since the Unix epoch (1970-01-01 00:00:00 UTC)*/
+int ethernet_ptp_get_unix_microseconds(uint64_t* buffer)
+{
+
+    NX_PTP_DATE_TIME datetime = { 0 };
+
+    /* Get PTP datetime. */
+    int status = ethernet_get_time(&datetime);
+    if(status != U_SUCCESS) {
+        PRINTLN_ERROR("Failed to call ethernet_get_time() (Status: %d).", status);
+        return U_ERROR;
+    }
+
+    serial_monitor("datetime", "nanoseconds", "%d", datetime.nanosecond);
+    serial_monitor("datetime", "year", "%d", datetime.year);
+    serial_monitor("datetime", "month", "%d", datetime.month);
+    serial_monitor("datetime", "day", "%d", datetime.day);
+
+    int y = datetime.year;
+    int m = datetime.month;
+    int d = datetime.day;
+
+    /* Adjust year and month for March-based counting (simplifies leap year handling) */
+    if (m <= 2)
+    {
+        y--;
+        m += 12;
+    }
+
+    /* Days from epoch (1970-01-01) using the Rata Die algorithm */
+    uint32_t days = 365 * y + y / 4 - y / 100 + y / 400
+                   + (153 * (m - 3) + 2) / 5 + d - 719469;
+
+    uint64_t us = (uint64_t)days * 86400LL * 1000000LL
+               + (uint64_t)datetime.hour * 3600LL * 1000000LL
+               + (uint64_t)datetime.minute * 60LL * 1000000LL
+               + (uint64_t)datetime.second * 1000000LL
+               + (uint64_t)(datetime.nanosecond / 1000);
+
+    *buffer = us;
+    serial_monitor("datetime", "microseconds from epoch", "%" PRIu64, us);
+    return U_SUCCESS;
 }
 
 UINT ethernet_print_arp_status(void) {
