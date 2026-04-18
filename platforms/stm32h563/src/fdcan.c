@@ -17,17 +17,18 @@ HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 	HAL_StatusTypeDef status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, FDCAN_INTERRUPT_LINE0);
 	if (status != HAL_OK)
 	{
-		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() (Status: %d).\n", status);
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() FDCAN_IT_RX_FIFO0_NEW_MESSAGE (Status: %d).\n", status);
 		return status;
 	}
-
-	/* Activate interrupt notifications */
-	status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-	if (status != HAL_OK)
-	{
-		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ActivateNotification() (Status: %d).\n", status);
-		return status;
+	status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_BUS_OFF, FDCAN_INTERRUPT_LINE1);
+	if(status != HAL_OK) {
+		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() for FDCAN_IT_BUS_OFF (Status: %d).\n", status);
 	}
+	// status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_BUS_OFF, 0);
+	// if(status != HAL_OK) {
+	// 	printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() for FDCAN_IT_BUS_OFF (Status: %d).\n", status);
+	// }
+	// this is the direct code from the st guy
 
 	/* Set up the global filter to reject all messages by default. You must explicitly add messages to your filters in the app layer to receive them. */
 	status = HAL_FDCAN_ConfigGlobalFilter(hcan, FDCAN_REJECT, FDCAN_REJECT, FDCAN_REJECT_REMOTE, FDCAN_REJECT_REMOTE);
@@ -98,6 +99,36 @@ HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2])
 
 	/* If successful, increment the extended filter index */
 	can->extended_filter_index++;
+	return status;
+}
+
+/* Returns true if the CAN node is in bus-off state. */
+bool can_is_bus_off(can_t *can) {
+	FDCAN_ProtocolStatusTypeDef status;
+	HAL_FDCAN_GetProtocolStatus(can->hcan, &status);
+	return (bool)status.BusOff;
+}
+
+/* Recovers from bus-off by stopping and restarting the FDCAN peripheral.
+   Filters survive Stop/Start but notifications do not, so RX FIFO interrupt is re-enabled. */
+HAL_StatusTypeDef can_recover_bus_off(can_t *can) {
+	HAL_StatusTypeDef status = HAL_FDCAN_Stop(can->hcan);
+	if (status != HAL_OK) {
+		printf("[fdcan.c/can_recover_bus_off()] ERROR: HAL_FDCAN_Stop() failed (Status: %d).\n", status);
+		return status;
+	}
+
+	status = HAL_FDCAN_Start(can->hcan);
+	if (status != HAL_OK) {
+		printf("[fdcan.c/can_recover_bus_off()] ERROR: HAL_FDCAN_Start() failed (Status: %d).\n", status);
+		return status;
+	}
+
+	status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	if (status != HAL_OK) {
+		printf("[fdcan.c/can_recover_bus_off()] ERROR: HAL_FDCAN_ActivateNotification() failed (Status: %d).\n", status);
+	}
+
 	return status;
 }
 
