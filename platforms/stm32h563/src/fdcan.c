@@ -28,7 +28,7 @@ HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 	}
 
 	/* Config BusOff interrupt. */
-	HAL_StatusTypeDef status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_BUS_OFF, FDCAN_INTERRUPT_LINE1);
+	status = HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_BUS_OFF, FDCAN_INTERRUPT_LINE1);
 	if (status != HAL_OK)
 	{
 		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines(can->hcan, FDCAN_IT_BUS_OFF, FDCAN_INTERRUPT_LINE1); (Status: %d).\n", status);
