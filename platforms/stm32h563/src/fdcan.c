@@ -40,11 +40,6 @@ HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan)
 		printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_BUS_OFF, 1); (Status: %d).\n", status);
 		return status;
 	}
-	// status = HAL_FDCAN_ActivateNotification(can->hcan, FDCAN_IT_BUS_OFF, 0);
-	// if(status != HAL_OK) {
-	// 	printf("[fdcan.c/can_init()] ERROR: Failed to run HAL_FDCAN_ConfigInterruptLines() for FDCAN_IT_BUS_OFF (Status: %d).\n", status);
-	// }
-	// this is the direct code from the st guy
 
 	/* Set up the global filter to reject all messages by default. You must explicitly add messages to your filters in the app layer to receive them. */
 	status = HAL_FDCAN_ConfigGlobalFilter(hcan, FDCAN_REJECT, FDCAN_REJECT, FDCAN_REJECT_REMOTE, FDCAN_REJECT_REMOTE);
