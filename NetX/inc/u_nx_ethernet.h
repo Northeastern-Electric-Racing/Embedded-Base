@@ -17,6 +17,11 @@
 #define ETH_MESSAGE_SIZE    128  /* Maximum ethernet message size in bytes. */
 #define ETH_MAX_PACKETS     10   /* Maximum number of packets we wanna handle simultaneously */
 #define ETH_NUMBER_OF_NODES 8    /* Number of nodes in the network. */
+#define ETH_ENABLE_MANUAL_UDP_MULTICAST 0 // whether to enable UDP multicast
+#define ETH_ENABLE_IGMP 1 // whether to enable IGMP
+#define ETH_ENABLE_MQTT 1 // whether to use a MQTT connection
+#define ETH_MQTT_SERVER_IP IP_ADDRESS(10,0,0,1) // the server address of the broker (TPU usually)
+#define ETH_MQTT_SERVER_PORT 1883
 
 typedef enum {
 	TPU = (1 << 0),     // 0b00000001
@@ -61,7 +66,12 @@ typedef struct __attribute__((__packed__)) {
 
 /* Function Pointers (for initialization). */
 typedef void (*DriverFunction)(NX_IP_DRIVER *); /* User-supplied network driver used to send and receive IP packets. */
+
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function that will be called whenever an ethernet message is recieved. */
+#else
+typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function that will be called whenever an ethernet message is recieved. */
+#endif
 
 /**
  * @brief Initializes the NetX ethernet system in a repo.
@@ -70,8 +80,9 @@ typedef void (*OnRecieve)(ethernet_message_t message); /* User-supplied function
  * @param on_recieve User-supplied function to be called whenever an ethernet message is recieved. The function's only parameter is an ethernet_message_t instance containing the recieved message.
  * @return Status.
  */
-uint8_t ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve);
+UINT ethernet_init(ethernet_node_t node_id, DriverFunction driver, OnRecieve on_recieve);
 
+#if ETH_ENABLE_MANUAL_UDP_MULTICAST
 /**
  * @brief Creates an ethernet message. Can be send with ethernet_send_message(), or added to a queue.
  * @param recipient_id The ID of the recipient node.
@@ -88,12 +99,54 @@ ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t r
  * @return Status.
  */
 uint8_t ethernet_send_message(ethernet_message_t *message);
+#endif
+
+#if ETH_ENABLE_MQTT
+/**
+ * @brief Sends a MQTT message to outgoing queue
+ * @param topic_name The topic name
+ * @param topic_size The topic size in bytes
+ * @param message The data to send
+ * @param message_size The message size in bytes
+ * @return The error code.
+ */
+UINT ethernet_mqtt_publish(char* topic_name, UINT topic_size, char* message, UINT message_size);
+
+/**
+ * Connect to a disconnected MQTT server (NX_MQTT_NOT_CONNECTED)
+ * Will yield while trying to connect
+ */
+UINT ethernet_mqtt_reconnect(void);
+
+/**
+ *
+ */
+//ethernet_mqtt_subscribe();
+
+/**
+ *
+ */
+
+#endif
 
 /**
  * @brief Retrieves the time from PTP stack.
- * @return The UTC time
+ * @param datetime Buffer for the retrieved datetime info.
+ * @return U_SUCCESS if successful, U_ERROR is not successful.
  */
-NX_PTP_DATE_TIME ethernet_get_time(void);
+int ethernet_get_time(NX_PTP_DATE_TIME* datetime);
+
+/**
+ * @brief Gets the number of microseconds since the Unix epoch (1970-01-01 00:00:00 UTC), using the PTP stack.
+ * @param buffer The buffer for the retrieved time.
+ * @return U_SUCCESS if successful, U_ERROR is not successful.
+ */
+int ethernet_ptp_get_unix_microseconds(uint64_t* buffer);
+
+/**
+ * Debugging, print the status of ARP statistics
+ */
+UINT ethernent_print_arp_status(void);
 
 // clang-format on
 #endif /* u_nx_ethernet.h */
