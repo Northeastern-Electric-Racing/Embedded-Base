@@ -31,6 +31,7 @@ from pathlib import Path
 # custom modules for functinality that is too large to be included in this script directly
 from .miniterm import main as miniterm
 from .serial2 import main as serial2_start
+from .cdefmt import main as cdefmt_main
 
 # ==============================================================================
 # Typer application setup
@@ -261,6 +262,23 @@ def serial2(
     """Custom serial terminal."""
 
     serial2_start(ls=ls, device=device, monitor=monitor, graph=graph, filter=filter)
+
+# ==============================================================================
+# CDEFMT command
+# ==============================================================================
+
+@app.command(help="Live-decode cdefmt binary log frames coming over UART. Requires the cdefmt submodule (Drivers/Embedded-Base/cdefmt) and `cargo` on PATH for the first-run decoder build.")
+def cdefmt(device: str = typer.Option("", "--device", "-d",
+                                       help="Serial device to read from (e.g. /dev/ttyACM0). Auto-detected if omitted."),
+           elf: str = typer.Option(None, "--elf",
+                                    help="ELF file to decode against. Defaults to the most recently built build/*.elf."),
+           rebuild: bool = typer.Option(False, "--rebuild",
+                                         help="Force a rebuild of the host-side cdefmt decoder before running."),
+           ls: bool = typer.Option(False, "--list",
+                                    help="List candidate serial ports and ELF files, then exit."),
+           baud: int = typer.Option(115200, "--baud", "-b",
+                                     help="Serial baud rate (USB CDC ACM ignores it, but stty wants a value).")):
+    cdefmt_main(device=device, elf=elf, rebuild=rebuild, ls=ls, baud=baud)
 
 # ==============================================================================
 # Test command

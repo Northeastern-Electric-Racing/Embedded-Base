@@ -2,3 +2,6 @@
 [submodule "dev/OpenOCD"]
 	path = dev/OpenOCD
 	url = https://github.com/STMicroelectronics/OpenOCD.git
+[submodule "cdefmt"]
+	path = cdefmt
+	url = git@github.com:RisinT96/cdefmt.git
