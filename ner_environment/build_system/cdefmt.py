@@ -1,23 +1,3 @@
-# ==============================================================================
-# `ner cdefmt` -- live decoder integration for cdefmt-formatted UART logs.
-#
-# cdefmt is a deferred-formatting logger: the MCU emits length-prefixed binary
-# frames (8-byte LE length + log-id + raw arg bytes), and a host-side decoder
-# turns those bytes into human-readable log lines by looking the metadata up
-# in the firmware's ELF (DWARF) on disk.
-#
-# This module wires both halves together so a user just runs `ner cdefmt`:
-#   - locate (or first-time build) the decoder binary,
-#   - pick the newest ELF under build/ unless --elf overrides,
-#   - pick a USB serial device unless --device overrides,
-#   - put the TTY in raw mode so binary frames pass through untouched,
-#   - exec the decoder with the port redirected to stdin.
-#
-# Intentionally lives next to miniterm.py / serial2.py and follows the same
-# pattern: a standalone main() called by a thin @app.command() wrapper in
-# build_system.py.
-# ==============================================================================
-
 import glob
 import os
 import platform
