@@ -3,5 +3,5 @@
 	path = dev/OpenOCD
 	url = https://github.com/STMicroelectronics/OpenOCD.git
 [submodule "cdefmt"]
-	path = cdefmt
+	path = cdefmt_port/cdefmt
 	url = git@github.com:bjackson312006/cdefmt.git
