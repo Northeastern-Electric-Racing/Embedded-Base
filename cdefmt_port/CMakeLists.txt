@@ -31,7 +31,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 set(_CDEFMT_PORT_DIR ${CMAKE_CURRENT_LIST_DIR})
-set(_CDEFMT_UPSTREAM_DIR ${_CDEFMT_PORT_DIR}/../cdefmt)
+set(_CDEFMT_UPSTREAM_DIR ${_CDEFMT_PORT_DIR}/cdefmt)
 
 if(NOT EXISTS ${_CDEFMT_UPSTREAM_DIR}/CMakeLists.txt)
     message(FATAL_ERROR
