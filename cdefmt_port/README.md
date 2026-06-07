@@ -6,7 +6,7 @@ This is a wrapper layer to integrate the `cdefmt` into Embedded-Base. `cdefmt` i
 
 To set up CDEFMT logging in an existing project, there are a few steps you need to follow.
 
-First, make sure the project has Embedded-Base as a submodule, on a commit that has cdefmt_port included.
+First, make sure the project has Embedded-Base as a submodule, on a commit that has cdefmt_port included. You'll need to run `git submodule update --init --recursive` to make sure the cdefmt library is pulled.
 
 Then, add this to the parent project's top-level `CMakeLists.txt`:
 
