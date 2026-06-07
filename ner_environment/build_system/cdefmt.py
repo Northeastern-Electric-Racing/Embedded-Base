@@ -25,14 +25,13 @@ _VID_STLINK = 0x0483  # ST-LINK
 
 def _is_wsl() -> bool:
     """True when running under WSL, where USB serial devices must be attached
-    with usbipd before they're visible. Mirrors serial2.py / build_system.py."""
+    with usbipd before they're visible."""
     return (platform.system() == "Linux"
             and "microsoft" in platform.uname().release.lower())
 
 
 def _print_wsl_usbip_hint() -> None:
-    """Print the same usbipd guidance serial2.py shows when no device is found
-    under WSL."""
+    """Print hint when no device is found under WSL."""
     if not _is_wsl():
         return
     print("\n[blue]If you're using WSL, you may need to attach the USB device "
@@ -103,7 +102,7 @@ def _find_decoder(rebuild: bool = False) -> Path:
 # ------------------------------------------------------------------------------
 
 def _find_elf(explicit: str | None) -> Path:
-    """Return the ELF to decode against -- explicit path if given, else the
+    """Return the ELF to decode against explicit path if given, else the
     most-recently-modified .elf under build/."""
     if explicit:
         p = Path(explicit)
