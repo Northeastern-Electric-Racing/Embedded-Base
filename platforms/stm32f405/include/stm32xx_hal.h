@@ -1,7 +1,7 @@
 #ifndef STM32XX_HAL_H
 #define STM32XX_HAL_H
 
-#ifdef STM32F446xx
+#ifdef STM32F405xx
 #include "stm32f4xx_hal.h"
 #endif
 
