@@ -12,7 +12,7 @@ from rich import print
 # Paths are resolved relative to the project working directory (i.e. the dir
 # from which the user ran `ner cdefmt`). This matches how every other ner
 # command works.
-CDEFMT_REPO_REL = Path("Drivers/Embedded-Base/cdefmt")
+CDEFMT_REPO_REL = Path("Drivers/Embedded-Base/cdefmt_port/cdefmt")
 DECODER_BIN_REL = CDEFMT_REPO_REL / "target" / "release" / "stdin"
 
 
