@@ -66,6 +66,36 @@ target_include_directories(embedded_base_cdefmt INTERFACE
     ${_CDEFMT_PORT_DIR}/include
 )
 
+# Treat cdefmt's header and its Boost.Preprocessor/VMD dependencies as system
+# headers for anyone who links `embedded_base_cdefmt`. cdefmt's logging macros
+# expand into code that legitimately trips -Wunused-variable,
+# -Wdiscarded-qualifiers and -Wunused-function; GCC attributes those warnings to
+# the macro body (in cdefmt.h), so promoting these include dirs to `-isystem`
+# silences them at the source without touching the parent project's build files
+# or suppressing warnings in the parent's own code.
+#
+# We can't simply mark them SYSTEM here because the include dirs are propagated
+# by the upstream `cdefmt`/`Boost::*` targets, which we don't own. Instead we
+# copy each target's INTERFACE_INCLUDE_DIRECTORIES into its
+# INTERFACE_SYSTEM_INCLUDE_DIRECTORIES, the portable pre-CMake-3.25 way to do
+# this (the `SYSTEM` keyword on add_subdirectory/targets needs >= 3.25).
+foreach(_cdefmt_dep cdefmt Boost::preprocessor Boost::vmd)
+    if(TARGET ${_cdefmt_dep})
+        # Boost::* are ALIAS targets; set_property() rejects aliases, so resolve
+        # to the underlying real target before touching its properties.
+        get_target_property(_cdefmt_real ${_cdefmt_dep} ALIASED_TARGET)
+        if(NOT _cdefmt_real)
+            set(_cdefmt_real ${_cdefmt_dep})
+        endif()
+        get_target_property(_cdefmt_dep_includes
+            ${_cdefmt_real} INTERFACE_INCLUDE_DIRECTORIES)
+        if(_cdefmt_dep_includes)
+            set_property(TARGET ${_cdefmt_real} APPEND PROPERTY
+                INTERFACE_SYSTEM_INCLUDE_DIRECTORIES ${_cdefmt_dep_includes})
+        endif()
+    endif()
+endforeach()
+
 # cdefmt's decoder needs DWARF info to parse argument types.
 target_compile_options(embedded_base_cdefmt INTERFACE -g)
 
