@@ -5,15 +5,47 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-
+import serial
+import serial.tools.list_ports
 from rich import print
 
 
-# Paths are resolved relative to the project working directory (i.e. the dir
-# from which the user ran `ner cdefmt`). This matches how every other ner
-# command works.
 CDEFMT_REPO_REL = Path("Drivers/Embedded-Base/cdefmt_port/cdefmt")
-DECODER_BIN_REL = CDEFMT_REPO_REL / "target" / "release" / "stdin"
+_DECODER_NAME = "stdin.exe" if platform.system() == "Windows" else "stdin" # cargo emits `stdin.exe` on Windows, `stdin` everywhere else.
+DECODER_BIN_REL = CDEFMT_REPO_REL / "target" / "release" / _DECODER_NAME
+
+# USB vendor IDs used to rank auto-detected adapters.
+_VID_FTDI = 0x0403    # FTDI
+_VID_STLINK = 0x0483  # ST-LINK
+
+
+# ------------------------------------------------------------------------------
+# Environment helpers
+# ------------------------------------------------------------------------------
+
+def _is_wsl() -> bool:
+    """True when running under WSL, where USB serial devices must be attached
+    with usbipd before they're visible. Mirrors serial2.py / build_system.py."""
+    return (platform.system() == "Linux"
+            and "microsoft" in platform.uname().release.lower())
+
+
+def _print_wsl_usbip_hint() -> None:
+    """Print the same usbipd guidance serial2.py shows when no device is found
+    under WSL."""
+    if not _is_wsl():
+        return
+    print("\n[blue]If you're using WSL, you may need to attach the USB device "
+          "from a Windows terminal:")
+    print("1. Open a Windows terminal [bold blue]with admin privileges[/bold blue] "
+          "and run 'usbipd list'.")
+    print("2. Find your device (often named 'CMSIS-DAP v2 Interface' or 'USB "
+          "Serial Device').")
+    print("3. Note its BUSID and run [bold green]'usbipd bind "
+          "--busid=<BUSID>'[/bold green]. (Skip if already bound.)")
+    print("4. Then run [bold green]'usbipd attach --wsl=ubuntu --busid "
+          "<BUSID>'[/bold green].")
+    print("5. Re-run the command.\n")
 
 
 # ------------------------------------------------------------------------------
@@ -95,68 +127,41 @@ def _find_elf(explicit: str | None) -> Path:
 # Serial port discovery
 # ------------------------------------------------------------------------------
 
-def _list_ports() -> list[str]:
-    """Return USB serial devices currently visible to the OS.
+def _device_priority(port: "serial.tools.list_ports_common.ListPortInfo") -> int:
+    desc = " ".join(filter(None, [
+        port.description, port.product, port.manufacturer, port.interface,
+    ])).lower()
 
-    Linux only for now -- mirrors miniterm.py's coverage. macOS/Windows users
-    should pass --device explicitly until this grows cross-platform support.
-    """
-    if platform.system() != "Linux":
-        return []
-    return sorted(glob.glob("/dev/ttyACM*") + glob.glob("/dev/ttyUSB*"))
+    # Prioritize FTDI
+    if port.vid == _VID_FTDI or "ftdi" in desc:
+        return 0
+    if "cmsis-dap" in desc or "daplink" in desc or "mbed" in desc:
+        return 1
+    if port.vid == _VID_STLINK or "st-link" in desc or "stlink" in desc:
+        return 3
+    return 2
+
+
+def _list_ports() -> list["serial.tools.list_ports_common.ListPortInfo"]:
+    """Return USB serial devices visible to the OS, preferred adapter first."""
+    ports = [p for p in serial.tools.list_ports.comports() if p.vid is not None]
+    ports.sort(key=lambda p: (_device_priority(p), p.device))
+    return ports
 
 
 def _find_port(explicit: str) -> str:
-    """Return the serial port to use -- explicit if given, else first detected.
-
-    The first detected port is typically /dev/ttyACM0 (a Nucleo's ST-LINK VCP),
-    which is also what `nflash` targets by default.
-    """
+    """Return the serial port to use (if nothing is passed in for `explicit`, auto-detect)"""
     if explicit:
-        if not os.path.exists(explicit):
-            print(f"[bold red]Error:[/bold red] device not found: "
-                  f"[blue]{explicit}[/blue]", file=sys.stderr)
-            sys.exit(1)
         return explicit
-
-    if platform.system() != "Linux":
-        print("[bold red]Error:[/bold red] auto-detect port not implemented "
-              "for this OS; please pass --device.", file=sys.stderr)
-        sys.exit(1)
 
     ports = _list_ports()
     if not ports:
         print("[bold red]Error:[/bold red] no USB serial devices found. Is "
               "the board plugged in?", file=sys.stderr)
+        _print_wsl_usbip_hint()
         sys.exit(1)
 
-    return ports[0]
-
-
-# ------------------------------------------------------------------------------
-# TTY setup
-# ------------------------------------------------------------------------------
-
-def _set_raw_tty(port: str, baud: int) -> None:
-    """Put the TTY in raw mode so binary cdefmt frames pass through untouched.
-
-    The kernel's default line discipline is `icanon`, which only releases
-    bytes to read() when a newline arrives. That's catastrophic for a
-    length-prefixed binary protocol -- the decoder would block waiting for an
-    0x0a that may legitimately never appear. `raw` (= !icanon !echo !isig
-    !iexten ...) plus explicit -icrnl/-ixon disables every transformation
-    that would mangle binary payload bytes.
-    """
-    if platform.system() != "Linux":
-        # stty's syntax differs on macOS/BSDs; not implemented yet.
-        return
-
-    cmd = ["stty", "-F", port, "raw", "-echo", "-ixon", "-icrnl", str(baud)]
-    result = subprocess.run(cmd)
-    if result.returncode != 0:
-        print(f"[bold red]Error:[/bold red] `stty` failed on [blue]{port}"
-              f"[/blue].", file=sys.stderr)
-        sys.exit(result.returncode)
+    return ports[0].device
 
 
 # ------------------------------------------------------------------------------
@@ -165,15 +170,21 @@ def _set_raw_tty(port: str, baud: int) -> None:
 
 def main(device: str = "", elf: str | None = None, rebuild: bool = False,
          ls: bool = False, baud: int = 115200) -> None:
-    """Invoked by the `ner cdefmt` command. See cdefmt() in build_system.py
-    for the typer-level option definitions."""
+    """Invoked by the `ner cdefmt` command. See cdefmt() in build_system.py."""
 
     if ls:
         ports = _list_ports()
         elfs = sorted(glob.glob("build/*.elf"))
         print("[bold]Serial ports:[/bold]")
-        for p in (ports or ["  (none)"]):
-            print(f"  {p}")
+        if ports:
+            for p in ports:
+                desc = p.description if p.description and p.description != "n/a" else ""
+                print(f"  {p.device}" + (f"  [#888888]({desc})[/#888888]" if desc else ""))
+            print("[#888888]  The first port is selected if --device is not "
+                  "given.[/#888888]")
+        else:
+            print("  (none)")
+            _print_wsl_usbip_hint()
         print("[bold]ELF files under build/:[/bold]")
         for e in (elfs or ["  (none)"]):
             print(f"  {e}")
@@ -183,23 +194,46 @@ def main(device: str = "", elf: str | None = None, rebuild: bool = False,
     elf_path = _find_elf(elf)
     port = _find_port(device)
 
-    _set_raw_tty(port, baud)
-
     print(f"[#cccccc](ner cdefmt):[/#cccccc] decoding [blue]{port}[/blue] "
           f"against [blue]{elf_path}[/blue] -- Ctrl-C to quit")
 
-    # Hand the open port to the decoder as its stdin. Python stays in the
-    # call stack just long enough to set this up; once subprocess.run returns
-    # we propagate its exit code so a Ctrl-C-killed decoder is indistinguish-
-    # able from running the binary directly.
+    # Open the port with pyserial and pump its bytes into the decoder's stdin.
+    # The decoder reads a length-prefixed binary stream, so we forward raw chunks as they arrive.
+    proc = subprocess.Popen([str(decoder), "--elf", str(elf_path)],
+                            stdin=subprocess.PIPE)
+    interrupted = False
     try:
-        with open(port, "rb") as port_fd:
-            result = subprocess.run(
-                [str(decoder), "--elf", str(elf_path)],
-                stdin=port_fd,
-            )
+        with serial.Serial(port, baud, timeout=0.1) as ser:
+            while proc.poll() is None:
+                chunk = ser.read(ser.in_waiting or 1)
+                if not chunk:
+                    continue
+                try:
+                    proc.stdin.write(chunk)
+                    proc.stdin.flush()
+                except (BrokenPipeError, OSError):
+                    break  # decoder exited, stop forwarding
+    except serial.SerialException as e:
+        print(f"[bold red]Error:[/bold red] could not open serial port "
+              f"[blue]{port}[/blue]: {e}", file=sys.stderr)
+        _print_wsl_usbip_hint()
+        proc.terminate()
+        proc.wait()
+        sys.exit(1)
     except KeyboardInterrupt:
-        # The decoder will have already gotten the SIGINT; exit quietly.
-        sys.exit(130)
+        interrupted = True
+    finally:
+        if proc.stdin and not proc.stdin.closed:
+            try:
+                proc.stdin.close()
+            except OSError:
+                pass
 
-    sys.exit(result.returncode)
+    try:
+        rc = proc.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.terminate()
+        rc = proc.wait()
+
+    # Make a Ctrl-C-killed decoder indistinguishable from running it directly.
+    sys.exit(130 if interrupted else rc)

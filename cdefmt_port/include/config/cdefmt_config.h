@@ -1,17 +1,3 @@
-/*
- * Default cdefmt configuration for projects that consume Embedded-Base's
- * `embedded_base_cdefmt` CMake target.
- *
- * cdefmt's header (`cdefmt/include/cdefmt.h`) does:
- *     #include <config/cdefmt_config.h>
- * so this file must live at `<some-include-dir>/config/cdefmt_config.h`.
- * The `embedded_base_cdefmt` target adds the parent directory of `config/`
- * to the include path, so this file is picked up automatically.
- *
- * To override these defaults from a parent project, ensure that an earlier
- * include directory provides a different `config/cdefmt_config.h`.
- */
-
 #ifndef CDEFMT_CONFIG_H
 #define CDEFMT_CONFIG_H
 
@@ -20,12 +6,10 @@
  *
  * Each CDEFMT_* call materializes a packed struct on the caller's stack of
  * size: sizeof(log_id) + sum(sizeof(args)) + DYNAMIC_SIZE_MAX bytes. Threads
- * that log must have enough stack headroom to cover this. For a typical
- * Cortex-M project with multi-kB thread stacks, the default 128-byte
- * dynamic reservation is comfortable.
+ * that log must have enough stack headroom to cover this.
  * ------------------------------------------------------------------------- */
 #define CDEFMT_USE_STACK_LOG_BUFFER              1
-#define CDEFMT_STACK_LOG_BUFFER_DYNAMIC_SIZE_MAX 128
+#define CDEFMT_STACK_LOG_BUFFER_DYNAMIC_SIZE_MAX 64
 
 /* ---------------------------------------------------------------------------
  * Alternative buffer modes (disabled by default).
