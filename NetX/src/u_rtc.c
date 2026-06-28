@@ -60,7 +60,6 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 			PLL1_ClocksTypeDef pll1;
 			HAL_RCCEx_GetPLL1ClockFreq(&pll1);
 			if (1000000000 % pll1.PLL1_Q_Frequency != 0) {
-				// Should this be an assertion instead?
 				PRINTLN_ERROR(
 					"NOT PERFEECT DIVISOR PTP TIME WILL BE OFF -> CHECK PLL1Q!");
 			}
@@ -133,6 +132,7 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 				// take complement starting from one million
 				uint32_t complement =
 					1000000000 - abs(time_ptr->nanosecond);
+				// with ADDSUB defined it will subtract, but complement must be taken
 				WRITE_REG(heth.Instance->MACSTNUR, complement);
 				SET_BIT(heth.Instance->MACSTNUR,
 					ETH_MACSTNUR_ADDSUB);
