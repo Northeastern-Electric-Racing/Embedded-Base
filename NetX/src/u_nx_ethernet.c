@@ -1,6 +1,6 @@
 // clang-format off
 #include "u_nx_ethernet.h"
-#include "rtc.h"
+#include "u_rtc.h"
 #include "nx_stm32_eth_driver.h"
 #include "nxd_ptp_client.h"
 #include "u_nx_debug.h"
