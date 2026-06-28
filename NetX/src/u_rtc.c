@@ -4,7 +4,7 @@
 #include "u_tx_debug.h"
 #include "tx_api.h"
 
-/// This file implements the PTP client callback to manage time.
+/// This file implements the PTP client callback to manage time for a STM32H563.
 /// This is where the interface between the PTP client and the timebase is.
 /// This was written using RM0481 and partially using source code from UM3131.
 ///
