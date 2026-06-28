@@ -105,4 +105,4 @@ uint8_t sht30_get_temp_humid(sht30_t *sht30)
 	float humVal = (100.0f * ((float)humidity / 65535.0f));
 	sht30->humidity = humVal;
 	return 0;
-};
+}

@@ -28,6 +28,8 @@ HAL_StatusTypeDef can_init(can_t *can, FDCAN_HandleTypeDef *hcan);
 HAL_StatusTypeDef can_send_msg(can_t *can, can_msg_t *msg);
 HAL_StatusTypeDef can_add_filter_standard(can_t *can, uint16_t can_ids[2]);
 HAL_StatusTypeDef can_add_filter_extended(can_t *can, uint32_t can_ids[2]);
+bool              can_is_bus_off(can_t *can);
+HAL_StatusTypeDef can_recover_bus_off(can_t *can);
 
 // clang-format on
 #endif // FDCAN_H

@@ -30,7 +30,7 @@ uint8_t create_thread(TX_BYTE_POOL *byte_pool, thread_t *thread)
 
 uint8_t thread_sleep_ms(uint32_t ms)
 {
-	tx_thread_sleep(MS_TO_TICKS(ms));
+	tx_thread_sleep(ms);
 	return U_SUCCESS;
 }
 

@@ -17,7 +17,7 @@
 /* Gets the name of the file. */
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-/* DEBUG MESSAGE LEVELS */ 
+/* DEBUG MESSAGE LEVELS */
 /* These can be commented out to enable/disable printing of the associated debug messages. */
 #define LOG_ERROR	/* Messages indicating that something has definitely gone wrong. */
 #define LOG_WARNING	/* Messages indicating that something 'might' have gone wrong, but either isn't immidietely critical or is only a problem in certain contexts. */
@@ -35,21 +35,33 @@
 
 /* PRINTLN_ERROR() */
 #if defined(LOG_ERROR) && !defined(NO_LOG)
-    #define PRINTLN_ERROR(message, ...) printf("[%s/%s()] ERROR: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an ERROR message in the format: "[file_name.c/function()] ERROR: {message}"*/
+    #define PRINTLN_ERROR(message, ...) \
+    _Pragma("GCC diagnostic push")  \
+    _Pragma("GCC diagnostic ignored \"-Wdouble-promotion\"") \
+    printf("[%s/%s()] ERROR: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an ERROR message in the format: "[file_name.c/function()] ERROR: {message}"*/
+    _Pragma("GCC diagnostic pop")
 #else
     #define PRINTLN_ERROR(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_WARNING() */
 #if defined(LOG_WARNING) && !defined(NO_LOG)
-    #define PRINTLN_WARNING(message, ...) printf("[%s/%s()] WARNING: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints a WARNING message in the format: "[file_name.c/function()] WARNING: {message}"*/
+    #define PRINTLN_WARNING(message, ...) \
+    _Pragma("GCC diagnostic push")  \
+    _Pragma("GCC diagnostic ignored \"-Wdouble-promotion\"") \
+    printf("[%s/%s()] WARNING: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints a WARNING message in the format: "[file_name.c/function()] WARNING: {message}"*/
+    _Pragma("GCC diagnostic pop")
 #else
     #define PRINTLN_WARNING(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
 
 /* PRINTLN_INFO() */
 #if defined(LOG_INFO) && !defined(NO_LOG)
-    #define PRINTLN_INFO(message, ...) printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an INFO message in the format: "[file_name.c/function()] INFO: {message}"*/
+    #define PRINTLN_INFO(message, ...) \
+    _Pragma("GCC diagnostic push")  \
+    _Pragma("GCC diagnostic ignored \"-Wdouble-promotion\"") \
+    printf("[%s/%s()] INFO: " message "\n", __FILENAME__, __func__, ##__VA_ARGS__) /* Prints an INFO message in the format: "[file_name.c/function()] INFO: {message}"*/
+    _Pragma("GCC diagnostic pop")
 #else
     #define PRINTLN_INFO(message, ...) /* If debugging is turned off, macro doesn't need to expand to anything. */
 #endif
@@ -58,8 +70,8 @@
  * @brief Checks if a function is successful when called. Prints an error message if it fails.
  * @param function_call The function to call.
  * @param success The function's success code/macro (e.g., U_SUCCESS, TX_SUCCESS, etc.).
- * 
- * @note This macro intentionally doesn't support custom error messages, for the sake of readability. If an error is complex enough to 
+ *
+ * @note This macro intentionally doesn't support custom error messages, for the sake of readability. If an error is complex enough to
  *       require a custom message, the error should probably be checked manually and PRINTLN_ERROR() called directly.
  */
 #define CATCH_ERROR(function_call, success) do { \
