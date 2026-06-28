@@ -50,9 +50,6 @@ ethernet_mqtt_message_t _nx_protobuf_mqtt_message_create(const char* topic, size
         return message; // Return empty, uninitialized message.
     }
 
-
-    PRINTLN_INFO("got time: %d", datetime);
-
     /* Pack the protobuf message. */
     // CURRENT PROTOBUF SCHEMA LOOKS LIKE THIS:
     // typedef struct _serverdata_v2_ServerData {
@@ -102,17 +99,6 @@ int nx_protobuf_mqtt_message_send(ethernet_mqtt_message_t* message) {
     status = ethernet_mqtt_publish(message->topic, message->topic_size, (char*)buffer, stream.bytes_written); // u_TODO - ethernet_mqtt_publish should return U_SUCCESS/U_ERROR instead of the internal netx error macro
     if(status != NXD_MQTT_SUCCESS) {
         PRINTLN_WARNING("Failed to publish MQTT message (Topic: %s, Status: %d).", message->topic, status);
-
-        /* If disconnected, attempt reconnection. */
-        if(status == NXD_MQTT_NOT_CONNECTED) {
-            PRINTLN_WARNING("Detected disconnect from MQTT. Attempting reconnection...");
-            do {
-                tx_thread_sleep(1000);
-                status = ethernet_mqtt_reconnect();
-                PRINTLN_WARNING("Attempting MQTT reconnection (Status: %d/%s).", status, nx_status_toString(status));
-            } while ((status != NXD_MQTT_SUCCESS) && (status != NXD_MQTT_ALREADY_CONNECTED));
-            PRINTLN_WARNING("MQTT reconnection successful.");
-        }
 
         return U_ERROR;
     }

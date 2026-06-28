@@ -83,11 +83,6 @@ static VOID _mqtt_recieve_callback(NXD_MQTT_CLIENT* client_ptr, UINT number_of_m
 
 
 /* Callback function. Called when a PTP event is processed. */
-// extern UINT ptp_clock_callback(NX_PTP_CLIENT *client_ptr, UINT operation,
-//         NX_PTP_TIME *time_ptr, NX_PACKET *packet_ptr,
-//         VOID *callback_data);
-
-/* Callback function. Called when a PTP event is processed. */
 static UINT _ptp_event_callback(NX_PTP_CLIENT *ptp_client_ptr, UINT event, VOID *event_data, VOID *callback_data)
 {
   NX_PARAMETER_NOT_USED(callback_data);
@@ -527,7 +522,13 @@ UINT ethernet_mqtt_reconnect(void) {
 }
 #endif
 
-int ethernet_get_time(NX_PTP_DATE_TIME* datetime) {
+UINT ethernet_get_time(NX_PTP_TIME* time) {
+    if (device.is_initialized)
+        return nx_ptp_client_time_get(&device.ptp_client, time);
+    return U_ERROR;
+}
+
+UINT ethernet_get_timeofday(NX_PTP_DATE_TIME* datetime) {
     NX_PTP_TIME tm = { 0 };
     NX_PTP_DATE_TIME dt = { 0 };
     NX_PTP_CLIENT_SYNC sync = { 0 };
@@ -540,7 +541,7 @@ int ethernet_get_time(NX_PTP_DATE_TIME* datetime) {
     }
 
     /* read the PTP clock */
-    int status = nx_ptp_client_time_get(&device.ptp_client, &tm);
+    UINT status = ethernet_get_time(&tm);
     if(status != NX_SUCCESS) {
         PRINTLN_ERROR("Failed to call nx_ptp_client_time_get() (Status: %d/%s).", status, nx_status_toString(status));
         return U_ERROR;
@@ -564,46 +565,16 @@ int ethernet_get_time(NX_PTP_DATE_TIME* datetime) {
 }
 
 /* Gets the number of microseconds since the Unix epoch (1970-01-01 00:00:00 UTC)*/
-int ethernet_ptp_get_unix_microseconds(uint64_t* buffer)
+UINT ethernet_ptp_get_unix_microseconds(uint64_t* buffer)
 {
-
-    NX_PTP_DATE_TIME datetime = { 0 };
-
-    /* Get PTP datetime. */
-    int status = ethernet_get_time(&datetime);
-    if(status != U_SUCCESS) {
-        PRINTLN_ERROR("Failed to call ethernet_get_time() (Status: %d).", status);
-        return U_ERROR;
+    NX_PTP_TIME time;
+    UINT status = ethernet_get_time(&time);
+    if (status) {
+        return status;
     }
 
-    serial_monitor("datetime", "nanoseconds", "%d", datetime.nanosecond);
-    serial_monitor("datetime", "year", "%d", datetime.year);
-    serial_monitor("datetime", "month", "%d", datetime.month);
-    serial_monitor("datetime", "day", "%d", datetime.day);
-
-    int y = datetime.year;
-    int m = datetime.month;
-    int d = datetime.day;
-
-    /* Adjust year and month for March-based counting (simplifies leap year handling) */
-    if (m <= 2)
-    {
-        y--;
-        m += 12;
-    }
-
-    /* Days from epoch (1970-01-01) using the Rata Die algorithm */
-    uint32_t days = 365 * y + y / 4 - y / 100 + y / 400
-                   + (153 * (m - 3) + 2) / 5 + d - 719469;
-
-    uint64_t us = (uint64_t)days * 86400LL * 1000000LL
-               + (uint64_t)datetime.hour * 3600LL * 1000000LL
-               + (uint64_t)datetime.minute * 60LL * 1000000LL
-               + (uint64_t)datetime.second * 1000000LL
-               + (uint64_t)(datetime.nanosecond / 1000);
-
-    *buffer = us;
-    serial_monitor("datetime", "microseconds from epoch", "%" PRIu64, us);
+    *buffer = ((uint64_t) time.second_low * 1000000) + time.nanosecond / 1000;
+    //serial_monitor("datetime", "microseconds from epoch", "%" PRIu64, us);
     return U_SUCCESS;
 }
 
