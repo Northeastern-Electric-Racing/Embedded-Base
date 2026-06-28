@@ -393,7 +393,7 @@ uint8_t ethernet_send_message(ethernet_message_t *message) {
     return U_SUCCESS;
 }
 
-NX_PTP_DATE_TIME ethernet_get_time(void) {
+NX_PTP_DATE_TIME ethernet_get_timeofday(void) {
     NX_PTP_TIME tm;
     NX_PTP_DATE_TIME date;
     /* read the PTP clock */
@@ -403,6 +403,15 @@ NX_PTP_DATE_TIME ethernet_get_time(void) {
     nx_ptp_client_utility_convert_time_to_date(&tm, 0, &date);
 
     return date;
+}
+
+NX_PTP_TIME ethernet_get_time(void) {
+    NX_PTP_TIME tm;
+
+    /* read the PTP clock */
+    nx_ptp_client_time_get(&device.ptp_client, &tm);
+
+    return tm;
 }
 
 // clang-format on
