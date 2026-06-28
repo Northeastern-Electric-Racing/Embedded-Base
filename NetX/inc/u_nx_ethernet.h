@@ -90,10 +90,16 @@ ethernet_message_t ethernet_create_message(uint8_t message_id, ethernet_node_t r
 uint8_t ethernet_send_message(ethernet_message_t *message);
 
 /**
- * @brief Retrieves the time from PTP stack.
+ * @brief Retrieves the time of day from PTP stack.
  * @return The UTC time
  */
-NX_PTP_DATE_TIME ethernet_get_time(void);
+NX_PTP_DATE_TIME ethernet_get_timeofday(void);
+
+/**
+ * @brief Retrieves the time from PTP stack.
+ * @return The Unix epoch time
+ */
+NX_PTP_TIME ethernet_get_time(void);
 
 // clang-format on
 #endif /* u_nx_ethernet.h */
