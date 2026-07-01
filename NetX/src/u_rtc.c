@@ -128,8 +128,6 @@ UINT nx_ptp_client_hard_clock_callback(NX_PTP_CLIENT *client_ptr,
 				// this will automatically clear the ADDSUB so we add
 				WRITE_REG(heth.Instance->MACSTNUR,
 					  time_ptr->nanosecond);
-				CLEAR_BIT(heth.Instance->MACSTNUR,
-					ETH_MACSTNUR_ADDSUB);
 			} else {
 				// take complement starting from one million
 				uint32_t complement =
