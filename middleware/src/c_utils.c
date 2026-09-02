@@ -31,6 +31,36 @@ float linear_interpolate(float x, float x1, float x2, float y1, float y2)
 	return y1 + ((x - x1) * (y2 - y1) / (x2 - x1));
 }
 
+bool update_active_high_hysteresis(float value, float high_threshold,
+				   float low_threshold, bool *active)
+{
+	assert(active != NULL);
+	assert(high_threshold > low_threshold);
+
+	if (*active) {
+		*active = value > low_threshold;
+	} else {
+		*active = value > high_threshold;
+	}
+
+	return *active;
+}
+
+bool update_active_low_hysteresis(float value, float high_threshold,
+				  float low_threshold, bool *active)
+{
+	assert(active != NULL);
+	assert(high_threshold > low_threshold);
+
+	if (*active) {
+		*active = value < high_threshold;
+	} else {
+		*active = value < low_threshold;
+	}
+
+	return *active;
+}
+
 uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
 {
 	return ((uint16_t)msb << 8) | ((uint16_t)lsb);

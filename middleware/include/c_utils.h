@@ -1,6 +1,8 @@
 #ifndef C_UTILS
 #define C_UTILS
 
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 /*
@@ -69,6 +71,36 @@ unsigned char reverse_bits(unsigned char b);
  * @return Interpolated y-value.
  */
 float linear_interpolate(float x, float x1, float x2, float y1, float y2);
+
+/**
+ * @brief Updates an active-high hysteresis state.
+ *
+ * An inactive state becomes active above the high threshold. An active state
+ * remains active until the value reaches or falls below the low threshold.
+ *
+ * @param value Current input value.
+ * @param high_threshold Threshold above which the state becomes active.
+ * @param low_threshold Threshold at or below which the state becomes inactive.
+ * @param active Current state, updated by this function.
+ * @return Updated active state.
+ */
+bool update_active_high_hysteresis(float value, float high_threshold,
+				   float low_threshold, bool *active);
+
+/**
+ * @brief Updates an active-low hysteresis state.
+ *
+ * An inactive state becomes active below the low threshold. An active state
+ * remains active until the value reaches or exceeds the high threshold.
+ *
+ * @param value Current input value.
+ * @param high_threshold Threshold at or above which the state becomes inactive.
+ * @param low_threshold Threshold below which the state becomes active.
+ * @param active Current state, updated by this function.
+ * @return Updated active state.
+ */
+bool update_active_low_hysteresis(float value, float high_threshold,
+				  float low_threshold, bool *active);
 
 /**
  * combines two uint8_t into a uint16_t
