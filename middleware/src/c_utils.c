@@ -32,33 +32,31 @@ float linear_interpolate(float x, float x1, float x2, float y1, float y2)
 }
 
 bool update_active_high_hysteresis(float value, float high_threshold,
-				   float low_threshold, bool *active)
+				   float low_threshold, bool active)
 {
-	assert(active != NULL);
 	assert(high_threshold > low_threshold);
 
-	if (*active) {
-		*active = value > low_threshold;
+	if (active) {
+		active = value > low_threshold;
 	} else {
-		*active = value > high_threshold;
+		active = value > high_threshold;
 	}
 
-	return *active;
+	return active;
 }
 
 bool update_active_low_hysteresis(float value, float high_threshold,
-				  float low_threshold, bool *active)
+				  float low_threshold, bool active)
 {
-	assert(active != NULL);
 	assert(high_threshold > low_threshold);
 
-	if (*active) {
-		*active = value < high_threshold;
+	if (active) {
+		active = value < high_threshold;
 	} else {
-		*active = value < low_threshold;
+		active = value < low_threshold;
 	}
 
-	return *active;
+	return active;
 }
 
 uint16_t uint8_to_uint16(uint8_t msb, uint8_t lsb)
